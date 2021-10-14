@@ -9,28 +9,34 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ResourceBundle;
 
-public class mainMenuView {
+public class MainMenuView {
     private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety/resources/";
-    private static final String CSS_FILE_PATH = "cellsociety/resources/GameStyleSheet.css";
     private static ResourceBundle myLanguageResources;
     private Stage window;
+    private String cssFilePath;
 
-
-    public mainMenuView(String language){
+    // Constructor of MainMenuView
+    public MainMenuView(String language, String cssFilePath){
         myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
-
+        this.cssFilePath = cssFilePath;
     }
 
+    /**
+     * creates mainMenu and returns the scene
+     * @param stage primary stage
+     * @return scene of the main Menu
+     */
     public Scene setMenuDisplay(Stage stage) {
-        this.window = stage;
+        window = stage;
         Label titleLabel = new Label("Cell Society");
         titleLabel.setId("title");
         HBox homePageRoot = new HBox();
-
+        return null;
     }
 
+    //applies css file to the scene
     private void applyCSS(Scene scene) throws MalformedURLException {
-        File styleFile = new File(CSS_FILE_PATH);
+        File styleFile = new File(cssFilePath);
         scene.getStylesheets().add(styleFile.toURI().toURL().toString());
     }
 }
