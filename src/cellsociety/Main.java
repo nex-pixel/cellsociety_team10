@@ -28,6 +28,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         MainMenuView mainMenu = new MainMenuView(PRIMARY_LANGUAGE, CSS_FILE_PATH);
         Scene mainScene = mainMenu.setMenuDisplay(primaryStage);
-
+        primaryStage.setScene(mainScene);
+        primaryStage.setTitle(PROGRAM_TITLE);
+        primaryStage.show();
     }
 }

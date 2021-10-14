@@ -24,14 +24,14 @@ public class MainMenuView {
     /**
      * creates mainMenu and returns the scene
      * @param stage primary stage
-     * @return scene of the main Menu
+     * @return scene of main menu
      */
     public Scene setMenuDisplay(Stage stage) {
         window = stage;
         Label titleLabel = new Label("Cell Society");
         titleLabel.setId("title");
         HBox homePageRoot = new HBox();
-        return null;
+        return null; // TODO: finish setting up menu display
     }
 
     //applies css file to the scene
