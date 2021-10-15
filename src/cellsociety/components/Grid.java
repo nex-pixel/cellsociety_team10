@@ -22,6 +22,9 @@ public class Grid {
         initializeNeighbors();
     }
 
+    public int getNumRows () { return myNumRows; }
+    public int getMyNumCols () { return myNumCols; }
+
     private void initializeNeighbors() {
         for (Point currentPoint: myBoard.keySet()) {
             Cell currentCell = myBoard.get(currentPoint);
