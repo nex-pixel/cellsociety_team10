@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Grid {
-
     private int myNumRows, myNumCols;
     private Map<Point, Cell> myBoard;
 
@@ -43,10 +42,10 @@ public class Grid {
             }
 
             if (numOfNeighbors == 5) {
-                currentCell.edge(true);
+                currentCell.setEdge(true);
             }
             else if (numOfNeighbors == 3) {
-                currentCell.corner(true);
+                currentCell.setCorner(true);
             }
 
         }
