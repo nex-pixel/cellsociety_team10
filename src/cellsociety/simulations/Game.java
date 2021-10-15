@@ -1,4 +1,11 @@
 package cellsociety.simulations;
 
-public class Game {
+import java.io.File;
+
+public abstract class Game {
+
+    public void intializeFile(File filename){
+
+    }
+
 }

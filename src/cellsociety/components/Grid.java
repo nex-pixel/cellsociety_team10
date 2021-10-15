@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Grid {
-
     private int myNumRows, myNumCols;
     private Map<Point, Cell> myBoard;
 
