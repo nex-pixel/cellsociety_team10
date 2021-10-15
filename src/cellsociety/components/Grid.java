@@ -43,10 +43,10 @@ public class Grid {
             }
 
             if (numOfNeighbors == 5) {
-                currentCell.edge(true);
+                currentCell.setEdge(true);
             }
             else if (numOfNeighbors == 3) {
-                currentCell.corner(true);
+                currentCell.setCorner(true);
             }
 
         }
