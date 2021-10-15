@@ -19,6 +19,8 @@ public abstract class Game {
         myGrid = new Grid(states);
     }
 
+    public Grid getGrid() { return myGrid; }
+
     private void createReader (String filename) {
         String fileType = filename.split(".")[-1];
         if (fileType.equals("csv")) {
@@ -29,5 +31,7 @@ public abstract class Game {
         }
         // There may be some more types
     }
+
+    public abstract void update ();
 
 }
