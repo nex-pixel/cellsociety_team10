@@ -59,4 +59,6 @@ public class Cell {
     public boolean getCorner(){
         return isCorner;
     }
+
+    public void observe () {}
 }
