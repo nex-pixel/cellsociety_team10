@@ -3,21 +3,46 @@ package cellsociety.simulations;
 import cellsociety.components.Cell;
 
 import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class GameOfLife extends Game {
+    private int ALIVE = 1;
+    private int DEAD = 0;
 
     public GameOfLife (String filename) {
         super(filename);
     }
 
-    public void update () {
-        Map<Point, Cell> board = getGrid().getBoard();
+    @Override
+    public void update() {
+        Map<Point, Cell> board = myGrid.getBoard();
         for (Point point: board.keySet()) {
-            board.get(point).observe();
+            applyRule(board.get(point));
         }
         for (Point point: board.keySet()) {
             board.get(point).changeStatus();
+        }
+    }
+
+    @Override
+    public void applyRule(Cell cell){
+        ArrayList<Cell> neighbors = cell.getNeighborCells();
+        int numCellsAlive = 0;
+        for(Cell cellNextDoor: neighbors){
+            if(cellNextDoor.getCurrentStatus() == ALIVE){
+                numCellsAlive++;
+            }
+        }
+        if(numCellsAlive <= 1){
+            cell.setNextStatus(DEAD);
+        } else if(numCellsAlive == 2){
+            cell.setNextStatus(cell.getCurrentStatus());
+        } else if(numCellsAlive == 3){
+            cell.setNextStatus(ALIVE);
+        } else if(numCellsAlive >= 4){
+            cell.setNextStatus(DEAD);
         }
     }
 }

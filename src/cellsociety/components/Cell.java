@@ -1,5 +1,6 @@
 package cellsociety.components;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class Cell {
         return currentStatus;
     }
 
-    public List<Cell> getNeighborCells(){
+    public ArrayList<Cell> getNeighborCells(){
         return neighborCells;
     }
 
@@ -59,8 +60,6 @@ public class Cell {
     public boolean getCorner(){
         return isCorner;
     }
-
-    public void observe () {}
 
     @Override
     public boolean equals(Object obj) {
