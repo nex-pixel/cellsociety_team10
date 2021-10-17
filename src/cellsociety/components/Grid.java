@@ -30,8 +30,9 @@ public class Grid {
     private void initializeNeighbors() {
         for (Point currentPoint: myBoard.keySet()) {
             Cell currentCell = myBoard.get(currentPoint);
-            int[] rows = {-1, -1, -1, 0, 0, 0, 1, 1, 1};
-            int[] cols = {-1, 0, 1, -1, 0, 1, -1, 0, 1};
+            //removed 0 in cols and rows because a cell can't be a neighbor of itself
+            int[] rows = {-1, -1, -1, 0, 0, 1, 1, 1}; //To determine neighbor cell locations by using integer displacement in that direction
+            int[] cols = {-1, 0, 1, -1, 1, -1, 0, 1}; //same as above but for columns
             int numOfNeighbors = 0;
             for (int i = 0; i < rows.length; i++) {
                 int x = currentPoint.x + rows[i];
@@ -58,5 +59,10 @@ public class Grid {
 
     private boolean isInsideBoard (int x, int y) {
         return (x >= 0 && x < myNumRows && y >= 0 && y < myNumCols);
+    }
+
+    //JUnit Test getter
+    public Map<Point, Cell> getCells(){
+        return myBoard;
     }
 }
