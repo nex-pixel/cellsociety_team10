@@ -1,6 +1,12 @@
-package cellsociety.simulations;
+package cellsociety.View;
 
+import cellsociety.Controller.SimulatorController;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -19,6 +25,10 @@ public class MainMenuView {
     private String cssFilePath;
     private SimulatorView simulation1;
     private Map<Integer[], Integer> sampleCellStatus; // for testing SimulatorView TODO: Delete.
+    private SimulatorController mySimulatorController;
+
+    private Group homePageRoot;
+
 
     // Constructor of MainMenuView
     public MainMenuView(String language, String cssFilePath){
@@ -31,6 +41,7 @@ public class MainMenuView {
         sampleCellStatus.put(new Integer[] {16,9}, 0 );// for testing SimulatorView TODO: Delete.
         sampleCellStatus.put(new Integer[] {7,6}, 0 );// for testing SimulatorView TODO: Delete.
 
+        mySimulatorController = new SimulatorController(simulation1, sampleCellStatus);
 
     }
 
@@ -39,14 +50,33 @@ public class MainMenuView {
      * @param stage primary stage
      * @return scene of main menu
      */
-    public Scene setMenuDisplay(Stage stage) {
+    public Scene setMenuDisplay(Stage stage, int width, int height) {
         window = stage;
         Label titleLabel = new Label("Cell Society");
         titleLabel.setId("title");
-        HBox homePageRoot = new HBox();
-        return simulation1.getUpdatedGrid(sampleCellStatus, 200, 200);// for testing SimulatorView TODO: Delete.
+
+        homePageRoot = new Group();
+        homePageRoot.getChildren().add(generateSimulatorSelectorPanel());
+        Scene scene = new Scene(homePageRoot, width, height);
+        return scene;
+        //return simulation1.getUpdatedGrid(sampleCellStatus, 200, 200);// for testing SimulatorView TODO: Delete.
 
     }
+
+    private Node generateSimulatorSelectorPanel(){
+        HBox simulatorButtonHBox = new HBox();
+        Button simButton = generateButton("Create new simulation",
+                event -> mySimulatorController.createNewSimulation());
+        return simulatorButtonHBox;
+    }
+
+    private Button generateButton(String label, EventHandler<ActionEvent> event) {
+        Button button = new Button();
+        button.setText(label);
+        button.setOnAction(event);
+        return button;
+    }
+
 
     // applies css file to the scene
     private void applyCSS(Scene scene) throws MalformedURLException {
