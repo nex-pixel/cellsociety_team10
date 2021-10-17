@@ -68,11 +68,13 @@ public class Grid {
             point.setLocation(point.getX() + left, point.getY() + top);
         }
 
+        clearNeighborsForCells();
         padAroundGrid(0, top, 0, myNumCols + right + left);
         padAroundGrid(top, myNumRows + top, 0, left);
         padAroundGrid(top + myNumRows, myNumRows + top + bottom, 0, myNumCols + right + left);
         padAroundGrid(top, myNumRows + top, left + myNumCols, myNumCols + left + right);
-        
+        initializeNeighbors();
+
         myNumRows += left + right;
         myNumCols += top + bottom;
     }
@@ -84,6 +86,12 @@ public class Grid {
                 Cell newCell = new Cell(0, expandedRow, expandedCol);
                 myBoard.put(newPoint, newCell);
             }
+        }
+    }
+
+    private void clearNeighborsForCells(){
+        for(Point point: myBoard.keySet()){
+            myBoard.get(point).clearNeighborCells();
         }
     }
 
