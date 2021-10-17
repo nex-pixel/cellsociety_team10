@@ -1,4 +1,4 @@
-package cellsociety.simulations;
+package cellsociety.View;
 
 import javafx.scene.shape.Rectangle;
 

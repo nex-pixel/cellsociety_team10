@@ -1,12 +1,11 @@
-package cellsociety.simulations;
+package cellsociety.View;
 
+import cellsociety.View.squareCell;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 public class SimulatorView {
