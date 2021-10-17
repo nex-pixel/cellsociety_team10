@@ -9,17 +9,17 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GameOfLifeTest {
+class GameOfLifeModelTest {
     Game game;
 
     @BeforeEach
     void setUp() {
-        game = new GameOfLife("blinkers.csv");
+        game = new GameOfLifeModel("blinkers.csv");
     }
 
     @Test
     void update() {
-        Game secondgame = new GameOfLife("blinkersexpected.csv");
+        Game secondgame = new GameOfLifeModel("blinkersexpected.csv");
         game.update();
         Map<Point, Cell> board1 = game.myGrid.getBoard();
         Map<Point, Cell> board2 = secondgame.myGrid.getBoard();

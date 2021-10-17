@@ -6,11 +6,11 @@ import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
-public class GameOfLife extends Game {
+public class GameOfLifeModel extends Game {
     private int ALIVE = 1;
     private int DEAD = 0;
 
-    public GameOfLife (String filename) {
+    public GameOfLifeModel(String filename) {
         super(filename);
     }
 
