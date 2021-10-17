@@ -25,6 +25,10 @@ public class Cell {
         currentStatus = nextStatus;
     }
 
+    public void clearNeighborCells(){
+        neighborCells.clear();
+    }
+
     public void setNextStatus(int newStatus){
         nextStatus = newStatus;
     }
