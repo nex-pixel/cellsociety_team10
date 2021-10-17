@@ -30,8 +30,9 @@ public class Grid {
     private void initializeNeighbors() {
         for (Point currentPoint: myBoard.keySet()) {
             Cell currentCell = myBoard.get(currentPoint);
-            int[] rows = {-1, -1, -1, 0, 0, 0, 1, 1, 1}; //To determine neighbor cell locations by using integer displacement in that direction
-            int[] cols = {-1, 0, 1, -1, 0, 1, -1, 0, 1}; //same as above but for columns
+            //removed 0 in cols and rows because a cell can't be a neighbor of itself
+            int[] rows = {-1, -1, -1, 0, 0, 1, 1, 1}; //To determine neighbor cell locations by using integer displacement in that direction
+            int[] cols = {-1, 0, 1, -1, 1, -1, 0, 1}; //same as above but for columns
             int numOfNeighbors = 0;
             for (int i = 0; i < rows.length; i++) {
                 int x = currentPoint.x + rows[i];

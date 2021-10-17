@@ -40,8 +40,8 @@ public class GridTest {
     @Test
     void checkNeighbors(){
         Cell cornerNeighborCheck = myGrid.getCells().get(new Point(0,0));
-        List<Cell> expectedNeighbors = Arrays.asList(null, null, null, new Cell(1, 1,0),
-                new Cell(0, 1, 1), new Cell(1, 0,1), null, null);
+        List<Cell> expectedNeighbors = Arrays.asList(null, null, null, null, new Cell(1, 1,0),
+                null, new Cell(0, 1, 1), new Cell(1, 0,1));
         assertSame(expectedNeighbors, cornerNeighborCheck.getNeighborCells());
         Cell edgeNeighborCheck = myGrid.getCells().get(new Point(2,1));
         expectedNeighbors = Arrays.asList(new Cell(1, 1,0),
