@@ -49,7 +49,7 @@ public class Cell {
         return currentStatus;
     }
 
-    public ArrayList<Cell> getNeighborCells(){
+    public List<Cell> getNeighborCells(){
         return neighborCells;
     }
 
