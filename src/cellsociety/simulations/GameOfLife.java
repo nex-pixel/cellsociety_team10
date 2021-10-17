@@ -3,8 +3,7 @@ package cellsociety.simulations;
 import cellsociety.components.Cell;
 
 import java.awt.*;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class GameOfLife extends Game {
@@ -28,7 +27,7 @@ public class GameOfLife extends Game {
 
     @Override
     public void applyRule(Cell cell){
-        ArrayList<Cell> neighbors = cell.getNeighborCells();
+        List<Cell> neighbors = cell.getNeighborCells();
         int numCellsAlive = 0;
         for(Cell cellNextDoor: neighbors){
             if(cellNextDoor.getCurrentStatus() == ALIVE){
