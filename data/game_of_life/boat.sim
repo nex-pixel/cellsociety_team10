@@ -1,0 +1,5 @@
+Type=GameOfLife
+Title=Boat
+Author=John Conway
+Description=Example of a still boat
+InitialStates=game_of_life/boat.csv

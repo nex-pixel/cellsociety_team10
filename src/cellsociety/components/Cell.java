@@ -2,6 +2,7 @@ package cellsociety.components;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Cell {
@@ -70,14 +71,14 @@ public class Cell {
     @Override
     public boolean equals(Object obj) {
         final Cell other = (Cell) obj;
-        if((this.xyPosition.equals(other.xyPosition)) && (this.currentStatus == other.currentStatus) && (this.neighborCells.equals(other.neighborCells))){
+        if (Arrays.equals(xyPosition, other.xyPosition) && this.currentStatus == other.currentStatus) {
             return true;
         }
         return false;
     }
 
     @Override
-    public int hashCode() {
-        return currentStatus+xyPosition[0]+xyPosition[1];
+    public String toString () {
+        return xyPosition[0] + " " + xyPosition[1] + " with status " + currentStatus;
     }
 }

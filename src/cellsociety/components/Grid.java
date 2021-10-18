@@ -15,7 +15,7 @@ public class Grid {
         for (int rowIndex = 0; rowIndex < myNumRows; rowIndex++) {
             for (int colIndex = 0; colIndex < myNumCols; colIndex++) {
                 Point point = new Point(colIndex, rowIndex);
-                Cell cell = new Cell(states[colIndex][rowIndex], colIndex, rowIndex);
+                Cell cell = new Cell(states[rowIndex][colIndex], colIndex, rowIndex);
                 myBoard.put(point, cell);
             }
         }
@@ -23,7 +23,7 @@ public class Grid {
     }
     
     public int getNumRows () { return myNumRows; }
-    public int getMyNumCols () { return myNumCols; }
+    public int getNumCols () { return myNumCols; }
 
     public Map<Point, Cell> getBoard () { return myBoard; }
 
@@ -31,12 +31,12 @@ public class Grid {
         for (Point currentPoint: myBoard.keySet()) {
             Cell currentCell = myBoard.get(currentPoint);
             //removed 0 in cols and rows because a cell can't be a neighbor of itself
-            int[] rows = {-1, -1, -1, 0, 0, 1, 1, 1}; //To determine neighbor cell locations by using integer displacement in that direction
-            int[] cols = {-1, 0, 1, -1, 1, -1, 0, 1}; //same as above but for columns
+            int[] rows = {-1, -1, -1, 0, 1, 1, 1, 0}; //To determine neighbor cell locations by using integer displacement in that direction
+            int[] cols = {-1, 0, 1, 1, 1, 0, -1, -1}; //same as above but for columns
             int numOfNeighbors = 0;
             for (int i = 0; i < rows.length; i++) {
-                int x = currentPoint.x + rows[i];
-                int y = currentPoint.y + cols[i];
+                int x = currentPoint.x + cols[i];
+                int y = currentPoint.y + rows[i];
                 if (isInsideBoard(x, y)) {
                     Point neighborPosition = new Point(x, y);
                     currentCell.getNeighborCells().add(myBoard.get(neighborPosition));
@@ -95,8 +95,4 @@ public class Grid {
         }
     }
 
-    //JUnit Test getter
-    public Map<Point, Cell> getCells(){
-        return myBoard;
-    }
 }

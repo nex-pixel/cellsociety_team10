@@ -1,0 +1,5 @@
+Type=GameOfLife
+Title=Toad
+Author=John Conway
+Description=Example of a toad of period 2
+InitialStates=game_of_life/toad.csv

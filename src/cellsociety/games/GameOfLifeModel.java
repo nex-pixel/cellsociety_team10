@@ -29,19 +29,16 @@ public class GameOfLifeModel extends Game {
     protected void applyRule(Cell cell){
         List<Cell> neighbors = cell.getNeighborCells();
         int numCellsAlive = 0;
-        for(Cell cellNextDoor: neighbors){
-            if(cellNextDoor.getCurrentStatus() == ALIVE){
+        for (Cell cellNextDoor: neighbors) {
+            if (cellNextDoor != null && cellNextDoor.getCurrentStatus() == ALIVE) {
                 numCellsAlive++;
             }
         }
-        if(numCellsAlive <= 1){
-            cell.setNextStatus(DEAD);
-        } else if(numCellsAlive == 2){
-            cell.setNextStatus(cell.getCurrentStatus());
-        } else if(numCellsAlive == 3){
-            cell.setNextStatus(ALIVE);
-        } else if(numCellsAlive >= 4){
-            cell.setNextStatus(DEAD);
+        if (cell.getCurrentStatus() == ALIVE) {
+            cell.setNextStatus(numCellsAlive == 2 || numCellsAlive == 3 ? 1 : 0);
+        }
+        else {
+            cell.setNextStatus(numCellsAlive == 3 ? 1 : 0);
         }
     }
 }
