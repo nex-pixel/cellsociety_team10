@@ -21,7 +21,7 @@ public class Grid {
         }
         initializeNeighbors();
     }
-
+    
     public int getNumRows () { return myNumRows; }
     public int getMyNumCols () { return myNumCols; }
 
@@ -30,8 +30,9 @@ public class Grid {
     private void initializeNeighbors() {
         for (Point currentPoint: myBoard.keySet()) {
             Cell currentCell = myBoard.get(currentPoint);
-            int[] rows = {-1, -1, -1, 0, 0, 0, 1, 1, 1};
-            int[] cols = {-1, 0, 1, -1, 0, 1, -1, 0, 1};
+            //removed 0 in cols and rows because a cell can't be a neighbor of itself
+            int[] rows = {-1, -1, -1, 0, 0, 1, 1, 1}; //To determine neighbor cell locations by using integer displacement in that direction
+            int[] cols = {-1, 0, 1, -1, 1, -1, 0, 1}; //same as above but for columns
             int numOfNeighbors = 0;
             for (int i = 0; i < rows.length; i++) {
                 int x = currentPoint.x + rows[i];
@@ -58,5 +59,44 @@ public class Grid {
 
     private boolean isInsideBoard (int x, int y) {
         return (x >= 0 && x < myNumRows && y >= 0 && y < myNumCols);
+    }
+
+    //TODO: EDIT THE WAY COLUMN AND ROW ARE ADDED LOOK AT INITIAL GRID CODE
+    //expand the board with empty cells to each side depending on what's written
+    public void expandGrid(int left, int top, int right, int bottom){
+        for(Point point: myBoard.keySet()){
+            point.setLocation(point.getX() + left, point.getY() + top);
+        }
+
+        clearNeighborsForCells();
+        padAroundGrid(0, top, 0, myNumCols + right + left);
+        padAroundGrid(top, myNumRows + top, 0, left);
+        padAroundGrid(top + myNumRows, myNumRows + top + bottom, 0, myNumCols + right + left);
+        padAroundGrid(top, myNumRows + top, left + myNumCols, myNumCols + left + right);
+        initializeNeighbors();
+
+        myNumRows += left + right;
+        myNumCols += top + bottom;
+    }
+
+    private void padAroundGrid(int startingRowVal, int endingRowVal, int startingColVal, int endingColVal) {
+        for (int expandedRow = startingRowVal; expandedRow < endingRowVal; expandedRow++) {
+            for (int expandedCol = startingColVal; expandedCol < endingColVal; expandedCol++) {
+                Point newPoint = new Point(expandedRow, expandedCol);
+                Cell newCell = new Cell(0, expandedRow, expandedCol);
+                myBoard.put(newPoint, newCell);
+            }
+        }
+    }
+
+    private void clearNeighborsForCells(){
+        for(Point point: myBoard.keySet()){
+            myBoard.get(point).clearNeighborCells();
+        }
+    }
+
+    //JUnit Test getter
+    public Map<Point, Cell> getCells(){
+        return myBoard;
     }
 }
