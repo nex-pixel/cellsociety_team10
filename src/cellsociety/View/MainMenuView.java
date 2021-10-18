@@ -57,6 +57,7 @@ public class MainMenuView {
 
         homePageRoot = new Group();
         homePageRoot.getChildren().add(generateSimulatorSelectorPanel());
+
         Scene scene = new Scene(homePageRoot, width, height);
         return scene;
         //return simulation1.getUpdatedGrid(sampleCellStatus, 200, 200);// for testing SimulatorView TODO: Delete.
@@ -66,7 +67,8 @@ public class MainMenuView {
     private Node generateSimulatorSelectorPanel(){
         HBox simulatorButtonHBox = new HBox();
         Button simButton = generateButton("Create new simulation",
-                event -> mySimulatorController.createNewSimulation());
+                event -> mySimulatorController.createNewSimulation(window));
+        simulatorButtonHBox.getChildren().add(simButton);
         return simulatorButtonHBox;
     }
 

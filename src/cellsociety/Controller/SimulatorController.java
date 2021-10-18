@@ -1,6 +1,7 @@
 package cellsociety.Controller;
 
 import cellsociety.View.SimulatorView;
+import javafx.stage.Stage;
 
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public class SimulatorController {
 
     }
 
-    public void createNewSimulation(){
+    public void createNewSimulation(Stage stage){
         mySimulatorView.getUpdatedGrid(mySampleCellStatus, 200, 200);
     }
 }
