@@ -1,6 +1,7 @@
 package cellsociety;
 
 
+import cellsociety.view.MainMenuView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
