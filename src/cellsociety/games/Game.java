@@ -3,6 +3,9 @@ package cellsociety.games;
 
 import cellsociety.components.*;
 
+import java.awt.*;
+import java.util.Map;
+
 
 public abstract class Game {
 
@@ -13,6 +16,10 @@ public abstract class Game {
         createReader(filename);
         int[][] states = myReader.read();
         myGrid = new Grid(states);
+    }
+
+    public Map<Point, Cell> getGrid(){
+        return myGrid.getBoard();
     }
 
     private void createReader (String filename) {
@@ -26,7 +33,7 @@ public abstract class Game {
         // There may be some more types
     }
 
-    public abstract void applyRule(Cell cell);
+    protected abstract void applyRule(Cell cell);
 
     public abstract void update();
 }

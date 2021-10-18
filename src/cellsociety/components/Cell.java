@@ -34,6 +34,8 @@ public class Cell {
         nextStatus = newStatus;
     }
 
+    public void setCurrentStatus(int newCurrentStatus){currentStatus = newCurrentStatus;}
+
     public void setEdge(boolean edgeCase){
         isEdge = edgeCase;
     }
