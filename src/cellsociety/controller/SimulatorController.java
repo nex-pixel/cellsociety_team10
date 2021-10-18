@@ -1,7 +1,7 @@
-package cellsociety.Controller;
+package cellsociety.controller;
 
-import cellsociety.View.SimulatorView;
 import javafx.stage.Stage;
+import cellsociety.view.SimulatorView;
 
 import java.util.Map;
 

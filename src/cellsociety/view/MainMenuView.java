@@ -1,6 +1,6 @@
-package cellsociety.View;
+package cellsociety.view;
 
-import cellsociety.Controller.SimulatorController;
+import cellsociety.controller.SimulatorController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -23,7 +23,7 @@ public class MainMenuView {
     private static ResourceBundle myLanguageResources;
     private Stage window;
     private String cssFilePath;
-    private SimulatorView simulation1;
+    private cellsociety.view.SimulatorView simulation1;
     private Map<Integer[], Integer> sampleCellStatus; // for testing SimulatorView TODO: Delete.
     private SimulatorController mySimulatorController;
 
