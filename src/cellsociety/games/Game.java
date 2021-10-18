@@ -23,7 +23,8 @@ public abstract class Game {
     }
 
     private void createReader (String filename) {
-        String fileType = filename.split(".")[-1];
+        String[] temp = filename.split("\\.");
+        String fileType = temp[temp.length - 1];
         if (fileType.equals("csv")) {
             myReader = new ReadCSVFile(filename);
         }
@@ -36,4 +37,14 @@ public abstract class Game {
     protected abstract void applyRule(Cell cell);
 
     public abstract void update();
+
+    public int[][] toGridArray () {
+        int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];
+        for (int r = 0; r < myGrid.getNumRows(); r++) {
+            for (int c = 0; c < myGrid.getNumCols(); c++) {
+                ret[r][c] = getGrid().get(new Point(c, r)).getCurrentStatus();
+            }
+        }
+        return ret;
+    }
 }

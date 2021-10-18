@@ -5,27 +5,40 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameOfLifeModelTest {
-    Game game;
 
     @BeforeEach
-    void setUp() {
-        game = new GameOfLifeModel("blinkers.csv");
+    void setUp() {}
+
+    @Test
+    void testUpdateStillBoat () {
+        Game boat = new GameOfLifeModel("./data/game_of_life/boat.csv");
+
+        int[][] board0 = boat.toGridArray();
+        boat.update();
+        int[][] board1 = boat.toGridArray();
+
+        assertTrue(Arrays.deepEquals(board0, board1));
+
     }
 
     @Test
-    void update() {
-        Game secondgame = new GameOfLifeModel("blinkersexpected.csv");
-        game.update();
-        Map<Point, Cell> board1 = game.myGrid.getBoard();
-        Map<Point, Cell> board2 = secondgame.myGrid.getBoard();
-        for(Point point: board2.keySet()){
-            assertEquals(board2.get(point), board1.get(point));
-        }
+    void testUpdatePeriodTwoToad () {
+        Game toad = new GameOfLifeModel("./data/game_of_life/toad.csv");
+        int[][] board0 = toad.toGridArray();
+        toad.update();
+        int[][] board1 = toad.toGridArray();
+        int[][] board2 = {{0,0,0,0,0,0}, {0,0,0,1,0,0}, {0,1,0,0,1,0},{0,1,0,0,1,0}, {0,0,1,0,0,0}, {0,0,0,0,0,0}};
+        assertTrue(Arrays.deepEquals(board2, board1));
+
+        toad.update();
+        int[][] board3 = toad.toGridArray();
+        assertTrue(Arrays.deepEquals(board3, board0));
     }
 
     @Test

@@ -77,11 +77,6 @@ public class Cell {
         return false;
     }
 
-//    @Override
-//    public int hashCode() {
-//        return currentStatus+xyPosition[0]+xyPosition[1];
-//    }
-
     @Override
     public String toString () {
         return xyPosition[0] + " " + xyPosition[1] + " with status " + currentStatus;

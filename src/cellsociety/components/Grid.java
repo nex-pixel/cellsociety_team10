@@ -23,7 +23,7 @@ public class Grid {
     }
     
     public int getNumRows () { return myNumRows; }
-    public int getMyNumCols () { return myNumCols; }
+    public int getNumCols () { return myNumCols; }
 
     public Map<Point, Cell> getBoard () { return myBoard; }
 

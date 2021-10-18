@@ -8,10 +8,8 @@ public class CellTest {
 
 
     @BeforeEach
-    void setUp() {
-    }
+    void setUp() {}
 
     @Test
-    void changeStatus() {
-    }
+    void test() {}
 }
