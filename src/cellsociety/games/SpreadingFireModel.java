@@ -45,7 +45,7 @@ public class SpreadingFireModel extends Game{
     }
 
     @Override
-    public void applyRule(Cell cell){
+    protected void applyRule(Cell cell){
         List<Cell> neighbors = cell.getNeighborCells();
         boolean willFireSpread = spread(neighbors.get(1).getCurrentStatus(), neighbors.get(3).getCurrentStatus(),
                 neighbors.get(4).getCurrentStatus(), neighbors.get(6).getCurrentStatus());

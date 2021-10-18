@@ -26,7 +26,7 @@ public class GameOfLifeModel extends Game {
     }
 
     @Override
-    public void applyRule(Cell cell){
+    protected void applyRule(Cell cell){
         List<Cell> neighbors = cell.getNeighborCells();
         int numCellsAlive = 0;
         for(Cell cellNextDoor: neighbors){
