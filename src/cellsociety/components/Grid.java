@@ -14,8 +14,8 @@ public class Grid {
         myBoard = new HashMap<>();
         for (int rowIndex = 0; rowIndex < myNumRows; rowIndex++) {
             for (int colIndex = 0; colIndex < myNumCols; colIndex++) {
-                Point point = new Point(rowIndex, colIndex);
-                Cell cell = new Cell(states[rowIndex][colIndex], rowIndex, colIndex);
+                Point point = new Point(colIndex, rowIndex);
+                Cell cell = new Cell(states[colIndex][rowIndex], colIndex, rowIndex);
                 myBoard.put(point, cell);
             }
         }

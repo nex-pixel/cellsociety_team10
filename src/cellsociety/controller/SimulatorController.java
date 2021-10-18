@@ -1,7 +1,5 @@
 package cellsociety.controller;
 
-import cellsociety.view.SimulatorView;
-
 import java.util.Map;
 
 public class SimulatorController {
