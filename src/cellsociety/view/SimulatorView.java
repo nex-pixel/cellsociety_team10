@@ -1,6 +1,5 @@
-package cellsociety.View;
+package cellsociety.view;
 
-import cellsociety.View.squareCell;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;

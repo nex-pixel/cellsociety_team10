@@ -1,6 +1,6 @@
-package cellsociety.View;
+package cellsociety.view;
 
-import cellsociety.Controller.SimulatorController;
+import cellsociety.controller.SimulatorController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;

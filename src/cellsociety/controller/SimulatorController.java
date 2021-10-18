@@ -1,6 +1,6 @@
-package cellsociety.Controller;
+package cellsociety.controller;
 
-import cellsociety.View.SimulatorView;
+import cellsociety.view.SimulatorView;
 
 import java.util.Map;
 
