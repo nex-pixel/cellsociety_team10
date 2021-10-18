@@ -1,4 +1,4 @@
-package cellsociety.simulations;
+package cellsociety.games;
 
 
 import cellsociety.components.Grid;
