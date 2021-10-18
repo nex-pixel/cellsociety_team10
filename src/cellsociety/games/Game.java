@@ -2,8 +2,12 @@ package cellsociety.games;
 
 
 import cellsociety.components.*;
+import com.opencsv.CSVWriter;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.Arrays;
 import java.util.Map;
 
 
@@ -46,5 +50,24 @@ public abstract class Game {
             }
         }
         return ret;
+    }
+
+    public void saveCSVFile (String filename) {
+        try {
+            File file = new File(filename);
+            CSVWriter writer = new CSVWriter(new FileWriter(file));
+            writer.writeNext(new String[] {Integer.toString(myGrid.getNumRows()), Integer.toString(myGrid.getNumCols())}, false);
+            int[][] array = toGridArray();
+            for (int r = 0; r < myGrid.getNumRows(); r++) {
+                writer.writeNext(Arrays.stream(array[r])
+                        .mapToObj(String::valueOf)
+                        .toArray(String[]::new), false);
+            }
+            writer.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

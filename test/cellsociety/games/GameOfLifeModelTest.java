@@ -42,7 +42,34 @@ class GameOfLifeModelTest {
     }
 
     @Test
-    void applyRule() {
+    void testUpdateEdgeCellSame () {
+        Game edgeCellSame = new GameOfLifeModel("./data/game_of_life/alive_edgecell_same.csv");
 
+        int[][] board0 = edgeCellSame.toGridArray();
+        edgeCellSame.update();
+        int[][] board1 = edgeCellSame.toGridArray();
+
+        assertTrue(Arrays.deepEquals(board0, board1));
+    }
+
+    @Test
+    void testUpdateEdgeCellDifferent () {
+        Game edgeCellDiff = new GameOfLifeModel("./data/game_of_life/alive_edgecell_different.csv");
+
+        int[][] board0 = edgeCellDiff.toGridArray();
+        edgeCellDiff.update();
+        int[][] board1 = edgeCellDiff.toGridArray();
+
+        assertFalse(Arrays.deepEquals(board0, board1));
+    }
+
+    @Test
+    void saveCSV () {
+        Game glider = new GameOfLifeModel("./data/game_of_life/glider.csv");
+        glider.saveCSVFile("./data/game_of_life/gliderCopyTest.csv");
+        Game gliderCopyTest = new GameOfLifeModel("./data/game_of_life/gliderCopyTest.csv");
+        for (Point p: glider.getGrid().keySet()) {
+            assertEquals(glider.getGrid().get(p), gliderCopyTest.getGrid().get(p));
+        }
     }
 }
