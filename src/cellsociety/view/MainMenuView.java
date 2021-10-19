@@ -1,7 +1,7 @@
 package cellsociety.view;
 
-import cellsociety.Controller.SimulatorController;
-import cellsociety.View.SimulatorView;
+import cellsociety.controller.SimulatorController;
+import cellsociety.view.SimulatorView;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -43,7 +43,6 @@ public class MainMenuView {
         sampleCellStatus.put(new Integer[] {16,9}, 0 );// for testing SimulatorView TODO: Delete.
         sampleCellStatus.put(new Integer[] {7,6}, 0 );// for testing SimulatorView TODO: Delete.
 
-        mySimulatorController = new SimulatorController(simulation1, sampleCellStatus);
 
     }
 
