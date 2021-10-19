@@ -4,6 +4,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import java.awt.Point;
+import cellsociety.components.Cell;
+
 
 import java.util.Map;
 
@@ -44,17 +47,18 @@ public class SimulatorView {
      * @param cellStatus Map containing the status of cells
      * @return scene with updated cell status
      */
-    public Scene getUpdatedGrid(Map<Integer[], Integer> cellStatus, int sceneWidth, int sceneHeight){
-        for(Integer[] coordinate: cellStatus.keySet()){
-            Node currNode = myGrid.getChildren().get(coordinate[0] * gridWidth + coordinate[1]);
+    public Scene getUpdatedGrid(Map<Point, Cell> cellStatus, int sceneWidth, int sceneHeight){
+        for(Point coordinate: cellStatus.keySet()){
+            int gridNumber = (int) (coordinate.getX() * gridWidth + coordinate.getY());
+            Node currNode = myGrid.getChildren().get(gridNumber);
             myGrid.getChildren().remove(currNode);
             squareCell currCell = (squareCell) currNode;
-            if(cellStatus.get(coordinate) == 0){ // TODO: assumed dead is 0
+            if(cellStatus.get(coordinate).getCurrentStatus() == 0){ // TODO: assumed dead is 0
                 currCell.setFill(deadColor);
-            }else if(cellStatus.get(coordinate) == 1){ //TODO assumed alive is 1
+            }else if(cellStatus.get(coordinate).getCurrentStatus() == 1){ //TODO assumed alive is 1
                 currCell.setFill(aliveColor);
             }
-            myGrid.getChildren().add(coordinate[0] * gridWidth + coordinate[1], currCell);
+            myGrid.getChildren().add(gridNumber, currCell);
         }
         return new Scene(myGrid, sceneWidth, sceneHeight);
     }

@@ -17,7 +17,6 @@ public class SimulatorController {
     }
 
     public void createNewSimulation(){
-        mySimulatorView.getUpdatedGrid(mySampleCellStatus, 200, 200);
     }
 }
 

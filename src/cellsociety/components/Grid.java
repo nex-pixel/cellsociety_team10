@@ -1,6 +1,6 @@
 package cellsociety.components;
 
-import java.awt.*;
+import java.awt.*; // TODO remove *
 import java.util.HashMap;
 import java.util.Map;
 
