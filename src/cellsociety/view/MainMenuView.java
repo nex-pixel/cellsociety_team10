@@ -10,8 +10,12 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -36,14 +40,6 @@ public class MainMenuView {
     public MainMenuView(String language, String cssFilePath){
         myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
         this.cssFilePath = cssFilePath;
-        simulation1 = new SimulatorView(20, 20, Color.CORAL, Color.BEIGE,Color.BROWN);
-        sampleCellStatus = new HashMap<>();// for testing SimulatorView TODO: Delete.
-        sampleCellStatus.put(new Integer[] {2,1}, 1 );// for testing SimulatorView TODO: Delete.
-        sampleCellStatus.put(new Integer[] {8,14}, 1 );// for testing SimulatorView TODO: Delete.
-        sampleCellStatus.put(new Integer[] {16,9}, 0 );// for testing SimulatorView TODO: Delete.
-        sampleCellStatus.put(new Integer[] {7,6}, 0 );// for testing SimulatorView TODO: Delete.
-
-
     }
 
     /**
@@ -60,15 +56,22 @@ public class MainMenuView {
         homePageRoot.getChildren().add(generateSimulatorSelectorPanel());
         Scene scene = new Scene(homePageRoot, width, height);
         return scene;
-        //return simulation1.getUpdatedGrid(sampleCellStatus, 200, 200);// for testing SimulatorView TODO: Delete.
 
     }
 
     private Node generateSimulatorSelectorPanel(){
         HBox simulatorButtonHBox = new HBox();
-        Button simButton = generateButton("Create new simulation",
-                event -> mySimulatorController.createNewSimulation());
+        //Button simButton = generateButton("Create new simulation",
+        //        event -> mySimulatorController.createNewSimulation());
         return simulatorButtonHBox;
+    }
+
+    private void generateFileSelectDrag(){
+
+        StackPane root = new StackPane();
+        String text = "Drag and drop files you would like to run";
+
+        root.setOnDragOver(evt -> evt.acceptTransferModes(TransferMode.LINK));
     }
 
     private Button generateButton(String label, EventHandler<ActionEvent> event) {

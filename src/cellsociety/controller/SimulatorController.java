@@ -45,7 +45,7 @@ public class SimulatorController {
     }
 
     // Start new animation to show search algorithm's steps
-    private void startAnimation () {
+    private void playAnimation () {
         if (myAnimation != null) {
             myAnimation.stop();
         }
