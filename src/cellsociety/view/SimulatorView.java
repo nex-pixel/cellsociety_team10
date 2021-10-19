@@ -11,7 +11,7 @@ import cellsociety.components.Cell;
 import java.util.Map;
 
 public class SimulatorView {
-    private GridPane myGrid;
+    private GridPane myGridView;
     private Color deadColor;
     private Color aliveColor;
     private Color defaultColor;
@@ -19,7 +19,7 @@ public class SimulatorView {
     private int gridHeight;
 
     public SimulatorView(int gridWidth, int gridHeight, Color deadColor, Color aliveColor, Color defaultColor){
-        myGrid = new GridPane();
+        myGridView = new GridPane();
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
         this.deadColor = deadColor;
@@ -36,7 +36,7 @@ public class SimulatorView {
                 cell.setWidth(10); // TODO: Needs to change based on the size of the stage
                 cell.setHeight(10); // TODO: need refactoring?
                 cell.setFill(defaultColor);
-                myGrid.add(cell, i, j);
+                myGridView.add(cell, i, j);
             }
         }
     }
@@ -47,19 +47,22 @@ public class SimulatorView {
      * @param cellStatus Map containing the status of cells
      * @return scene with updated cell status
      */
-    public Scene getUpdatedGrid(Map<Point, Cell> cellStatus, int sceneWidth, int sceneHeight){
+    public void updateSimulation(Map<Point, Cell> cellStatus){
         for(Point coordinate: cellStatus.keySet()){
             int gridNumber = (int) (coordinate.getX() * gridWidth + coordinate.getY());
-            Node currNode = myGrid.getChildren().get(gridNumber);
-            myGrid.getChildren().remove(currNode);
+            Node currNode = myGridView.getChildren().get(gridNumber);
+            myGridView.getChildren().remove(currNode);
             squareCell currCell = (squareCell) currNode;
             if(cellStatus.get(coordinate).getCurrentStatus() == 0){ // TODO: assumed dead is 0
                 currCell.setFill(deadColor);
             }else if(cellStatus.get(coordinate).getCurrentStatus() == 1){ //TODO assumed alive is 1
                 currCell.setFill(aliveColor);
             }
-            myGrid.getChildren().add(gridNumber, currCell);
+            myGridView.getChildren().add(gridNumber, currCell);
         }
-        return new Scene(myGrid, sceneWidth, sceneHeight);
+    }
+
+    public GridPane getMyGridView(){
+        return myGridView;
     }
 }
