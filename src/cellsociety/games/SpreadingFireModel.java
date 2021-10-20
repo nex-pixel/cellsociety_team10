@@ -25,7 +25,9 @@ public class SpreadingFireModel extends Game{
         probCatch = probability;
     }
 
-    public void setProbGrowNewTrees(double probability){probGrow = probability;}
+    public void setProbGrowNewTrees(double probability){
+        probGrow = probability;
+    }
 
     @Override
     public void update() {
