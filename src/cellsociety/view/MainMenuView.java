@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -34,8 +35,11 @@ public class MainMenuView {
     private String[] languageOptions = {"English", "Spanish", "Gibberish"};
     private final String DEFAULT_MODEL = "Game of Life";
     private String[] modelOptions = {"Game of Life", "Spreading of Fire", "Schelling's", "Wa-Tor World", "Percolation"};
-
-
+    private Map<String, EventHandler<ActionEvent>> mainMenuButtonMap = new LinkedHashMap<String, EventHandler<ActionEvent>>();
+    private String LANG_BUTTON_LABEL = "ChooseLanguageLabel";
+    private String SIM_TYPE_BUTTON_LABEL = "ChooseSimulationTypeLabel";
+    private String FILE_BUTTON_LABEL = "LoadFileLabel";
+    private String NEW_SIM_BUTTON_LABEL = "CreateNewSimulationLabel";
     // Constructor of MainMenuView
     public MainMenuView(String language, String cssFilePath){
         myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
@@ -44,6 +48,7 @@ public class MainMenuView {
                 Color.BEIGE, Color.BROWN);
         myFileManager = new FileManager();
         myViewController = new ViewController();
+        populateMainMenuButtonMap();
 
     }
 
@@ -63,18 +68,22 @@ public class MainMenuView {
 
     }
 
+    // maybe clean this up 
+    private void populateMainMenuButtonMap(){
+        mainMenuButtonMap.put(myLanguageResources.getString(LANG_BUTTON_LABEL),event -> generateChoiceDialogBox(DEFAULT_LANG, languageOptions,
+                "language"));
+        mainMenuButtonMap.put(myLanguageResources.getString(SIM_TYPE_BUTTON_LABEL), event -> generateChoiceDialogBox(DEFAULT_MODEL,
+                modelOptions, "modelType"));
+        mainMenuButtonMap.put(myLanguageResources.getString(FILE_BUTTON_LABEL), event -> myFileManager.chooseFile());
+        mainMenuButtonMap.put(myLanguageResources.getString(NEW_SIM_BUTTON_LABEL), event -> mySimulatorController.createNewSimulation(window,
+                myFileManager.getCurrentTextFile()));
+
+    }
+
     // want to add a way to update button label with choice so you know you have set it
-    // get rid of magic strings
-    // refactor using a map<String, actionEvent>
     private Node generateMainMenuPanel(){
         VBox panel = new VBox();
-        addButtonToPanel("Select a language", event -> generateChoiceDialogBox(DEFAULT_LANG, languageOptions,
-                "language"), panel);
-        addButtonToPanel("Select a type of simulation to run", event -> generateChoiceDialogBox(DEFAULT_MODEL,
-                modelOptions, "modelType"), panel);
-        addButtonToPanel("Load File", event -> myFileManager.chooseFile(), panel);
-        addButtonToPanel("Create New Simulation", event -> mySimulatorController.createNewSimulation(window,
-                myFileManager.getCurrentTextFile()), panel);
+        mainMenuButtonMap.forEach((key,value) -> addButtonToPanel(key,value,panel));
         return panel;
     }
 
