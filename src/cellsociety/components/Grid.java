@@ -68,8 +68,7 @@ public class Grid {
     //TODO: Double Check Code Below
     //expand the board with empty cells to each side depending on what's written
     public void expandGrid(int left, int top, int right, int bottom){
-        int[][] newTwoDArray = createArrayForNewGrid(myNumRows + top + bottom, myNumCols + left + right);
-        Grid newGrid = new Grid(newTwoDArray);
+        Grid newGrid = new Grid(new int[myNumRows + top + bottom][myNumRows + left + right]);
         newGrid = clearNeighborsForCells(newGrid);
         for(Point point: myBoard.keySet()){
             Cell movedCell = myBoard.get(point);
@@ -100,16 +99,6 @@ public class Grid {
             }
         }
         return passedInGrid;
-    }
-
-    private int[][] createArrayForNewGrid(int numRows, int numsCols){
-        int[][] retarray = new int[numRows][numsCols];
-        for(int rowIndex = 0; rowIndex < numRows; rowIndex++){
-            for(int colIndex = 0; colIndex < numsCols; colIndex++){
-                retarray[rowIndex][colIndex] = 0;
-            }
-        }
-        return retarray;
     }
 
     private Grid clearNeighborsForCells(Grid passedInGrid){
