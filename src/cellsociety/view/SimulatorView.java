@@ -64,6 +64,10 @@ public class SimulatorView {
         }
     }
 
+    /**
+     * getter for getMyGridView
+     * @return getMyGridView
+     */
     public GridPane getMyGridView(){
         return myGridView;
     }

@@ -62,6 +62,11 @@ public class SimulatorController {
     }
 
 
+    /**
+     * Receives csvFile with the initial state of the cells and repeats the rule indefinitely until the user stops it
+     * @param stage primary stage of the simulation
+     * @param csvFile file containing the initial state
+     */
     public void createNewSimulation(Stage stage, File csvFile){
         if(csvFile == null){myGame = new GameOfLifeModel("data/game_of_life/blinkers.csv"); // default
         }else{
