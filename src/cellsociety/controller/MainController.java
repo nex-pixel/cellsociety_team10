@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.view.MainMenuView;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -30,13 +31,17 @@ public class MainController {
         this.cssFilePath = cssFilePath;
     }
 
+    public void startMainMenu(){
+        MainMenuView mainMenu  = new MainMenuView("English", "src/cellsociety/resources/GameStyleSheet.css");
+        myStage.setScene(mainMenu.setMenuDisplay(300, 300));
+        myStage.show();
+    }
+
     public void display(){
         myStage.show();
     }
 
-    private void step(){
 
-    }
 
 
 

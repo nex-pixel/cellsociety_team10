@@ -3,6 +3,8 @@ package cellsociety.view;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import java.awt.Point;
 import cellsociety.components.Cell;
@@ -64,5 +66,12 @@ public class SimulatorView {
 
     public GridPane getMyGridView(){
         return myGridView;
+    }
+
+    public VBox returnSimulation(){
+        VBox simulationBox = new VBox();
+        HBox controlBox = new HBox();
+        simulationBox.getChildren().addAll(myGridView, controlBox);
+        return simulationBox;
     }
 }

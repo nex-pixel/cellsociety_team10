@@ -16,9 +16,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,19 +46,15 @@ public class MainMenuView {
 
     /**
      * creates mainMenu and returns the scene
-     * @param stage primary stage
      * @return scene of main menu
      */
-    public Scene setMenuDisplay(Stage stage, int width, int height) {
-        window = stage;
+    public Scene setMenuDisplay(int width, int height) {
         Label titleLabel = new Label("Cell Society");
         titleLabel.setId("title");
-
         homePageRoot = new Group();
         homePageRoot.getChildren().add(generateSimulatorSelectorPanel());
         Scene scene = new Scene(homePageRoot, width, height);
         return scene;
-
     }
 
     private Node generateSimulatorSelectorPanel(){
@@ -64,6 +62,12 @@ public class MainMenuView {
         //Button simButton = generateButton("Create new simulation",
         //        event -> mySimulatorController.createNewSimulation());
         return simulatorButtonHBox;
+    }
+
+    private void loadFile() throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("./"));
+        File file = fileChooser.showOpenDialog(null);
     }
 
     private void generateFileSelectDrag(){

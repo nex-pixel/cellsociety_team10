@@ -7,6 +7,8 @@ import cellsociety.games.GameOfLifeModel;
 import cellsociety.view.SimulatorView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
@@ -34,7 +36,10 @@ public class SimulatorController {
         }
     }
 
-    public void createSimulation(Grid grid, SimulatorView simulatorView){
+    public void returnSimulation(){
+        VBox simulationBox = new VBox();
+        HBox controlBox = new HBox();
+        simulationBox.getChildren().addAll(mySimulations.get(0).getMyGridView(), controlBox);
     }
 
     public void step(){
