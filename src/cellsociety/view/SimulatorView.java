@@ -68,10 +68,12 @@ public class SimulatorView {
         return myGridView;
     }
 
+    /*
     public VBox returnSimulation(){
         VBox simulationBox = new VBox();
         HBox controlBox = new HBox();
         simulationBox.getChildren().addAll(myGridView, controlBox);
         return simulationBox;
     }
+     */
 }

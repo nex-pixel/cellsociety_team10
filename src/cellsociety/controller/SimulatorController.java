@@ -46,13 +46,7 @@ public class SimulatorController {
         this.defaultColor = defaultColor;
     }
 
-
-    public void returnSimulation(){
-        VBox simulationBox = new VBox();
-        HBox controlBox = new HBox();
-    }
-
-    public void step(){
+    private void step(){
         myGame.update();
         mySimulatorView.updateSimulation(myGame.getGrid());
     }
@@ -69,7 +63,6 @@ public class SimulatorController {
 
 
     public void createNewSimulation(Stage stage, File csvFile){
-        System.out.println(csvFile.getAbsolutePath());
         myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
         mySimulatorView = new SimulatorView(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows(),
                 deadColor, aliveColor, defaultColor);

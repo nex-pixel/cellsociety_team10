@@ -30,10 +30,9 @@ public class MainController {
         myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
         this.cssFilePath = cssFilePath;
     }
-
+    /*
     public void startMainMenu(){
         MainMenuView mainMenu  = new MainMenuView("English", "src/cellsociety/resources/GameStyleSheet.css");
-        myStage.setScene(mainMenu.setMenuDisplay(300, 300));
         myStage.show();
     }
 
@@ -41,8 +40,5 @@ public class MainController {
         myStage.show();
     }
 
-
-
-
-
+     */
 }
