@@ -75,27 +75,19 @@ public class SimulatorController {
         mySimulatorView = new SimulatorView(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows(),
                 deadColor, aliveColor, defaultColor);
         mySimulatorView.updateSimulation(myGame.getGrid());
-        VBox simulationBox = createSimulatorBox();
+        VBox simulationBox = mySimulatorView.returnSimulation(this);
         stage.setScene(new Scene(simulationBox));
         stage.show();
         playAnimation();
     }
 
-    private VBox createSimulatorBox(){
-        GridPane gameGrid = mySimulatorView.getMyGridView();
-        HBox buttonBox = new HBox();
-        Button pause = generateButton("Pause", event -> myAnimation.pause());
-        Button play = generateButton("Play", event -> myAnimation.play());
-        buttonBox.getChildren().addAll(pause, play);
-        VBox simulationBox = new VBox();
-        simulationBox.getChildren().addAll(gameGrid, buttonBox);
-        return simulationBox;
+
+
+    public void pause(){
+        myAnimation.pause();
+    }
+    public void play(){
+        myAnimation.play();
     }
 
-    private Button generateButton(String label, EventHandler<ActionEvent> event) {
-        javafx.scene.control.Button button = new javafx.scene.control.Button();
-        button.setText(label);
-        button.setOnAction(event);
-        return button;
-    }
 }

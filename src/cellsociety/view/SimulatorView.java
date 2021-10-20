@@ -1,7 +1,11 @@
 package cellsociety.view;
 
+import cellsociety.controller.SimulatorController;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -10,6 +14,7 @@ import java.awt.Point;
 import cellsociety.components.Cell;
 
 
+import javax.swing.*;
 import java.util.Map;
 
 public class SimulatorView {
@@ -72,12 +77,22 @@ public class SimulatorView {
         return myGridView;
     }
 
-    /*
-    public VBox returnSimulation(){
+
+    public VBox returnSimulation(SimulatorController simulatorController){
+        HBox buttonBox = new HBox();
+        Button pause = generateButton("Pause", event -> simulatorController.pause());
+        Button play = generateButton("Play", event -> simulatorController.play());
+        buttonBox.getChildren().addAll(pause, play);
         VBox simulationBox = new VBox();
-        HBox controlBox = new HBox();
-        simulationBox.getChildren().addAll(myGridView, controlBox);
+        simulationBox.getChildren().addAll(myGridView, buttonBox);
         return simulationBox;
     }
-     */
+
+    private Button generateButton(String label, EventHandler<ActionEvent> event) {
+        javafx.scene.control.Button button = new javafx.scene.control.Button();
+        button.setText(label);
+        button.setOnAction(event);
+        return button;
+    }
+
 }

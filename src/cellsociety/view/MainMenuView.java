@@ -27,10 +27,7 @@ public class MainMenuView {
     private static ResourceBundle myLanguageResources;
     private Stage window;
     private String cssFilePath;
-    private Map<Integer[], Integer> sampleCellStatus; // for testing SimulatorView TODO: Delete.
-    private SimulatorController mySimulatorController;
     private FileManager myFileManager;
-    private ViewController myViewController;
     private MainController myMainController;
     private Group homePageRoot;
     private final String DEFAULT_LANG = "English";
@@ -43,11 +40,7 @@ public class MainMenuView {
     public MainMenuView(String language, String cssFilePath){
         myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
         this.cssFilePath = cssFilePath;
-        mySimulatorController = new SimulatorController(500, 500, Color.CORAL,
-                Color.BEIGE, Color.BROWN);
         myFileManager = new FileManager();
-        myViewController = new ViewController();
-
     }
 
     /**
