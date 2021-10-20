@@ -31,13 +31,21 @@ public class SimulatorController {
     private Timeline myAnimation;
     private double animationSpeed;
     private SimulatorView mySimulatorView;
+    private Color deadColor;
+    private Color aliveColor;
+    private Color defaultColor;
+
 
 
     public SimulatorController(int gridWidth, int gridHeight, Color deadColor,
-                               Color aliveColor, Color defaultColor){
+                               Color aliveColor, Color defaultColor) {
         animationSpeed = 1;
         myAnimation = new Timeline();
+        this.deadColor = deadColor;
+        this.aliveColor = aliveColor;
+        this.defaultColor = defaultColor;
     }
+
 
     public void returnSimulation(){
         VBox simulationBox = new VBox();
@@ -64,8 +72,15 @@ public class SimulatorController {
         System.out.println(csvFile.getAbsolutePath());
         myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
         mySimulatorView = new SimulatorView(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows(),
-                Color.CORAL, Color.BEIGE, Color.BROWN);
+                deadColor, aliveColor, defaultColor);
         mySimulatorView.updateSimulation(myGame.getGrid());
+        VBox simulationBox = createSimulatorBox();
+        stage.setScene(new Scene(simulationBox));
+        stage.show();
+        playAnimation();
+    }
+
+    private VBox createSimulatorBox(){
         GridPane gameGrid = mySimulatorView.getMyGridView();
         HBox buttonBox = new HBox();
         Button pause = generateButton("Pause", event -> myAnimation.pause());
@@ -73,9 +88,7 @@ public class SimulatorController {
         buttonBox.getChildren().addAll(pause, play);
         VBox simulationBox = new VBox();
         simulationBox.getChildren().addAll(gameGrid, buttonBox);
-        stage.setScene(new Scene(simulationBox));
-        stage.show();
-        playAnimation();
+        return simulationBox;
     }
 
     private Button generateButton(String label, EventHandler<ActionEvent> event) {
