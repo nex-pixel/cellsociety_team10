@@ -63,7 +63,10 @@ public class SimulatorController {
 
 
     public void createNewSimulation(Stage stage, File csvFile){
-        myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
+        if(csvFile == null){myGame = new GameOfLifeModel("data/game_of_life/blinkers.csv"); // default
+        }else{
+            myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
+        }
         mySimulatorView = new SimulatorView(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows(),
                 deadColor, aliveColor, defaultColor);
         mySimulatorView.updateSimulation(myGame.getGrid());

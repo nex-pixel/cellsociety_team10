@@ -51,7 +51,21 @@ class MainMenuViewTest extends DukeApplicationTest {
     void testLoadButton(){
         Button loadButton = lookup("Load File").query();
         clickOn(loadButton);
+        press(KeyCode.RIGHT);
+        for(int i = 0; i < 5; i++){
+            press(KeyCode.DOWN);
+        }
+        press(KeyCode.RIGHT);
+        press(KeyCode.DOWN);
+        press(KeyCode.RIGHT);
+        press(KeyCode.ENTER);
         //TODO: find a way to choose a file
+    }
+
+    @Test
+    void testRunSimulationButton(){
+        Button simulationButton = lookup("Create New Simulation").query();
+        clickOn(simulationButton);
     }
 
 }

@@ -122,5 +122,9 @@ public class MainMenuView {
         scene.getStylesheets().add(styleFile.toURI().toURL().toString());
     }
 
+    public FileManager getMyFileManager(){
+        return myFileManager;
+    }
+
 
 }
