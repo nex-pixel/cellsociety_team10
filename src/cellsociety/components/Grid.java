@@ -31,7 +31,7 @@ public class Grid {
 
     private void initializeNeighbors() {
         for (Point currentPoint: myBoard.keySet()) {
-            System.out.println(myBoard.get(new Point(2,2)));
+            //System.out.println(myBoard.get(new Point(2,2)));
             Cell currentCell = myBoard.get(currentPoint);
             //removed 0 in cols and rows because a cell can't be a neighbor of itself
             int[] rows = {-1, -1, -1, 0, 1, 1, 1, 0}; //To determine neighbor cell locations by using integer displacement in that direction
