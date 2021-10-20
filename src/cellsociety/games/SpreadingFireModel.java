@@ -11,17 +11,21 @@ public class SpreadingFireModel extends Game{
     private int TREE = 1;
     private int BURNING = 2;
     private double probCatch;
+    private double probGrow;
     private boolean firePresentInGrid = true;
 
     public SpreadingFireModel(String filename) {
         super(filename);
         probCatch = 0.2;
+        probGrow = 0.0;
         myGrid.expandGrid(2, 2, 2, 2);
     }
 
     public void setProbOfFire(double probability){
         probCatch = probability;
     }
+
+    public void setProbGrowNewTrees(double probability){probGrow = probability;}
 
     @Override
     public void update() {
@@ -47,22 +51,33 @@ public class SpreadingFireModel extends Game{
     @Override
     protected void applyRule(Cell cell){
         List<Cell> neighbors = cell.getNeighborCells();
-        boolean willFireSpread = spread(neighbors.get(1).getCurrentStatus(), neighbors.get(3).getCurrentStatus(),
-                neighbors.get(4).getCurrentStatus(), neighbors.get(6).getCurrentStatus());
-        if(cell.getCurrentStatus() == TREE){
-            if(willFireSpread){
-                cell.setNextStatus(BURNING);
-            } else {
-                cell.setNextStatus(cell.getCurrentStatus());
-            }
+        if(cell.getCurrentStatus() == EMPTY){
+            int willATreeGrow = willNewTreeGrow(cell);
+            cell.setNextStatus(willATreeGrow);
+        } else if(cell.getCurrentStatus() == TREE){
+            int willItCatchFire = spread(neighbors);
+            cell.setNextStatus(willItCatchFire);
+        } else if (cell.getCurrentStatus() == BURNING){
+            cell.setNextStatus(EMPTY);
         }
     }
 
-    private boolean spread(int northCell, int westCell, int eastCell, int southCell){
+    private int spread(List<Cell> neighbors){
         double randNumber = Math.random();
-        if(randNumber < probCatch){
-            return true;
+        if(neighbors.get(1).getCurrentStatus() == BURNING || neighbors.get(3).getCurrentStatus() == BURNING ||
+                neighbors.get(4).getCurrentStatus() == BURNING || neighbors.get(6).getCurrentStatus() == BURNING) {
+            if (randNumber < probCatch) {
+                return BURNING;
+            }
         }
-        return false;
+        return TREE;
+    }
+
+    private int willNewTreeGrow(){
+        double randomGrow = Math.random();
+        if(randomGrow < probGrow){
+            return TREE;
+        }
+        return EMPTY;
     }
 }
