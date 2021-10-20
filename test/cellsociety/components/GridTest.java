@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GridTest {
     private Grid myGrid;
     int[][] passedInGridArray = {{0,1,0},{1,0,1},{1,1,1}};
+    int[][] expandedGridArray = {{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,1,0,0,0},{0,0,1,0,1,0,0},{0,0,1,1,1,0,0},
+            {0,0,0,0,0,0,0},{0,0,0,0,0,0,0}};
 
     @BeforeEach
     public void setUp () {
@@ -55,4 +57,12 @@ public class GridTest {
         assertTrue(expectedNeighbors.equals(centerCell.getNeighborCells()));
     }
 
+    @Test
+    void checkGridExpansion(){
+        myGrid.expandGrid(2,2,2,2);
+        for(Point currPoint: myGrid.getBoard().keySet()){
+            Cell myCell = myGrid.getBoard().get(currPoint);
+            assertEquals(expandedGridArray[currPoint.y][currPoint.x], myCell.getCurrentStatus());
+        }
+    }
 }
