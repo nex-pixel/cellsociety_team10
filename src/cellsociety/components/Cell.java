@@ -18,6 +18,7 @@ public class Cell {
         xyPosition[1] = yPosition;
         neighborCells = new ArrayList<>();
         currentStatus = statusPassedIn;
+        nextStatus = currentStatus;
         isCorner = false;
         isEdge = false;
     }
