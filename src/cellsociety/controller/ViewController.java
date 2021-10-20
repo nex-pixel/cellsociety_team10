@@ -14,11 +14,18 @@ public class ViewController {
 
     }
 
-
+    /**
+     * setter for language;
+     * @param result language
+     */
     public void updateLanguage(String result){
         language = result;
     }
 
+    /**
+     * setter for modelType
+     * @param result modelType
+     */
     public void updateModelType(String result){
         modelType = result;
     }

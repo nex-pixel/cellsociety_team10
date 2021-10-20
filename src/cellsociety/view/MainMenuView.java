@@ -94,7 +94,7 @@ public class MainMenuView {
         return choiceDialog;
     }
 
-    // use reflection to get rid of cases 
+    // use reflection to get rid of cases
     private void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog, String resultType){
         choiceDialog.showAndWait();
         if(resultType.equals("language")){
@@ -130,6 +130,7 @@ public class MainMenuView {
         File styleFile = new File(cssFilePath);
         scene.getStylesheets().add(styleFile.toURI().toURL().toString());
     }
+
 
 
 }
