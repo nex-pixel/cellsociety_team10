@@ -52,7 +52,7 @@ public class SpreadingFireModel extends Game{
     protected void applyRule(Cell cell){
         List<Cell> neighbors = cell.getNeighborCells();
         if(cell.getCurrentStatus() == EMPTY){
-            int willATreeGrow = willNewTreeGrow(cell);
+            int willATreeGrow = willNewTreeGrow();
             cell.setNextStatus(willATreeGrow);
         } else if(cell.getCurrentStatus() == TREE){
             int willItCatchFire = spread(neighbors);
