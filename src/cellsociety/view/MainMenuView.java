@@ -11,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -30,7 +32,7 @@ public class MainMenuView {
     private SimulatorController mySimulatorController;
     private FileManager myFileManager;
     private ViewController myViewController;
-    private Group homePageRoot;
+    private Pane homePageRoot;
     private final String DEFAULT_LANG = "English";
     private String[] languageOptions = {"English", "Spanish", "Gibberish"};
     private final String DEFAULT_MODEL = "Game of Life";
@@ -57,13 +59,17 @@ public class MainMenuView {
      * @param stage primary stage
      * @return scene of main menu
      */
-    public Scene setMenuDisplay(Stage stage, int width, int height) {
+    public Scene setMenuDisplay(Stage stage, int width, int height) throws MalformedURLException {
         window = stage;
         Label titleLabel = new Label("Cell Society");
         titleLabel.setId("title");
-        homePageRoot = new Group();
+
+        homePageRoot = new Pane();
         homePageRoot.getChildren().add(generateMainMenuPanel());
+        homePageRoot.setId("home-page-root");
+
         Scene scene =  new Scene(homePageRoot, width, height);
+        applyCSS(scene);
         return scene;
 
     }
@@ -114,6 +120,7 @@ public class MainMenuView {
     private void addButtonToPanel(String label, EventHandler<ActionEvent> event, VBox panel){
         Button button = generateButton(label,
                 event);
+        button.setId("main-menu-button");
         panel.getChildren().add(button);
     }
 
@@ -124,8 +131,6 @@ public class MainMenuView {
         return button;
     }
 
-
-    // applies css file to the scene
     private void applyCSS(Scene scene) throws MalformedURLException {
         File styleFile = new File(cssFilePath);
         scene.getStylesheets().add(styleFile.toURI().toURL().toString());

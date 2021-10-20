@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
     public static final String PRIMARY_LANGUAGE = "English";
     public static final String PROGRAM_TITLE = "Cell Society";
-    private static final String CSS_FILE_PATH = "cellsociety/resources/GameStyleSheet.css";
+    private static final String CSS_FILE_PATH = "src/cellsociety/resources/GameStyleSheet.css";
     private static final int WIDTH = 800; // TODO: make not a magic value
     private static final int HEIGHT = 600; // TODO: make not a magic value
 
