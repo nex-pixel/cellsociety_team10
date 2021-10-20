@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Feel free to completely change this code or delete it entirely. 
+ * Feel free to completely change this code or delete it entirely.
  */
 public class Main extends Application {
     public static final String PRIMARY_LANGUAGE = "English";

@@ -64,14 +64,20 @@ public class SimulatorView {
         }
     }
 
+    /**
+     * getter for getMyGridView
+     * @return getMyGridView
+     */
     public GridPane getMyGridView(){
         return myGridView;
     }
 
+    /*
     public VBox returnSimulation(){
         VBox simulationBox = new VBox();
         HBox controlBox = new HBox();
         simulationBox.getChildren().addAll(myGridView, controlBox);
         return simulationBox;
     }
+     */
 }

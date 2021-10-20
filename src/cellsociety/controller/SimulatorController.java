@@ -39,20 +39,14 @@ public class SimulatorController {
 
     public SimulatorController(int gridWidth, int gridHeight, Color deadColor,
                                Color aliveColor, Color defaultColor) {
-        animationSpeed = 1;
+        animationSpeed = 0.3;
         myAnimation = new Timeline();
         this.deadColor = deadColor;
         this.aliveColor = aliveColor;
         this.defaultColor = defaultColor;
     }
 
-
-    public void returnSimulation(){
-        VBox simulationBox = new VBox();
-        HBox controlBox = new HBox();
-    }
-
-    public void step(){
+    private void step(){
         myGame.update();
         mySimulatorView.updateSimulation(myGame.getGrid());
     }
@@ -68,9 +62,16 @@ public class SimulatorController {
     }
 
 
+    /**
+     * Receives csvFile with the initial state of the cells and repeats the rule indefinitely until the user stops it
+     * @param stage primary stage of the simulation
+     * @param csvFile file containing the initial state
+     */
     public void createNewSimulation(Stage stage, File csvFile){
-        System.out.println(csvFile.getAbsolutePath());
-        myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
+        if(csvFile == null){myGame = new GameOfLifeModel("data/game_of_life/blinkers.csv"); // default
+        }else{
+            myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
+        }
         mySimulatorView = new SimulatorView(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows(),
                 deadColor, aliveColor, defaultColor);
         mySimulatorView.updateSimulation(myGame.getGrid());
@@ -98,4 +99,3 @@ public class SimulatorController {
         return button;
     }
 }
-
