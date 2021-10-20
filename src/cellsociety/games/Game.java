@@ -22,8 +22,12 @@ public abstract class Game {
         return myGrid.getBoard();
     }
 
+    public Grid getMyGrid(){
+        return myGrid;
+    }
+
     private void createReader (String filename) {
-        String fileType = filename.split(".")[-1];
+        String fileType = "csv";
         if (fileType.equals("csv")) {
             myReader = new ReadCSVFile(filename);
         }

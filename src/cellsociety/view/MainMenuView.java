@@ -53,7 +53,8 @@ public class MainMenuView {
         sampleCellStatus.put(new Integer[] {16,9}, 0 );// for testing SimulatorView TODO: Delete.
         sampleCellStatus.put(new Integer[] {7,6}, 0 );// for testing SimulatorView TODO: Delete.
 
-        mySimulatorController = new SimulatorController(simulation1, sampleCellStatus);
+        mySimulatorController = new SimulatorController(500, 500, Color.CORAL,
+                Color.BEIGE, Color.BROWN);
         myFileManager = new FileManager();
         myViewController = new ViewController();
 
@@ -86,7 +87,7 @@ public class MainMenuView {
         addButtonToPanel("Select a language", event -> generateChoiceDialogBox(DEFAULT_LANG, languageOptions, "language"), panel);
         addButtonToPanel("Select a type of simulation to run", event -> generateChoiceDialogBox(DEFAULT_MODEL, modelOptions, "modelType"), panel);
         addButtonToPanel("Load File", event -> myFileManager.chooseFile(), panel);
-        addButtonToPanel("Create New Simulation", event -> mySimulatorController.createNewSimulation(window), panel);
+        addButtonToPanel("Create New Simulation", event -> mySimulatorController.createNewSimulation(window, myFileManager.getCurrentTextFile()), panel);
         return panel;
     }
 
@@ -132,4 +133,6 @@ public class MainMenuView {
         File styleFile = new File(cssFilePath);
         scene.getStylesheets().add(styleFile.toURI().toURL().toString());
     }
+
+
 }
