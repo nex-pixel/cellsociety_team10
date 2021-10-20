@@ -35,4 +35,7 @@ public class FileManager {
         }
     }
 
+    public File getCurrentTextFile() {
+        return currentTextFile;
+    }
 }

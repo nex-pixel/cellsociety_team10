@@ -25,8 +25,12 @@ public abstract class Game {
     }
     public void setGrid (int[][] states) { myGrid = new Grid(states); }
 
+    public Grid getMyGrid(){
+        return myGrid;
+    }
+
     private void createReader (String filename) {
-        String fileType = filename.split(".")[-1];
+        String fileType = "csv";
         if (fileType.equals("csv")) {
             myReader = new ReadCSVFile(filename);
         }

@@ -3,7 +3,6 @@ package cellsociety.view;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.SimulatorController;
 import cellsociety.controller.ViewController;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -12,17 +11,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainMenuView {
@@ -30,7 +25,6 @@ public class MainMenuView {
     private static ResourceBundle myLanguageResources;
     private Stage window;
     private String cssFilePath;
-    private cellsociety.view.SimulatorView simulation1;
     private Map<Integer[], Integer> sampleCellStatus; // for testing SimulatorView TODO: Delete.
     private SimulatorController mySimulatorController;
     private FileManager myFileManager;
@@ -46,14 +40,8 @@ public class MainMenuView {
     public MainMenuView(String language, String cssFilePath){
         myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
         this.cssFilePath = cssFilePath;
-        simulation1 = new SimulatorView(20, 20, Color.CORAL, Color.BEIGE,Color.BROWN);
-        sampleCellStatus = new HashMap<>();// for testing SimulatorView TODO: Delete.
-        sampleCellStatus.put(new Integer[] {2,1}, 1 );// for testing SimulatorView TODO: Delete.
-        sampleCellStatus.put(new Integer[] {8,14}, 1 );// for testing SimulatorView TODO: Delete.
-        sampleCellStatus.put(new Integer[] {16,9}, 0 );// for testing SimulatorView TODO: Delete.
-        sampleCellStatus.put(new Integer[] {7,6}, 0 );// for testing SimulatorView TODO: Delete.
-
-        mySimulatorController = new SimulatorController(simulation1, sampleCellStatus);
+        mySimulatorController = new SimulatorController(500, 500, Color.CORAL,
+                Color.BEIGE, Color.BROWN);
         myFileManager = new FileManager();
         myViewController = new ViewController();
 
@@ -68,25 +56,25 @@ public class MainMenuView {
         window = stage;
         Label titleLabel = new Label("Cell Society");
         titleLabel.setId("title");
-
-
         homePageRoot = new Group();
         homePageRoot.getChildren().add(generateMainMenuPanel());
-
         Scene scene = new Scene(homePageRoot, width, height);
         return scene;
-        //return simulation1.getUpdatedGrid(sampleCellStatus, 200, 200);// for testing SimulatorView TODO: Delete.
 
     }
 
     // want to add a way to update button label with choice so you know you have set it
     // get rid of magic strings
+    // refactor using a map<String, actionEvent>
     private Node generateMainMenuPanel(){
         VBox panel = new VBox();
-        addButtonToPanel("Select a language", event -> generateChoiceDialogBox(DEFAULT_LANG, languageOptions, "language"), panel);
-        addButtonToPanel("Select a type of simulation to run", event -> generateChoiceDialogBox(DEFAULT_MODEL, modelOptions, "modelType"), panel);
+        addButtonToPanel("Select a language", event -> generateChoiceDialogBox(DEFAULT_LANG, languageOptions,
+                "language"), panel);
+        addButtonToPanel("Select a type of simulation to run", event -> generateChoiceDialogBox(DEFAULT_MODEL,
+                modelOptions, "modelType"), panel);
         addButtonToPanel("Load File", event -> myFileManager.chooseFile(), panel);
-        addButtonToPanel("Create New Simulation", event -> mySimulatorController.createNewSimulation(window), panel);
+        addButtonToPanel("Create New Simulation", event -> mySimulatorController.createNewSimulation(window,
+                myFileManager.getCurrentTextFile()), panel);
         return panel;
     }
 
@@ -96,6 +84,7 @@ public class MainMenuView {
         showAndWaitForChoiceDialogResult(choiceDialog, resultType);
         return choiceDialog;
     }
+
     // use reflection to get rid of cases 
     private void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog, String resultType){
         choiceDialog.showAndWait();
@@ -132,4 +121,6 @@ public class MainMenuView {
         File styleFile = new File(cssFilePath);
         scene.getStylesheets().add(styleFile.toURI().toURL().toString());
     }
+
+
 }
