@@ -1,21 +1,28 @@
 package cellsociety.view;
 
+import cellsociety.controller.FileManager;
 import cellsociety.controller.SimulatorController;
+import cellsociety.controller.ViewController;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainMenuView {
@@ -26,8 +33,13 @@ public class MainMenuView {
     private cellsociety.view.SimulatorView simulation1;
     private Map<Integer[], Integer> sampleCellStatus; // for testing SimulatorView TODO: Delete.
     private SimulatorController mySimulatorController;
-
+    private FileManager myFileManager;
+    private ViewController myViewController;
     private Group homePageRoot;
+    private final String DEFAULT_LANG = "English";
+    private String[] languageOptions = {"English", "Spanish", "Gibberish"};
+    private final String DEFAULT_MODEL = "Game of Life";
+    private String[] modelOptions = {"Game of Life", "Spreading of Fire", "Schelling's", "Wa-Tor World", "Percolation"};
 
 
     // Constructor of MainMenuView
@@ -42,6 +54,8 @@ public class MainMenuView {
         sampleCellStatus.put(new Integer[] {7,6}, 0 );// for testing SimulatorView TODO: Delete.
 
         mySimulatorController = new SimulatorController(simulation1, sampleCellStatus);
+        myFileManager = new FileManager();
+        myViewController = new ViewController();
 
     }
 
@@ -55,8 +69,9 @@ public class MainMenuView {
         Label titleLabel = new Label("Cell Society");
         titleLabel.setId("title");
 
+
         homePageRoot = new Group();
-        homePageRoot.getChildren().add(generateSimulatorSelectorPanel());
+        homePageRoot.getChildren().add(generateMainMenuPanel());
 
         Scene scene = new Scene(homePageRoot, width, height);
         return scene;
@@ -64,12 +79,44 @@ public class MainMenuView {
 
     }
 
-    private Node generateSimulatorSelectorPanel(){
-        HBox simulatorButtonHBox = new HBox();
-        Button simButton = generateButton("Create new simulation",
-                event -> mySimulatorController.createNewSimulation(window));
-        simulatorButtonHBox.getChildren().add(simButton);
-        return simulatorButtonHBox;
+    // want to add a way to update button label with choice so you know you have set it
+    // get rid of magic strings
+    private Node generateMainMenuPanel(){
+        VBox panel = new VBox();
+        addButtonToPanel("Select a language", event -> generateChoiceDialogBox(DEFAULT_LANG, languageOptions, "language"), panel);
+        addButtonToPanel("Select a type of simulation to run", event -> generateChoiceDialogBox(DEFAULT_MODEL, modelOptions, "modelType"), panel);
+        addButtonToPanel("Load File", event -> myFileManager.chooseFile(), panel);
+        addButtonToPanel("Create New Simulation", event -> mySimulatorController.createNewSimulation(window), panel);
+        return panel;
+    }
+
+    private ChoiceDialog<String> generateChoiceDialogBox(String defaultChoice, String[] options, String resultType){
+        ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(defaultChoice);
+        addItemsToOptionsList(options, choiceDialog);
+        showAndWaitForChoiceDialogResult(choiceDialog, resultType);
+        return choiceDialog;
+    }
+    // use reflection to get rid of cases 
+    private void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog, String resultType){
+        choiceDialog.showAndWait();
+        if(resultType.equals("language")){
+            myViewController.updateLanguage(choiceDialog.getSelectedItem());
+        }
+        if(resultType.equals("modelType")){
+            myViewController.updateModelType(choiceDialog.getSelectedItem());
+        }
+    }
+
+    private void addItemsToOptionsList(String[] options, ChoiceDialog<String> choiceDialog){
+        for(String s : options){
+            choiceDialog.getItems().add(s);
+        }
+    }
+
+    private void addButtonToPanel(String label, EventHandler<ActionEvent> event, VBox panel){
+        Button button = generateButton(label,
+                event);
+        panel.getChildren().add(button);
     }
 
     private Button generateButton(String label, EventHandler<ActionEvent> event) {
