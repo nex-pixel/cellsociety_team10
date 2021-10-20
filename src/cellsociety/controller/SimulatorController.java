@@ -39,7 +39,7 @@ public class SimulatorController {
 
     public SimulatorController(int gridWidth, int gridHeight, Color deadColor,
                                Color aliveColor, Color defaultColor) {
-        animationSpeed = 1;
+        animationSpeed = 0.3;
         myAnimation = new Timeline();
         this.deadColor = deadColor;
         this.aliveColor = aliveColor;

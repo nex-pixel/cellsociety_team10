@@ -60,7 +60,7 @@ public class Grid {
     }
 
     private boolean isInsideBoard (int x, int y) {
-        return (x >= 0 && x < myNumRows && y >= 0 && y < myNumCols);
+        return (x >= 0 && x < myNumCols && y >= 0 && y < myNumRows);
     }
 
     //TODO: Double Check Code Below
