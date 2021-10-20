@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class MainMenuView {
-    private static final String DEFAULT_RESOURCE_PATH = "cellsociety/resources/";
     private static ResourceBundle myLanguageResources;
     private Stage window;
     private Map<Integer[], Integer> sampleCellStatus; // for testing SimulatorView TODO: Delete.
@@ -43,6 +42,7 @@ public class MainMenuView {
     private String DEFAULT_CSS_FILE = "src/cellsociety/resources/GameStyleSheet.css";
     private String currentCSSFile;
     private String[] cssFileOptions = {"Light", "Dark", "Duke", "UNC (ew)"};
+    public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety/resources/English";
 
     // Constructor of MainMenuView
     public MainMenuView(){
@@ -50,6 +50,7 @@ public class MainMenuView {
                 Color.BEIGE, Color.BROWN);
         currentCSSFile = DEFAULT_CSS_FILE;
         myFileManager = new FileManager();
+        setDefaultLanguageBundle();
         populateMainMenuButtonMap();
     }
 
@@ -143,7 +144,10 @@ public class MainMenuView {
         }catch(Exception e){
 
         }
+    }
 
+    private void setDefaultLanguageBundle() {
+        myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE);
     }
 
 }
