@@ -1,52 +1,60 @@
 package cellsociety.controller;
 
+import cellsociety.components.Cell;
 import cellsociety.components.Grid;
 import cellsociety.components.ReadCSVFile;
 import cellsociety.games.Game;
 import cellsociety.games.GameOfLifeModel;
+import cellsociety.view.MainMenuView;
 import cellsociety.view.SimulatorView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javafx.scene.control.Button;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SimulatorController {
 
-    private List<SimulatorView> mySimulations;
-    private List<Game> myGames;
+    private GameOfLifeModel myGame;
     private Timeline myAnimation;
     private double animationSpeed;
+    private SimulatorView mySimulatorView;
+    private Color deadColor;
+    private Color aliveColor;
+    private Color defaultColor;
 
 
-    public SimulatorController(List<String> fileNames, double animationSpeed, int gridWidth, int gridHeight, Color deadColor,
-                               Color aliveColor, Color defaultColor){
-        mySimulations = new ArrayList<>();
-        myGames = new ArrayList<>();
-        this.animationSpeed = animationSpeed;
 
-        for(String name : fileNames){
-            Game game = new GameOfLifeModel(name);
-            myGames.add(game);
-            mySimulations.add(new SimulatorView(gridWidth, gridHeight, deadColor, aliveColor, defaultColor));
-        }
+    public SimulatorController(int gridWidth, int gridHeight, Color deadColor,
+                               Color aliveColor, Color defaultColor) {
+        animationSpeed = 1;
+        myAnimation = new Timeline();
+        this.deadColor = deadColor;
+        this.aliveColor = aliveColor;
+        this.defaultColor = defaultColor;
     }
+
 
     public void returnSimulation(){
         VBox simulationBox = new VBox();
         HBox controlBox = new HBox();
-        simulationBox.getChildren().addAll(mySimulations.get(0).getMyGridView(), controlBox);
     }
 
     public void step(){
-        for(int i = 0; i < myGames.size(); i++){
-            myGames.get(i).update();
-            mySimulations.get(i).updateSimulation(myGames.get(i).getGrid());
-        }
+        myGame.update();
+        mySimulatorView.updateSimulation(myGame.getGrid());
     }
 
     // Start new animation to show search algorithm's steps
@@ -54,10 +62,39 @@ public class SimulatorController {
         if (myAnimation != null) {
             myAnimation.stop();
         }
-        myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(animationSpeed), e -> step()));
         myAnimation.play();
     }
-}
 
+
+    public void createNewSimulation(Stage stage, File csvFile){
+        System.out.println(csvFile.getAbsolutePath());
+        myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
+        mySimulatorView = new SimulatorView(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows(),
+                deadColor, aliveColor, defaultColor);
+        mySimulatorView.updateSimulation(myGame.getGrid());
+        VBox simulationBox = createSimulatorBox();
+        stage.setScene(new Scene(simulationBox));
+        stage.show();
+        playAnimation();
+    }
+
+    private VBox createSimulatorBox(){
+        GridPane gameGrid = mySimulatorView.getMyGridView();
+        HBox buttonBox = new HBox();
+        Button pause = generateButton("Pause", event -> myAnimation.pause());
+        Button play = generateButton("Play", event -> myAnimation.play());
+        buttonBox.getChildren().addAll(pause, play);
+        VBox simulationBox = new VBox();
+        simulationBox.getChildren().addAll(gameGrid, buttonBox);
+        return simulationBox;
+    }
+
+    private Button generateButton(String label, EventHandler<ActionEvent> event) {
+        javafx.scene.control.Button button = new javafx.scene.control.Button();
+        button.setText(label);
+        button.setOnAction(event);
+        return button;
+    }
+}

@@ -35,8 +35,8 @@ public class SimulatorView {
         for(int i = 0; i < gridWidth; i ++){
             for(int j = 0; j < gridHeight; j++){
                 squareCell cell = new squareCell();
-                cell.setWidth(10); // TODO: Needs to change based on the size of the stage
-                cell.setHeight(10); // TODO: need refactoring?
+                cell.setWidth(40); // TODO: Needs to change based on the size of the stage
+                cell.setHeight(40); // TODO: need refactoring?
                 cell.setFill(defaultColor);
                 myGridView.add(cell, i, j);
             }
