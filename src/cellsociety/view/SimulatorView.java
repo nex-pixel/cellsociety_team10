@@ -51,7 +51,7 @@ public class SimulatorView {
      */
     public void updateSimulation(Map<Point, Cell> cellStatus){
         for(Point coordinate: cellStatus.keySet()){
-            int gridNumber = (int) (coordinate.getX() * gridWidth + coordinate.getY());
+            int gridNumber = (int) (coordinate.getX() * gridHeight + coordinate.getY());
             Node currNode = myGridView.getChildren().get(gridNumber);
             myGridView.getChildren().remove(currNode);
             squareCell currCell = (squareCell) currNode;

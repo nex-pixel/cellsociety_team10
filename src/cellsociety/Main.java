@@ -1,6 +1,7 @@
 package cellsociety;
 
 
+import cellsociety.controller.MainController;
 import cellsociety.view.MainMenuView;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -28,10 +29,8 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        MainMenuView mainMenu = new MainMenuView(PRIMARY_LANGUAGE, CSS_FILE_PATH);
-        Scene mainScene = mainMenu.setMenuDisplay(primaryStage, WIDTH, HEIGHT);
-        primaryStage.setScene(mainScene);
         primaryStage.setTitle(PROGRAM_TITLE);
-        primaryStage.show();
+        MainController mainController = new MainController(primaryStage, PRIMARY_LANGUAGE, CSS_FILE_PATH);
+        mainController.startMainMenu();
     }
 }
