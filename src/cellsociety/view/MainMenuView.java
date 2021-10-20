@@ -63,12 +63,12 @@ public class MainMenuView {
         titleLabel.setId("title");
         homePageRoot = new Group();
         homePageRoot.getChildren().add(generateMainMenuPanel());
-        Scene scene = new Scene(homePageRoot, width, height);
+        Scene scene =  new Scene(homePageRoot, width, height);
         return scene;
 
     }
 
-    // maybe clean this up 
+    // maybe clean this up
     private void populateMainMenuButtonMap(){
         mainMenuButtonMap.put(myLanguageResources.getString(LANG_BUTTON_LABEL),event -> generateChoiceDialogBox(DEFAULT_LANG, languageOptions,
                 "language"));
