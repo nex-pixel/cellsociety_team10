@@ -61,7 +61,7 @@ public class Grid {
         return (x >= 0 && x < myNumRows && y >= 0 && y < myNumCols);
     }
 
-    //TODO: EDIT THE WAY COLUMN AND ROW ARE ADDED LOOK AT INITIAL GRID CODE
+    //TODO: Double Check Code Below
     //expand the board with empty cells to each side depending on what's written
     public void expandGrid(int left, int top, int right, int bottom){
         for(Point point: myBoard.keySet()){
@@ -82,8 +82,8 @@ public class Grid {
     private void padAroundGrid(int startingRowVal, int endingRowVal, int startingColVal, int endingColVal) {
         for (int expandedRow = startingRowVal; expandedRow < endingRowVal; expandedRow++) {
             for (int expandedCol = startingColVal; expandedCol < endingColVal; expandedCol++) {
-                Point newPoint = new Point(expandedRow, expandedCol);
-                Cell newCell = new Cell(0, expandedRow, expandedCol);
+                Point newPoint = new Point(expandedCol, expandedRow);
+                Cell newCell = new Cell(0, expandedCol, expandedRow);
                 myBoard.put(newPoint, newCell);
             }
         }
