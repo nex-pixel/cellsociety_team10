@@ -31,6 +31,7 @@ public class Grid {
 
     private void initializeNeighbors() {
         for (Point currentPoint: myBoard.keySet()) {
+            //System.out.println(myBoard.get(new Point(2,2)));
             Cell currentCell = myBoard.get(currentPoint);
             //removed 0 in cols and rows because a cell can't be a neighbor of itself
             int[] rows = {-1, -1, -1, 0, 1, 1, 1, 0}; //To determine neighbor cell locations by using integer displacement in that direction
@@ -41,7 +42,8 @@ public class Grid {
                 int y = currentPoint.y + rows[i];
                 if (isInsideBoard(x, y)) {
                     Point neighborPosition = new Point(x, y);
-                    currentCell.getNeighborCells().add(myBoard.get(neighborPosition));
+                    Cell c = myBoard.get(neighborPosition);
+                    currentCell.getNeighborCells().add(c);
                     numOfNeighbors++;
                 }
                 else {
@@ -66,34 +68,54 @@ public class Grid {
     //TODO: Double Check Code Below
     //expand the board with empty cells to each side depending on what's written
     public void expandGrid(int left, int top, int right, int bottom){
+        int[][] newTwoDArray = createArrayForNewGrid(myNumRows + top + bottom, myNumCols + left + right);
+        Grid newGrid = new Grid(newTwoDArray);
+        newGrid = clearNeighborsForCells(newGrid);
         for(Point point: myBoard.keySet()){
-            point.setLocation(point.getX() + left, point.getY() + top);
+            Cell movedCell = myBoard.get(point);
+            movedCell.setXyPosition(point.x + left, point.y + top);
+            Point movedPoint = point;
+            movedPoint.setLocation(point.x + left, point.y + top);
+
+            newGrid.myBoard.put(movedPoint, movedCell);
         }
 
-        clearNeighborsForCells();
-        padAroundGrid(0, top, 0, myNumCols + right + left);
-        padAroundGrid(top, myNumRows + top, 0, left);
-        padAroundGrid(top + myNumRows, myNumRows + top + bottom, 0, myNumCols + right + left);
-        padAroundGrid(top, myNumRows + top, left + myNumCols, myNumCols + left + right);
+        newGrid = padAroundGrid(newGrid,0, top, 0, myNumCols + right + left);
+        newGrid = padAroundGrid(newGrid, top, myNumRows + top, 0, left);
+        newGrid = padAroundGrid(newGrid, top + myNumRows, myNumRows + top + bottom, 0, myNumCols + right + left);
+        newGrid = padAroundGrid(newGrid, top, myNumRows + top, left + myNumCols, myNumCols + left + right);
+        this.myBoard = newGrid.myBoard;
         initializeNeighbors();
 
-        myNumRows += left + right;
-        myNumCols += top + bottom;
+        this.myNumRows += left + right;
+        this.myNumCols += top + bottom;
     }
 
-    private void padAroundGrid(int startingRowVal, int endingRowVal, int startingColVal, int endingColVal) {
+    private Grid padAroundGrid(Grid passedInGrid, int startingRowVal, int endingRowVal, int startingColVal, int endingColVal) {
         for (int expandedRow = startingRowVal; expandedRow < endingRowVal; expandedRow++) {
             for (int expandedCol = startingColVal; expandedCol < endingColVal; expandedCol++) {
                 Point newPoint = new Point(expandedCol, expandedRow);
                 Cell newCell = new Cell(0, expandedCol, expandedRow);
-                myBoard.put(newPoint, newCell);
+                passedInGrid.myBoard.put(newPoint, newCell);
             }
         }
+        return passedInGrid;
     }
 
-    private void clearNeighborsForCells(){
-        for(Point point: myBoard.keySet()){
-            myBoard.get(point).clearNeighborCells();
+    private int[][] createArrayForNewGrid(int numRows, int numsCols){
+        int[][] retarray = new int[numRows][numsCols];
+        for(int rowIndex = 0; rowIndex < numRows; rowIndex++){
+            for(int colIndex = 0; colIndex < numsCols; colIndex++){
+                retarray[rowIndex][colIndex] = 0;
+            }
         }
+        return retarray;
+    }
+
+    private Grid clearNeighborsForCells(Grid passedInGrid){
+        for(Point point: passedInGrid.myBoard.keySet()){
+            passedInGrid.myBoard.get(point).clearNeighborCells();
+        }
+        return passedInGrid;
     }
 }
