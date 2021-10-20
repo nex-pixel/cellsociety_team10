@@ -12,15 +12,18 @@ public abstract class Game {
     private ReadFile myReader;
     protected Grid myGrid;
 
+    public Game () {}
+
     public Game (String filename) {
         createReader(filename);
         int[][] states = myReader.read();
         myGrid = new Grid(states);
     }
 
-    public Map<Point, Cell> getGrid(){
+    public Map<Point, Cell> getGrid (){
         return myGrid.getBoard();
     }
+    public void setGrid (int[][] states) { myGrid = new Grid(states); }
 
     public Grid getMyGrid(){
         return myGrid;
