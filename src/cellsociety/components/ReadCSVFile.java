@@ -19,8 +19,8 @@ public class ReadCSVFile extends ReadFile {
 
             // read the first line
             nextLine = reader.readNext();
-            numOfRows = Integer.valueOf(nextLine[0]);
-            numOfCols = Integer.valueOf(nextLine[1]);
+            numOfRows = Integer.valueOf(nextLine[1]);
+            numOfCols = Integer.valueOf(nextLine[0]);
             int[][] array = new int[numOfRows][numOfCols];
 
             // read one line at a time
