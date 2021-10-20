@@ -24,21 +24,43 @@ public class MainController {
     private Stage myStage;
     private static ResourceBundle myLanguageResources;
     private String cssFilePath;
+    private String language;
+    private String modelType;
+    private SimulatorController simulatorController;
 
     public MainController(Stage stage, String language, String cssFilePath){
         myStage = stage;
         myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
         this.cssFilePath = cssFilePath;
     }
-    /*
+
     public void startMainMenu(){
         MainMenuView mainMenu  = new MainMenuView("English", "src/cellsociety/resources/GameStyleSheet.css");
+        myStage.setScene(mainMenu.setMenuDisplay(myStage, this, 500, 500));
         myStage.show();
     }
-
-    public void display(){
-        myStage.show();
-    }
-
+    /**
+     * setter for language;
+     * @param result language
      */
+    public void updateLanguage(String result){
+        language = result;
+    }
+
+    /**
+     * setter for modelType
+     * @param result modelType
+     */
+    public void updateModelType(String result){
+        modelType = result;
+    }
+
+    public void generateNewSimulation(File csvFile){
+        simulatorController = new SimulatorController(500, 500, Color.CORAL, Color.BEIGE, Color.BROWN);
+        simulatorController.createNewSimulation(myStage, csvFile);
+    }
+
+
+
+
 }

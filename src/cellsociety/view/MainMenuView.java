@@ -1,6 +1,8 @@
 package cellsociety.view;
 
+import cellsociety.Main;
 import cellsociety.controller.FileManager;
+import cellsociety.controller.MainController;
 import cellsociety.controller.SimulatorController;
 import cellsociety.controller.ViewController;
 import javafx.event.ActionEvent;
@@ -29,6 +31,7 @@ public class MainMenuView {
     private SimulatorController mySimulatorController;
     private FileManager myFileManager;
     private ViewController myViewController;
+    private MainController myMainController;
     private Group homePageRoot;
     private final String DEFAULT_LANG = "English";
     private String[] languageOptions = {"English", "Spanish", "Gibberish"};
@@ -52,7 +55,8 @@ public class MainMenuView {
      * @param stage primary stage
      * @return scene of main menu
      */
-    public Scene setMenuDisplay(Stage stage, int width, int height) {
+    public Scene setMenuDisplay(Stage stage, MainController mainController, int width, int height) {
+        myMainController = mainController;
         window = stage;
         Label titleLabel = new Label("Cell Society");
         titleLabel.setId("title");
@@ -73,8 +77,7 @@ public class MainMenuView {
         addButtonToPanel("Select a type of simulation to run", event -> generateChoiceDialogBox(DEFAULT_MODEL,
                 modelOptions, "modelType"), panel);
         addButtonToPanel("Load File", event -> myFileManager.chooseFile(), panel);
-        addButtonToPanel("Create New Simulation", event -> mySimulatorController.createNewSimulation(window,
-                myFileManager.getCurrentTextFile()), panel);
+        addButtonToPanel("Create New Simulation", event -> myMainController.generateNewSimulation(myFileManager.getCurrentTextFile()), panel);
         return panel;
     }
 
@@ -89,10 +92,10 @@ public class MainMenuView {
     private void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog, String resultType){
         choiceDialog.showAndWait();
         if(resultType.equals("language")){
-            myViewController.updateLanguage(choiceDialog.getSelectedItem());
+            myMainController.updateLanguage(choiceDialog.getSelectedItem());
         }
         if(resultType.equals("modelType")){
-            myViewController.updateModelType(choiceDialog.getSelectedItem());
+            myMainController.updateModelType(choiceDialog.getSelectedItem());
         }
     }
 
