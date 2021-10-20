@@ -14,12 +14,12 @@ class GameOfLifeModelTest {
 
     @BeforeEach
     void setUp() {
-        game = new GameOfLifeModel("blinkers.csv");
+        game = new GameOfLifeModel("data/game_of_life/blinkers.csv");
     }
 
     @Test
     void update() {
-        Game secondgame = new GameOfLifeModel("blinkersexpected.csv");
+        Game secondgame = new GameOfLifeModel("data/game_of_life/blinkersexpected.csv");
         game.update();
         Map<Point, Cell> board1 = game.myGrid.getBoard();
         Map<Point, Cell> board2 = secondgame.myGrid.getBoard();

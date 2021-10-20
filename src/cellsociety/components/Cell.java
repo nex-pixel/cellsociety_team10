@@ -28,7 +28,7 @@ public class Cell {
     }
 
     public void clearNeighborCells(){
-        neighborCells.clear();
+        neighborCells = new ArrayList<>();
     }
 
     public void setNextStatus(int newStatus){

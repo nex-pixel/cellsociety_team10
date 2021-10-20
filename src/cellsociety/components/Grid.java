@@ -1,6 +1,8 @@
 package cellsociety.components;
 
-import java.awt.*; // TODO remove *
+
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,5 +96,4 @@ public class Grid {
             myBoard.get(point).clearNeighborCells();
         }
     }
-
 }
