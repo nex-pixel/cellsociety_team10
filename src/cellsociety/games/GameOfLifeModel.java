@@ -16,13 +16,7 @@ public class GameOfLifeModel extends Game {
 
     @Override
     public void update() {
-        Map<Point, Cell> board = myGrid.getBoard();
-        for (Point point: board.keySet()) {
-            applyRule(board.get(point));
-        }
-        for (Point point: board.keySet()) {
-            board.get(point).changeStatus();
-        }
+        super.update();
     }
 
     @Override
