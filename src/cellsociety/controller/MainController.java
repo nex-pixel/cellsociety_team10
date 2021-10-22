@@ -22,9 +22,6 @@ import java.util.ResourceBundle;
 
 public class MainController {
     public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.resources.";
-
-    private static String CSS_PATH = "src/cellsociety/resources/style_sheets";
-    private static String CSS_EXTENSION = ".css";
     private Stage myStage;
     private static ResourceBundle myLanguageResources;
     private String DEFAULT_LANGUAGE = "English";
