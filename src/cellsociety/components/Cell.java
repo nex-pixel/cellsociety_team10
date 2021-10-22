@@ -14,8 +14,7 @@ public class Cell {
     private int nextStatus;
 
     public Cell(int statusPassedIn, int xPosition, int yPosition){
-        xyPosition[0] = xPosition;
-        xyPosition[1] = yPosition;
+        setXyPosition(xPosition, yPosition);
         neighborCells = new ArrayList<>();
         currentStatus = statusPassedIn;
         nextStatus = currentStatus;
@@ -36,6 +35,11 @@ public class Cell {
     }
 
     public void setCurrentStatus(int newCurrentStatus){currentStatus = newCurrentStatus;}
+
+    public void setXyPosition(int xPosition, int yPosition){
+        xyPosition[0] = xPosition;
+        xyPosition[1] = yPosition;
+    }
 
     public void setEdge(boolean edgeCase){
         isEdge = edgeCase;
