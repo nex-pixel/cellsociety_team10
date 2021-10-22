@@ -3,6 +3,7 @@ package cellsociety.view;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
 import cellsociety.controller.SimulatorController;
+import cellsociety.error.GenerateError;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -16,7 +17,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -33,25 +33,20 @@ public class MainMenuView {
     private String[] languageOptions = {"English", "Spanish", "Gibberish"};
     private final String DEFAULT_MODEL = "Game of Life";
     private String[] modelOptions = {"Game of Life", "Spreading of Fire", "Schelling's", "Wa-Tor World", "Percolation"};
-    private Map<String, EventHandler<ActionEvent>> mainMenuButtonMap = new LinkedHashMap<String, EventHandler<ActionEvent>>();
+    private Map<String, EventHandler<ActionEvent>> mainMenuButtonMap = new LinkedHashMap<>();
     private String LANG_BUTTON_LABEL = "ChooseLanguageLabel";
     private String SIM_TYPE_BUTTON_LABEL = "ChooseSimulationTypeLabel";
     private String FILE_BUTTON_LABEL = "LoadFileLabel";
     private String NEW_SIM_BUTTON_LABEL = "CreateNewSimulationLabel";
     private String CHOOSE_COLOR_BUTTON_LABEL = "ChooseColorScheme";
-    private String DEFAULT_CSS_FILE = "src/cellsociety/resources/GameStyleSheet.css";
-    private String currentCSSFile;
-    private String[] cssFileOptions = {"Light", "Dark", "Duke", "UNC (ew)"};
-    public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety/resources/English";
+    private String DEFAULT_CSS_FILE_LABEL = "Duke";
+    private String[] cssFileOptions = {"Light", "Dark", "Duke", "UNC"};
+    private String INVALID_CSS_ERROR = "InvalidCSSFile";
 
-    // Constructor of MainMenuView
     public MainMenuView(){
         mySimulatorController = new SimulatorController(500, 500, Color.CORAL,
                 Color.BEIGE, Color.BROWN);
-        currentCSSFile = DEFAULT_CSS_FILE;
         myFileManager = new FileManager();
-        setDefaultLanguageBundle();
-        populateMainMenuButtonMap();
     }
 
     /**
@@ -59,19 +54,28 @@ public class MainMenuView {
      * @param stage primary stage
      * @return scene of main menu
      */
-    public Scene setMenuDisplay(Stage stage, MainController mainController, int width, int height) throws MalformedURLException {
+    public Scene setMenuDisplay(Stage stage, MainController mainController, int width, int height) {
         myMainController = mainController;
         myLanguageResources = myMainController.getResourceBundle();
         window = stage;
-        Label titleLabel = new Label("Cell Society");
-        titleLabel.setId("title");
 
+        setLabel("Cell Society", "title");
+
+        populateMainMenuButtonMap();
+        initializeHomePageRoot();
+
+        return new Scene(homePageRoot, width, height);
+    }
+
+    private void initializeHomePageRoot(){
         homePageRoot = new Pane();
         homePageRoot.getChildren().add(generateMainMenuPanel());
         homePageRoot.setId("home-page-root");
+    }
 
-        Scene scene =  new Scene(homePageRoot, width, height);
-        return scene;
+    private void setLabel(String label, String id){
+        Label titleLabel = new Label(label);
+        titleLabel.setId(id);
     }
 
     // maybe clean this up
@@ -83,7 +87,7 @@ public class MainMenuView {
         mainMenuButtonMap.put(myLanguageResources.getString(FILE_BUTTON_LABEL), event -> myFileManager.chooseFile());
         mainMenuButtonMap.put(myLanguageResources.getString(NEW_SIM_BUTTON_LABEL), event -> mySimulatorController.createNewSimulation(window,
                 myFileManager.getCurrentTextFile()));
-        mainMenuButtonMap.put(myLanguageResources.getString(CHOOSE_COLOR_BUTTON_LABEL), event-> generateChoiceDialogBox(DEFAULT_CSS_FILE,
+        mainMenuButtonMap.put(myLanguageResources.getString(CHOOSE_COLOR_BUTTON_LABEL), event-> generateChoiceDialogBox(DEFAULT_CSS_FILE_LABEL,
                 cssFileOptions, "cssFile"));
 
     }
@@ -137,17 +141,13 @@ public class MainMenuView {
         return button;
     }
 
-    public void applyCSS(Scene scene) {
+    public void applyCSS(Scene scene, String cssFile) {
         try{
-            File styleFile = new File(currentCSSFile);
+            File styleFile = new File(cssFile);
             scene.getStylesheets().add(styleFile.toURI().toURL().toString());
         }catch(Exception e){
-
+            new GenerateError(myLanguageResources, myLanguageResources.getString(INVALID_CSS_ERROR));
         }
-    }
-
-    private void setDefaultLanguageBundle() {
-        myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE);
     }
 
 }

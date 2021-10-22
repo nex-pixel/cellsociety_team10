@@ -1,0 +1,13 @@
+#home-page-root{
+    -fx-background-color: #13294b;
+    -fx-alignment: center;
+}
+
+#main-menu-button{
+    -fx-background-color: #4b9cd3;
+    -fx-text-fill: #ffffff;
+}
+
+#main-menu-vbox{
+
+}

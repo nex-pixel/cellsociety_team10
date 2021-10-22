@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.error.GenerateError;
 import cellsociety.view.MainMenuView;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
+import javax.swing.text.html.CSS;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.HashMap;
@@ -19,8 +21,10 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class MainController {
-    public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety/resources/";
+    public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.resources.";
 
+    private static String CSS_PATH = "src/cellsociety/resources/style_sheets";
+    private static String CSS_EXTENSION = ".css";
     private Stage myStage;
     private static ResourceBundle myLanguageResources;
     private String DEFAULT_LANGUAGE = "English";
@@ -29,13 +33,15 @@ public class MainController {
     private String modelType;
     private String cssFile;
     private MainMenuView mainMenu;
+    private String INVALID_CSS_ERROR = "InvalidCSSFile";
 
 
     public MainController(Stage stage){
         myStage = stage;
+        initializeResourceBundle(DEFAULT_LANGUAGE);
     }
 
-    public void startMainMenu() throws MalformedURLException {
+    public void startMainMenu() {
         mainMenu  = new MainMenuView();
         myStage.setScene(mainMenu.setMenuDisplay(myStage, this, 500, 500));
         myStage.show();
@@ -60,13 +66,12 @@ public class MainController {
     }
 
     public void updateCSS(String result) {
-        cssFile = result;
+        cssFile = myLanguageResources.getString(result);
         try{
-            mainMenu.applyCSS(myStage.getScene());
+            mainMenu.applyCSS(myStage.getScene(), cssFile);
         }catch(Exception e){
-
+            new GenerateError(myLanguageResources, myLanguageResources.getString(INVALID_CSS_ERROR));
         }
-
     }
 
     public void generateNewSimulation(File csvFile){
@@ -78,7 +83,7 @@ public class MainController {
         try {
             generateResourceBundle(language);
         } catch (Exception e) {
-            generateResourceBundle(DEFAULT_RESOURCE_PACKAGE + DEFAULT_LANGUAGE);
+            generateResourceBundle(DEFAULT_LANGUAGE);
         }
     }
 
