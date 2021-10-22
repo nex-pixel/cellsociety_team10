@@ -1,53 +1,52 @@
 package cellsociety.view;
 
-import cellsociety.Main;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
 import cellsociety.controller.SimulatorController;
-import cellsociety.controller.ViewController;
+import cellsociety.error.GenerateError;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.net.MalformedURLException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 public class MainMenuView {
-    private static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety/resources/";
     private static ResourceBundle myLanguageResources;
     private Stage window;
-    private String cssFilePath;
     private Map<Integer[], Integer> sampleCellStatus; // for testing SimulatorView TODO: Delete.
     private SimulatorController mySimulatorController;
     private FileManager myFileManager;
-    private ViewController myViewController;
+    private Pane homePageRoot;
     private MainController myMainController;
-    private Group homePageRoot;
     private final String DEFAULT_LANG = "English";
     private String[] languageOptions = {"English", "Spanish", "Gibberish"};
     private final String DEFAULT_MODEL = "Game of Life";
     private String[] modelOptions = {"Game of Life", "Spreading of Fire", "Schelling's", "Wa-Tor World", "Percolation"};
+    private Map<String, EventHandler<ActionEvent>> mainMenuButtonMap = new LinkedHashMap<>();
+    private String LANG_BUTTON_LABEL = "ChooseLanguageLabel";
+    private String SIM_TYPE_BUTTON_LABEL = "ChooseSimulationTypeLabel";
+    private String FILE_BUTTON_LABEL = "LoadFileLabel";
+    private String NEW_SIM_BUTTON_LABEL = "CreateNewSimulationLabel";
+    private String CHOOSE_COLOR_BUTTON_LABEL = "ChooseColorScheme";
+    private String DEFAULT_CSS_FILE_LABEL = "Duke";
+    private String[] cssFileOptions = {"Light", "Dark", "Duke", "UNC"};
+    private String INVALID_CSS_ERROR = "InvalidCSSFile";
 
-
-    // Constructor of MainMenuView
-    public MainMenuView(String language, String cssFilePath){
-        myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
-        this.cssFilePath = cssFilePath;
+    public MainMenuView(){
         mySimulatorController = new SimulatorController(500, 500, Color.CORAL,
                 Color.BEIGE, Color.BROWN);
         myFileManager = new FileManager();
-        myViewController = new ViewController();
-
     }
 
     /**
@@ -57,27 +56,46 @@ public class MainMenuView {
      */
     public Scene setMenuDisplay(Stage stage, MainController mainController, int width, int height) {
         myMainController = mainController;
+        myLanguageResources = myMainController.getResourceBundle();
         window = stage;
-        Label titleLabel = new Label("Cell Society");
-        titleLabel.setId("title");
-        homePageRoot = new Group();
+
+        setLabel("Cell Society", "title");
+
+        populateMainMenuButtonMap();
+        initializeHomePageRoot();
+
+        return new Scene(homePageRoot, width, height);
+    }
+
+    private void initializeHomePageRoot(){
+        homePageRoot = new Pane();
         homePageRoot.getChildren().add(generateMainMenuPanel());
-        Scene scene = new Scene(homePageRoot, width, height);
-        return scene;
+        homePageRoot.setId("home-page-root");
+    }
+
+    private void setLabel(String label, String id){
+        Label titleLabel = new Label(label);
+        titleLabel.setId(id);
+    }
+
+    // maybe clean this up
+    private void populateMainMenuButtonMap(){
+        mainMenuButtonMap.put(myLanguageResources.getString(LANG_BUTTON_LABEL),event -> generateChoiceDialogBox(DEFAULT_LANG, languageOptions,
+                "language"));
+        mainMenuButtonMap.put(myLanguageResources.getString(SIM_TYPE_BUTTON_LABEL), event -> generateChoiceDialogBox(DEFAULT_MODEL,
+                modelOptions, "modelType"));
+        mainMenuButtonMap.put(myLanguageResources.getString(FILE_BUTTON_LABEL), event -> myFileManager.chooseFile());
+        mainMenuButtonMap.put(myLanguageResources.getString(NEW_SIM_BUTTON_LABEL), event -> mySimulatorController.createNewSimulation(window,
+                myFileManager.getCurrentTextFile()));
+        mainMenuButtonMap.put(myLanguageResources.getString(CHOOSE_COLOR_BUTTON_LABEL), event-> generateChoiceDialogBox(DEFAULT_CSS_FILE_LABEL,
+                cssFileOptions, "cssFile"));
 
     }
 
     // want to add a way to update button label with choice so you know you have set it
-    // get rid of magic strings
-    // refactor using a map<String, actionEvent>
     private Node generateMainMenuPanel(){
         VBox panel = new VBox();
-        addButtonToPanel("Select a language", event -> generateChoiceDialogBox(DEFAULT_LANG, languageOptions,
-                "language"), panel);
-        addButtonToPanel("Select a type of simulation to run", event -> generateChoiceDialogBox(DEFAULT_MODEL,
-                modelOptions, "modelType"), panel);
-        addButtonToPanel("Load File", event -> myFileManager.chooseFile(), panel);
-        addButtonToPanel("Create New Simulation", event -> myMainController.generateNewSimulation(myFileManager.getCurrentTextFile()), panel);
+        mainMenuButtonMap.forEach((key,value) -> addButtonToPanel(key,value,panel));
         return panel;
     }
 
@@ -91,11 +109,15 @@ public class MainMenuView {
     // use reflection to get rid of cases
     private void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog, String resultType){
         choiceDialog.showAndWait();
+
         if(resultType.equals("language")){
             myMainController.updateLanguage(choiceDialog.getSelectedItem());
         }
         if(resultType.equals("modelType")){
             myMainController.updateModelType(choiceDialog.getSelectedItem());
+        }
+        if(resultType.equals("cssFile")){
+            myMainController.updateCSS(choiceDialog.getSelectedItem());
         }
     }
 
@@ -108,6 +130,7 @@ public class MainMenuView {
     private void addButtonToPanel(String label, EventHandler<ActionEvent> event, VBox panel){
         Button button = generateButton(label,
                 event);
+        button.setId("main-menu-button");
         panel.getChildren().add(button);
     }
 
@@ -118,13 +141,13 @@ public class MainMenuView {
         return button;
     }
 
-
-    // applies css file to the scene
-    private void applyCSS(Scene scene) throws MalformedURLException {
-        File styleFile = new File(cssFilePath);
-        scene.getStylesheets().add(styleFile.toURI().toURL().toString());
+    public void applyCSS(Scene scene, String cssFile) {
+        try{
+            File styleFile = new File(cssFile);
+            scene.getStylesheets().add(styleFile.toURI().toURL().toString());
+        }catch(Exception e){
+            new GenerateError(myLanguageResources, myLanguageResources.getString(INVALID_CSS_ERROR));
+        }
     }
-
-
 
 }

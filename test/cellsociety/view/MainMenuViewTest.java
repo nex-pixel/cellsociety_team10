@@ -21,7 +21,7 @@ class MainMenuViewTest extends DukeApplicationTest {
 
     @Override
     public void start(Stage stage) throws IOException {
-        testView = new MainMenuView("English", "src/cellsociety/resources/GameStyleSheet.css");
+        testView = new MainMenuView();
         stage.show();
         testLabel = lookup("Select a language").query();
         testLabel2 = lookup("Select a type of simulation to run").query();
