@@ -92,6 +92,7 @@ public class SimulatorController {
 
     public void setAnimationSpeed(double speed){
         animationSpeed = speed;
+        myAnimation.setRate(animationSpeed);
     }
 
 }

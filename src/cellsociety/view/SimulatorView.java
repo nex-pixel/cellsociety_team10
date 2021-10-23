@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import java.awt.Point;
 import cellsociety.components.Cell;
+import javafx.scene.text.Text;
 
 
 import javax.swing.*;
@@ -87,7 +88,7 @@ public class SimulatorView {
         mySimulatorController = simulatorController;
         Button pause = generateButton("Pause", event -> mySimulatorController.pause());
         Button play = generateButton("Play", event -> mySimulatorController.play());
-        buttonBox.getChildren().addAll(pause, play, makeSlider("Speed", 0.1, 2.0));
+        buttonBox.getChildren().addAll(pause, play, new Text("Speed"), makeSlider("Speed", 1.0, 5.0));
         VBox simulationBox = new VBox();
         simulationBox.getChildren().addAll(myGridView, buttonBox);
         return simulationBox;
@@ -100,19 +101,16 @@ public class SimulatorView {
         return button;
     }
 
-    protected Node makeSlider(String text, double minVal, double maxVal) {
-        HBox slide = new HBox();
-        Label l = new Label(text);
-        l.setTextFill(Color.BLACK);
+    private Node makeSlider(String text, double minVal, double maxVal) {
+
         Slider lengthSlider = new Slider(minVal, maxVal, 1);
         lengthSlider.setShowTickMarks(true);
         lengthSlider.setShowTickLabels(true);
-        lengthSlider.setMaxWidth(10);
-
+        lengthSlider.setMaxWidth(100);
         lengthSlider.valueProperty().addListener((obs, oldval, newVal) ->
                 mySimulatorController.setAnimationSpeed(newVal.intValue()));
 
-        return slide;
+        return lengthSlider;
     }
 
 }
