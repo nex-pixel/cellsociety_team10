@@ -1,11 +1,14 @@
 package cellsociety.view;
 
 import cellsociety.controller.SimulatorController;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -24,6 +27,7 @@ public class SimulatorView {
     private Color defaultColor;
     private int gridWidth;
     private int gridHeight;
+    private SimulatorController mySimulatorController;
 
     public SimulatorView(int gridWidth, int gridHeight, Color deadColor, Color aliveColor, Color defaultColor){
         myGridView = new GridPane();
@@ -80,9 +84,10 @@ public class SimulatorView {
 
     public VBox returnSimulation(SimulatorController simulatorController){
         HBox buttonBox = new HBox();
-        Button pause = generateButton("Pause", event -> simulatorController.pause());
-        Button play = generateButton("Play", event -> simulatorController.play());
-        buttonBox.getChildren().addAll(pause, play);
+        mySimulatorController = simulatorController;
+        Button pause = generateButton("Pause", event -> mySimulatorController.pause());
+        Button play = generateButton("Play", event -> mySimulatorController.play());
+        buttonBox.getChildren().addAll(pause, play, makeSlider("Speed", 0.1, 2.0));
         VBox simulationBox = new VBox();
         simulationBox.getChildren().addAll(myGridView, buttonBox);
         return simulationBox;
@@ -93,6 +98,21 @@ public class SimulatorView {
         button.setText(label);
         button.setOnAction(event);
         return button;
+    }
+
+    protected Node makeSlider(String text, double minVal, double maxVal) {
+        HBox slide = new HBox();
+        Label l = new Label(text);
+        l.setTextFill(Color.BLACK);
+        Slider lengthSlider = new Slider(minVal, maxVal, 1);
+        lengthSlider.setShowTickMarks(true);
+        lengthSlider.setShowTickLabels(true);
+        lengthSlider.setMaxWidth(10);
+
+        lengthSlider.valueProperty().addListener((obs, oldval, newVal) ->
+                mySimulatorController.setAnimationSpeed(newVal.intValue()));
+
+        return slide;
     }
 
 }
