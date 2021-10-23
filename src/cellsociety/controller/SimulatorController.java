@@ -1,31 +1,16 @@
 package cellsociety.controller;
 
-import cellsociety.components.Cell;
-import cellsociety.components.Grid;
-import cellsociety.components.ReadCSVFile;
-import cellsociety.games.Game;
 import cellsociety.games.GameOfLifeModel;
-import cellsociety.view.MainMenuView;
 import cellsociety.view.SimulatorView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import javafx.scene.control.Button;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public class SimulatorController {
 
@@ -92,31 +77,42 @@ public class SimulatorController {
     }
 
 
-
+    /**
+     * pauses the animation
+     */
     public void pause(){
         myAnimation.pause();
     }
+
+    /**
+     * resumes the animation
+     */
     public void play(){
         myAnimation.play();
     }
 
+    /**
+     * sets the animation speed
+     * @param speed number that will be multiplied to the current animation speed
+     */
     public void setAnimationSpeed(double speed){
         animationSpeed = speed;
         myAnimation.setRate(animationSpeed);
     }
 
+    /**
+     * saves the current grid status into a CSV file
+     */
     public void saveCSVFile(){
-        String fileName = getTextInput("Enter File Name");
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setContentText("Enter File Name");
+        String fileName = dialog.showAndWait().get(); //TODO: check for ispresent
         myGame.saveCSVFile(fileName);
     }
 
-    private String getTextInput(String prompt) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setContentText(prompt);
-        Optional<String> answer = dialog.showAndWait();
-        return answer.get();
-    }
-
+    /**
+     * load a new simulation from the CSV file selected by the user
+     */
     public void loadNewCSV(){
         myFileManager.chooseFile();
         myGame = new GameOfLifeModel(myFileManager.getCurrentTextFile().getAbsolutePath());

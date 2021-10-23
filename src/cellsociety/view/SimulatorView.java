@@ -1,14 +1,10 @@
 package cellsociety.view;
 
 import cellsociety.controller.SimulatorController;
-import cellsociety.games.Game;
-import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -18,8 +14,6 @@ import java.awt.Point;
 import cellsociety.components.Cell;
 import javafx.scene.text.Text;
 
-
-import javax.swing.*;
 import java.util.Map;
 
 public class SimulatorView {
@@ -75,6 +69,11 @@ public class SimulatorView {
         }
     }
 
+    /**
+     * This method creates a new grid for the new simulation to be displayed
+     * @param gridWidth width of the new gridPane
+     * @param gridHeight height of the new gridPane
+     */
     public void updateToNewSimulation(int gridWidth, int gridHeight){
         myGridView = new GridPane();
         this.gridWidth = gridWidth;
@@ -90,7 +89,11 @@ public class SimulatorView {
         return myGridView;
     }
 
-
+    /**
+     * Returns a scene of the simulation with the control buttons
+     * @param simulatorController a SimulatorController for this simulation
+     * @return VBox containing gridpane of the simulation and control buttons
+     */
     public VBox returnSimulation(SimulatorController simulatorController){
         HBox buttonBox = new HBox();
         mySimulatorController = simulatorController;
