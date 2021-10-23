@@ -46,7 +46,11 @@ public class SimulatorController {
         this.defaultColor = defaultColor;
     }
 
-    private void step(){
+    /**
+     * calls update function of the game and receives the new states of the Grid
+     * updates the grid based on the new status
+     */
+    public void step(){
         myGame.update();
         mySimulatorView.updateSimulation(myGame.getGrid());
     }

@@ -88,7 +88,8 @@ public class SimulatorView {
         mySimulatorController = simulatorController;
         Button pause = generateButton("Pause", event -> mySimulatorController.pause());
         Button play = generateButton("Play", event -> mySimulatorController.play());
-        buttonBox.getChildren().addAll(pause, play, new Text("Speed"), makeSlider("Speed", 1.0, 5.0));
+        Button step = generateButton("Step", event -> mySimulatorController.step());
+        buttonBox.getChildren().addAll(pause, play, step, new Text("Speed"), makeSlider("Speed", 0.1, 5.0));
         VBox simulationBox = new VBox();
         simulationBox.getChildren().addAll(myGridView, buttonBox);
         return simulationBox;
@@ -106,6 +107,7 @@ public class SimulatorView {
         Slider lengthSlider = new Slider(minVal, maxVal, 1);
         lengthSlider.setShowTickMarks(true);
         lengthSlider.setShowTickLabels(true);
+        lengthSlider.setMajorTickUnit(1);
         lengthSlider.setMaxWidth(100);
         lengthSlider.valueProperty().addListener((obs, oldval, newVal) ->
                 mySimulatorController.setAnimationSpeed(newVal.intValue()));
