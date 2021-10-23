@@ -1,6 +1,7 @@
 package cellsociety.view;
 
 import cellsociety.controller.SimulatorController;
+import cellsociety.games.Game;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -74,6 +75,13 @@ public class SimulatorView {
         }
     }
 
+    public void updateToNewSimulation(int gridWidth, int gridHeight){
+        myGridView = new GridPane();
+        this.gridWidth = gridWidth;
+        this.gridHeight = gridHeight;
+        setDefaultGrid();
+    }
+
     /**
      * getter for getMyGridView
      * @return getMyGridView
@@ -89,7 +97,10 @@ public class SimulatorView {
         Button pause = generateButton("Pause", event -> mySimulatorController.pause());
         Button play = generateButton("Play", event -> mySimulatorController.play());
         Button step = generateButton("Step", event -> mySimulatorController.step());
-        buttonBox.getChildren().addAll(pause, play, step, new Text("Speed"), makeSlider("Speed", 0.1, 5.0));
+        Button save = generateButton("Save", event -> mySimulatorController.saveCSVFile());
+        Button load = generateButton("Load", event -> mySimulatorController.loadNewCSV());
+
+        buttonBox.getChildren().addAll(pause, play, step, new Text("Speed"), makeSlider("Speed", 0.1, 5.0), save,load);
         VBox simulationBox = new VBox();
         simulationBox.getChildren().addAll(myGridView, buttonBox);
         return simulationBox;

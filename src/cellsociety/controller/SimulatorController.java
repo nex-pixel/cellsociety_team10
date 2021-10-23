@@ -12,6 +12,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -24,6 +25,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class SimulatorController {
 
@@ -34,6 +36,8 @@ public class SimulatorController {
     private Color deadColor;
     private Color aliveColor;
     private Color defaultColor;
+    private FileManager myFileManager;
+    private Stage myStage;
 
 
 
@@ -44,6 +48,7 @@ public class SimulatorController {
         this.deadColor = deadColor;
         this.aliveColor = aliveColor;
         this.defaultColor = defaultColor;
+        myFileManager = new FileManager();
     }
 
     /**
@@ -72,6 +77,7 @@ public class SimulatorController {
      * @param csvFile file containing the initial state
      */
     public void createNewSimulation(Stage stage, File csvFile){
+        myStage = stage;
         if(csvFile == null){myGame = new GameOfLifeModel("data/game_of_life/blinkers.csv"); // default
         }else{
             myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
@@ -97,6 +103,29 @@ public class SimulatorController {
     public void setAnimationSpeed(double speed){
         animationSpeed = speed;
         myAnimation.setRate(animationSpeed);
+    }
+
+    public void saveCSVFile(){
+        String fileName = getTextInput("Enter File Name");
+        myGame.saveCSVFile(fileName);
+    }
+
+    private String getTextInput(String prompt) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setContentText(prompt);
+        Optional<String> answer = dialog.showAndWait();
+        return answer.get();
+    }
+
+    public void loadNewCSV(){
+        myFileManager.chooseFile();
+        myGame = new GameOfLifeModel(myFileManager.getCurrentTextFile().getAbsolutePath());
+        mySimulatorView.updateToNewSimulation(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows());
+        mySimulatorView.updateSimulation(myGame.getGrid());
+        VBox simulationBox = mySimulatorView.returnSimulation(this);
+        myStage.setScene(new Scene(simulationBox));
+        myStage.show();
+        playAnimation();
     }
 
 }
