@@ -1,29 +1,16 @@
 package cellsociety.controller;
 
-import cellsociety.components.Cell;
-import cellsociety.components.Grid;
-import cellsociety.components.ReadCSVFile;
-import cellsociety.games.Game;
 import cellsociety.games.GameOfLifeModel;
-import cellsociety.view.MainMenuView;
 import cellsociety.view.SimulatorView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import javafx.scene.control.Button;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class SimulatorController {
 
@@ -34,6 +21,8 @@ public class SimulatorController {
     private Color deadColor;
     private Color aliveColor;
     private Color defaultColor;
+    private FileManager myFileManager;
+    private Stage myStage;
 
 
 
@@ -44,9 +33,14 @@ public class SimulatorController {
         this.deadColor = deadColor;
         this.aliveColor = aliveColor;
         this.defaultColor = defaultColor;
+        myFileManager = new FileManager();
     }
 
-    private void step(){
+    /**
+     * calls update function of the game and receives the new states of the Grid
+     * updates the grid based on the new status
+     */
+    public void step(){
         myGame.update();
         mySimulatorView.updateSimulation(myGame.getGrid());
     }
@@ -68,6 +62,7 @@ public class SimulatorController {
      * @param csvFile file containing the initial state
      */
     public void createNewSimulation(Stage stage, File csvFile){
+        myStage = stage;
         if(csvFile == null){myGame = new GameOfLifeModel("data/game_of_life/blinkers.csv"); // default
         }else{
             myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
@@ -75,27 +70,58 @@ public class SimulatorController {
         mySimulatorView = new SimulatorView(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows(),
                 deadColor, aliveColor, defaultColor);
         mySimulatorView.updateSimulation(myGame.getGrid());
-        VBox simulationBox = createSimulatorBox();
+        VBox simulationBox = mySimulatorView.returnSimulation(this);
         stage.setScene(new Scene(simulationBox));
         stage.show();
         playAnimation();
     }
 
-    private VBox createSimulatorBox(){
-        GridPane gameGrid = mySimulatorView.getMyGridView();
-        HBox buttonBox = new HBox();
-        Button pause = generateButton("Pause", event -> myAnimation.pause());
-        Button play = generateButton("Play", event -> myAnimation.play());
-        buttonBox.getChildren().addAll(pause, play);
-        VBox simulationBox = new VBox();
-        simulationBox.getChildren().addAll(gameGrid, buttonBox);
-        return simulationBox;
+
+    /**
+     * pauses the animation
+     */
+    public void pause(){
+        myAnimation.pause();
     }
 
-    private Button generateButton(String label, EventHandler<ActionEvent> event) {
-        javafx.scene.control.Button button = new javafx.scene.control.Button();
-        button.setText(label);
-        button.setOnAction(event);
-        return button;
+    /**
+     * resumes the animation
+     */
+    public void play(){
+        myAnimation.play();
     }
+
+    /**
+     * sets the animation speed
+     * @param speed number that will be multiplied to the current animation speed
+     */
+    public void setAnimationSpeed(double speed){
+        animationSpeed = speed;
+        myAnimation.setRate(animationSpeed);
+    }
+
+    /**
+     * saves the current grid status into a CSV file
+     */
+    public void saveCSVFile(){
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setContentText("Enter File Name");
+        String fileName = dialog.showAndWait().get(); //TODO: check for ispresent
+        myGame.saveCSVFile(fileName);
+    }
+
+    /**
+     * load a new simulation from the CSV file selected by the user
+     */
+    public void loadNewCSV(){
+        myFileManager.chooseFile();
+        myGame = new GameOfLifeModel(myFileManager.getCurrentTextFile().getAbsolutePath());
+        mySimulatorView.updateToNewSimulation(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows());
+        mySimulatorView.updateSimulation(myGame.getGrid());
+        VBox simulationBox = mySimulatorView.returnSimulation(this);
+        myStage.setScene(new Scene(simulationBox));
+        myStage.show();
+        playAnimation();
+    }
+
 }
