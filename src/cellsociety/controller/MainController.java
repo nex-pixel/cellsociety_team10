@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.error.GenerateError;
 import cellsociety.view.MainMenuView;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
+import javax.swing.text.html.CSS;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.HashMap;
@@ -19,32 +21,37 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class MainController {
-    public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety/resources/";
-
+    public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.resources.";
     private Stage myStage;
     private static ResourceBundle myLanguageResources;
-    private String cssFilePath;
+    private String DEFAULT_LANGUAGE = "English";
+    private SimulatorController simulatorController;
     private String language;
     private String modelType;
-    private SimulatorController simulatorController;
+    private String cssFile;
+    private MainMenuView mainMenu;
+    private String INVALID_CSS_ERROR = "InvalidCSSFile";
 
-    public MainController(Stage stage, String language, String cssFilePath){
+
+    public MainController(Stage stage){
         myStage = stage;
-        myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
-        this.cssFilePath = cssFilePath;
+        initializeResourceBundle(DEFAULT_LANGUAGE);
     }
 
-    public void startMainMenu(){
-        MainMenuView mainMenu  = new MainMenuView("English", "src/cellsociety/resources/GameStyleSheet.css");
+    public void startMainMenu() {
+        mainMenu  = new MainMenuView();
         myStage.setScene(mainMenu.setMenuDisplay(myStage, this, 500, 500));
         myStage.show();
     }
+
+
     /**
      * setter for language;
      * @param result language
      */
     public void updateLanguage(String result){
         language = result;
+        initializeResourceBundle(language);
     }
 
     /**
@@ -55,12 +62,35 @@ public class MainController {
         modelType = result;
     }
 
+    public void updateCSS(String result) {
+        cssFile = myLanguageResources.getString(result);
+        try{
+            mainMenu.applyCSS(myStage.getScene(), cssFile);
+        }catch(Exception e){
+            new GenerateError(myLanguageResources, myLanguageResources.getString(INVALID_CSS_ERROR));
+        }
+    }
+
     public void generateNewSimulation(File csvFile){
         simulatorController = new SimulatorController(500, 500, Color.CORAL, Color.BEIGE, Color.BROWN);
         simulatorController.createNewSimulation(myStage, csvFile);
     }
 
+    private void initializeResourceBundle(String language) {
+        try {
+            generateResourceBundle(language);
+        } catch (Exception e) {
+            generateResourceBundle(DEFAULT_LANGUAGE);
+        }
+    }
 
+    private void generateResourceBundle(String language) {
+        myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
+    }
+
+    public ResourceBundle getResourceBundle() {
+        return myLanguageResources;
+    }
 
 
 }
