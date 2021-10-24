@@ -1,7 +1,6 @@
 package cellsociety.components;
 
 
-import javax.rmi.ssl.SslRMIClientSocketFactory;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +31,6 @@ public class Grid {
     private void initializeNeighbors() {
         for (Point currentPoint: myBoard.keySet()) {
             myBoard.get(currentPoint).clearNeighborCells();
-            //System.out.println(myBoard.get(new Point(2,2)));
             Cell currentCell = myBoard.get(currentPoint);
             //removed 0 in cols and rows because a cell can't be a neighbor of itself
             int[] rows = {-1, -1, -1, 0, 1, 1, 1, 0}; //To determine neighbor cell locations by using integer displacement in that direction
@@ -69,7 +67,6 @@ public class Grid {
     //expand the board with empty cells to each side depending on what's written
     public void expandGrid(int left, int top, int right, int bottom){
         Grid newGrid = new Grid(new int[myNumRows + top + bottom][myNumRows + left + right]);
-//        newGrid = clearNeighborsForCells(newGrid);
         for(Point point: myBoard.keySet()){
             Cell movedCell = myBoard.get(point);
             movedCell.setXyPosition(point.x + left, point.y + top);
