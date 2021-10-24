@@ -4,7 +4,6 @@ import cellsociety.components.Cell;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class SegregationModel extends Game {
     }
 
     @Override
-    protected void applyRule (Cell cell) {
+    protected boolean applyRule (Cell cell) {
         if (cell.getCurrentStatus()!= EMPTY && !isSatisfied(cell)) {
             //reallocate the cell
             Random rand = new Random();
@@ -78,7 +77,9 @@ public class SegregationModel extends Game {
             nextCell.setNextStatus(cell.getCurrentStatus());
             myEmptyCells.add(cell);
             cell.setNextStatus(EMPTY);
+            return true;
         }
+        return false;
     }
 
     public double getSatisfiedRate () {

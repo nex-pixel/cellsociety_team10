@@ -46,7 +46,7 @@ public abstract class Game {
         // There may be some more types
     }
 
-    protected abstract void applyRule(Cell cell);
+    protected abstract boolean applyRule(Cell cell);
 
     public void update() {
         Map<Point, Cell> board = myGrid.getBoard();

@@ -2,9 +2,7 @@ package cellsociety.games;
 
 import cellsociety.components.Cell;
 
-import java.awt.*;
 import java.util.List;
-import java.util.Map;
 
 public class GameOfLifeModel extends Game {
     private int ALIVE = 1;
@@ -20,7 +18,7 @@ public class GameOfLifeModel extends Game {
     }
 
     @Override
-    protected void applyRule(Cell cell){
+    protected boolean applyRule(Cell cell){
         List<Cell> neighbors = cell.getNeighborCells();
         int numCellsAlive = 0;
         for (Cell cellNextDoor: neighbors) {
@@ -34,5 +32,6 @@ public class GameOfLifeModel extends Game {
         else {
             cell.setNextStatus(numCellsAlive == 3 ? 1 : 0);
         }
+        return true;
     }
 }
