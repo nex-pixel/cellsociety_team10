@@ -72,7 +72,7 @@ public class MainController {
     }
 
     public void generateNewSimulation(File csvFile){
-        simulatorController = new SimulatorController(500, 500, Color.CORAL, Color.BEIGE, Color.BROWN);
+        simulatorController = new SimulatorController(Color.CORAL, Color.BEIGE, Color.BROWN);
         simulatorController.createNewSimulation(myStage, csvFile);
     }
 

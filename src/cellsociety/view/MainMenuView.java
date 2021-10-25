@@ -44,8 +44,7 @@ public class MainMenuView {
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
 
     public MainMenuView(){
-        mySimulatorController = new SimulatorController(500, 500, Color.CORAL,
-                Color.BEIGE, Color.BROWN);
+
         myFileManager = new FileManager();
     }
 
@@ -85,7 +84,7 @@ public class MainMenuView {
         mainMenuButtonMap.put(myLanguageResources.getString(SIM_TYPE_BUTTON_LABEL), event -> generateChoiceDialogBox(DEFAULT_MODEL,
                 modelOptions, "modelType"));
         mainMenuButtonMap.put(myLanguageResources.getString(FILE_BUTTON_LABEL), event -> myFileManager.chooseFile());
-        mainMenuButtonMap.put(myLanguageResources.getString(NEW_SIM_BUTTON_LABEL), event -> mySimulatorController.createNewSimulation(window,
+        mainMenuButtonMap.put(myLanguageResources.getString(NEW_SIM_BUTTON_LABEL), event -> myMainController.generateNewSimulation(
                 myFileManager.getCurrentTextFile()));
         mainMenuButtonMap.put(myLanguageResources.getString(CHOOSE_COLOR_BUTTON_LABEL), event-> generateChoiceDialogBox(DEFAULT_CSS_FILE_LABEL,
                 cssFileOptions, "cssFile"));
