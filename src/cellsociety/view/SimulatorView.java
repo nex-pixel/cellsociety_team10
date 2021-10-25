@@ -9,29 +9,25 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import java.awt.Point;
 import cellsociety.components.Cell;
 import javafx.scene.text.Text;
 
+import java.io.File;
 import java.util.Map;
 
 public class SimulatorView {
     private GridPane myGridView;
-    private Color deadColor;
-    private Color aliveColor;
-    private Color defaultColor;
     private int gridWidth;
     private int gridHeight;
     private SimulatorController mySimulatorController;
+    private String myCSSFile;
 
-    public SimulatorView(int gridWidth, int gridHeight, Color deadColor, Color aliveColor, Color defaultColor){
+    public SimulatorView(int gridWidth, int gridHeight, String cssFile){
         myGridView = new GridPane();
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
-        this.deadColor = deadColor;
-        this.aliveColor = aliveColor;
-        this.defaultColor = defaultColor;
+        myCSSFile = cssFile;
         setDefaultGrid();
     }
 
@@ -42,9 +38,7 @@ public class SimulatorView {
                 squareCell cell = new squareCell();
                 cell.setWidth(40); // TODO: Needs to change based on the size of the stage
                 cell.setHeight(40); // TODO: need refactoring?
-                cell.setFill(defaultColor);
-                //cell.setId("default-cell");
-                // ^ will need to call maincontroller to apply css file or pass css file to here
+                cell.setId("default-cell");
                 myGridView.add(cell, i, j);
             }
         }
@@ -63,9 +57,9 @@ public class SimulatorView {
             myGridView.getChildren().remove(currNode);
             squareCell currCell = (squareCell) currNode;
             if(cellStatus.get(coordinate).getCurrentStatus() == 0){ // TODO: assumed dead is 0
-                currCell.setFill(deadColor);
+                currCell.setId("dead-cell");
             }else if(cellStatus.get(coordinate).getCurrentStatus() == 1){ //TODO assumed alive is 1
-                currCell.setFill(aliveColor);
+                currCell.setId("alive-cell");
             }
             myGridView.getChildren().add(gridNumber, currCell);
         }
@@ -108,6 +102,7 @@ public class SimulatorView {
         buttonBox.getChildren().addAll(pause, play, step, new Text("Speed"), makeSlider("Speed", 0.1, 5.0), save,load);
         VBox simulationBox = new VBox();
         simulationBox.getChildren().addAll(myGridView, buttonBox);
+        applyCSS(simulationBox, myCSSFile);
         return simulationBox;
     }
 
@@ -131,4 +126,12 @@ public class SimulatorView {
         return lengthSlider;
     }
 
+    private void applyCSS(VBox scene, String cssFile) {
+        try{
+            File styleFile = new File(cssFile);
+            scene.getStylesheets().add(styleFile.toURI().toURL().toString());
+        }catch(Exception e){
+            //new GenerateError(myLanguageResources, INVALID_CSS_ERROR);
+        }
+    }
 }

@@ -20,22 +20,19 @@ public class SimulatorController {
     private Timeline myAnimation;
     private double animationSpeed;
     private SimulatorView mySimulatorView;
-    private Color deadColor;
-    private Color aliveColor;
-    private Color defaultColor;
+
+
     private FileManager myFileManager;
     private Stage myStage;
+    private String myCSSFile;
 
 
 
-    public SimulatorController(Color deadColor,
-                               Color aliveColor, Color defaultColor, FileManager fileManager) {
+    public SimulatorController(FileManager fileManager, String cssFile) {
         animationSpeed = 0.3;
         myAnimation = new Timeline();
-        this.deadColor = deadColor;
-        this.aliveColor = aliveColor;
-        this.defaultColor = defaultColor;
         myFileManager = fileManager;
+        myCSSFile = cssFile;
     }
 
     /**
@@ -68,7 +65,7 @@ public class SimulatorController {
         try{
             generateNewGame(modelType, csvFile);
             mySimulatorView = new SimulatorView(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows(),
-                    deadColor, aliveColor, defaultColor);
+                    myCSSFile);
             mySimulatorView.updateSimulation(myGame.getGrid());
             VBox simulationBox = mySimulatorView.returnSimulation(this);
             stage.setScene(new Scene(simulationBox));
@@ -96,8 +93,6 @@ public class SimulatorController {
                 break;
         }
     }
-
-
 
     /**
      * pauses the animation
@@ -145,5 +140,6 @@ public class SimulatorController {
         myStage.show();
         playAnimation();
     }
+
 
 }

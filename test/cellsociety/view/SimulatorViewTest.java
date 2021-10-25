@@ -17,7 +17,7 @@ class SimulatorViewTest {
     @Test
     void testUpdateSimulation() {
         GameOfLifeModel testGame = new GameOfLifeModel("data/game_of_life/alive_edgecell_different.csv");
-        testSimulator = new SimulatorView(testGame.getMyGrid().getNumRows(),testGame.getMyGrid().getNumCols(), Color.CORAL, Color.BEIGE, Color.BROWN);
+       // testSimulator = new SimulatorView(testGame.getMyGrid().getNumRows(),testGame.getMyGrid().getNumCols(), Color.CORAL, Color.BEIGE, Color.BROWN);
         testSimulator.updateSimulation(testGame.getGrid());
         GridPane simulatorGrid = testSimulator.getMyGridView();
         assertEquals(Color.BEIGE, ((Rectangle) simulatorGrid.getChildren().get(0)).getFill(),
@@ -30,7 +30,7 @@ class SimulatorViewTest {
         GameOfLifeModel testGame = new GameOfLifeModel("data/game_of_life/blinkers.csv");
         GameOfLifeModel testGame2 = new GameOfLifeModel("data/game_of_life/test_update.csv");
 
-        testSimulator = new SimulatorView(testGame.getMyGrid().getNumRows(),testGame.getMyGrid().getNumCols(), Color.CORAL, Color.BEIGE, Color.BROWN);
+       // testSimulator = new SimulatorView(testGame.getMyGrid().getNumRows(),testGame.getMyGrid().getNumCols(), Color.CORAL, Color.BEIGE, Color.BROWN);
         testSimulator.updateSimulation(testGame.getGrid());
         testSimulator.updateSimulation(testGame2.getGrid());
         GridPane simulatorGrid = testSimulator.getMyGridView();
@@ -41,7 +41,7 @@ class SimulatorViewTest {
     @Test
     void testUpdateSimulationDifferentRowColumnSize() {
         GameOfLifeModel testGame = new GameOfLifeModel("data/game_of_life/penta-decathlon.csv");
-        testSimulator = new SimulatorView(testGame.getMyGrid().getNumRows(),testGame.getMyGrid().getNumCols(), Color.CORAL, Color.BEIGE, Color.BROWN);
+      //  testSimulator = new SimulatorView(testGame.getMyGrid().getNumRows(),testGame.getMyGrid().getNumCols(), Color.CORAL, Color.BEIGE, Color.BROWN);
         testSimulator.updateSimulation(testGame.getGrid());
         GridPane simulatorGrid = testSimulator.getMyGridView();
         assertEquals(Color.BEIGE, ((Rectangle) simulatorGrid.getChildren().get(60)).getFill(),
