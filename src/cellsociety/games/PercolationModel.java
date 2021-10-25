@@ -1,6 +1,7 @@
 package cellsociety.games;
 
 import cellsociety.components.Cell;
+import cellsociety.components.Grid;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,11 +18,17 @@ public class PercolationModel extends Game {
 
     public PercolationModel (String filename) {
         super(filename);
-        myOpenCells = new ArrayList<>();
+        setOpenCells();
+    }
+
+    public PercolationModel (int numRows, int numCols) {
+        int[][] states = new int[numRows][numCols];
+        myGrid = new Grid(states);
         setOpenCells();
     }
 
     private void setOpenCells () {
+        myOpenCells = new ArrayList<>();
         Map<Point, Cell> board = getGrid();
         for (Point point: board.keySet()) {
             Cell cell = board.get(point);
@@ -58,7 +65,7 @@ public class PercolationModel extends Game {
         return false;
     }
 
-    public void openCell (Cell cell) {
+    public void clickCell (Cell cell) {
         if (cell.getXyPosition()[1] == 0) {
             cell.setCurrentStatus(PERCOLATED);
         }
