@@ -1,14 +1,18 @@
 package cellsociety.view;
 
+import cellsociety.controller.SimulatorController;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import java.awt.Point;
 import cellsociety.components.Cell;
-
+import javafx.scene.text.Text;
 
 import java.util.Map;
 
@@ -19,6 +23,7 @@ public class SimulatorView {
     private Color defaultColor;
     private int gridWidth;
     private int gridHeight;
+    private SimulatorController mySimulatorController;
 
     public SimulatorView(int gridWidth, int gridHeight, Color deadColor, Color aliveColor, Color defaultColor){
         myGridView = new GridPane();
@@ -65,6 +70,18 @@ public class SimulatorView {
     }
 
     /**
+     * This method creates a new grid for the new simulation to be displayed
+     * @param gridWidth width of the new gridPane
+     * @param gridHeight height of the new gridPane
+     */
+    public void updateToNewSimulation(int gridWidth, int gridHeight){
+        myGridView = new GridPane();
+        this.gridWidth = gridWidth;
+        this.gridHeight = gridHeight;
+        setDefaultGrid();
+    }
+
+    /**
      * getter for getMyGridView
      * @return getMyGridView
      */
@@ -72,12 +89,44 @@ public class SimulatorView {
         return myGridView;
     }
 
-    /*
-    public VBox returnSimulation(){
+    /**
+     * Returns a scene of the simulation with the control buttons
+     * @param simulatorController a SimulatorController for this simulation
+     * @return VBox containing gridpane of the simulation and control buttons
+     */
+    public VBox returnSimulation(SimulatorController simulatorController){
+        HBox buttonBox = new HBox();
+        mySimulatorController = simulatorController;
+        Button pause = generateButton("Pause", event -> mySimulatorController.pause());
+        Button play = generateButton("Play", event -> mySimulatorController.play());
+        Button step = generateButton("Step", event -> mySimulatorController.step());
+        Button save = generateButton("Save", event -> mySimulatorController.saveCSVFile());
+        Button load = generateButton("Load", event -> mySimulatorController.loadNewCSV());
+
+        buttonBox.getChildren().addAll(pause, play, step, new Text("Speed"), makeSlider("Speed", 0.1, 5.0), save,load);
         VBox simulationBox = new VBox();
-        HBox controlBox = new HBox();
-        simulationBox.getChildren().addAll(myGridView, controlBox);
+        simulationBox.getChildren().addAll(myGridView, buttonBox);
         return simulationBox;
     }
-     */
+
+    private Button generateButton(String label, EventHandler<ActionEvent> event) {
+        javafx.scene.control.Button button = new javafx.scene.control.Button();
+        button.setText(label);
+        button.setOnAction(event);
+        return button;
+    }
+
+    private Node makeSlider(String text, double minVal, double maxVal) {
+
+        Slider lengthSlider = new Slider(minVal, maxVal, 1);
+        lengthSlider.setShowTickMarks(true);
+        lengthSlider.setShowTickLabels(true);
+        lengthSlider.setMajorTickUnit(1);
+        lengthSlider.setMaxWidth(100);
+        lengthSlider.valueProperty().addListener((obs, oldval, newVal) ->
+                mySimulatorController.setAnimationSpeed(newVal.intValue()));
+
+        return lengthSlider;
+    }
+
 }
