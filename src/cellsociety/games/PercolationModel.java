@@ -15,6 +15,7 @@ public class PercolationModel extends Game {
     private int PERCOLATED = 2;
 
     private List<Cell> myOpenCells;
+    private List<Cell> cellsToBeRemoved;
 
     public PercolationModel (String filename) {
         super(filename);
@@ -28,6 +29,7 @@ public class PercolationModel extends Game {
     }
 
     private void setOpenCells () {
+        cellsToBeRemoved = new ArrayList<>();
         myOpenCells = new ArrayList<>();
         Map<Point, Cell> board = getGrid();
         for (Point point: board.keySet()) {
@@ -49,6 +51,8 @@ public class PercolationModel extends Game {
             for (Cell cell: myOpenCells) {
                 cell.changeStatus();
             }
+            myOpenCells.removeAll(cellsToBeRemoved);
+            cellsToBeRemoved.clear();
         }
     }
 
@@ -58,7 +62,7 @@ public class PercolationModel extends Game {
         for (Cell neighbor: cell.getNeighborCells()) {
             if (neighbor != null && neighbor.getCurrentStatus() == PERCOLATED) {
                 cell.setNextStatus(PERCOLATED);
-                myOpenCells.remove(cell);
+                cellsToBeRemoved.add(cell);
                 return true;
             }
         }

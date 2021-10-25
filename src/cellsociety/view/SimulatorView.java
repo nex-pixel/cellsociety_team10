@@ -60,6 +60,8 @@ public class SimulatorView {
                 currCell.setId("dead-cell");
             }else if(cellStatus.get(coordinate).getCurrentStatus() == 1){ //TODO assumed alive is 1
                 currCell.setId("alive-cell");
+            }else if(cellStatus.get(coordinate).getCurrentStatus() == 2) {
+                currCell.setId("default-cell");
             }
             myGridView.getChildren().add(gridNumber, currCell);
         }
