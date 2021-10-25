@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.error.GenerateError;
 import cellsociety.games.*;
 import cellsociety.view.SimulatorView;
 import javafx.animation.KeyFrame;
@@ -11,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.io.File;
+import java.util.ResourceBundle;
 
 public class SimulatorController {
 
@@ -27,13 +29,13 @@ public class SimulatorController {
 
 
     public SimulatorController(Color deadColor,
-                               Color aliveColor, Color defaultColor) {
+                               Color aliveColor, Color defaultColor, FileManager fileManager) {
         animationSpeed = 0.3;
         myAnimation = new Timeline();
         this.deadColor = deadColor;
         this.aliveColor = aliveColor;
         this.defaultColor = defaultColor;
-        myFileManager = new FileManager();
+        myFileManager = fileManager;
     }
 
     /**
@@ -63,18 +65,21 @@ public class SimulatorController {
      */
     public void createNewSimulation(int modelType, Stage stage, File csvFile){
         myStage = stage;
-        generateNewGame(modelType, csvFile);
-        mySimulatorView = new SimulatorView(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows(),
-                deadColor, aliveColor, defaultColor);
-        mySimulatorView.updateSimulation(myGame.getGrid());
-        VBox simulationBox = mySimulatorView.returnSimulation(this);
-        stage.setScene(new Scene(simulationBox));
-        stage.show();
-        playAnimation();
+        try{
+            generateNewGame(modelType, csvFile);
+            mySimulatorView = new SimulatorView(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows(),
+                    deadColor, aliveColor, defaultColor);
+            mySimulatorView.updateSimulation(myGame.getGrid());
+            VBox simulationBox = mySimulatorView.returnSimulation(this);
+            stage.setScene(new Scene(simulationBox));
+            stage.show();
+            playAnimation();
+        }catch(NullPointerException e){
+            myFileManager.checkFileValidity(csvFile);
+        }
     }
 
     public void generateNewGame(int gameType, File csvFile){
-        System.out.println(gameType);
         switch (gameType) {
             case 0:
                 myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
@@ -91,6 +96,7 @@ public class SimulatorController {
                 break;
         }
     }
+
 
 
     /**

@@ -63,8 +63,8 @@ public class MainController {
         }
     }
 
-    public void generateNewSimulation(int modelType, File csvFile){
-        simulatorController = new SimulatorController(Color.CORAL, Color.BEIGE, Color.BROWN);
+    public void generateNewSimulation(int modelType, File csvFile, FileManager fileManager){
+        simulatorController = new SimulatorController(Color.CORAL, Color.BEIGE, Color.BROWN, fileManager);
         simulatorController.createNewSimulation(modelType, myStage, csvFile);
     }
 

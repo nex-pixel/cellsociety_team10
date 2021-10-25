@@ -48,7 +48,7 @@ public class MainMenuView {
 
     public MainMenuView(ResourceBundle resourceBundle){
         myLanguageResources = resourceBundle;
-        myFileManager = new FileManager();
+        myFileManager = new FileManager(myLanguageResources);
     }
 
     /**
@@ -106,7 +106,7 @@ public class MainMenuView {
         mainMenuButtonMap.put(myLanguageResources.getString(CHOOSE_COLOR_BUTTON_LABEL), event-> generateChoiceDialogBox(DEFAULT_CSS_FILE_LABEL,
                 cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent")));
         mainMenuButtonMap.put(myLanguageResources.getString(NEW_SIM_BUTTON_LABEL), event ->
-                myMainController.generateNewSimulation(myModelType, myFileManager.getCurrentTextFile()));
+                myMainController.generateNewSimulation(myModelType, myFileManager.getCurrentTextFile(), myFileManager));
 
     }
 
