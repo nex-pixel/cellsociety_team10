@@ -11,30 +11,33 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import java.awt.Point;
 import cellsociety.components.Cell;
-import javafx.scene.text.Text;
 
 import java.io.File;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SimulatorView {
     private GridPane myGridView;
-    private int gridWidth;
-    private int gridHeight;
+    private int myGridWidth;
+    private int myGridHeight;
     private SimulatorController mySimulatorController;
     private String myCSSFile;
+    private Map<String, EventHandler<ActionEvent>> simulatorButtonMap = new LinkedHashMap<>();
+    private String simulatorButtonID = "simulator-button";
 
     public SimulatorView(int gridWidth, int gridHeight, String cssFile){
         myGridView = new GridPane();
-        this.gridWidth = gridWidth;
-        this.gridHeight = gridHeight;
+        myGridWidth = gridWidth;
+        myGridHeight = gridHeight;
         myCSSFile = cssFile;
+        populateSimulatorButtonMap();
         setDefaultGrid();
     }
 
     // fills the grid with squareCells of defaultColor
     private void setDefaultGrid(){
-        for(int i = 0; i < gridWidth; i ++){
-            for(int j = 0; j < gridHeight; j++){
+        for(int i = 0; i < myGridWidth; i ++){
+            for(int j = 0; j < myGridHeight; j++){
                 squareCell cell = new squareCell();
                 cell.setWidth(40); // TODO: Needs to change based on the size of the stage
                 cell.setHeight(40); // TODO: need refactoring?
@@ -52,7 +55,7 @@ public class SimulatorView {
      */
     public void updateSimulation(Map<Point, Cell> cellStatus){
         for(Point coordinate: cellStatus.keySet()){
-            int gridNumber = (int) (coordinate.getX() * gridHeight + coordinate.getY());
+            int gridNumber = (int) (coordinate.getX() * myGridHeight + coordinate.getY());
             Node currNode = myGridView.getChildren().get(gridNumber);
             myGridView.getChildren().remove(currNode);
             squareCell currCell = (squareCell) currNode;
@@ -74,8 +77,8 @@ public class SimulatorView {
      */
     public void updateToNewSimulation(int gridWidth, int gridHeight){
         myGridView = new GridPane();
-        this.gridWidth = gridWidth;
-        this.gridHeight = gridHeight;
+        myGridWidth = gridWidth;
+        myGridHeight = gridHeight;
         setDefaultGrid();
     }
 
@@ -93,19 +96,38 @@ public class SimulatorView {
      * @return VBox containing gridpane of the simulation and control buttons
      */
     public VBox returnSimulation(SimulatorController simulatorController){
-        HBox buttonBox = new HBox();
         mySimulatorController = simulatorController;
-        Button pause = generateButton("Pause", event -> mySimulatorController.pause());
-        Button play = generateButton("Play", event -> mySimulatorController.play());
-        Button step = generateButton("Step", event -> mySimulatorController.step());
-        Button save = generateButton("Save", event -> mySimulatorController.saveCSVFile());
-        Button load = generateButton("Load", event -> mySimulatorController.loadNewCSV());
 
-        buttonBox.getChildren().addAll(pause, play, step, new Text("Speed"), makeSlider("Speed", 0.1, 5.0), save,load);
+        HBox buttonBox = generateSimulatorButtonBox();
+        buttonBox.getChildren().add(makeSlider("Speed", 0.1, 5.0));
+
         VBox simulationBox = new VBox();
         simulationBox.getChildren().addAll(myGridView, buttonBox);
+
         applyCSS(simulationBox, myCSSFile);
+
         return simulationBox;
+    }
+
+    private void populateSimulatorButtonMap(){
+        simulatorButtonMap.put("Pause", event -> mySimulatorController.pause());
+        simulatorButtonMap.put("Play", event -> mySimulatorController.play());
+        simulatorButtonMap.put("Step", event -> mySimulatorController.step());
+        simulatorButtonMap.put("Save", event -> mySimulatorController.saveCSVFile());
+        simulatorButtonMap.put("Load", event -> mySimulatorController.loadNewCSV());
+    }
+
+    private HBox generateSimulatorButtonBox(){
+        HBox buttonBox = new HBox();
+        simulatorButtonMap.forEach((key,value) -> addButtonToPanel(key,value,buttonBox));
+        return buttonBox;
+    }
+
+    private void addButtonToPanel(String label, EventHandler<ActionEvent> event, HBox panel){
+        Button button = generateButton(label,
+                event);
+        button.setId(simulatorButtonID);
+        panel.getChildren().add(button);
     }
 
     private Button generateButton(String label, EventHandler<ActionEvent> event) {
@@ -116,7 +138,6 @@ public class SimulatorView {
     }
 
     private Node makeSlider(String text, double minVal, double maxVal) {
-
         Slider lengthSlider = new Slider(minVal, maxVal, 1);
         lengthSlider.setShowTickMarks(true);
         lengthSlider.setShowTickLabels(true);

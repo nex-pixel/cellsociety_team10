@@ -26,3 +26,9 @@
 #default-cell{
     -fx-fill: #5c5e5e;
 }
+
+#simulator-button{
+    -fx-background-color: #4b9cd3;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #5c5e5e;
+}
