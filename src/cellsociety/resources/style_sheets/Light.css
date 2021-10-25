@@ -1,14 +1,28 @@
 #home-page-root{
     -fx-background-color: #ffffff;
     -fx-alignment: center;
+    -fx-tile-alignment: center;
 }
 
 #main-menu-button{
     -fx-background-color: #c9c7c7;
     -fx-text-fill: #2c2d2f;
     -fx-border-color: #5c5e5e;
+    -fx-alignment: center;
 }
 
 #main-menu-vbox{
+    -fx-alignment: center;
+}
 
+#alive-cell{
+    -fx-fill: #e8da37;
+}
+
+#dead-cell{
+    -fx-fill: #F3F2F1;
+}
+
+#default-cell{
+    -fx-fill: #262626;
 }

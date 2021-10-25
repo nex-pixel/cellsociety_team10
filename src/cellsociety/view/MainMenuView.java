@@ -13,6 +13,7 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -40,7 +41,7 @@ public class MainMenuView {
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private String DEFAULT_CSS_FILE_LABEL = "Duke";
     private String mainMenuButtonID = "main-menu-button";
-    private String homePageRootID = "home-page-root"; 
+    private String homePageRootID = "home-page-root";
 
     private ArrayList<String> cssFileOptions = new ArrayList<>();
 
@@ -88,7 +89,7 @@ public class MainMenuView {
 
     }
     private void initializeHomePageRoot(){
-        homePageRoot = new StackPane();
+        homePageRoot = new TilePane();
         homePageRoot.getChildren().add(generateMainMenuPanel());
         homePageRoot.setId(homePageRootID);
     }
