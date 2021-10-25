@@ -66,6 +66,8 @@ public class SimulatorView {
                 currCell.setFill(deadColor);
             }else if(cellStatus.get(coordinate).getCurrentStatus() == 1){ //TODO assumed alive is 1
                 currCell.setFill(aliveColor);
+            }else if(cellStatus.get(coordinate).getCurrentStatus() == 2){
+                currCell.setFill(defaultColor);
             }
             myGridView.getChildren().add(gridNumber, currCell);
         }
