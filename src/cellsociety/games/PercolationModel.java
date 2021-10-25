@@ -48,11 +48,11 @@ public class PercolationModel extends Game {
             for (Cell cell: myOpenCells) {
                 isSpanning = isSpanning || applyRule(cell);
             }
-            myOpenCells.removeAll(cellsToBeRemoved);
-            cellsToBeRemoved.clear();
             for (Cell cell: myOpenCells) {
                 cell.changeStatus();
             }
+            myOpenCells.removeAll(cellsToBeRemoved);
+            cellsToBeRemoved.clear();
         }
     }
 
