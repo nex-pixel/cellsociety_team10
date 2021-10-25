@@ -1,6 +1,6 @@
 package cellsociety.controller;
 
-import cellsociety.games.GameOfLifeModel;
+import cellsociety.games.*;
 import cellsociety.view.SimulatorView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -14,7 +14,7 @@ import java.io.File;
 
 public class SimulatorController {
 
-    private GameOfLifeModel myGame;
+    private Game myGame;
     private Timeline myAnimation;
     private double animationSpeed;
     private SimulatorView mySimulatorView;
@@ -26,7 +26,7 @@ public class SimulatorController {
 
 
 
-    public SimulatorController(int gridWidth, int gridHeight, Color deadColor,
+    public SimulatorController(Color deadColor,
                                Color aliveColor, Color defaultColor) {
         animationSpeed = 0.3;
         myAnimation = new Timeline();
@@ -61,12 +61,9 @@ public class SimulatorController {
      * @param stage primary stage of the simulation
      * @param csvFile file containing the initial state
      */
-    public void createNewSimulation(Stage stage, File csvFile){
+    public void createNewSimulation(int modelType, Stage stage, File csvFile){
         myStage = stage;
-        if(csvFile == null){myGame = new GameOfLifeModel("data/game_of_life/blinkers.csv"); // default
-        }else{
-            myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
-        }
+        generateNewGame(modelType, csvFile);
         mySimulatorView = new SimulatorView(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows(),
                 deadColor, aliveColor, defaultColor);
         mySimulatorView.updateSimulation(myGame.getGrid());
@@ -74,6 +71,25 @@ public class SimulatorController {
         stage.setScene(new Scene(simulationBox));
         stage.show();
         playAnimation();
+    }
+
+    public void generateNewGame(int gameType, File csvFile){
+        System.out.println(gameType);
+        switch (gameType) {
+            case 0:
+                myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
+                break;
+            case 1:
+                myGame = new SpreadingFireModel(csvFile.getAbsolutePath());
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                myGame = new PercolationModel(csvFile.getAbsolutePath());
+                break;
+        }
     }
 
 

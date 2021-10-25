@@ -27,7 +27,6 @@ import java.util.ResourceBundle;
 public class MainMenuView {
     private static ResourceBundle myLanguageResources;
     private Stage window;
-    private SimulatorController mySimulatorController;
     private FileManager myFileManager;
     private Pane homePageRoot;
     private MainController myMainController;
@@ -43,12 +42,12 @@ public class MainMenuView {
     private String mainMenuButtonID = "main-menu-button";
     private String homePageRootID = "home-page-root";
 
+
+    private int myModelType;
     private ArrayList<String> cssFileOptions = new ArrayList<>();
 
     public MainMenuView(ResourceBundle resourceBundle){
         myLanguageResources = resourceBundle;
-        mySimulatorController = new SimulatorController(500, 500, Color.CORAL,
-                Color.BEIGE, Color.BROWN);
         myFileManager = new FileManager();
     }
 
@@ -106,8 +105,8 @@ public class MainMenuView {
         mainMenuButtonMap.put(myLanguageResources.getString(FILE_BUTTON_LABEL), event -> myFileManager.chooseFile());
         mainMenuButtonMap.put(myLanguageResources.getString(CHOOSE_COLOR_BUTTON_LABEL), event-> generateChoiceDialogBox(DEFAULT_CSS_FILE_LABEL,
                 cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent")));
-        mainMenuButtonMap.put(myLanguageResources.getString(NEW_SIM_BUTTON_LABEL), event -> mySimulatorController.createNewSimulation(window,
-                myFileManager.getCurrentTextFile()));
+        mainMenuButtonMap.put(myLanguageResources.getString(NEW_SIM_BUTTON_LABEL), event ->
+                myMainController.generateNewSimulation(myModelType, myFileManager.getCurrentTextFile()));
 
     }
 
@@ -130,7 +129,7 @@ public class MainMenuView {
     private void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog, String resultType){
         choiceDialog.showAndWait();
         if(resultType.equals("modelType")){
-            myMainController.updateModelType(choiceDialog.getSelectedItem());
+            myModelType = modelOptions.indexOf(choiceDialog.getSelectedItem());
         }
         if(resultType.equals("cssFile")){
             myMainController.updateCSS(choiceDialog.getSelectedItem());
@@ -167,3 +166,4 @@ public class MainMenuView {
     }
 
 }
+
