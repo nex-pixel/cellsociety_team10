@@ -10,6 +10,7 @@ import util.DukeApplicationTest;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,12 +19,12 @@ class MainMenuViewTest extends DukeApplicationTest {
     private Labeled testLabel;
     private Labeled testLabel2;
     private Labeled testLabel3;
+    private ResourceBundle resourceBundle = ResourceBundle.getBundle("cellsociety.resources.English");
 
     @Override
     public void start(Stage stage) throws IOException {
-        testView = new MainMenuView();
+        testView = new MainMenuView(resourceBundle);
         stage.show();
-        testLabel = lookup("Select a language").query();
         testLabel2 = lookup("Select a type of simulation to run").query();
         testLabel3 = lookup("Load File").query();
     }
