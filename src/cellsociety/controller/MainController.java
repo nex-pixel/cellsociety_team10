@@ -26,33 +26,25 @@ public class MainController {
     private static ResourceBundle myLanguageResources;
     private String DEFAULT_LANGUAGE = "English";
     private SimulatorController simulatorController;
-    private String language;
     private String modelType;
     private String cssFile;
     private MainMenuView mainMenu;
+    private String DEFAULT_CSS_FILE_LABEL = "Duke";
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
 
 
-    public MainController(Stage stage){
+    public MainController(Stage stage, String language){
         myStage = stage;
-        initializeResourceBundle(DEFAULT_LANGUAGE);
+        initializeResourceBundle(language);
     }
 
     public void startMainMenu() {
-        mainMenu  = new MainMenuView();
+        mainMenu  = new MainMenuView(myLanguageResources);
         myStage.setScene(mainMenu.setMenuDisplay(myStage, this, 500, 500));
+        updateCSS(DEFAULT_CSS_FILE_LABEL);
         myStage.show();
     }
 
-
-    /**
-     * setter for language;
-     * @param result language
-     */
-    public void updateLanguage(String result){
-        language = result;
-        initializeResourceBundle(language);
-    }
 
     /**
      * setter for modelType
@@ -67,13 +59,13 @@ public class MainController {
         try{
             mainMenu.applyCSS(myStage.getScene(), cssFile);
         }catch(Exception e){
-            new GenerateError(myLanguageResources, myLanguageResources.getString(INVALID_CSS_ERROR));
+            new GenerateError(myLanguageResources, INVALID_CSS_ERROR);
         }
     }
 
-    public void generateNewSimulation(File csvFile){
+    public void generateNewSimulation(int modelType, File csvFile){
         simulatorController = new SimulatorController(Color.CORAL, Color.BEIGE, Color.BROWN);
-        simulatorController.createNewSimulation(myStage, csvFile);
+        simulatorController.createNewSimulation(modelType, myStage, csvFile);
     }
 
     private void initializeResourceBundle(String language) {

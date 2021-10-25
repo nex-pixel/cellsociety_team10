@@ -34,7 +34,10 @@ public class Cell {
         nextStatus = newStatus;
     }
 
-    public void setCurrentStatus(int newCurrentStatus){currentStatus = newCurrentStatus;}
+    public void setCurrentStatus(int newCurrentStatus){
+        currentStatus = newCurrentStatus;
+        nextStatus = newCurrentStatus;
+    }
 
     public void setXyPosition(int xPosition, int yPosition){
         xyPosition[0] = xPosition;

@@ -4,7 +4,6 @@ import cellsociety.components.Cell;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 import java.util.List;
 
@@ -15,20 +14,40 @@ public class SegregationModel extends Game {
     private int AGENT_O = 2;
     private int RANGE = 3;
     private double myThreshold;
+    private int myNumOfAgents;
 
     private List<Cell> myEmptyCells;
 
-    public SegregationModel (int numRows, int numCols, double threshold) {
+    public SegregationModel (int numRows, int numCols, double emptyRate, double agentXRate, double threshold) {
         myEmptyCells = new ArrayList<>();
         myThreshold = threshold;
-        Random rand = new Random();
+        myNumOfAgents = 0;
         int[][] randArray = new int[numRows][numCols];
         for (int r = 0; r < numRows; r++) {
             for (int c = 0; c < numCols; c++) {
-                randArray[r][c] = rand.nextInt(RANGE);
+                double randStatus = Math.random();
+                if (randStatus <= emptyRate){
+                    randArray[r][c] = EMPTY;
+                }
+                else if (randStatus - emptyRate <= agentXRate * (1 - emptyRate)) {
+                    randArray[r][c] = AGENT_X;
+                    myNumOfAgents++;
+                }
+                else {
+                    randArray[r][c] = AGENT_O;
+                    myNumOfAgents++;
+                }
             }
         }
         setGrid(randArray);
+        setEmptyCells();
+    }
+
+    // Default constructor for testing purposes
+    public SegregationModel (int[][] states, double threshold) {
+        myThreshold = threshold;
+        myEmptyCells = new ArrayList<>();
+        setGrid(states);
         setEmptyCells();
     }
 
@@ -41,20 +60,16 @@ public class SegregationModel extends Game {
         }
     }
 
+    public List<Cell> getEmptyCells () { return myEmptyCells; }
+
     @Override
     public void update () {
-        Map<Point, Cell> board = myGrid.getBoard();
-        for (Point point: board.keySet()) {
-            applyRule(board.get(point));
-        }
-        for (Point point: board.keySet()) {
-            board.get(point).changeStatus();
-        }
+        super.update();
     }
 
     @Override
-    protected void applyRule (Cell cell) {
-        if (!isSatisfied(cell)) {
+    protected boolean applyRule (Cell cell) {
+        if (cell.getCurrentStatus()!= EMPTY && !isSatisfied(cell)) {
             //reallocate the cell
             Random rand = new Random();
             Cell nextCell = myEmptyCells.get(rand.nextInt(myEmptyCells.size()));
@@ -62,10 +77,22 @@ public class SegregationModel extends Game {
             nextCell.setNextStatus(cell.getCurrentStatus());
             myEmptyCells.add(cell);
             cell.setNextStatus(EMPTY);
+            return true;
         }
+        return false;
     }
 
-    private boolean isSatisfied (Cell cell) {
+    public double getSatisfiedRate () {
+        int numSatisfiedAgents = 0;
+        for (Point point: getGrid().keySet()) {
+            if (isSatisfied(getGrid().get(point))) {
+                numSatisfiedAgents++;
+            }
+        }
+        return numSatisfiedAgents / myNumOfAgents;
+    }
+
+    public boolean isSatisfied (Cell cell) {
         int numOccupiedNeighbors = 0;
         int numSameNeighbors = 0;
         for (Cell neighbor: cell.getNeighborCells()) {

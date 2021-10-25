@@ -46,9 +46,17 @@ public abstract class Game {
         // There may be some more types
     }
 
-    protected abstract void applyRule(Cell cell);
+    protected abstract boolean applyRule(Cell cell);
 
-    public abstract void update();
+    public void update() {
+        Map<Point, Cell> board = myGrid.getBoard();
+        for (Point point: board.keySet()) {
+            applyRule(board.get(point));
+        }
+        for (Point point: board.keySet()) {
+            board.get(point).changeStatus();
+        }
+    }
 
     public int[][] toGridArray () {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];

@@ -43,6 +43,8 @@ public class SimulatorView {
                 cell.setWidth(40); // TODO: Needs to change based on the size of the stage
                 cell.setHeight(40); // TODO: need refactoring?
                 cell.setFill(defaultColor);
+                //cell.setId("default-cell");
+                // ^ will need to call maincontroller to apply css file or pass css file to here
                 myGridView.add(cell, i, j);
             }
         }
