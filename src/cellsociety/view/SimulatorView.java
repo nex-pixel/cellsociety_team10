@@ -8,6 +8,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
@@ -15,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import java.awt.Point;
 import cellsociety.components.Cell;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
@@ -42,6 +44,7 @@ public class SimulatorView {
     private String ADD_SIM_LABEL = "AddLabel";
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private Game myGame;
+    private Scene myScene;
 
     public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController){
         mySimulatorController = simulatorController;
@@ -55,6 +58,17 @@ public class SimulatorView {
         myLanguageResources = resourceBundle;
         populateSimulatorButtonMap();
         setDefaultGrid();
+        initializeSimulationScene();
+    }
+
+    private void initializeSimulationScene(){
+        Stage stage = new Stage();
+        updateSimulation(myGame.getGrid());
+        VBox simulationBox = generateSimulationVBox();
+        myScene = new Scene(simulationBox);
+        stage.setScene(myScene);
+        stage.show();
+        playAnimation();
     }
 
     private void step(){
@@ -145,7 +159,7 @@ public class SimulatorView {
      * Returns a scene of the simulation with the control buttons
      * @return VBox containing gridpane of the simulation and control buttons
      */
-    public VBox returnSimulation(){
+    private VBox generateSimulationVBox(){
         HBox buttonBox = generateSimulatorButtonBox();
         buttonBox.getChildren().add(makeSlider("Speed", 0.1, 5.0));
 

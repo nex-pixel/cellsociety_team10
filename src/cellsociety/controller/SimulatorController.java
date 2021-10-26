@@ -1,16 +1,11 @@
 package cellsociety.controller;
 
-import cellsociety.error.GenerateError;
 import cellsociety.games.*;
 import cellsociety.view.SimulatorView;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+
 import java.io.File;
 import java.util.ResourceBundle;
 
@@ -22,6 +17,8 @@ public class SimulatorController {
     private Scene myScene;
     private String myCSSFile;
     private ResourceBundle myLanguageResources;
+    private VBox simulationBox;
+    private int myModelType;
 
 
 
@@ -36,25 +33,18 @@ public class SimulatorController {
      * @param csvFile file containing the initial state
      */
     public void createNewSimulation(int modelType, File csvFile){
-        Stage stage = new Stage();
         try{
-            generateNewGame(modelType, csvFile);
+            myModelType = modelType;
+            generateNewGame(csvFile);
             mySimulatorView = new SimulatorView(myGame,
                     myCSSFile, myLanguageResources, this);
-            mySimulatorView.updateSimulation(myGame.getGrid());
-
-            VBox simulationBox = mySimulatorView.returnSimulation();
-            myScene = new Scene(simulationBox);
-            stage.setScene(myScene);
-            stage.show();
-            mySimulatorView.playAnimation();
         } catch(NullPointerException e){
             myFileManager.checkFileValidity(csvFile);
         }
     }
 
-    public void generateNewGame(int gameType, File csvFile){
-        switch (gameType) {
+    public void generateNewGame(File csvFile){
+        switch (myModelType) {
             case 0:
                 myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
                 break;
@@ -89,7 +79,8 @@ public class SimulatorController {
 
     public void loadNewCSV(){
         myFileManager.chooseFile();
-       // File file = myFileManager.getCurrentTextFile();
+        File file = myFileManager.getCurrentTextFile();
+        createNewSimulation(myModelType, file);
        // createNewSimulation(0, file);
         /*
         myGame = new GameOfLifeModel(myFileManager.getCurrentTextFile().getAbsolutePath());
