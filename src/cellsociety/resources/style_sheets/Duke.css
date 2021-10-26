@@ -13,6 +13,7 @@
 
 #main-menu-vbox{
     -fx-alignment: center;
+    -fx-tile-alignment: center;
 }
 #alive-cell{
     -fx-fill: #00539B;
