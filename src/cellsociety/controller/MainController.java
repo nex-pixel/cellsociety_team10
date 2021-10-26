@@ -64,8 +64,8 @@ public class MainController {
     }
 
     public void generateNewSimulation(int modelType, File csvFile, FileManager fileManager){
-        simulatorController = new SimulatorController(fileManager, cssFile);
-        simulatorController.createNewSimulation(modelType, myStage, csvFile);
+        simulatorController = new SimulatorController(fileManager, cssFile, myLanguageResources);
+        simulatorController.createNewSimulation(modelType, csvFile);
     }
 
     private void initializeResourceBundle(String language) {

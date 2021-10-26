@@ -17,61 +17,38 @@ import java.util.ResourceBundle;
 public class SimulatorController {
 
     private Game myGame;
-    private Timeline myAnimation;
-    private double animationSpeed;
     private SimulatorView mySimulatorView;
-
-
     private FileManager myFileManager;
-    private Stage myStage;
+    private Scene myScene;
     private String myCSSFile;
+    private ResourceBundle myLanguageResources;
 
 
 
-    public SimulatorController(FileManager fileManager, String cssFile) {
-        animationSpeed = 0.3;
-        myAnimation = new Timeline();
+    public SimulatorController(FileManager fileManager, String cssFile, ResourceBundle resourceBundle) {
         myFileManager = fileManager;
         myCSSFile = cssFile;
+        myLanguageResources = resourceBundle;
     }
-
-    /**
-     * calls update function of the game and receives the new states of the Grid
-     * updates the grid based on the new status
-     */
-    public void step(){
-        myGame.update();
-        mySimulatorView.updateSimulation(myGame.getGrid());
-    }
-
-    // Start new animation to show search algorithm's steps
-    private void playAnimation () {
-        if (myAnimation != null) {
-            myAnimation.stop();
-        }
-        myAnimation.setCycleCount(Timeline.INDEFINITE);
-        myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(animationSpeed), e -> step()));
-        myAnimation.play();
-    }
-
 
     /**
      * Receives csvFile with the initial state of the cells and repeats the rule indefinitely until the user stops it
-     * @param stage primary stage of the simulation
      * @param csvFile file containing the initial state
      */
-    public void createNewSimulation(int modelType, Stage stage, File csvFile){
-        myStage = stage;
+    public void createNewSimulation(int modelType, File csvFile){
+        Stage stage = new Stage();
         try{
             generateNewGame(modelType, csvFile);
-            mySimulatorView = new SimulatorView(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows(),
-                    myCSSFile);
+            mySimulatorView = new SimulatorView(myGame,
+                    myCSSFile, myLanguageResources, this);
             mySimulatorView.updateSimulation(myGame.getGrid());
-            VBox simulationBox = mySimulatorView.returnSimulation(this);
-            stage.setScene(new Scene(simulationBox));
+
+            VBox simulationBox = mySimulatorView.returnSimulation();
+            myScene = new Scene(simulationBox);
+            stage.setScene(myScene);
             stage.show();
-            playAnimation();
-        }catch(NullPointerException e){
+            mySimulatorView.playAnimation();
+        } catch(NullPointerException e){
             myFileManager.checkFileValidity(csvFile);
         }
     }
@@ -94,28 +71,6 @@ public class SimulatorController {
         }
     }
 
-    /**
-     * pauses the animation
-     */
-    public void pause(){
-        myAnimation.pause();
-    }
-
-    /**
-     * resumes the animation
-     */
-    public void play(){
-        myAnimation.play();
-    }
-
-    /**
-     * sets the animation speed
-     * @param speed number that will be multiplied to the current animation speed
-     */
-    public void setAnimationSpeed(double speed){
-        animationSpeed = speed;
-        myAnimation.setRate(animationSpeed);
-    }
 
     /**
      * saves the current grid status into a CSV file
@@ -130,15 +85,22 @@ public class SimulatorController {
     /**
      * load a new simulation from the CSV file selected by the user
      */
+    //TODO; rethink this part - need to take timeline out of controller
+
     public void loadNewCSV(){
         myFileManager.chooseFile();
+       // File file = myFileManager.getCurrentTextFile();
+       // createNewSimulation(0, file);
+        /*
         myGame = new GameOfLifeModel(myFileManager.getCurrentTextFile().getAbsolutePath());
         mySimulatorView.updateToNewSimulation(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows());
         mySimulatorView.updateSimulation(myGame.getGrid());
         VBox simulationBox = mySimulatorView.returnSimulation(this);
-        myStage.setScene(new Scene(simulationBox));
-        myStage.show();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(simulationBox));
+        stage.show();
         playAnimation();
+         */
     }
 
 

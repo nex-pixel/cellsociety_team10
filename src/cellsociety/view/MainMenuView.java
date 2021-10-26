@@ -105,7 +105,6 @@ public class MainMenuView {
 
     }
 
-    // want to add a way to update button label with choice so you know you have set it
     private Node generateMainMenuPanel(){
         VBox panel = new VBox();
         mainMenuButtonMap.forEach((key,value) -> addButtonToPanel(key,value,panel));
@@ -120,7 +119,7 @@ public class MainMenuView {
         return choiceDialog;
     }
 
-    // use reflection to get rid of cases
+    //TODO: use reflection to make this easier
     private void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog, String resultType){
         choiceDialog.showAndWait();
         if(resultType.equals("modelType")){
