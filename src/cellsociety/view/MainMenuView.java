@@ -13,9 +13,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,32 +31,27 @@ public class MainMenuView {
     private Map<String, EventHandler<ActionEvent>> mainMenuButtonMap = new LinkedHashMap<>();
     private String[] buttonLabelOptions = {"ChooseSimulationTypeLabel", "LoadFileLabel", "ChooseColorScheme", "CreateNewSimulationLabel"};
     private ArrayList<EventHandler<ActionEvent>> buttonEventLists = new ArrayList<>();
-    private String SIM_TYPE_BUTTON_LABEL = "ChooseSimulationTypeLabel";
-    private String FILE_BUTTON_LABEL = "LoadFileLabel";
-    private String NEW_SIM_BUTTON_LABEL = "CreateNewSimulationLabel";
-    private String CHOOSE_COLOR_BUTTON_LABEL = "ChooseColorScheme";
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private String mainMenuButtonID = "main-menu-button";
     private String homePageRootID = "home-page-root";
     private String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
     private String[] modelLabelOptions = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
-
-
+    // go through every key and reflect it to something else somewhere -> looking for a class or method
+    // using this key takes me to this actual class -> no variable that says were loading these
+    //
     private int myModelType;
     private ArrayList<String> cssFileOptions = new ArrayList<>();
 
     public MainMenuView(ResourceBundle resourceBundle){
         myLanguageResources = resourceBundle;
         myFileManager = new FileManager(myLanguageResources);
-
     }
 
     /**
      * creates mainMenu and returns the scene
-     * @param stage primary stage
      * @return scene of main menu
      */
-    public Scene setMenuDisplay(Stage stage, MainController mainController, int width, int height) {
+    public Scene setMenuDisplay(MainController mainController, int width, int height) {
         myMainController = mainController;
 
         populateOptions(modelOptions, modelLabelOptions);
@@ -75,16 +71,38 @@ public class MainMenuView {
             optionsList.add(myLanguageResources.getString(key));
         }
     }
-
+// private method that does each event and does get string and reflect from the button name
+    // if its private it should be fine
     private void populateButtonEvents(){
-        buttonEventLists.add(event -> generateChoiceDialogBox(myLanguageResources.getString(modelLabelOptions[0]),
-                modelOptions, "modelType", myLanguageResources.getString("ModelContent")));
+        try{
+            buttonEventLists.add((EventHandler<ActionEvent>) handleMethod("generateModelTypeEvent").invoke(MainMenuView.this));
+        }catch(IllegalAccessException | InvocationTargetException e){
+            e.printStackTrace();
+        }
         buttonEventLists.add(event -> myFileManager.chooseFile());
         buttonEventLists.add(event-> generateChoiceDialogBox(myLanguageResources.getString(cssFileLabelOptions[0]),
                 cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent")));
         buttonEventLists.add(event ->
                 myMainController.generateNewSimulation(myModelType, myFileManager.getCurrentTextFile(), myFileManager));
 
+    }
+
+    private EventHandler<ActionEvent> generateModelTypeEvent(){
+         return event -> generateChoiceDialogBox(myLanguageResources.getString(modelLabelOptions[0]),
+                modelOptions, "modelType", myLanguageResources.getString("ModelContent"));
+    }
+
+    private Method handleMethod(String name) {
+        //Method m = new Method();
+        try{
+            Method m = MainMenuView.class.getDeclaredMethod(name);
+            return m;
+        }catch(NoSuchMethodException e){
+            // generate Error
+            e.printStackTrace();
+        }
+        // fix
+        return null;
     }
 
     private void initializeHomePageRoot(){
