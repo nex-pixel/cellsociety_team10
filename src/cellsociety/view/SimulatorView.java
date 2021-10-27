@@ -52,8 +52,8 @@ public class SimulatorView {
         animationSpeed = 0.3;
         myAnimation = new Timeline();
         myGridView = new GridPane();
-        myGridWidth = myGame.getMyGrid().getNumRows();
-        myGridHeight = myGame.getMyGrid().getNumCols();
+        myGridWidth = myGame.getNumRows();
+        myGridHeight = myGame.getNumCols();
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
         populateSimulatorButtonMap();

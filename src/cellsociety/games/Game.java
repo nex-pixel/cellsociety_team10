@@ -31,9 +31,12 @@ public abstract class Game {
 
     public int getCellStatus (int x, int y) { return getGrid().get(new Point(x, y)).getCurrentStatus(); }
 
-    public Grid getMyGrid(){
-        return myGrid;
-    }
+    public int getNumRows () { return myGrid.getNumRows(); }
+    public int getNumCols () { return myGrid.getNumCols(); }
+
+//    public Grid getMyGrid(){
+//        return myGrid;
+//    }
 
     private void createReader (String filename) {
         String[] temp = filename.split("\\.");

@@ -80,8 +80,8 @@ public class PercolationModel extends Game {
     }
 
     public boolean isPercolated () {
-        int r = getMyGrid().getNumRows() - 1;
-        for (int c = 0; c < getMyGrid().getNumCols(); c++) {
+        int r = getNumRows() - 1;
+        for (int c = 0; c < getNumCols(); c++) {
             if (getCellStatus(c, r) == PERCOLATED) {
                 return true;
             }
