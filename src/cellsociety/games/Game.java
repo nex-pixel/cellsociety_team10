@@ -64,7 +64,7 @@ public abstract class Game {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];
         for (int r = 0; r < myGrid.getNumRows(); r++) {
             for (int c = 0; c < myGrid.getNumCols(); c++) {
-                ret[r][c] = getCell(c, r).getCurrentStatus();
+                ret[r][c] = getCellStatus(c, r);
             }
         }
         return ret;
