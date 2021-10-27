@@ -1,9 +1,14 @@
 package cellsociety.view;
 
 import cellsociety.controller.SimulatorController;
+import cellsociety.error.GenerateError;
+import cellsociety.games.Game;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
@@ -11,12 +16,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import java.awt.Point;
 import cellsociety.components.Cell;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 public class SimulatorView {
+
+    private Timeline myAnimation;
+    private double animationSpeed;
     private GridPane myGridView;
     private int myGridWidth;
     private int myGridHeight;
@@ -24,14 +35,68 @@ public class SimulatorView {
     private String myCSSFile;
     private Map<String, EventHandler<ActionEvent>> simulatorButtonMap = new LinkedHashMap<>();
     private String simulatorButtonID = "simulator-button";
+    private ResourceBundle myLanguageResources;
+    private String PLAY_LABEL = "PlayLabel";
+    private String PAUSE_LABEL = "PauseLabel";
+    private String STEP_LABEL = "StepLabel";
+    private String SAVE_LABEL = "SaveLabel";
+    private String LOAD_LABEL = "LoadLabel";
+    private String ADD_SIM_LABEL = "AddLabel";
+    private String INVALID_CSS_ERROR = "InvalidCSSFile";
+    private Game myGame;
+    private Scene myScene;
 
-    public SimulatorView(int gridWidth, int gridHeight, String cssFile){
+    public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController){
+        mySimulatorController = simulatorController;
+        myGame = game;
+        animationSpeed = 0.3;
+        myAnimation = new Timeline();
         myGridView = new GridPane();
-        myGridWidth = gridWidth;
-        myGridHeight = gridHeight;
+        myGridWidth = myGame.getMyGrid().getNumRows();
+        myGridHeight = myGame.getMyGrid().getNumCols();
         myCSSFile = cssFile;
+        myLanguageResources = resourceBundle;
         populateSimulatorButtonMap();
         setDefaultGrid();
+        initializeSimulationScene();
+    }
+
+    private void initializeSimulationScene(){
+        Stage stage = new Stage();
+        updateSimulation(myGame.getGrid());
+        VBox simulationBox = generateSimulationVBox();
+        myScene = new Scene(simulationBox);
+        stage.setScene(myScene);
+        stage.show();
+        playAnimation();
+    }
+
+    private void step(){
+        myGame.update();
+        updateSimulation(myGame.getGrid());
+    }
+
+    // Start new animation to show search algorithm's steps
+    public void playAnimation () {
+        if (myAnimation != null) {
+            myAnimation.stop();
+        }
+        myAnimation.setCycleCount(Timeline.INDEFINITE);
+        myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(animationSpeed), e -> step()));
+        myAnimation.play();
+    }
+
+    private void pause(){
+        myAnimation.pause();
+    }
+
+    private void play(){
+        myAnimation.play();
+    }
+
+    private void setAnimationSpeed(double speed){
+        animationSpeed = speed;
+        myAnimation.setRate(animationSpeed);
     }
 
     // fills the grid with squareCells of defaultColor
@@ -92,29 +157,25 @@ public class SimulatorView {
 
     /**
      * Returns a scene of the simulation with the control buttons
-     * @param simulatorController a SimulatorController for this simulation
      * @return VBox containing gridpane of the simulation and control buttons
      */
-    public VBox returnSimulation(SimulatorController simulatorController){
-        mySimulatorController = simulatorController;
-
+    private VBox generateSimulationVBox(){
         HBox buttonBox = generateSimulatorButtonBox();
-        buttonBox.getChildren().add(makeSlider("Speed", 0.1, 5.0));
+        buttonBox.getChildren().add(makeSlider(myLanguageResources.getString("SpeedLabel"), 0.1, 5.0));
 
         VBox simulationBox = new VBox();
         simulationBox.getChildren().addAll(myGridView, buttonBox);
 
         applyCSS(simulationBox, myCSSFile);
-
         return simulationBox;
     }
 
     private void populateSimulatorButtonMap(){
-        simulatorButtonMap.put("Pause", event -> mySimulatorController.pause());
-        simulatorButtonMap.put("Play", event -> mySimulatorController.play());
-        simulatorButtonMap.put("Step", event -> mySimulatorController.step());
-        simulatorButtonMap.put("Save", event -> mySimulatorController.saveCSVFile());
-        simulatorButtonMap.put("Load", event -> mySimulatorController.loadNewCSV());
+        simulatorButtonMap.put(myLanguageResources.getString(PAUSE_LABEL), event -> pause());
+        simulatorButtonMap.put(myLanguageResources.getString(PLAY_LABEL), event -> play());
+        simulatorButtonMap.put(myLanguageResources.getString(STEP_LABEL), event -> step());
+        simulatorButtonMap.put(myLanguageResources.getString(SAVE_LABEL), event -> mySimulatorController.saveCSVFile());
+        simulatorButtonMap.put(myLanguageResources.getString(LOAD_LABEL), event -> mySimulatorController.loadNewCSV());
     }
 
     private HBox generateSimulatorButtonBox(){
@@ -144,7 +205,7 @@ public class SimulatorView {
         lengthSlider.setMajorTickUnit(1);
         lengthSlider.setMaxWidth(100);
         lengthSlider.valueProperty().addListener((obs, oldval, newVal) ->
-                mySimulatorController.setAnimationSpeed(newVal.intValue()));
+                setAnimationSpeed(newVal.intValue()));
 
         return lengthSlider;
     }
@@ -154,7 +215,7 @@ public class SimulatorView {
             File styleFile = new File(cssFile);
             scene.getStylesheets().add(styleFile.toURI().toURL().toString());
         }catch(Exception e){
-            //new GenerateError(myLanguageResources, INVALID_CSS_ERROR);
+            new GenerateError(myLanguageResources, INVALID_CSS_ERROR);
         }
     }
 }

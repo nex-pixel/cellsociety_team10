@@ -19,7 +19,7 @@ public class WaTorWorldModel extends Game{
 
     @Override
     protected boolean applyRule(Cell cell) {
-        
+
         return true;
     }
 }
