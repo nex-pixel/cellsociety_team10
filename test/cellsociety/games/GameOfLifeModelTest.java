@@ -17,57 +17,58 @@ class GameOfLifeModelTest {
 
     @Test
     void testUpdateStillBoat () {
-        Game boat = new GameOfLifeModel("./data/game_of_life/boat.csv");
+        GameOfLifeModel boat = new GameOfLifeModel("./data/game_of_life/boat.csv");
 
-        int[][] board0 = boat.toGridArray();
+        GameOfLifeModel board0 = new GameOfLifeModel(boat);
         boat.update();
-        int[][] board1 = boat.toGridArray();
+        GameOfLifeModel board1 = new GameOfLifeModel(boat);
 
-        assertTrue(Arrays.deepEquals(board0, board1));
+        assertEquals(board0, board1);
 
     }
 
     @Test
     void testUpdatePeriodTwoToad () {
-        Game toad = new GameOfLifeModel("./data/game_of_life/toad.csv");
-        int[][] board0 = toad.toGridArray();
+        GameOfLifeModel toad = new GameOfLifeModel("./data/game_of_life/toad.csv");
+        GameOfLifeModel board0 = new GameOfLifeModel(toad);
         toad.update();
-        int[][] board1 = toad.toGridArray();
-        int[][] board2 = {{0,0,0,0,0,0}, {0,0,0,1,0,0}, {0,1,0,0,1,0},{0,1,0,0,1,0}, {0,0,1,0,0,0}, {0,0,0,0,0,0}};
-        assertTrue(Arrays.deepEquals(board2, board1));
+        GameOfLifeModel board1 = new GameOfLifeModel(toad);
+        int[][] expectedBoard = {{0,0,0,0,0,0}, {0,0,0,1,0,0}, {0,1,0,0,1,0},{0,1,0,0,1,0}, {0,0,1,0,0,0}, {0,0,0,0,0,0}};
+        GameOfLifeModel board2 = new GameOfLifeModel(expectedBoard);
+        assertEquals(board2, board1);
 
         toad.update();
-        int[][] board3 = toad.toGridArray();
-        assertTrue(Arrays.deepEquals(board3, board0));
+        GameOfLifeModel board3 = new GameOfLifeModel(toad);
+        assertEquals(board3, board0);
     }
 
     @Test
     void testUpdateEdgeCellSame () {
-        Game edgeCellSame = new GameOfLifeModel("./data/game_of_life/alive_edgecell_same.csv");
+        GameOfLifeModel edgeCellSame = new GameOfLifeModel("./data/game_of_life/alive_edgecell_same.csv");
 
-        int[][] board0 = edgeCellSame.toGridArray();
+        GameOfLifeModel board0 = new GameOfLifeModel(edgeCellSame);
         edgeCellSame.update();
-        int[][] board1 = edgeCellSame.toGridArray();
+        GameOfLifeModel board1 = new GameOfLifeModel(edgeCellSame);
 
-        assertTrue(Arrays.deepEquals(board0, board1));
+        assertEquals(board0, board1);
     }
 
     @Test
     void testUpdateEdgeCellDifferent () {
-        Game edgeCellDiff = new GameOfLifeModel("./data/game_of_life/alive_edgecell_different.csv");
+        GameOfLifeModel edgeCellDiff = new GameOfLifeModel("./data/game_of_life/alive_edgecell_different.csv");
 
-        int[][] board0 = edgeCellDiff.toGridArray();
+        GameOfLifeModel board0 = new GameOfLifeModel(edgeCellDiff);
         edgeCellDiff.update();
-        int[][] board1 = edgeCellDiff.toGridArray();
+        GameOfLifeModel board1 = new GameOfLifeModel(edgeCellDiff);
 
-        assertFalse(Arrays.deepEquals(board0, board1));
+        assertEquals(board0, board1);
     }
 
     @Test
     void saveCSV () {
-        Game glider = new GameOfLifeModel("./data/game_of_life/glider.csv");
+        GameOfLifeModel glider = new GameOfLifeModel("./data/game_of_life/glider.csv");
         glider.saveCSVFile("./data/game_of_life/gliderCopyTest.csv");
-        Game gliderCopyTest = new GameOfLifeModel("./data/game_of_life/gliderCopyTest.csv");
+        GameOfLifeModel gliderCopyTest = new GameOfLifeModel("./data/game_of_life/gliderCopyTest.csv");
         for (Point p: glider.getGrid().keySet()) {
             assertEquals(glider.getGrid().get(p), gliderCopyTest.getGrid().get(p));
         }

@@ -21,6 +21,11 @@ public abstract class Game {
 
     public Game () {}
 
+    public Game (Game copy) {
+        this.myReader = copy.myReader;
+        this.myGrid = copy.myGrid;
+    }
+
     public Game (String filename) {
         populateGameConditions();
         createReader(filename);
@@ -28,19 +33,16 @@ public abstract class Game {
         myGrid = new Grid(states);
     }
 
-    public Map<Point, Cell> getGrid (){
-        return myGrid.getBoard();
+    public Game (int[][] states) {
+        setGrid(states);
     }
-    public void setGrid (int[][] states) { myGrid = new Grid(states); }
+
+    protected Map<Point, Cell> getGrid () { return myGrid.getBoard(); }
+    protected void setGrid (int[][] states) { myGrid = new Grid(states); }
 
     public int getCellStatus (int x, int y) { return getGrid().get(new Point(x, y)).getCurrentStatus(); }
-
     public int getNumRows () { return myGrid.getNumRows(); }
     public int getNumCols () { return myGrid.getNumCols(); }
-
-//    public Grid getMyGrid(){
-//        return myGrid;
-//    }
 
     private void createReader (String filename) {
         String[] temp = filename.split("\\.");
@@ -68,7 +70,7 @@ public abstract class Game {
         }
     }
 
-    public int[][] toGridArray () {
+    protected int[][] toGridArray () {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];
         for (int r = 0; r < myGrid.getNumRows(); r++) {
             for (int c = 0; c < myGrid.getNumCols(); c++) {
@@ -103,5 +105,10 @@ public abstract class Game {
 
     protected int getIntProperty(String label) {
         return Integer.parseInt(myGameData.getString(label));
+    }
+
+    @Override
+    public boolean equals (Object o) {
+        return Arrays.deepEquals(((Game) o).toGridArray(), this.toGridArray());
     }
 }

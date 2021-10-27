@@ -8,15 +8,27 @@ public class GameOfLifeModel extends Game {
     private int ALIVE;
     private int DEAD;
 
-    public GameOfLifeModel(String filename) {
+    public GameOfLifeModel (String filename) {
         super(filename);
+        DEAD = getIntProperty("GameOfLifeDead");
+        ALIVE = getIntProperty("GameOfLifeAlive");
+    }
+
+    public GameOfLifeModel (GameOfLifeModel copy) {
+        super(copy);
+        DEAD = getIntProperty("GameOfLifeDead");
+        ALIVE = getIntProperty("GameOfLifeAlive");
+    }
+
+    public GameOfLifeModel (int[][] states) {
+        super(states);
+        DEAD = getIntProperty("GameOfLifeDead");
+        ALIVE = getIntProperty("GameOfLifeAlive");
     }
 
     @Override
     public void update() {
         super.update();
-        DEAD = getIntProperty("GameOfLifeDead");
-        ALIVE = getIntProperty("GameOfLifeAlive");
     }
 
     @Override
