@@ -2,15 +2,20 @@ package cellsociety.games;
 
 import cellsociety.components.Cell;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class GameOfLifeModel extends Game {
     private int ALIVE = 1;
     private int DEAD = 0;
 
-    public GameOfLifeModel(String filename) {
+    public GameOfLifeModel (String filename) {
         super(filename);
     }
+
+    public GameOfLifeModel (GameOfLifeModel copy) { super(copy); }
+
+    public GameOfLifeModel (int[][] states) { super(states); }
 
     @Override
     public void update() {
@@ -34,4 +39,6 @@ public class GameOfLifeModel extends Game {
         }
         return true;
     }
+
+
 }

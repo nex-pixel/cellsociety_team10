@@ -18,10 +18,19 @@ public abstract class Game {
 
     public Game () {}
 
+    public Game (Game copy) {
+        this.myReader = copy.myReader;
+        this.myGrid = copy.myGrid;
+    }
+
     public Game (String filename) {
         createReader(filename);
         int[][] states = myReader.read();
         myGrid = new Grid(states);
+    }
+
+    public Game (int[][] states) {
+        setGrid(states);
     }
 
     protected Map<Point, Cell> getGrid (){ return myGrid.getBoard(); }
@@ -61,7 +70,7 @@ public abstract class Game {
         }
     }
 
-    public int[][] toGridArray () {
+    private int[][] toGridArray () {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];
         for (int r = 0; r < myGrid.getNumRows(); r++) {
             for (int c = 0; c < myGrid.getNumCols(); c++) {
@@ -88,6 +97,11 @@ public abstract class Game {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public boolean equals (Object o) {
+        return Arrays.deepEquals(((Game) o).toGridArray(), this.toGridArray());
     }
 
 }

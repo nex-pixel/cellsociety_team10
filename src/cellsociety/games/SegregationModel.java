@@ -51,6 +51,8 @@ public class SegregationModel extends Game {
         setEmptyCells();
     }
 
+    public SegregationModel (SegregationModel copy) { super(copy); }
+
     private void setEmptyCells () {
         for (Point point: getGrid().keySet()) {
             Cell cell = getGrid().get(point);
