@@ -2,7 +2,6 @@ package cellsociety.games;
 
 import cellsociety.components.Cell;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class GameOfLifeModel extends Game {
