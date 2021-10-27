@@ -8,14 +8,18 @@ public class GameOfLifeModel extends Game {
     private int ALIVE = 1;
     private int DEAD = 0;
 
-    public GameOfLifeModel(String filename) {
+    public GameOfLifeModel (String filename) {
         super(filename);
     }
 
-    @Override
-    public void update() {
-        super.update();
-    }
+    public GameOfLifeModel (GameOfLifeModel copy) { super(copy); }
+
+    public GameOfLifeModel (int[][] states) { super(states); }
+
+//    @Override
+//    public void update() {
+//        super.update();
+//    }
 
     @Override
     protected boolean applyRule(Cell cell){
@@ -34,4 +38,6 @@ public class GameOfLifeModel extends Game {
         }
         return true;
     }
+
+
 }

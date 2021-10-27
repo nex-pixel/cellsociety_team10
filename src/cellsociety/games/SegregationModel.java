@@ -51,6 +51,13 @@ public class SegregationModel extends Game {
         setEmptyCells();
     }
 
+    public SegregationModel (SegregationModel copy) {
+        super(copy);
+        myThreshold = copy.myThreshold;
+    }
+
+    public double getThreshold () { return myThreshold; }
+
     private void setEmptyCells () {
         for (Point point: getGrid().keySet()) {
             Cell cell = getGrid().get(point);
@@ -104,5 +111,10 @@ public class SegregationModel extends Game {
             }
         }
         return (double) numSameNeighbors / numOccupiedNeighbors > myThreshold;
+    }
+
+    @Override
+    public boolean equals (Object o) {
+        return super.equals(o) && (myThreshold == ((SegregationModel) o).getThreshold());
     }
 }
