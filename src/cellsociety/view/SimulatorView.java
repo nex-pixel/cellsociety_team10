@@ -63,7 +63,7 @@ public class SimulatorView {
 
     private void initializeSimulationScene(){
         Stage stage = new Stage();
-        updateSimulation(myGame.getGrid());
+        //updateSimulation(myGame.getGrid());
         VBox simulationBox = generateSimulationVBox();
         myScene = new Scene(simulationBox);
         stage.setScene(myScene);
@@ -73,7 +73,7 @@ public class SimulatorView {
 
     private void step(){
         myGame.update();
-        updateSimulation(myGame.getGrid());
+        //updateSimulation(myGame.getGrid());
     }
 
     // Start new animation to show search algorithm's steps
