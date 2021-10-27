@@ -161,7 +161,7 @@ public class SimulatorView {
      */
     private VBox generateSimulationVBox(){
         HBox buttonBox = generateSimulatorButtonBox();
-        buttonBox.getChildren().add(makeSlider("Speed", 0.1, 5.0));
+        buttonBox.getChildren().add(makeSlider(myLanguageResources.getString("SpeedLabel"), 0.1, 5.0));
 
         VBox simulationBox = new VBox();
         simulationBox.getChildren().addAll(myGridView, buttonBox);

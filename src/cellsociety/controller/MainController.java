@@ -31,6 +31,7 @@ public class MainController {
     private MainMenuView mainMenu;
     private String DEFAULT_CSS_FILE_LABEL = "Duke";
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
+    private static final int MAIN_SCREEN_SIZE = 500;
 
 
     public MainController(Stage stage, String language){
@@ -40,7 +41,7 @@ public class MainController {
 
     public void startMainMenu() {
         mainMenu  = new MainMenuView(myLanguageResources);
-        myStage.setScene(mainMenu.setMenuDisplay(myStage, this, 500, 500));
+        myStage.setScene(mainMenu.setMenuDisplay(myStage, this, MAIN_SCREEN_SIZE, MAIN_SCREEN_SIZE));
         cssFile = DEFAULT_CSS_FILE_LABEL;
         updateCSS(cssFile);
         myStage.show();

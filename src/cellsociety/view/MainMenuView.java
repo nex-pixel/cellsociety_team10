@@ -61,9 +61,7 @@ public class MainMenuView {
         populateOptions(modelOptions, modelLabelOptions);
         populateOptions(cssFileOptions, cssFileLabelOptions);
         populateMainMenuButtonMap();
-
         setLabel("Cell Society", "title");
-
         populateMainMenuButtonMap();
         initializeHomePageRoot();
         Scene scene = new Scene(homePageRoot, width, height);
