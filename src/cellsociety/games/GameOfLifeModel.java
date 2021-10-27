@@ -5,11 +5,27 @@ import cellsociety.components.Cell;
 import java.util.List;
 
 public class GameOfLifeModel extends Game {
-    private int ALIVE = 1;
-    private int DEAD = 0;
+    private int ALIVE;
+    private int DEAD;
 
-    public GameOfLifeModel(String filename) {
+    public GameOfLifeModel (String filename) {
         super(filename);
+        setStateProperties();
+    }
+
+    public GameOfLifeModel (GameOfLifeModel copy) {
+        super(copy);
+        setStateProperties();
+    }
+
+    public GameOfLifeModel (int[][] states) {
+        super(states);
+        setStateProperties();
+    }
+
+    private void setStateProperties(){
+        DEAD = getIntProperty("GameOfLifeDead");
+        ALIVE = getIntProperty("GameOfLifeAlive");
     }
 
     @Override
