@@ -82,7 +82,7 @@ public class PercolationModel extends Game {
     public boolean isPercolated () {
         int r = getMyGrid().getNumRows() - 1;
         for (int c = 0; c < getMyGrid().getNumCols(); c++) {
-            if (getGrid().get(new Point(c, r)).getCurrentStatus() == PERCOLATED) {
+            if (getCell(c, r).getCurrentStatus() == PERCOLATED) {
                 return true;
             }
         }
