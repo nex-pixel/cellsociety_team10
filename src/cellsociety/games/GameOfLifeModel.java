@@ -17,10 +17,10 @@ public class GameOfLifeModel extends Game {
 
     public GameOfLifeModel (int[][] states) { super(states); }
 
-    @Override
-    public void update() {
-        super.update();
-    }
+//    @Override
+//    public void update() {
+//        super.update();
+//    }
 
     @Override
     protected boolean applyRule(Cell cell){

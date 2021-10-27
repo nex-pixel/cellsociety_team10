@@ -28,7 +28,7 @@ public class SegregationModelTest {
 
         SegregationModel grid = new SegregationModel(game);
 
-        assertEquals(grid, states);
+        assertEquals(grid, game);
         assertTrue(game.isSatisfied(game.getGrid().get(new Point(0,0))));
     }
 

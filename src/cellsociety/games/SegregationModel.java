@@ -4,6 +4,7 @@ import cellsociety.components.Cell;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.List;
 
@@ -51,7 +52,12 @@ public class SegregationModel extends Game {
         setEmptyCells();
     }
 
-    public SegregationModel (SegregationModel copy) { super(copy); }
+    public SegregationModel (SegregationModel copy) {
+        super(copy);
+        myThreshold = copy.myThreshold;
+    }
+
+    public double getThreshold () { return myThreshold; }
 
     private void setEmptyCells () {
         for (Point point: getGrid().keySet()) {
@@ -106,5 +112,10 @@ public class SegregationModel extends Game {
             }
         }
         return (double) numSameNeighbors / numOccupiedNeighbors > myThreshold;
+    }
+
+    @Override
+    public boolean equals (Object o) {
+        return super.equals(o) && (myThreshold == ((SegregationModel) o).getThreshold());
     }
 }
