@@ -1,11 +1,13 @@
 package cellsociety.view;
 
+import cellsociety.controller.FileManager;
 import cellsociety.controller.SimulatorController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -15,6 +17,7 @@ import cellsociety.components.Cell;
 import javafx.scene.text.Text;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 public class SimulatorView {
     private GridPane myGridView;
@@ -24,6 +27,8 @@ public class SimulatorView {
     private int gridWidth;
     private int gridHeight;
     private SimulatorController mySimulatorController;
+    private FileManager myFileManager;
+    private Map<String, javafx.event.EventHandler<ActionEvent>> buttonActionMap;
 
     public SimulatorView(int gridWidth, int gridHeight, Color deadColor, Color aliveColor, Color defaultColor){
         myGridView = new GridPane();
@@ -33,6 +38,7 @@ public class SimulatorView {
         this.aliveColor = aliveColor;
         this.defaultColor = defaultColor;
         setDefaultGrid();
+        setButtonActionMap();
     }
 
     // fills the grid with squareCells of defaultColor
@@ -50,6 +56,15 @@ public class SimulatorView {
         }
     }
 
+    private void setButtonActionMap(){
+        buttonActionMap = new TreeMap<>();
+        buttonActionMap.put("Pause", event -> mySimulatorController.pause());
+        buttonActionMap.put("Play", event -> mySimulatorController.play());
+        buttonActionMap.put("Step", event -> mySimulatorController.step());
+        buttonActionMap.put("Save", event -> saveFile());
+        buttonActionMap.put("Load", event -> loadSimulationFromCSV());
+    }
+
     /**
      * updates the cells based on the values in Map
      * dead cells are colored with deadColor, alive cells are colored with aliveColor
@@ -62,14 +77,16 @@ public class SimulatorView {
             Node currNode = myGridView.getChildren().get(gridNumber);
             myGridView.getChildren().remove(currNode);
             squareCell currCell = (squareCell) currNode;
-            if(cellStatus.get(coordinate).getCurrentStatus() == 0){ // TODO: assumed dead is 0
-                currCell.setFill(deadColor);
-            }else if(cellStatus.get(coordinate).getCurrentStatus() == 1){ //TODO assumed alive is 1
-                currCell.setFill(aliveColor);
-            }else if(cellStatus.get(coordinate).getCurrentStatus() == 2){
-                currCell.setFill(defaultColor);
-            }
+            updateCellColor(currCell, cellStatus.get(coordinate).getCurrentStatus());
             myGridView.getChildren().add(gridNumber, currCell);
+        }
+    }
+
+    private void updateCellColor(squareCell cell, int state){
+        switch (state) {
+            case 0 -> cell.setFill(deadColor);
+            case 1 -> cell.setFill(aliveColor);
+            case 2 -> cell.setFill(defaultColor);
         }
     }
 
@@ -101,16 +118,28 @@ public class SimulatorView {
     public VBox returnSimulation(SimulatorController simulatorController){
         HBox buttonBox = new HBox();
         mySimulatorController = simulatorController;
-        Button pause = generateButton("Pause", event -> mySimulatorController.pause());
-        Button play = generateButton("Play", event -> mySimulatorController.play());
-        Button step = generateButton("Step", event -> mySimulatorController.step());
-        Button save = generateButton("Save", event -> mySimulatorController.saveCSVFile());
-        Button load = generateButton("Load", event -> mySimulatorController.loadNewCSV());
-
-        buttonBox.getChildren().addAll(pause, play, step, new Text("Speed"), makeSlider("Speed", 0.1, 5.0), save,load);
+        for(String action : buttonActionMap.keySet()){
+            buttonBox.getChildren().add(generateButton(action, buttonActionMap.get(action)));
+        }
+        buttonBox.getChildren().addAll(new Text("Speed"), makeSlider("Speed", 0.1, 5.0));
         VBox simulationBox = new VBox();
         simulationBox.getChildren().addAll(myGridView, buttonBox);
         return simulationBox;
+    }
+
+    private void loadSimulationFromCSV(){
+        //TODO users should be able to choose model type
+        myFileManager.chooseFile();
+        mySimulatorController.loadNewSimulationFromCSV(myFileManager.getCurrentTextFile());
+    }
+
+
+
+    private void saveFile(){
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setContentText("Enter File Name");
+        String fileName = dialog.showAndWait().get();
+        mySimulatorController.saveCSVFile(fileName);
     }
 
     private Button generateButton(String label, EventHandler<ActionEvent> event) {

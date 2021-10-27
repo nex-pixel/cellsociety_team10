@@ -45,11 +45,8 @@ public class SimulatorController {
         mySimulatorView.updateSimulation(myGame.getGrid());
     }
 
-    // Start new animation to show search algorithm's steps
+    // Start new animation to show game model's steps
     private void playAnimation () {
-        if (myAnimation != null) {
-            myAnimation.stop();
-        }
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(animationSpeed), e -> step()));
         myAnimation.play();
@@ -63,33 +60,46 @@ public class SimulatorController {
      */
     public void createNewSimulation(int modelType, Stage stage, File csvFile){
         myStage = stage;
-        generateNewGame(modelType, csvFile);
-        mySimulatorView = new SimulatorView(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows(),
-                deadColor, aliveColor, defaultColor);
-        mySimulatorView.updateSimulation(myGame.getGrid());
-        VBox simulationBox = mySimulatorView.returnSimulation(this);
-        stage.setScene(new Scene(simulationBox));
-        stage.show();
+        myGame = generateNewGame(modelType, csvFile);
+        // create new simulation from the game
+        showGameSimulationView(myGame);
         playAnimation();
     }
 
-    public void generateNewGame(int gameType, File csvFile){
+    /**
+     * load a new simulation from the CSV file selected by the user
+     * @param csvFile file selected by the user
+     */
+    public void loadNewSimulationFromCSV(File csvFile){
+        myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
+        showGameSimulationView(myGame);
+        playAnimation();
+    }
+
+    private void showGameSimulationView(Game game){
+        mySimulatorView = new SimulatorView(game.getMyGrid().getNumCols(), game.getMyGrid().getNumRows(),
+                deadColor, aliveColor, defaultColor);
+        mySimulatorView.updateSimulation(game.getGrid());
+        myStage.setScene(new Scene(mySimulatorView.returnSimulation(this)));
+        myStage.show();
+    }
+
+    // create new game based on the gameType and return
+    private Game generateNewGame(int gameType, File csvFile){
         System.out.println(gameType);
         switch (gameType) {
             case 0:
-                myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
-                break;
+                return new GameOfLifeModel(csvFile.getAbsolutePath());
             case 1:
-                myGame = new SpreadingFireModel(csvFile.getAbsolutePath());
-                break;
+                return new SpreadingFireModel(csvFile.getAbsolutePath());
             case 2:
                 break;
             case 3:
                 break;
             case 4:
-                myGame = new PercolationModel(csvFile.getAbsolutePath());
-                break;
+                 return new PercolationModel(csvFile.getAbsolutePath());
         }
+        return null;
     }
 
 
@@ -119,25 +129,9 @@ public class SimulatorController {
     /**
      * saves the current grid status into a CSV file
      */
-    public void saveCSVFile(){
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setContentText("Enter File Name");
-        String fileName = dialog.showAndWait().get(); //TODO: check for ispresent
+    public void saveCSVFile(String fileName){
         myGame.saveCSVFile(fileName);
     }
 
-    /**
-     * load a new simulation from the CSV file selected by the user
-     */
-    public void loadNewCSV(){
-        myFileManager.chooseFile();
-        myGame = new GameOfLifeModel(myFileManager.getCurrentTextFile().getAbsolutePath());
-        mySimulatorView.updateToNewSimulation(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows());
-        mySimulatorView.updateSimulation(myGame.getGrid());
-        VBox simulationBox = mySimulatorView.returnSimulation(this);
-        myStage.setScene(new Scene(simulationBox));
-        myStage.show();
-        playAnimation();
-    }
 
 }
