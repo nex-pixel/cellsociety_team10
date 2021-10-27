@@ -19,6 +19,10 @@ public class SegregationModel extends Game {
     private List<Cell> myEmptyCells;
 
     public SegregationModel (int numRows, int numCols, double emptyRate, double agentXRate, double threshold) {
+        EMPTY = getIntProperty("SegregationEmpty");
+        AGENT_X = getIntProperty("SegregationAgentX");
+        AGENT_O = getIntProperty("SegregationAgent0");
+        RANGE = getIntProperty("SegregationRange");
         myEmptyCells = new ArrayList<>();
         myThreshold = threshold;
         myNumOfAgents = 0;

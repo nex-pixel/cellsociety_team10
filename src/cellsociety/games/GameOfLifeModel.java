@@ -5,8 +5,8 @@ import cellsociety.components.Cell;
 import java.util.List;
 
 public class GameOfLifeModel extends Game {
-    private int ALIVE = 1;
-    private int DEAD = 0;
+    private int ALIVE;
+    private int DEAD;
 
     public GameOfLifeModel(String filename) {
         super(filename);
@@ -15,6 +15,8 @@ public class GameOfLifeModel extends Game {
     @Override
     public void update() {
         super.update();
+        DEAD = getIntProperty("GameOfLifeDead");
+        ALIVE = getIntProperty("GameOfLifeAlive");
     }
 
     @Override

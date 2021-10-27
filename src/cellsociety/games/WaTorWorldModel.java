@@ -1,7 +1,6 @@
 package cellsociety.games;
 
 import cellsociety.components.Cell;
-import cellsociety.components.Grid;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -10,16 +9,23 @@ import java.util.Random;
 
 public class WaTorWorldModel extends Game{
     //neighbors only north south east and west count
-    private final int EMPTY = 0;
-    private final int FISH = 1;
-    private final int SHARK = 2;
-    private final int SHARK_STARTING_ENERGY = 10;
-    private final int FISH_STARTING_VAL = 0;
-    private final int FISH_REPRODUCE_VAL = 5;
+    private int EMPTY = 0;
+    private int FISH = 1;
+    private int SHARK = 2;
+    private int SHARK_STARTING_ENERGY = 10;
+    private int FISH_STARTING_VAL = 0;
+    private int FISH_REPRODUCE_VAL = 5;
     private Random rand;
 
     public WaTorWorldModel(String filename){
         super(filename);
+        EMPTY = getIntProperty("WatorWorldEmpty");
+        FISH = getIntProperty("WatorWorldFish");
+        SHARK = getIntProperty("WatorWorldShark");
+        SHARK_STARTING_ENERGY = getIntProperty("WatorWorldSharkStartingEnergy");
+        FISH_STARTING_VAL = getIntProperty("WatorWorldFishStart");
+        FISH_REPRODUCE_VAL = getIntProperty("WatorWorldFishReproduceNum");
+
         setSharkEnergyValues();
     }
 

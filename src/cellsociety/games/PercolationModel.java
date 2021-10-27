@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class PercolationModel extends Game {
 
@@ -20,6 +21,9 @@ public class PercolationModel extends Game {
     public PercolationModel (String filename) {
         super(filename);
         setOpenCells();
+        BLOCKED = getIntProperty("PercolationBlocked");
+        OPEN = getIntProperty("PercolationOpen");
+        PERCOLATED = getIntProperty("PercolationPercolated");
     }
 
     public PercolationModel (int numRows, int numCols) {

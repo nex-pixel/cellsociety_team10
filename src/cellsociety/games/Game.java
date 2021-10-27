@@ -9,16 +9,20 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 
 public abstract class Game {
 
     private ReadFile myReader;
     protected Grid myGrid;
+    private static final String DEFAULT_GAME_DATA = "cellsociety.resources.";
+    protected ResourceBundle myGameData;
 
     public Game () {}
 
     public Game (String filename) {
+        populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
         myGrid = new Grid(states);
@@ -93,4 +97,11 @@ public abstract class Game {
 
     }
 
+    private void populateGameConditions() {
+        myGameData = ResourceBundle.getBundle(DEFAULT_GAME_DATA);
+    }
+
+    protected int getIntProperty(String label) {
+        return Integer.parseInt(myGameData.getString(label));
+    }
 }
