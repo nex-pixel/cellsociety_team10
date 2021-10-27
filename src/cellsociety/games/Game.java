@@ -29,7 +29,7 @@ public abstract class Game {
     }
     public void setGrid (int[][] states) { myGrid = new Grid(states); }
 
-    public Cell getCell (int x, int y) { return getGrid().get(new Point(x, y)); }
+    public int getCellStatus (int x, int y) { return getGrid().get(new Point(x, y)).getCurrentStatus(); }
 
     public Grid getMyGrid(){
         return myGrid;
