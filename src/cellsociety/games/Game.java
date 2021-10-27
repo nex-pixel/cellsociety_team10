@@ -24,13 +24,10 @@ public abstract class Game {
         myGrid = new Grid(states);
     }
 
-    public Map<Point, Cell> getGrid (){
-        return myGrid.getBoard();
-    }
-    public void setGrid (int[][] states) { myGrid = new Grid(states); }
+    protected Map<Point, Cell> getGrid (){ return myGrid.getBoard(); }
+    protected void setGrid (int[][] states) { myGrid = new Grid(states); }
 
     public int getCellStatus (int x, int y) { return getGrid().get(new Point(x, y)).getCurrentStatus(); }
-
     public int getNumRows () { return myGrid.getNumRows(); }
     public int getNumCols () { return myGrid.getNumCols(); }
 
