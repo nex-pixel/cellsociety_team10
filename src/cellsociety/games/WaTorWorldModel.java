@@ -44,7 +44,6 @@ public class WaTorWorldModel extends Game{
         List<Cell> adjNeighbors = cell.getAdjacentNeighbors();
         if(cell.getCurrentStatus() == FISH){
             fishMovement(cell, adjNeighbors);
-
         }
         return true;
     }
@@ -53,8 +52,15 @@ public class WaTorWorldModel extends Game{
         List<Cell> adjNeigh = checkNumCellsThisCase(EMPTY, adjacentNeighbors);
         if(adjNeigh.size() > 0){
             int whichAdjacentCell = rand.nextInt(adjNeigh.size());
-            adjNeigh.get(whichAdjacentCell).setNextStatus(cell.getCurrentStatus());
-            cell.setNextStatus(EMPTY);
+            Cell chosenNextCell = adjNeigh.get(whichAdjacentCell);
+            chosenNextCell.setNextStatus(cell.getCurrentStatus());
+            if(cell.getMiscellaneousVal() <= FISH_REPRODUCE_VAL) {
+                cell.setNextStatus(EMPTY);
+                cell.setMiscellaneousVal(cell.getMiscellaneousVal() + 1);
+            } else if(cell.getMiscellaneousVal() > FISH_REPRODUCE_VAL){
+                cell.setNextStatus(cell.getCurrentStatus());
+                cell.setMiscellaneousVal(FISH_STARTING_VAL);
+            }
         }
     }
 

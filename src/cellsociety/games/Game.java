@@ -29,6 +29,8 @@ public abstract class Game {
     }
     public void setGrid (int[][] states) { myGrid = new Grid(states); }
 
+    public Cell getCell (int x, int y) { return getGrid().get(new Point(x, y)); }
+
     public Grid getMyGrid(){
         return myGrid;
     }
@@ -63,7 +65,7 @@ public abstract class Game {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];
         for (int r = 0; r < myGrid.getNumRows(); r++) {
             for (int c = 0; c < myGrid.getNumCols(); c++) {
-                ret[r][c] = getGrid().get(new Point(c, r)).getCurrentStatus();
+                ret[r][c] = getCell(c, r).getCurrentStatus();
             }
         }
         return ret;
