@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 public class MainController {
-    public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.resources.";
+    private static final String RESOURCE_PACKAGE = "cellsociety.resources.";
     private Stage myStage;
     private static ResourceBundle myLanguageResources;
     private String DEFAULT_LANGUAGE = "English";
@@ -18,15 +18,18 @@ public class MainController {
     private MainMenuView mainMenu;
     private String DEFAULT_CSS_FILE_LABEL = "Duke";
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
+    private ResourceBundle myActionEventsResources;
+    private String ACTION_BUNDLE = "MainMenuActionEvents";
 
 
     public MainController(Stage stage, String language){
         myStage = stage;
-        initializeResourceBundle(language);
+        myLanguageResources = initializeResourceBundle(language);
+        myActionEventsResources = initializeResourceBundle(ACTION_BUNDLE);
     }
 
     public void startMainMenu() {
-        mainMenu  = new MainMenuView(myLanguageResources);
+        mainMenu  = new MainMenuView(myLanguageResources, myActionEventsResources);
         myStage.setScene(mainMenu.setMenuDisplay(this, 500, 500));
         cssFile = DEFAULT_CSS_FILE_LABEL;
         updateCSS(cssFile);
@@ -55,16 +58,20 @@ public class MainController {
         simulatorController.createNewSimulation(modelType, csvFile);
     }
 
-    private void initializeResourceBundle(String language) {
+    private ResourceBundle initializeResourceBundle(String name) {
         try {
-            generateResourceBundle(language);
+            return generateResourceBundle(name);
         } catch (Exception e) {
-            generateResourceBundle(DEFAULT_LANGUAGE);
+            return generateResourceBundle(DEFAULT_LANGUAGE);
         }
     }
 
-    private void generateResourceBundle(String language) {
-        myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
+    private ResourceBundle generateResourceBundle(String name) {
+        return ResourceBundle.getBundle(RESOURCE_PACKAGE + name);
+    }
+
+    public ResourceBundle getMyActionEventsResources(){
+        return myActionEventsResources;
     }
 
 }

@@ -45,6 +45,7 @@ public class SimulatorView {
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private Game myGame;
     private Scene myScene;
+    private SimulatorButtonView mySimulatorButtonView;
 
     public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController){
         mySimulatorController = simulatorController;
@@ -59,6 +60,8 @@ public class SimulatorView {
         populateSimulatorButtonMap();
         setDefaultGrid();
         initializeSimulationScene();
+        mySimulatorButtonView = new SimulatorButtonView(this, mySimulatorController);
+
     }
 
     private void initializeSimulationScene(){
@@ -71,7 +74,7 @@ public class SimulatorView {
         playAnimation();
     }
 
-    private void step(){
+    public void step(){
         myGame.update();
         updateSimulation(myGame.getGrid());
     }
@@ -86,11 +89,11 @@ public class SimulatorView {
         myAnimation.play();
     }
 
-    private void pause(){
+    public void pause(){
         myAnimation.pause();
     }
 
-    private void play(){
+    public void play(){
         myAnimation.play();
     }
 
@@ -160,7 +163,7 @@ public class SimulatorView {
      * @return VBox containing gridpane of the simulation and control buttons
      */
     private VBox generateSimulationVBox(){
-        HBox buttonBox = generateSimulatorButtonBox();
+        HBox buttonBox = mySimulatorButtonView.generateSimulatorButtonBox();
         buttonBox.getChildren().add(makeSlider("Speed", 0.1, 5.0));
 
         VBox simulationBox = new VBox();

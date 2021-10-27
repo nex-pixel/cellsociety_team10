@@ -19,11 +19,12 @@ class MainMenuViewTest extends DukeApplicationTest {
     private Labeled testLabel;
     private Labeled testLabel2;
     private Labeled testLabel3;
-    private ResourceBundle resourceBundle = ResourceBundle.getBundle("cellsociety.resources.English");
+    private ResourceBundle langResourceBundle = ResourceBundle.getBundle("cellsociety.resources.English");
+    private ResourceBundle eventResourceBundle = ResourceBundle.getBundle("cellsociety.resources.ActionEvents");
 
     @Override
     public void start(Stage stage) throws IOException {
-        testView = new MainMenuView(resourceBundle);
+        testView = new MainMenuView(langResourceBundle, eventResourceBundle);
         stage.show();
         testLabel2 = lookup("Select a type of simulation to run").query();
         testLabel3 = lookup("Load File").query();
