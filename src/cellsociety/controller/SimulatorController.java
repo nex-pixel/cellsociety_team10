@@ -42,6 +42,7 @@ public class SimulatorController {
             myFileManager.checkFileValidity(csvFile);
         }
     }
+    private String[] modelLabelOptions = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
 
     public void generateNewGame(File csvFile){
         switch (myModelType) {
@@ -52,8 +53,10 @@ public class SimulatorController {
                 myGame = new SpreadingFireModel(csvFile.getAbsolutePath());
                 break;
             case 2:
+                //myGame = new SegregationModel();
                 break;
             case 3:
+                myGame = new WaTorWorldModel(csvFile.getAbsolutePath());
                 break;
             case 4:
                 myGame = new PercolationModel(csvFile.getAbsolutePath());
@@ -81,7 +84,7 @@ public class SimulatorController {
         myFileManager.chooseFile();
         File file = myFileManager.getCurrentTextFile();
         createNewSimulation(myModelType, file);
-       // createNewSimulation(0, file);
+        // createNewSimulation(0, file);
         /*
         myGame = new GameOfLifeModel(myFileManager.getCurrentTextFile().getAbsolutePath());
         mySimulatorView.updateToNewSimulation(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows());
