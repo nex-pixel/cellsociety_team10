@@ -14,11 +14,12 @@ public class WaTorWorldModel extends Game{
 
     @Override
     public void update() {
-
+        super.update();
     }
 
     @Override
-    protected void applyRule(Cell cell) {
-
+    protected boolean applyRule(Cell cell) {
+        
+        return true;
     }
 }

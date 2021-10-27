@@ -46,6 +46,7 @@ public abstract class Game {
         // There may be some more types
     }
 
+    //boolean
     protected abstract boolean applyRule(Cell cell);
 
     public void update() {
