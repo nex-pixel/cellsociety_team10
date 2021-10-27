@@ -10,18 +10,20 @@ public class GameOfLifeModel extends Game {
 
     public GameOfLifeModel (String filename) {
         super(filename);
-        DEAD = getIntProperty("GameOfLifeDead");
-        ALIVE = getIntProperty("GameOfLifeAlive");
+        setStateProperties();
     }
 
     public GameOfLifeModel (GameOfLifeModel copy) {
         super(copy);
-        DEAD = getIntProperty("GameOfLifeDead");
-        ALIVE = getIntProperty("GameOfLifeAlive");
+        setStateProperties();
     }
 
     public GameOfLifeModel (int[][] states) {
         super(states);
+        setStateProperties();
+    }
+
+    private void setStateProperties(){
         DEAD = getIntProperty("GameOfLifeDead");
         ALIVE = getIntProperty("GameOfLifeAlive");
     }
