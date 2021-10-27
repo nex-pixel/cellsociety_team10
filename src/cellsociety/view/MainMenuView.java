@@ -2,7 +2,6 @@ package cellsociety.view;
 
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
-import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,10 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -26,21 +23,22 @@ import java.util.ResourceBundle;
 
 public class MainMenuView {
     private static ResourceBundle myLanguageResources;
-    private Stage window;
     private FileManager myFileManager;
     private Pane homePageRoot;
     private MainController myMainController;
-    private final String DEFAULT_MODEL = "Game of Life";
     private ArrayList<String> modelOptions = new ArrayList<>();;
     private Map<String, EventHandler<ActionEvent>> mainMenuButtonMap = new LinkedHashMap<>();
+    private String[] buttonLabelOptions = {"ChooseSimulationTypeLabel", "LoadFileLabel", "ChooseColorScheme", "CreateNewSimulationLabel"};
+    private ArrayList<EventHandler<ActionEvent>> buttonEventLists = new ArrayList<>();
     private String SIM_TYPE_BUTTON_LABEL = "ChooseSimulationTypeLabel";
     private String FILE_BUTTON_LABEL = "LoadFileLabel";
     private String NEW_SIM_BUTTON_LABEL = "CreateNewSimulationLabel";
     private String CHOOSE_COLOR_BUTTON_LABEL = "ChooseColorScheme";
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
-    private String DEFAULT_CSS_FILE_LABEL = "Duke";
     private String mainMenuButtonID = "main-menu-button";
     private String homePageRootID = "home-page-root";
+    private String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
+    private String[] modelLabelOptions = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
 
 
     private int myModelType;
@@ -48,7 +46,8 @@ public class MainMenuView {
 
     public MainMenuView(ResourceBundle resourceBundle){
         myLanguageResources = resourceBundle;
-        myFileManager = new FileManager();
+        myFileManager = new FileManager(myLanguageResources);
+
     }
 
     /**
@@ -59,10 +58,10 @@ public class MainMenuView {
     public Scene setMenuDisplay(Stage stage, MainController mainController, int width, int height) {
         myMainController = mainController;
 
-        populateModelOptions();
-        populateCSSFileOptions();
+        populateOptions(modelOptions, modelLabelOptions);
+        populateOptions(cssFileOptions, cssFileLabelOptions);
+        populateMainMenuButtonMap();
 
-        window = stage;
         setLabel("Cell Society", "title");
 
         populateMainMenuButtonMap();
@@ -71,22 +70,23 @@ public class MainMenuView {
         return scene;
     }
 
-    private void populateModelOptions(){
-        modelOptions.add(myLanguageResources.getString("GameOfLife"));
-        modelOptions.add(myLanguageResources.getString("SpreadingOfFire"));
-        modelOptions.add(myLanguageResources.getString("Schelling's"));
-        modelOptions.add(myLanguageResources.getString("Wa-TorWorld"));
-        modelOptions.add(myLanguageResources.getString("Percolation"));
+    private void populateOptions(ArrayList<String> optionsList, String[] labelList){
+        for(String key: labelList){
+            optionsList.add(myLanguageResources.getString(key));
+        }
     }
 
-
-    private void populateCSSFileOptions(){
-        cssFileOptions.add(myLanguageResources.getString("LightLabel"));
-        cssFileOptions.add(myLanguageResources.getString("DarkLabel"));
-        cssFileOptions.add(myLanguageResources.getString("DukeLabel"));
-        cssFileOptions.add(myLanguageResources.getString("UNCLabel"));
+    private void populateButtonEvents(){
+        buttonEventLists.add(event -> generateChoiceDialogBox(myLanguageResources.getString(modelLabelOptions[0]),
+                modelOptions, "modelType", myLanguageResources.getString("ModelContent")));
+        buttonEventLists.add(event -> myFileManager.chooseFile());
+        buttonEventLists.add(event-> generateChoiceDialogBox(myLanguageResources.getString(cssFileLabelOptions[0]),
+                cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent")));
+        buttonEventLists.add(event ->
+                myMainController.generateNewSimulation(myModelType, myFileManager.getCurrentTextFile(), myFileManager));
 
     }
+
     private void initializeHomePageRoot(){
         homePageRoot = new TilePane();
         homePageRoot.getChildren().add(generateMainMenuPanel());
@@ -100,17 +100,14 @@ public class MainMenuView {
 
     // maybe clean this up
     private void populateMainMenuButtonMap(){
-        mainMenuButtonMap.put(myLanguageResources.getString(SIM_TYPE_BUTTON_LABEL), event -> generateChoiceDialogBox(DEFAULT_MODEL,
-                modelOptions, "modelType", myLanguageResources.getString("ModelContent")));
-        mainMenuButtonMap.put(myLanguageResources.getString(FILE_BUTTON_LABEL), event -> myFileManager.chooseFile());
-        mainMenuButtonMap.put(myLanguageResources.getString(CHOOSE_COLOR_BUTTON_LABEL), event-> generateChoiceDialogBox(DEFAULT_CSS_FILE_LABEL,
-                cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent")));
-        mainMenuButtonMap.put(myLanguageResources.getString(NEW_SIM_BUTTON_LABEL), event ->
-                myMainController.generateNewSimulation(myModelType, myFileManager.getCurrentTextFile()));
-
+        populateButtonEvents();
+        int i = 0;
+        for(String buttonLabel : buttonLabelOptions){
+            mainMenuButtonMap.put(myLanguageResources.getString(buttonLabel), buttonEventLists.get(i));
+            i++;
+        }
     }
 
-    // want to add a way to update button label with choice so you know you have set it
     private Node generateMainMenuPanel(){
         VBox panel = new VBox();
         mainMenuButtonMap.forEach((key,value) -> addButtonToPanel(key,value,panel));
@@ -125,7 +122,7 @@ public class MainMenuView {
         return choiceDialog;
     }
 
-    // use reflection to get rid of cases
+    //TODO: use reflection to make this easier
     private void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog, String resultType){
         choiceDialog.showAndWait();
         if(resultType.equals("modelType")){

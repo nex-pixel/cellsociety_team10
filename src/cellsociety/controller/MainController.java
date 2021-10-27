@@ -41,10 +41,10 @@ public class MainController {
     public void startMainMenu() {
         mainMenu  = new MainMenuView(myLanguageResources);
         myStage.setScene(mainMenu.setMenuDisplay(myStage, this, 500, 500));
-        updateCSS(DEFAULT_CSS_FILE_LABEL);
+        cssFile = DEFAULT_CSS_FILE_LABEL;
+        updateCSS(cssFile);
         myStage.show();
     }
-
 
     /**
      * setter for modelType
@@ -63,9 +63,9 @@ public class MainController {
         }
     }
 
-    public void generateNewSimulation(int modelType, File csvFile){
-        simulatorController = new SimulatorController(Color.CORAL, Color.BEIGE, Color.BROWN);
-        simulatorController.createNewSimulation(modelType, myStage, csvFile);
+    public void generateNewSimulation(int modelType, File csvFile, FileManager fileManager){
+        simulatorController = new SimulatorController(fileManager, cssFile, myLanguageResources);
+        simulatorController.createNewSimulation(modelType, csvFile);
     }
 
     private void initializeResourceBundle(String language) {
@@ -79,10 +79,5 @@ public class MainController {
     private void generateResourceBundle(String language) {
         myLanguageResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
     }
-
-    public ResourceBundle getResourceBundle() {
-        return myLanguageResources;
-    }
-
 
 }
