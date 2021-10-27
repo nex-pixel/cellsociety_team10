@@ -22,16 +22,56 @@ public class SimulatorController {
 
 
 
+<<<<<<< HEAD
+    // Start new animation to show game model's steps
+    private void playAnimation () {
+        myAnimation.setCycleCount(Timeline.INDEFINITE);
+        myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(animationSpeed), e -> step()));
+        myAnimation.play();
+=======
     public SimulatorController(FileManager fileManager, String cssFile, ResourceBundle resourceBundle) {
         myFileManager = fileManager;
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
+>>>>>>> 4e65a68a9073584034680d35d20ecc2d2e2e5f72
     }
 
     /**
      * Receives csvFile with the initial state of the cells and repeats the rule indefinitely until the user stops it
      * @param csvFile file containing the initial state
      */
+<<<<<<< HEAD
+    public void createNewSimulation(int modelType, Stage stage, File csvFile){
+        myStage = stage;
+        myGame = generateNewGame(modelType, csvFile);
+        // create new simulation from the game
+        showGameSimulationView(myGame);
+        playAnimation();
+    }
+
+    /**
+     * load a new simulation from the CSV file selected by the user
+     * @param csvFile file selected by the user
+     */
+    public void loadNewSimulationFromCSV(File csvFile){
+        myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
+        showGameSimulationView(myGame);
+        playAnimation();
+    }
+
+    private void showGameSimulationView(Game game){
+        mySimulatorView = new SimulatorView(game.getMyGrid().getNumCols(), game.getMyGrid().getNumRows(),
+                deadColor, aliveColor, defaultColor);
+        mySimulatorView.updateSimulation(game.getGrid());
+        myStage.setScene(new Scene(mySimulatorView.returnSimulation(this)));
+        myStage.show();
+    }
+
+    // create new game based on the gameType and return
+    private Game generateNewGame(int gameType, File csvFile){
+        System.out.println(gameType);
+        switch (gameType) {
+=======
     public void createNewSimulation(int modelType, File csvFile){
         try{
             myModelType = modelType;
@@ -42,39 +82,34 @@ public class SimulatorController {
             myFileManager.checkFileValidity(csvFile);
         }
     }
-    private String[] modelLabelOptions = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
 
     public void generateNewGame(File csvFile){
         switch (myModelType) {
+>>>>>>> 4e65a68a9073584034680d35d20ecc2d2e2e5f72
             case 0:
-                myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
-                break;
+                return new GameOfLifeModel(csvFile.getAbsolutePath());
             case 1:
-                myGame = new SpreadingFireModel(csvFile.getAbsolutePath());
-                break;
+                return new SpreadingFireModel(csvFile.getAbsolutePath());
             case 2:
-                //myGame = new SegregationModel();
                 break;
             case 3:
-                myGame = new WaTorWorldModel(csvFile.getAbsolutePath());
                 break;
             case 4:
-                myGame = new PercolationModel(csvFile.getAbsolutePath());
-                break;
+                 return new PercolationModel(csvFile.getAbsolutePath());
         }
+        return null;
     }
 
 
     /**
      * saves the current grid status into a CSV file
      */
-    public void saveCSVFile(){
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setContentText("Enter File Name");
-        String fileName = dialog.showAndWait().get(); //TODO: check for ispresent
+    public void saveCSVFile(String fileName){
         myGame.saveCSVFile(fileName);
     }
 
+<<<<<<< HEAD
+=======
     /**
      * load a new simulation from the CSV file selected by the user
      */
@@ -84,7 +119,7 @@ public class SimulatorController {
         myFileManager.chooseFile();
         File file = myFileManager.getCurrentTextFile();
         createNewSimulation(myModelType, file);
-        // createNewSimulation(0, file);
+       // createNewSimulation(0, file);
         /*
         myGame = new GameOfLifeModel(myFileManager.getCurrentTextFile().getAbsolutePath());
         mySimulatorView.updateToNewSimulation(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows());
@@ -96,6 +131,7 @@ public class SimulatorController {
         playAnimation();
          */
     }
+>>>>>>> 4e65a68a9073584034680d35d20ecc2d2e2e5f72
 
 
 }

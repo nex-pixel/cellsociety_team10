@@ -135,17 +135,20 @@ public class SimulatorView {
         }
     }
 
+
     /**
      * This method creates a new grid for the new simulation to be displayed
      * @param gridWidth width of the new gridPane
      * @param gridHeight height of the new gridPane
      */
+    /* // TODO needs review
     public void updateToNewSimulation(int gridWidth, int gridHeight){
         myGridView = new GridPane();
         myGridWidth = gridWidth;
         myGridHeight = gridHeight;
         setDefaultGrid();
     }
+     */
 
     /**
      * getter for getMyGridView
