@@ -30,17 +30,17 @@ public abstract class Game {
         populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
-        myGrid = new Grid(states);
+        myGrid = new Grid(states, 0, 0);
     }
 
     public Game (int[][] states) {
         setGrid(states);
     }
 
-    protected Map<Point, Cell> getGrid () { return myGrid.getBoard(); }
-    protected void setGrid (int[][] states) { myGrid = new Grid(states); }
+//    protected Map<Point, Cell> getGrid () { return myGrid.getBoard(); }
+    protected void setGrid (int[][] states) { myGrid = new Grid(states, 0, 0); }
 
-    public int getCellStatus (int x, int y) { return getGrid().get(new Point(x, y)).getCurrentStatus(); }
+    public int getCellStatus (int x, int y) { return myGrid.getBoardCell(new Point(x, y)).getCurrentStatus(); }
     public int getNumRows () { return myGrid.getNumRows(); }
     public int getNumCols () { return myGrid.getNumCols(); }
 
@@ -61,12 +61,11 @@ public abstract class Game {
     protected abstract boolean applyRule(Cell cell);
 
     public void update() {
-        Map<Point, Cell> board = myGrid.getBoard();
-        for (Point point: board.keySet()) {
-            applyRule(board.get(point));
+        for (Point point: myGrid.getPoints()) {
+            applyRule(myGrid.getBoardCell(point));
         }
-        for (Point point: board.keySet()) {
-            board.get(point).changeStatus();
+        for (Point point: myGrid.getPoints()) {
+            myGrid.getBoardCell(point).changeStatus();
         }
     }
 
