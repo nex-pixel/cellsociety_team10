@@ -11,9 +11,9 @@ import java.util.Optional;
 
 public class PercolationModel extends Game {
 
-    private int BLOCKED = 0;
-    private int OPEN = 1;
-    private int PERCOLATED = 2;
+    private int BLOCKED;
+    private int OPEN;
+    private int PERCOLATED;
 
     private List<Cell> myOpenCells;
     private List<Cell> cellsToBeRemoved;
@@ -28,7 +28,7 @@ public class PercolationModel extends Game {
 
     public PercolationModel (int numRows, int numCols) {
         int[][] states = new int[numRows][numCols];
-        myGrid = new Grid(states, 0, 0);
+        setGrid(states);
         setOpenCells();
     }
 

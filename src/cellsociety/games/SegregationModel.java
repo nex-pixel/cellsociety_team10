@@ -9,10 +9,10 @@ import java.util.List;
 
 public class SegregationModel extends Game {
 
-    private int EMPTY = 0;
-    private int AGENT_X = 1;
-    private int AGENT_O = 2;
-    private int RANGE = 3;
+    private int EMPTY;
+    private int AGENT_X;
+    private int AGENT_O;
+    private int RANGE;
     private double myThreshold;
     private int myNumOfAgents;
 
