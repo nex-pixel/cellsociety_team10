@@ -9,6 +9,7 @@ class SpreadingFireModelTest {
 
     @BeforeEach
     void setUp() {
+
     }
 
     @Test

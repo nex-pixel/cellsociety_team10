@@ -22,15 +22,15 @@ public class GridTest {
 
     @Test
     void testInitialization (){
-        for(Point currPoint: myGrid.getBoard().keySet()){
-            Cell myCell = myGrid.getBoard().get(currPoint);
+        for(Point currPoint: myGrid.getPoints()){
+            Cell myCell = myGrid.getBoardCell(currPoint);
             assertEquals(passedInGridArray[currPoint.y][currPoint.x], myCell.getCurrentStatus());
         }
     }
 
     @Test
     void checkCornerNeighbors (){
-        Cell cornerUpperLeft = myGrid.getBoard().get(new Point(0,0));
+        Cell cornerUpperLeft = myGrid.getBoardCell(new Point(0,0));
         List<Cell> expectedNeighbors = Arrays.asList(null, null, null, new Cell(1, 1,0),
                 new Cell(0, 1, 1), new Cell(1, 0,1), null, null);
         assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
@@ -38,7 +38,7 @@ public class GridTest {
 
     @Test
     void checkEdgeNeighbors () {
-        Cell edgeCell = myGrid.getBoard().get(new Point(2,1));
+        Cell edgeCell = myGrid.getBoardCell(new Point(2,1));
         List<Cell> expectedNeighbors = Arrays.asList(new Cell(1, 1,0),
                 new Cell(0, 2, 0), null, null, null,
                 new Cell(1, 2,2), new Cell(1, 1,2),
@@ -48,7 +48,7 @@ public class GridTest {
 
     @Test
     void checkCenterNeighbors () {
-        Cell centerCell = myGrid.getBoard().get(new Point(1,1));
+        Cell centerCell = myGrid.getBoardCell(new Point(1,1));
         List<Cell> expectedNeighbors = Arrays.asList(new Cell(0, 0,0),
                 new Cell(1, 1,0), new Cell(0, 2,0),
                 new Cell(1, 2,1), new Cell(1, 2,2),
@@ -60,8 +60,8 @@ public class GridTest {
     @Test
     void checkGridExpansion(){
         myGrid.expandGrid(2,2,2,2);
-        for(Point currPoint: myGrid.getBoard().keySet()){
-            Cell myCell = myGrid.getBoard().get(currPoint);
+        for(Point currPoint: myGrid.getPoints()){
+            Cell myCell = myGrid.getBoardCell(currPoint);
             assertEquals(expandedGridArray[currPoint.y][currPoint.x], myCell.getCurrentStatus());
         }
     }
