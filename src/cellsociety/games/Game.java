@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 public abstract class Game {
 
     private ReadFile myReader;
-    protected Grid myGrid;
+    private Grid myGrid;
     private static final String DEFAULT_GAME_DATA = "cellsociety.resources.";
     protected ResourceBundle myGameData;
 
@@ -38,6 +38,7 @@ public abstract class Game {
     }
 
 //    protected Map<Point, Cell> getGrid () { return myGrid.getBoard(); }
+    protected Grid getGrid () { return myGrid; }
     protected void setGrid (int[][] states) { myGrid = new Grid(states, 0, 0); }
 
     public int getCellStatus (int x, int y) { return myGrid.getBoardCell(new Point(x, y)).getCurrentStatus(); }

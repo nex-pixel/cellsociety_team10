@@ -9,10 +9,14 @@ import java.util.Set;
 public class Grid {
     private int myNumRows, myNumCols;
     private Map<Point, Cell> myBoard;
+    private int myEdgePolicy;
+    private int myNeighborMode;
 
     public Grid (int[][] states, int neighborMode, int edgePolicy) {
         myNumRows = states.length;
         myNumCols = states[0].length;
+        myNeighborMode = neighborMode;
+        myEdgePolicy = edgePolicy;
         myBoard = new HashMap<>();
         for (int rowIndex = 0; rowIndex < myNumRows; rowIndex++) {
             for (int colIndex = 0; colIndex < myNumCols; colIndex++) {
@@ -21,7 +25,7 @@ public class Grid {
                 myBoard.put(point, cell);
             }
         }
-        initializeNeighbors(neighborMode, edgePolicy);
+        initializeNeighbors();
     }
 
     public int getNumRows () { return myNumRows; }
@@ -43,7 +47,7 @@ public class Grid {
 //    //Get Rid Of this
 //    public Map<Point, Cell> getBoard () { return myBoard; }
 
-    protected void initializeNeighbors(int neighborMode, int edgePolicy) {
+    protected void initializeNeighbors() {
         for (Point currentPoint: myBoard.keySet()) {
             myBoard.get(currentPoint).clearNeighborCells();
             Cell currentCell = myBoard.get(currentPoint);
