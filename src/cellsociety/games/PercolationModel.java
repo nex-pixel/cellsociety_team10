@@ -34,8 +34,8 @@ public class PercolationModel extends Game {
         cellsToBeRemoved = new ArrayList<>();
         myOpenCells = new ArrayList<>();
 //        Map<Point, Cell> board = getGrid();
-        for (Point point: myGrid.getPoints()) {
-            Cell cell = myGrid.getBoardCell(point);
+        for (Point point: getGrid().getPoints()) {
+            Cell cell = getGrid().getBoardCell(point);
             if (cell.getCurrentStatus() == OPEN) {
                 myOpenCells.add(cell);
             }

@@ -24,7 +24,7 @@ public class SpreadingFireModel extends Game{
         EMPTY = getIntProperty("SpreadingFireEmpty");
         TREE = getIntProperty("SpreadingFireTree");
         BURNING = getIntProperty("SpreadingFireBurning");
-        myGrid.expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
+        getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
     }
 
     public void setProbOfFire(double probability){
@@ -37,22 +37,22 @@ public class SpreadingFireModel extends Game{
 
     @Override
     public void update() {
-        Set<Point> points = myGrid.getPoints();
+        Set<Point> points = getGrid().getPoints();
         int fireCount = 0;
 //        Map<Point, Cell> board = myGrid.getBoard();
         for (Point point: points) {
-            Cell cellBeingChecked = myGrid.getBoardCell(point);
+            Cell cellBeingChecked = getGrid().getBoardCell(point);
             if(cellBeingChecked.getCurrentStatus() == BURNING) {
                 fireCount++;
             }
-            applyRule(myGrid.getBoardCell(point));
+            applyRule(getGrid().getBoardCell(point));
         }
         if(fireCount == 0){
             firePresentInGrid = false;
         }
         if(firePresentInGrid) {
             for (Point point : points) {
-                myGrid.getBoardCell(point).changeStatus();
+                getGrid().getBoardCell(point).changeStatus();
             }
         }
     }
