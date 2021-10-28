@@ -4,12 +4,13 @@ package cellsociety.components;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Grid {
     private int myNumRows, myNumCols;
     private Map<Point, Cell> myBoard;
 
-    public Grid (int[][] states) {
+    public Grid (int[][] states, int neighborMode, int edgePolicy) {
         myNumRows = states.length;
         myNumCols = states[0].length;
         myBoard = new HashMap<>();
@@ -20,29 +21,29 @@ public class Grid {
                 myBoard.put(point, cell);
             }
         }
-        initializeNeighbors();
+        initializeNeighbors(neighborMode, edgePolicy);
     }
 
     public int getNumRows () { return myNumRows; }
     public int getNumCols () { return myNumCols; }
 
-//    public Set<Point> getPoints(){
-//        return myBoard.keySet();
-//    }
-//
-//    public Cell getBoardCell(Point point){
-//        return myBoard.get(point);
-//    }
-//
-//    public Cell getXYBoardCell(int x, int y){
-//        Point point = new Point(x, y);
-//        return myBoard.get(point);
-//    }
+    public Set<Point> getPoints (){
+        return myBoard.keySet();
+    }
 
-    //Get Rid Of this
-    public Map<Point, Cell> getBoard () { return myBoard; }
+    public Cell getBoardCell (Point point){
+        return myBoard.get(point);
+    }
 
-    private void initializeNeighbors() {
+    public Cell getXYBoardCell (int x, int y){
+        Point point = new Point(x, y);
+        return myBoard.get(point);
+    }
+
+//    //Get Rid Of this
+//    public Map<Point, Cell> getBoard () { return myBoard; }
+
+    protected void initializeNeighbors(int neighborMode, int edgePolicy) {
         for (Point currentPoint: myBoard.keySet()) {
             myBoard.get(currentPoint).clearNeighborCells();
             Cell currentCell = myBoard.get(currentPoint);
