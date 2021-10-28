@@ -4,17 +4,18 @@ import cellsociety.components.Cell;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class WaTorWorldModel extends Game{
     //neighbors only north south east and west count
-    private int EMPTY = 0;
-    private int FISH = 1;
-    private int SHARK = 2;
-    private int SHARK_STARTING_ENERGY = 10;
-    private int FISH_STARTING_VAL = 0;
-    private int FISH_REPRODUCE_VAL = 5;
+    private int EMPTY;
+    private int FISH;
+    private int SHARK;
+    private int SHARK_STARTING_ENERGY;
+    private int STARTING_VAL;
+    private int REPRODUCE_VAL;
     private Random rand;
 
     public WaTorWorldModel(String filename){
@@ -23,8 +24,8 @@ public class WaTorWorldModel extends Game{
         FISH = getIntProperty("WatorWorldFish");
         SHARK = getIntProperty("WatorWorldShark");
         SHARK_STARTING_ENERGY = getIntProperty("WatorWorldSharkStartingEnergy");
-        FISH_STARTING_VAL = getIntProperty("WatorWorldFishStart");
-        FISH_REPRODUCE_VAL = getIntProperty("WatorWorldFishReproduceNum");
+        STARTING_VAL = getIntProperty("WatorWorldRepStartVal");
+        REPRODUCE_VAL = getIntProperty("WatorWorldReproduceNum");
 
         setSharkEnergyValues();
     }
@@ -33,9 +34,9 @@ public class WaTorWorldModel extends Game{
         for(Point point: myGrid.getBoard().keySet()){
             Cell cell = myGrid.getBoard().get(point);
             if(cell.getCurrentStatus() == SHARK){
-                cell.setMiscellaneousVal(SHARK_STARTING_ENERGY);
+                cell.setMiscellaneousVal(Arrays.asList(SHARK_STARTING_ENERGY, STARTING_VAL));
             } else if (cell.getCurrentStatus() == FISH){
-                cell.setMiscellaneousVal(FISH_STARTING_VAL);
+                cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL));
             }
         }
     }
@@ -50,6 +51,8 @@ public class WaTorWorldModel extends Game{
         List<Cell> adjNeighbors = cell.getAdjacentNeighbors();
         if(cell.getCurrentStatus() == FISH){
             fishMovement(cell, adjNeighbors);
+        } else if(cell.getCurrentStatus() == SHARK){
+            sharkMovement(cell, adjNeighbors);
         }
         return true;
     }
@@ -60,14 +63,25 @@ public class WaTorWorldModel extends Game{
             int whichAdjacentCell = rand.nextInt(adjNeigh.size());
             Cell chosenNextCell = adjNeigh.get(whichAdjacentCell);
             chosenNextCell.setNextStatus(cell.getCurrentStatus());
-            if(cell.getMiscellaneousVal() <= FISH_REPRODUCE_VAL) {
-                cell.setNextStatus(EMPTY);
-                cell.setMiscellaneousVal(cell.getMiscellaneousVal() + 1);
-            } else if(cell.getMiscellaneousVal() > FISH_REPRODUCE_VAL){
-                cell.setNextStatus(cell.getCurrentStatus());
-                cell.setMiscellaneousVal(FISH_STARTING_VAL);
-            }
+            reproduceCell(cell, chosenNextCell);
         }
+    }
+
+    private void sharkMovement(Cell cell, List<Cell> adjacentNeighbors){
+
+    }
+
+    private void reproduceCell(Cell cell, Cell chosenCell){
+        int stepsAlive = cell.getMiscellaneousVal().get(0);
+        int energy = cell.getMiscellaneousVal().get(1);
+        if(stepsAlive <= REPRODUCE_VAL) {
+            cell.setNextStatus(EMPTY);
+            chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL));
+        } else if(stepsAlive > REPRODUCE_VAL){
+            cell.setNextStatus(cell.getCurrentStatus());
+            chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL));
+        }
+        cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL));
     }
 
     private List<Cell> checkNumCellsThisCase(int state, List<Cell> cellList){

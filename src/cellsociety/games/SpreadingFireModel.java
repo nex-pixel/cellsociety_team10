@@ -5,6 +5,7 @@ import cellsociety.components.Cell;
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SpreadingFireModel extends Game{
     private int EMPTY;
@@ -37,20 +38,21 @@ public class SpreadingFireModel extends Game{
     @Override
     public void update() {
         Map<Point, Cell> board = myGrid.getBoard();
+        Set<Point> points = myGrid.getPoints();
         int fireCount = 0;
-        for (Point point: board.keySet()) {
-            Cell cellBeingChecked = board.get(point);
+        for (Point point: points) {
+            Cell cellBeingChecked = myGrid.getBoardCell(point);
             if(cellBeingChecked.getCurrentStatus() == BURNING) {
                 fireCount++;
             }
-            applyRule(board.get(point));
+            applyRule(myGrid.getBoardCell(point));
         }
         if(fireCount == 0){
             firePresentInGrid = false;
         }
         if(firePresentInGrid) {
-            for (Point point : board.keySet()) {
-                board.get(point).changeStatus();
+            for (Point point : points) {
+                myGrid.getBoardCell(point).changeStatus();
             }
         }
     }

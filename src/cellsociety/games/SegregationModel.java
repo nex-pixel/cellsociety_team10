@@ -6,6 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
+import java.util.Set;
 
 public class SegregationModel extends Game {
 
@@ -63,8 +64,9 @@ public class SegregationModel extends Game {
     public double getThreshold () { return myThreshold; }
 
     private void setEmptyCells () {
-        for (Point point: getGrid().keySet()) {
-            Cell cell = getGrid().get(point);
+        Set<Point> points = myGrid.getPoints();
+        for (Point point: points) {
+            Cell cell = myGrid.getBoardCell(point);
             if (cell.getCurrentStatus() == EMPTY) {
                 myEmptyCells.add(cell);
             }
@@ -95,8 +97,9 @@ public class SegregationModel extends Game {
 
     public double getSatisfiedRate () {
         int numSatisfiedAgents = 0;
-        for (Point point: getGrid().keySet()) {
-            if (isSatisfied(getGrid().get(point))) {
+        Set<Point> points = myGrid.getPoints();
+        for (Point point: points) {
+            if (isSatisfied(myGrid.getBoardCell(point))) {
                 numSatisfiedAgents++;
             }
         }
