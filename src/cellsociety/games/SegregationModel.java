@@ -6,6 +6,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
+import java.util.Set;
 
 public class SegregationModel extends Game {
 
