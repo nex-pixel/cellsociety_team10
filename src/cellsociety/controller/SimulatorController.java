@@ -7,6 +7,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 
 public class SimulatorController {
@@ -18,9 +19,7 @@ public class SimulatorController {
     private String myCSSFile;
     private ResourceBundle myLanguageResources;
     private VBox simulationBox;
-    private int myModelType;
-
-
+    private String myModelType;
 
     public SimulatorController(FileManager fileManager, String cssFile, ResourceBundle resourceBundle) {
         myFileManager = fileManager;
@@ -32,35 +31,33 @@ public class SimulatorController {
      * Receives csvFile with the initial state of the cells and repeats the rule indefinitely until the user stops it
      * @param csvFile file containing the initial state
      */
-    public void createNewSimulation(int modelType, File csvFile){
+    public void createNewSimulation(String modelType, File csvFile){
         try{
             myModelType = modelType;
-            generateNewGame(csvFile);
+            Method m = this.getClass().getDeclaredMethod(modelType, String.class);
+            m.invoke(this, csvFile.getAbsolutePath());
             mySimulatorView = new SimulatorView(myGame,
                     myCSSFile, myLanguageResources, this);
-        } catch(NullPointerException e){
+        } catch(Exception e){
             myFileManager.checkFileValidity(csvFile);
         }
     }
 
-    public void generateNewGame(File csvFile){
-        switch (myModelType) {
-            case 0:
-                myGame = new GameOfLifeModel(csvFile.getAbsolutePath());
-                break;
-            case 1:
-                myGame = new SpreadingFireModel(csvFile.getAbsolutePath());
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                myGame = new PercolationModel(csvFile.getAbsolutePath());
-                break;
-        }
+    private void makeGameOfLife(String csvFile){
+        myGame = new GameOfLifeModel(csvFile);
     }
-
+    private void makePercolation(String csvFile){
+        myGame = new PercolationModel(csvFile);
+    }
+    private void makeSegregation(String csvFile){
+        //myGame = new SegregationModel(csvFile);
+    }
+    private void makeSpreadingFire(String csvFile){
+        myGame = new SpreadingFireModel(csvFile);
+    }
+    private void MakeWaTorWorld(String csvFile){
+        myGame = new WaTorWorldModel(csvFile);
+    }
 
     /**
      * saves the current grid status into a CSV file
@@ -81,7 +78,7 @@ public class SimulatorController {
         myFileManager.chooseFile();
         File file = myFileManager.getCurrentTextFile();
         createNewSimulation(myModelType, file);
-       // createNewSimulation(0, file);
+        // createNewSimulation(0, file);
         /*
         myGame = new GameOfLifeModel(myFileManager.getCurrentTextFile().getAbsolutePath());
         mySimulatorView.updateToNewSimulation(myGame.getMyGrid().getNumCols(), myGame.getMyGrid().getNumRows());

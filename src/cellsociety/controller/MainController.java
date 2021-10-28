@@ -8,7 +8,13 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 public class MainController {
+
     private static final String RESOURCE_PACKAGE = "cellsociety.resources.";
+    public static final String RESOURCE_ACTIONS_NAME = MainController.class.getPackageName() + ".Resources.ActionName";
+    public static final String RESOURCE_ACTIONS_LABEL = MainController.class.getPackageName() + ".Resources.ActionLabel";
+    private static final String ACTION_BUNDLE = "MainMenuActionEvents";
+
+    private ResourceBundle myActionEventsResources;
     private Stage myStage;
     private static ResourceBundle myLanguageResources;
     private String DEFAULT_LANGUAGE = "English";
@@ -18,19 +24,23 @@ public class MainController {
     private MainMenuView mainMenu;
     private String DEFAULT_CSS_FILE_LABEL = "Duke";
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
-    private ResourceBundle myActionEventsResources;
-    private String ACTION_BUNDLE = "MainMenuActionEvents";
+    private static final int MAIN_SCREEN_SIZE = 500;
+    private static ResourceBundle actionNameBundle;
+    private static ResourceBundle actionLabelBundle;
 
 
     public MainController(Stage stage, String language){
         myStage = stage;
         myLanguageResources = initializeResourceBundle(language);
+        actionNameBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_NAME);
+        actionLabelBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_LABEL);
         myActionEventsResources = initializeResourceBundle(ACTION_BUNDLE);
     }
 
+
     public void startMainMenu() {
         mainMenu  = new MainMenuView(myLanguageResources, myActionEventsResources);
-        myStage.setScene(mainMenu.setMenuDisplay(this, 500, 500));
+        myStage.setScene(mainMenu.setMenuDisplay(this, MAIN_SCREEN_SIZE, MAIN_SCREEN_SIZE, actionNameBundle));
         cssFile = DEFAULT_CSS_FILE_LABEL;
         updateCSS(cssFile);
         myStage.show();
@@ -53,7 +63,7 @@ public class MainController {
         }
     }
 
-    public void generateNewSimulation(int modelType, File csvFile, FileManager fileManager){
+    public void generateNewSimulation(String modelType, File csvFile, FileManager fileManager){
         simulatorController = new SimulatorController(fileManager, cssFile, myLanguageResources);
         simulatorController.createNewSimulation(modelType, csvFile);
     }
@@ -73,5 +83,6 @@ public class MainController {
     public ResourceBundle getMyActionEventsResources(){
         return myActionEventsResources;
     }
+
 
 }

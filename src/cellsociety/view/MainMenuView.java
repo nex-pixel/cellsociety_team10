@@ -5,17 +5,16 @@ import cellsociety.controller.MainController;
 import cellsociety.error.GenerateError;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainMenuView {
     private static ResourceBundle myLanguageResources;
@@ -26,12 +25,10 @@ public class MainMenuView {
     private Map<String, EventHandler<ActionEvent>> mainMenuButtonMap = new LinkedHashMap<>();
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private String homePageRootID = "home-page-root";
-    private String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
-    private String[] modelLabelOptions = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
     public ResourceBundle myActionEventsResources;
     private MainMenuButtonView but;
-
-    private int myModelType;
+    private ResourceBundle gameNames;
+    private String myModelType;
     private ArrayList<String> cssFileOptions = new ArrayList<>();
 
     public MainMenuView(ResourceBundle languageResourceBundle, ResourceBundle actionResourceBundle){
@@ -44,26 +41,16 @@ public class MainMenuView {
      * creates mainMenu and returns the scene
      * @return scene of main menu
      */
-    public Scene setMenuDisplay(MainController mainController, int width, int height) {
+    public Scene setMenuDisplay(MainController mainController, int width, int height, ResourceBundle gameNames) {
         myMainController = mainController;
-        but = new MainMenuButtonView(this, myMainController, myLanguageResources, myActionEventsResources, myFileManager);
-        populateOptions(modelOptions, modelLabelOptions);
-        populateOptions(cssFileOptions, cssFileLabelOptions);
-
+        but = new MainMenuButtonView(this, myLanguageResources, myActionEventsResources, myFileManager);
+        myMainController = mainController;
+        this.gameNames = gameNames;
         setLabel("Cell Society", "title");
-
-        //populateMainMenuButtonMap();
         initializeHomePageRoot();
         Scene scene = new Scene(homePageRoot, width, height);
         return scene;
     }
-
-    private void populateOptions(ArrayList<String> optionsList, String[] labelList){
-        for(String key: labelList){
-            optionsList.add(myLanguageResources.getString(key));
-        }
-    }
-
 
     private void initializeHomePageRoot(){
         homePageRoot = new TilePane();
@@ -76,6 +63,22 @@ public class MainMenuView {
         titleLabel.setId(id);
     }
 
+    //TODO: connect to simulation button 
+    public void generateSimulatorChoiceDialogBox(String resultType, String content){
+        ArrayList<String> buttonNameList = Collections.list(gameNames.getKeys());
+        ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(buttonNameList.get(0));
+        addItemsToOptionsList(choiceDialog, gameNames);
+        choiceDialog.setContentText(content);
+        showAndWaitForChoiceDialogResult(choiceDialog, resultType);
+        choiceDialog.showAndWait();
+        myModelType = choiceDialog.getSelectedItem();
+    }
+
+    private Node generateMainMenuPanel(){
+        VBox panel = new VBox();
+        mainMenuButtonMap.forEach((key,value) -> but.addButtonToPanel(key,value,panel));
+        return panel;
+    }
 
     public ChoiceDialog<String> generateChoiceDialogBox(String defaultChoice, ArrayList<String> options, String resultType, String content){
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(defaultChoice);
@@ -88,14 +91,11 @@ public class MainMenuView {
     //TODO: use reflection to make this easier
     private void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog, String resultType){
         choiceDialog.showAndWait();
-        //TODO; MYMODELTYPE SHOULD BE UPDATED BY SIMULATION CONTROLLER
-        if(resultType.equals("modelType")){
-            myModelType = modelOptions.indexOf(choiceDialog.getSelectedItem());
-        }
         if(resultType.equals("cssFile")){
             myMainController.updateCSS(choiceDialog.getSelectedItem());
         }
     }
+
 
     private void addItemsToOptionsList(ArrayList<String> options, ChoiceDialog<String> choiceDialog){
         for(String s : options){
@@ -103,6 +103,11 @@ public class MainMenuView {
         }
     }
 
+    private void addItemsToOptionsList(ChoiceDialog<String> choiceDialog, ResourceBundle choiceNames){
+        for(String s : choiceNames.keySet()){
+            choiceDialog.getItems().add(s);
+        }
+    }
 
     public void applyCSS(Scene scene, String cssFile) {
         try{

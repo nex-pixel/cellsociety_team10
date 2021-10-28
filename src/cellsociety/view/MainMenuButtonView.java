@@ -23,20 +23,20 @@ public class MainMenuButtonView extends ButtonView {
     private String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
     private String[] modelLabelOptions = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
     private ResourceBundle myActionEventsResources;
-    private int myModelType;
     private ArrayList<String> cssFileOptions = new ArrayList<>();
-    private MainController myMainController;
     private ResourceBundle myLanguageResources;
     private FileManager myFileManager;
     private MainMenuView myMainMenuView;
 
-    public MainMenuButtonView(MainMenuView menuView, MainController mainController, ResourceBundle langResourceBundle, ResourceBundle actionResourceBundle, FileManager fileManager){
+
+    public MainMenuButtonView(MainMenuView menuView, ResourceBundle langResourceBundle, ResourceBundle actionResourceBundle, FileManager fileManager){
         myMainMenuView = menuView;
-        myMainController = mainController;
         myLanguageResources = langResourceBundle;
         myActionEventsResources = actionResourceBundle;
         myFileManager = fileManager;
         buttonID = "main-menu-button";
+        populateOptions(modelOptions, modelLabelOptions);
+        populateOptions(cssFileOptions, cssFileLabelOptions);
         populateButtonEvents();
     }
 
@@ -67,8 +67,8 @@ public class MainMenuButtonView extends ButtonView {
     }
 // TODO: NEED TO UPDATE WAY myModelType IS PASSED TO GENERATE NEW SIMULATION --> SHOULDN'T HAVE TO GO THROUGH GENERATE NEW SIM
     private EventHandler<ActionEvent> generateNewSimEvent(){
-        return event ->
-                myMainController.generateNewSimulation(myModelType, myFileManager.getCurrentTextFile(), myFileManager);
+        return event -> System.out.println("help");
+                //myMainController.generateNewSimulation(myModelType, myFileManager.getCurrentTextFile(), myFileManager);
     }
 
     @Override
@@ -86,8 +86,14 @@ public class MainMenuButtonView extends ButtonView {
 
     public Node generateMainMenuPanel(){
         VBox panel = new VBox();
-        mainMenuButtonMap.forEach((key,value) -> addButtonToPanel(key,value,panel, buttonID));
+        mainMenuButtonMap.forEach((key,value) -> addButtonToPanel(key,value,panel));
         return panel;
+    }
+
+    private void populateOptions(ArrayList<String> optionsList, String[] labelList){
+        for(String key: labelList){
+            optionsList.add(myLanguageResources.getString(key));
+        }
     }
 
 }

@@ -26,7 +26,7 @@ public abstract class ButtonView {
         buttonMap = new LinkedHashMap<>();
     }
 
-    protected void addButtonToPanel(String label, EventHandler<ActionEvent> event, VBox panel, String buttonID){
+    protected void addButtonToPanel(String label, EventHandler<ActionEvent> event, VBox panel){
         Button button = generateButton(label,
                 event);
         button.setId(buttonID);
@@ -45,7 +45,7 @@ public abstract class ButtonView {
 
     public Node generateMainMenuPanel(){
         VBox panel = new VBox();
-        buttonMap.forEach((key,value) -> addButtonToPanel(key,value,panel, buttonID));
+        buttonMap.forEach((key,value) -> addButtonToPanel(key,value,panel));
         return panel;
     }
 }

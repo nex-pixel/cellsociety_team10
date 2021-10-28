@@ -18,7 +18,8 @@ class SimulatorViewTest {
     void testUpdateSimulation() {
         GameOfLifeModel testGame = new GameOfLifeModel("data/game_of_life/alive_edgecell_different.csv");
        // testSimulator = new SimulatorView(testGame.getMyGrid().getNumRows(),testGame.getMyGrid().getNumCols(), Color.CORAL, Color.BEIGE, Color.BROWN);
-        testSimulator.updateSimulation(testGame.getGrid());
+
+        testSimulator.updateSimulation(testGame);
         GridPane simulatorGrid = testSimulator.getMyGridView();
         assertEquals(Color.BEIGE, ((Rectangle) simulatorGrid.getChildren().get(0)).getFill(),
                 "ERROR: Method not updating alive cells properly");
@@ -31,8 +32,9 @@ class SimulatorViewTest {
         GameOfLifeModel testGame2 = new GameOfLifeModel("data/game_of_life/test_update.csv");
 
        // testSimulator = new SimulatorView(testGame.getMyGrid().getNumRows(),testGame.getMyGrid().getNumCols(), Color.CORAL, Color.BEIGE, Color.BROWN);
-        testSimulator.updateSimulation(testGame.getGrid());
-        testSimulator.updateSimulation(testGame2.getGrid());
+
+        testSimulator.updateSimulation(testGame);
+        testSimulator.updateSimulation(testGame2);
         GridPane simulatorGrid = testSimulator.getMyGridView();
         assertEquals(Color.BEIGE, ((Rectangle) simulatorGrid.getChildren().get(60)).getFill(),
                 "ERROR: Method not updating alive cells properly");
@@ -42,7 +44,8 @@ class SimulatorViewTest {
     void testUpdateSimulationDifferentRowColumnSize() {
         GameOfLifeModel testGame = new GameOfLifeModel("data/game_of_life/penta-decathlon.csv");
       //  testSimulator = new SimulatorView(testGame.getMyGrid().getNumRows(),testGame.getMyGrid().getNumCols(), Color.CORAL, Color.BEIGE, Color.BROWN);
-        testSimulator.updateSimulation(testGame.getGrid());
+
+        testSimulator.updateSimulation(testGame);
         GridPane simulatorGrid = testSimulator.getMyGridView();
         assertEquals(Color.BEIGE, ((Rectangle) simulatorGrid.getChildren().get(60)).getFill(),
                 "ERROR: Method not updating alive cells properly");
