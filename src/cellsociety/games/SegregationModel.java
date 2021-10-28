@@ -64,8 +64,7 @@ public class SegregationModel extends Game {
     public double getThreshold () { return myThreshold; }
 
     private void setEmptyCells () {
-        Set<Point> points = myGrid.getPoints();
-        for (Point point: points) {
+        for (Point point: myGrid.getPoints()) {
             Cell cell = myGrid.getBoardCell(point);
             if (cell.getCurrentStatus() == EMPTY) {
                 myEmptyCells.add(cell);
@@ -97,8 +96,7 @@ public class SegregationModel extends Game {
 
     public double getSatisfiedRate () {
         int numSatisfiedAgents = 0;
-        Set<Point> points = myGrid.getPoints();
-        for (Point point: points) {
+        for (Point point: myGrid.getPoints()) {
             if (isSatisfied(myGrid.getBoardCell(point))) {
                 numSatisfiedAgents++;
             }

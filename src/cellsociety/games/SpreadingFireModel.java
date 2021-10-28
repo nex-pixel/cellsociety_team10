@@ -37,9 +37,9 @@ public class SpreadingFireModel extends Game{
 
     @Override
     public void update() {
-        Map<Point, Cell> board = myGrid.getBoard();
         Set<Point> points = myGrid.getPoints();
         int fireCount = 0;
+//        Map<Point, Cell> board = myGrid.getBoard();
         for (Point point: points) {
             Cell cellBeingChecked = myGrid.getBoardCell(point);
             if(cellBeingChecked.getCurrentStatus() == BURNING) {

@@ -26,15 +26,15 @@ public class PercolationModel extends Game {
 
     public PercolationModel (int numRows, int numCols) {
         int[][] states = new int[numRows][numCols];
-        myGrid = new Grid(states);
+        myGrid = new Grid(states, 0, 0);
         setOpenCells();
     }
 
     private void setOpenCells () {
         cellsToBeRemoved = new ArrayList<>();
         myOpenCells = new ArrayList<>();
-        Set<Point> points = myGrid.getPoints();
-        for (Point point: points) {
+//        Map<Point, Cell> board = getGrid();
+        for (Point point: myGrid.getPoints()) {
             Cell cell = myGrid.getBoardCell(point);
             if (cell.getCurrentStatus() == OPEN) {
                 myOpenCells.add(cell);

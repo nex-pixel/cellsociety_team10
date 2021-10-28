@@ -24,8 +24,9 @@ public class MainController {
     public static final String DEFAULT_RESOURCE_PACKAGE = "cellsociety.resources.";
     public static final String RESOURCE_ACTIONS_NAME = MainController.class.getPackageName() + ".Resources.ActionName";
     public static final String RESOURCE_ACTIONS_LABEL = MainController.class.getPackageName() + ".Resources.ActionLabel";
+    private static final String ACTION_BUNDLE = "MainMenuActionEvents";
 
-
+    private ResourceBundle myActionEventsResources;
     private Stage myStage;
     private static ResourceBundle myLanguageResources;
     private String DEFAULT_LANGUAGE = "English";
@@ -46,6 +47,7 @@ public class MainController {
         initializeResourceBundle(language);
         actionNameBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_NAME);
         actionLabelBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_LABEL);
+        myActionEventsResources = ResourceBundle.getBundle(ACTION_BUNDLE);
     }
 
     public void startMainMenu() {
