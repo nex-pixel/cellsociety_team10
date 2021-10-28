@@ -4,10 +4,8 @@ import cellsociety.components.Cell;
 import cellsociety.components.Grid;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public class PercolationModel extends Game {
 

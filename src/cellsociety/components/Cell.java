@@ -12,7 +12,7 @@ public class Cell {
     private boolean isCorner;
     private int currentStatus;
     private int nextStatus;
-    private int miscellaneousVal;
+    private List<Integer> miscellaneousVal;
 
     public Cell(int statusPassedIn, int xPosition, int yPosition){
         setXyPosition(xPosition, yPosition);
@@ -21,7 +21,7 @@ public class Cell {
         nextStatus = currentStatus;
         isCorner = false;
         isEdge = false;
-        miscellaneousVal = 0;
+        miscellaneousVal = new ArrayList<>();
     }
 
     public void changeStatus(){
@@ -46,8 +46,8 @@ public class Cell {
         xyPosition[1] = yPosition;
     }
 
-    public void setMiscellaneousVal(int inputVal){
-        miscellaneousVal = inputVal;
+    public void setMiscellaneousVal(List<Integer> valueList){
+        miscellaneousVal = valueList;
     }
 
     public void setEdge(boolean edgeCase){
@@ -70,7 +70,7 @@ public class Cell {
         return currentStatus;
     }
 
-    public int getMiscellaneousVal(){
+    public List<Integer> getMiscellaneousVal(){
         return miscellaneousVal;
     }
 
