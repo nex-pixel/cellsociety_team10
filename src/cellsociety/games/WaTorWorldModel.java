@@ -36,7 +36,7 @@ public class WaTorWorldModel extends Game{
             if(cell.getCurrentStatus() == SHARK){
                 cell.setMiscellaneousVal(Arrays.asList(SHARK_STARTING_ENERGY, STARTING_VAL));
             } else if (cell.getCurrentStatus() == FISH){
-                cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL));
+                cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL,STARTING_VAL));
             }
         }
     }
@@ -62,7 +62,6 @@ public class WaTorWorldModel extends Game{
         if(adjNeigh.size() > 0){
             int whichAdjacentCell = rand.nextInt(adjNeigh.size());
             Cell chosenNextCell = adjNeigh.get(whichAdjacentCell);
-            chosenNextCell.setNextStatus(cell.getCurrentStatus());
             reproduceCell(cell, chosenNextCell);
         }
     }
@@ -74,14 +73,16 @@ public class WaTorWorldModel extends Game{
     private void reproduceCell(Cell cell, Cell chosenCell){
         int stepsAlive = cell.getMiscellaneousVal().get(0);
         int energy = cell.getMiscellaneousVal().get(1);
+        chosenCell.setNextStatus(cell.getCurrentStatus());
+        List<Integer> miscVals = cell.getMiscellaneousVal();
         if(stepsAlive <= REPRODUCE_VAL) {
             cell.setNextStatus(EMPTY);
-            chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL));
+            chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL+,STARTING_VAL));
         } else if(stepsAlive > REPRODUCE_VAL){
             cell.setNextStatus(cell.getCurrentStatus());
-            chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL));
+            chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL,STARTING_VAL));
         }
-        cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL));
+        cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL,STARTING_VAL));
     }
 
     private List<Cell> checkNumCellsThisCase(int state, List<Cell> cellList){
