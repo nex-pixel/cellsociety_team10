@@ -10,10 +10,10 @@ import java.util.Set;
 
 public class SegregationModel extends Game {
 
-    private int EMPTY = 0;
-    private int AGENT_X = 1;
-    private int AGENT_O = 2;
-    private int RANGE = 3;
+    private int EMPTY;
+    private int AGENT_X;
+    private int AGENT_O;
+    private int RANGE;
     private double myThreshold;
     private int myNumOfAgents;
 
@@ -64,8 +64,8 @@ public class SegregationModel extends Game {
     public double getThreshold () { return myThreshold; }
 
     private void setEmptyCells () {
-        for (Point point: myGrid.getPoints()) {
-            Cell cell = myGrid.getBoardCell(point);
+        for (Point point: getGrid().getPoints()) {
+            Cell cell = getGrid().getBoardCell(point);
             if (cell.getCurrentStatus() == EMPTY) {
                 myEmptyCells.add(cell);
             }
@@ -96,8 +96,8 @@ public class SegregationModel extends Game {
 
     public double getSatisfiedRate () {
         int numSatisfiedAgents = 0;
-        for (Point point: myGrid.getPoints()) {
-            if (isSatisfied(myGrid.getBoardCell(point))) {
+        for (Point point: getGrid().getPoints()) {
+            if (isSatisfied(getGrid().getBoardCell(point))) {
                 numSatisfiedAgents++;
             }
         }

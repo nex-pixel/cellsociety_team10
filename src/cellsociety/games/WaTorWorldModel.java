@@ -31,8 +31,8 @@ public class WaTorWorldModel extends Game{
     }
 
     private void setSharkEnergyValues(){
-        for(Point point: myGrid.getPoints()){
-            Cell cell = myGrid.getBoardCell(point);
+        for(Point point: getGrid().getPoints()){
+            Cell cell = getGrid().getBoardCell(point);
             if(cell.getCurrentStatus() == SHARK){
                 cell.setMiscellaneousVal(Arrays.asList(SHARK_STARTING_ENERGY, STARTING_VAL));
             } else if (cell.getCurrentStatus() == FISH){
