@@ -16,7 +16,7 @@ public abstract class Game {
 
     private ReadFile myReader;
     protected Grid myGrid;
-    private static final String DEFAULT_GAME_DATA = "cellsociety.resources.";
+    private static final String DEFAULT_GAME_DATA = "cellsociety.resources.GameData";
     protected ResourceBundle myGameData;
 
     public Game () {}
