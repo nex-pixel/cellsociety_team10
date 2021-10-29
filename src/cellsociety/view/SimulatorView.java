@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -119,21 +120,17 @@ public class SimulatorView {
     public void updateSimulation(Game game){
         for (int x = 0; x < game.getNumCols(); x++) {
             for (int y = 0; y < game.getNumRows(); y++) {
-                int gridNumber = (int) (x * myGridHeight + y);
-                Node currNode = myGridView.getChildren().get(gridNumber);
-                myGridView.getChildren().remove(currNode);
-                squareCell currCell = (squareCell) currNode;
+                int gridNumber = y * myGridHeight + x;
                 int cellStatus = game.getCellStatus(x, y);
-                if(cellStatus == 0){ // TODO: assumed dead is 0
-                    currCell.setId("dead-cell");
-                }else if(cellStatus == 1){ //TODO assumed alive is 1
-                    currCell.setId("alive-cell");
-                }else if(cellStatus == 2) {
-                    currCell.setId("default-cell");
-                }
-                myGridView.getChildren().add(gridNumber, currCell);
+                updateCell(game, gridNumber, cellStatus);
             }
         }
+    }
+
+    // updates cell status
+    private void updateCell(Game game, int cellNumber, int cellStatus){
+        Node currNode = myGridView.getChildren().get(cellNumber);
+        currNode.setId(cellStatus+"-cell");
     }
 
     /**

@@ -34,7 +34,6 @@ public class MainController {
         myStage = stage;
         myLanguageResources = initializeResourceBundle(language);
         actionNameBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_NAME);
-        actionLabelBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_LABEL);
         myActionEventsResources = initializeResourceBundle(ACTION_BUNDLE);
     }
 
