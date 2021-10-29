@@ -1,7 +1,6 @@
 package cellsociety.controller;
 
 import cellsociety.games.*;
-import cellsociety.view.MainMenuButtonView;
 import cellsociety.view.SimulatorView;
 import javafx.scene.Scene;
 import javafx.scene.control.TextInputDialog;
@@ -66,6 +65,7 @@ public class SimulatorController {
         //TODO: BAD
         return null;
     }
+
     private void makeGameOfLife(){
         myGame = new GameOfLifeModel(myCSVFile.getAbsolutePath());
     }

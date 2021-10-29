@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 
-public class MainMenuButtonView extends ButtonView {
+public class MainMenuButtonFactory extends ButtonFactory {
     private ArrayList<String> modelOptions = new ArrayList<>();;
     private Map<String, EventHandler<ActionEvent>> mainMenuButtonMap = new LinkedHashMap<>();
     private String[] buttonLabelOptions = {"ChooseSimulationTypeLabel", "LoadFileLabel", "ChooseColorScheme", "CreateNewSimulationLabel"};
@@ -28,10 +28,8 @@ public class MainMenuButtonView extends ButtonView {
     private FileManager myFileManager;
     private MainMenuView myMainMenuView;
     private MainController myMainMenuController;
-    private String ERROR_PACKAGE = "cellsociety.error.resources.";
-    private ResourceBundle errorResources;
 
-    public MainMenuButtonView(MainMenuView menuView, MainController mainMenuController, ResourceBundle langResourceBundle, ResourceBundle actionResourceBundle, FileManager fileManager){
+    public MainMenuButtonFactory(MainMenuView menuView, MainController mainMenuController, ResourceBundle langResourceBundle, ResourceBundle actionResourceBundle, FileManager fileManager){
         myMainMenuView = menuView;
         myLanguageResources = langResourceBundle;
         myActionEventsResources = actionResourceBundle;
@@ -47,7 +45,7 @@ public class MainMenuButtonView extends ButtonView {
     protected void populateButtonEvents(){
         try{
             for(String key : buttonLabelOptions){
-                EventHandler<ActionEvent> buttonEvent = (EventHandler<ActionEvent>) handleMethod(myActionEventsResources.getString(key)).invoke(MainMenuButtonView.this);
+                EventHandler<ActionEvent> buttonEvent = (EventHandler<ActionEvent>) handleMethod(myActionEventsResources.getString(key)).invoke(MainMenuButtonFactory.this);
                 mainMenuButtonMap.put(myLanguageResources.getString(key), buttonEvent);
             }
         }catch(IllegalAccessException | InvocationTargetException e){
@@ -76,7 +74,7 @@ public class MainMenuButtonView extends ButtonView {
     @Override
     protected Method handleMethod(String name) {
         try{
-            Method m = MainMenuButtonView.class.getDeclaredMethod(name);
+            Method m = MainMenuButtonFactory.class.getDeclaredMethod(name);
             return m;
         }catch(NoSuchMethodException e){
             //TODO: FIX THIS

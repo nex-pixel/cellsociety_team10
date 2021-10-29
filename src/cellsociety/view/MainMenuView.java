@@ -4,8 +4,6 @@ import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
@@ -23,7 +21,7 @@ public class MainMenuView {
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private String homePageRootID = "home-page-root";
     public ResourceBundle myActionEventsResources;
-    private MainMenuButtonView myMainMenuButtonView;
+    private MainMenuButtonFactory myMainMenuButtonView;
     private ResourceBundle gameNames;
     private String myModelType;
     private SimulatorController simulatorController;
@@ -40,7 +38,7 @@ public class MainMenuView {
      */
     public Scene setMenuDisplay(MainController mainController, int width, int height, ResourceBundle gameNames) {
         myMainController = mainController;
-        myMainMenuButtonView = new MainMenuButtonView(this, myMainController, myLanguageResources, myActionEventsResources, myFileManager);
+        myMainMenuButtonView = new MainMenuButtonFactory(this, myMainController, myLanguageResources, myActionEventsResources, myFileManager);
         this.gameNames = gameNames;
         setLabel("Cell Society", "title");
         initializeHomePageRoot();

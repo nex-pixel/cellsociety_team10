@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class SimulatorButtonView {
+public class SimulatorButtonFactory {
 
     private SimulatorController mySimulatorController;
     private String myCSSFile;
@@ -31,7 +31,7 @@ public class SimulatorButtonView {
 
     private SimulatorView mySimulatorView;
 
-    public SimulatorButtonView(SimulatorView simulatorView, SimulatorController simulatorController){
+    public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController){
         mySimulatorView = simulatorView;
         mySimulatorController = simulatorController;
     }

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public abstract class ButtonView {
+public abstract class ButtonFactory {
 
     protected Map<String, EventHandler<ActionEvent>> buttonMap;
     protected String[] buttonLabelOptions;
@@ -22,7 +22,7 @@ public abstract class ButtonView {
     protected ResourceBundle myLanguageResources;
     protected String buttonID;
 
-    public ButtonView(){
+    public ButtonFactory(){
         buttonMap = new LinkedHashMap<>();
     }
 
