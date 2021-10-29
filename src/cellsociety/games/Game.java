@@ -23,6 +23,7 @@ public abstract class Game {
     public Game () {}
 
     public Game (Game copy) {
+        populateGameConditions();
         this.myReader = copy.myReader;
         this.myGrid = copy.myGrid;
     }
@@ -35,6 +36,7 @@ public abstract class Game {
     }
 
     public Game (int[][] states) {
+        populateGameConditions();
         setGrid(states);
     }
 
@@ -100,7 +102,7 @@ public abstract class Game {
 
     }
 
-    private void populateGameConditions() {
+    protected void populateGameConditions() {
         myGameData = ResourceBundle.getBundle(DEFAULT_GAME_DATA);
     }
 
