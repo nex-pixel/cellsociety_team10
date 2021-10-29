@@ -24,7 +24,7 @@ public class SpreadingFireModel extends Game{
         EMPTY = getIntProperty("SpreadingFireEmpty");
         TREE = getIntProperty("SpreadingFireTree");
         BURNING = getIntProperty("SpreadingFireBurning");
-        getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
+        //getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
     }
 
     public void setProbOfFire(double probability){

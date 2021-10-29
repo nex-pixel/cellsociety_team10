@@ -34,9 +34,9 @@ public class WaTorWorldModel extends Game{
         for(Point point: getGrid().getPoints()){
             Cell cell = getGrid().getBoardCell(point);
             if(cell.getCurrentStatus() == SHARK){
-                cell.setMiscellaneousVal(Arrays.asList(SHARK_STARTING_ENERGY, STARTING_VAL));
+                cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, SHARK_STARTING_ENERGY));
             } else if (cell.getCurrentStatus() == FISH){
-                cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL));
+                cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL,STARTING_VAL));
             }
         }
     }
@@ -62,26 +62,65 @@ public class WaTorWorldModel extends Game{
         if(adjNeigh.size() > 0){
             int whichAdjacentCell = rand.nextInt(adjNeigh.size());
             Cell chosenNextCell = adjNeigh.get(whichAdjacentCell);
-            chosenNextCell.setNextStatus(cell.getCurrentStatus());
-            reproduceCell(cell, chosenNextCell);
+            fishReproduceCell(cell, chosenNextCell);
         }
     }
 
     private void sharkMovement(Cell cell, List<Cell> adjacentNeighbors){
-
+        List<Cell> adjFishNeigh = checkNumCellsThisCase(FISH, adjacentNeighbors);
+        List<Cell> adjEmptyNeigh = checkNumCellsThisCase(EMPTY, adjacentNeighbors);
+        if(adjFishNeigh.size() > 0){
+            int whichAdjacentCell = rand.nextInt(adjFishNeigh.size());
+            Cell chosenNextCell = adjFishNeigh.get(whichAdjacentCell);
+            int stepsAlive = cell.getMiscellaneousVal().get(0);
+            int energy = cell.getMiscellaneousVal().get(1);
+            energy += 2;
+            cell.setMiscellaneousVal(Arrays.asList(stepsAlive, energy));
+            sharkReproduceCell(cell, chosenNextCell);
+        } else if(adjEmptyNeigh.size() > 0){
+            int whichAdjacentCell = rand.nextInt(adjEmptyNeigh.size());
+            Cell chosenNextCell = adjEmptyNeigh.get(whichAdjacentCell);
+            sharkReproduceCell(cell, chosenNextCell);
+        }
     }
 
-    private void reproduceCell(Cell cell, Cell chosenCell){
+    private void sharkReproduceCell(Cell cell, Cell chosenCell){
         int stepsAlive = cell.getMiscellaneousVal().get(0);
         int energy = cell.getMiscellaneousVal().get(1);
+        energy -= 1;
+        if(energy > 0) {
+            chosenCell.setNextStatus(cell.getCurrentStatus());
+            if (stepsAlive <= REPRODUCE_VAL) {
+                cell.setNextStatus(EMPTY);
+                stepsAlive += 1;
+                chosenCell.setMiscellaneousVal(Arrays.asList(stepsAlive, energy));
+            } else if (stepsAlive > REPRODUCE_VAL) {
+                cell.setNextStatus(cell.getCurrentStatus());
+                chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, STARTING_VAL));
+            }
+            cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, STARTING_VAL));
+        } else if (energy <= 0){
+            chosenCell.setNextStatus(chosenCell.getCurrentStatus());
+            cell.setCurrentStatus(EMPTY);
+            cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, STARTING_VAL));
+            chosenCell.setMiscellaneousVal(Arrays.asList(stepsAlive, energy));
+        }
+    }
+
+
+    private void fishReproduceCell(Cell cell, Cell chosenCell){
+        int stepsAlive = cell.getMiscellaneousVal().get(0);
+        int energy = cell.getMiscellaneousVal().get(1);
+        chosenCell.setNextStatus(cell.getCurrentStatus());
         if(stepsAlive <= REPRODUCE_VAL) {
             cell.setNextStatus(EMPTY);
-            chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL));
+            stepsAlive += 1;
+            chosenCell.setMiscellaneousVal(Arrays.asList(stepsAlive,STARTING_VAL));
         } else if(stepsAlive > REPRODUCE_VAL){
             cell.setNextStatus(cell.getCurrentStatus());
-            chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL));
+            chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL,STARTING_VAL));
         }
-        cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL));
+        cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL,STARTING_VAL));
     }
 
     private List<Cell> checkNumCellsThisCase(int state, List<Cell> cellList){
