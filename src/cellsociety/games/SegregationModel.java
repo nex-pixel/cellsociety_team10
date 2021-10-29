@@ -19,6 +19,10 @@ public class SegregationModel extends Game {
     private List<Cell> myEmptyCells;
 
     public SegregationModel (int numRows, int numCols, double emptyRate, double agentXRate, double threshold) {
+        EMPTY = getIntProperty("SegregationEmpty");
+        AGENT_X = getIntProperty("SegregationAgentX");
+        AGENT_O = getIntProperty("SegregationAgent0");
+        RANGE = getIntProperty("SegregationRange");
         myEmptyCells = new ArrayList<>();
         myThreshold = threshold;
         myNumOfAgents = 0;
@@ -50,6 +54,13 @@ public class SegregationModel extends Game {
         setGrid(states);
         setEmptyCells();
     }
+
+    public SegregationModel (SegregationModel copy) {
+        super(copy);
+        myThreshold = copy.myThreshold;
+    }
+
+    public double getThreshold () { return myThreshold; }
 
     private void setEmptyCells () {
         for (Point point: getGrid().keySet()) {
@@ -104,5 +115,10 @@ public class SegregationModel extends Game {
             }
         }
         return (double) numSameNeighbors / numOccupiedNeighbors > myThreshold;
+    }
+
+    @Override
+    public boolean equals (Object o) {
+        return super.equals(o) && (myThreshold == ((SegregationModel) o).getThreshold());
     }
 }

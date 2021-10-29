@@ -9,29 +9,40 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 
 public abstract class Game {
 
     private ReadFile myReader;
     protected Grid myGrid;
+    private static final String DEFAULT_GAME_DATA = "cellsociety.resources.GameData";
+    protected ResourceBundle myGameData;
 
     public Game () {}
 
+    public Game (Game copy) {
+        this.myReader = copy.myReader;
+        this.myGrid = copy.myGrid;
+    }
+
     public Game (String filename) {
+        populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
         myGrid = new Grid(states);
     }
 
-    public Map<Point, Cell> getGrid (){
-        return myGrid.getBoard();
+    public Game (int[][] states) {
+        setGrid(states);
     }
-    public void setGrid (int[][] states) { myGrid = new Grid(states); }
 
-    public Grid getMyGrid(){
-        return myGrid;
-    }
+    protected Map<Point, Cell> getGrid () { return myGrid.getBoard(); }
+    protected void setGrid (int[][] states) { myGrid = new Grid(states); }
+
+    public int getCellStatus (int x, int y) { return getGrid().get(new Point(x, y)).getCurrentStatus(); }
+    public int getNumRows () { return myGrid.getNumRows(); }
+    public int getNumCols () { return myGrid.getNumCols(); }
 
     private void createReader (String filename) {
         String[] temp = filename.split("\\.");
@@ -46,6 +57,7 @@ public abstract class Game {
         // There may be some more types
     }
 
+    //boolean
     protected abstract boolean applyRule(Cell cell);
 
     public void update() {
@@ -58,11 +70,11 @@ public abstract class Game {
         }
     }
 
-    public int[][] toGridArray () {
+    protected int[][] toGridArray () {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];
         for (int r = 0; r < myGrid.getNumRows(); r++) {
             for (int c = 0; c < myGrid.getNumCols(); c++) {
-                ret[r][c] = getGrid().get(new Point(c, r)).getCurrentStatus();
+                ret[r][c] = getCellStatus(c, r);
             }
         }
         return ret;
@@ -87,4 +99,16 @@ public abstract class Game {
 
     }
 
+    private void populateGameConditions() {
+        myGameData = ResourceBundle.getBundle(DEFAULT_GAME_DATA);
+    }
+
+    protected int getIntProperty(String label) {
+        return Integer.parseInt(myGameData.getString(label));
+    }
+
+    @Override
+    public boolean equals (Object o) {
+        return Arrays.deepEquals(((Game) o).toGridArray(), this.toGridArray());
+    }
 }

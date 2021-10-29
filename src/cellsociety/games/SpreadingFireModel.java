@@ -7,18 +7,23 @@ import java.util.List;
 import java.util.Map;
 
 public class SpreadingFireModel extends Game{
-    private int EMPTY = 0;
-    private int TREE = 1;
-    private int BURNING = 2;
+    private int EMPTY;
+    private int TREE;
+    private int BURNING;
     private double probCatch;
     private double probGrow;
     private boolean firePresentInGrid = true;
+    private int expandGridByInt;
 
     public SpreadingFireModel(String filename) {
         super(filename);
-        probCatch = 0.2;
-        probGrow = 0.0;
-        myGrid.expandGrid(2, 2, 2, 2);
+        probCatch = Double.parseDouble(myGameData.getString("SpreadingFireProbSpread"));;
+        probGrow = Double.parseDouble(myGameData.getString("SpreadingFireProbGrow"));
+        expandGridByInt = getIntProperty("SpreadingFireExpandGridBy");
+        EMPTY = getIntProperty("SpreadingFireEmpty");
+        TREE = getIntProperty("SpreadingFireTree");
+        BURNING = getIntProperty("SpreadingFireBurning");
+        myGrid.expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
     }
 
     public void setProbOfFire(double probability){
@@ -52,12 +57,12 @@ public class SpreadingFireModel extends Game{
 
     @Override
     protected boolean applyRule(Cell cell){
-        List<Cell> neighbors = cell.getNeighborCells();
+        List<Cell> adjacentNeighbors = cell.getAdjacentNeighbors();
         if(cell.getCurrentStatus() == EMPTY){
             int willATreeGrow = willNewTreeGrow();
             cell.setNextStatus(willATreeGrow);
         } else if(cell.getCurrentStatus() == TREE){
-            int willItCatchFire = spread(neighbors);
+            int willItCatchFire = spread(adjacentNeighbors);
             cell.setNextStatus(willItCatchFire);
         } else if (cell.getCurrentStatus() == BURNING){
             cell.setNextStatus(EMPTY);
@@ -67,8 +72,8 @@ public class SpreadingFireModel extends Game{
 
     private int spread(List<Cell> neighbors){
         double randNumber = Math.random();
-        if(neighbors.get(1).getCurrentStatus() == BURNING || neighbors.get(3).getCurrentStatus() == BURNING ||
-                neighbors.get(4).getCurrentStatus() == BURNING || neighbors.get(6).getCurrentStatus() == BURNING) {
+        if(neighbors.get(0).getCurrentStatus() == BURNING || neighbors.get(1).getCurrentStatus() == BURNING ||
+                neighbors.get(2).getCurrentStatus() == BURNING || neighbors.get(3).getCurrentStatus() == BURNING) {
             if (randNumber < probCatch) {
                 return BURNING;
             }

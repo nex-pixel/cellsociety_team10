@@ -1,5 +1,6 @@
 package cellsociety.view;
 
+import cellsociety.controller.MainController;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import cellsociety.games.Game;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -45,6 +47,8 @@ public class SimulatorView {
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private Game myGame;
     private Scene myScene;
+    private Map<Integer, EventHandler<ActionEvent>> cellStatusAction;
+
 
     public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController){
         mySimulatorController = simulatorController;
@@ -52,8 +56,8 @@ public class SimulatorView {
         animationSpeed = 0.3;
         myAnimation = new Timeline();
         myGridView = new GridPane();
-        myGridWidth = myGame.getMyGrid().getNumRows();
-        myGridHeight = myGame.getMyGrid().getNumCols();
+        myGridWidth = myGame.getNumRows();
+        myGridHeight = myGame.getNumCols();
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
         populateSimulatorButtonMap();
@@ -63,7 +67,7 @@ public class SimulatorView {
 
     private void initializeSimulationScene(){
         Stage stage = new Stage();
-        updateSimulation(myGame.getGrid());
+        updateSimulation(myGame);
         VBox simulationBox = generateSimulationVBox();
         myScene = new Scene(simulationBox);
         stage.setScene(myScene);
@@ -73,14 +77,12 @@ public class SimulatorView {
 
     private void step(){
         myGame.update();
-        updateSimulation(myGame.getGrid());
+        updateSimulation(myGame);
     }
 
     // Start new animation to show search algorithm's steps
     public void playAnimation () {
-        if (myAnimation != null) {
-            myAnimation.stop();
-        }
+        assert myAnimation != null;
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(animationSpeed), e -> step()));
         myAnimation.play();
@@ -103,7 +105,7 @@ public class SimulatorView {
     private void setDefaultGrid(){
         for(int i = 0; i < myGridWidth; i ++){
             for(int j = 0; j < myGridHeight; j++){
-                squareCell cell = new squareCell();
+                SquareCell cell = new SquareCell();
                 cell.setWidth(40); // TODO: Needs to change based on the size of the stage
                 cell.setHeight(40); // TODO: need refactoring?
                 cell.setId("default-cell");
@@ -115,40 +117,36 @@ public class SimulatorView {
     /**
      * updates the cells based on the values in Map
      * dead cells are colored with deadColor, alive cells are colored with aliveColor
-     * @param cellStatus Map containing the status of cells
+     * @param game
      * @return scene with updated cell status
      */
-    public void updateSimulation(Map<Point, Cell> cellStatus){
-        for(Point coordinate: cellStatus.keySet()){
-            int gridNumber = (int) (coordinate.getX() * myGridHeight + coordinate.getY());
-            Node currNode = myGridView.getChildren().get(gridNumber);
-            myGridView.getChildren().remove(currNode);
-            squareCell currCell = (squareCell) currNode;
-            if(cellStatus.get(coordinate).getCurrentStatus() == 0){ // TODO: assumed dead is 0
-                currCell.setId("dead-cell");
-            }else if(cellStatus.get(coordinate).getCurrentStatus() == 1){ //TODO assumed alive is 1
-                currCell.setId("alive-cell");
-            }else if(cellStatus.get(coordinate).getCurrentStatus() == 2) {
-                currCell.setId("default-cell");
+    public void updateSimulation(Game game){
+        for (int x = 0; x < game.getNumCols(); x++) {
+            for (int y = 0; y < game.getNumRows(); y++) {
+                int gridNumber = y * myGridHeight + x;
+                int cellStatus = game.getCellStatus(x, y);
+                updateCell(game, gridNumber, cellStatus);
             }
-            myGridView.getChildren().add(gridNumber, currCell);
         }
     }
 
+    // updates cell status
+    private void updateCell(Game game, int cellNumber, int cellStatus){
+        Node currNode = myGridView.getChildren().get(cellNumber);
+        currNode.setId(cellStatus+"-cell");
+    }
 
     /**
      * This method creates a new grid for the new simulation to be displayed
      * @param gridWidth width of the new gridPane
      * @param gridHeight height of the new gridPane
      */
-    /* // TODO needs review
     public void updateToNewSimulation(int gridWidth, int gridHeight){
         myGridView = new GridPane();
         myGridWidth = gridWidth;
         myGridHeight = gridHeight;
         setDefaultGrid();
     }
-     */
 
     /**
      * getter for getMyGridView

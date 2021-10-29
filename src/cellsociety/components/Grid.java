@@ -26,6 +26,20 @@ public class Grid {
     public int getNumRows () { return myNumRows; }
     public int getNumCols () { return myNumCols; }
 
+//    public Set<Point> getPoints(){
+//        return myBoard.keySet();
+//    }
+//
+//    public Cell getBoardCell(Point point){
+//        return myBoard.get(point);
+//    }
+//
+//    public Cell getXYBoardCell(int x, int y){
+//        Point point = new Point(x, y);
+//        return myBoard.get(point);
+//    }
+
+    //Get Rid Of this
     public Map<Point, Cell> getBoard () { return myBoard; }
 
     private void initializeNeighbors() {
