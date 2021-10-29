@@ -1,5 +1,7 @@
 package cellsociety.view;
 
+import cellsociety.Main;
+import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
@@ -47,7 +49,8 @@ public class SimulatorView {
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private Game myGame;
     private Scene myScene;
-    private Map<Integer, EventHandler<ActionEvent>> cellStatusAction;
+    private VBox simulationBox;
+    private FileManager myFileManager;
 
 
     public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController){
@@ -60,6 +63,7 @@ public class SimulatorView {
         myGridHeight = myGame.getNumCols();
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
+        myFileManager = new FileManager(myLanguageResources);
         populateSimulatorButtonMap();
         setDefaultGrid();
         initializeSimulationScene();
@@ -68,7 +72,7 @@ public class SimulatorView {
     private void initializeSimulationScene(){
         Stage stage = new Stage();
         updateSimulation(myGame);
-        VBox simulationBox = generateSimulationVBox();
+        generateSimulationVBox();
         myScene = new Scene(simulationBox);
         stage.setScene(myScene);
         stage.show();
@@ -125,13 +129,13 @@ public class SimulatorView {
             for (int y = 0; y < game.getNumRows(); y++) {
                 int gridNumber = y * myGridHeight + x;
                 int cellStatus = game.getCellStatus(x, y);
-                updateCell(game, gridNumber, cellStatus);
+                updateCell(gridNumber, cellStatus);
             }
         }
     }
 
     // updates cell status
-    private void updateCell(Game game, int cellNumber, int cellStatus){
+    private void updateCell(int cellNumber, int cellStatus){
         Node currNode = myGridView.getChildren().get(cellNumber);
         currNode.setId(cellStatus+"-cell");
     }
@@ -157,18 +161,14 @@ public class SimulatorView {
     }
 
     /**
-     * Returns a scene of the simulation with the control buttons
-     * @return VBox containing gridpane of the simulation and control buttons
+     * Creates a scene of the simulation with the control buttons
      */
-    private VBox generateSimulationVBox(){
+    private void generateSimulationVBox(){
+        simulationBox = new VBox();
         HBox buttonBox = generateSimulatorButtonBox();
         buttonBox.getChildren().add(makeSlider(myLanguageResources.getString("SpeedLabel"), 0.1, 5.0));
-
-        VBox simulationBox = new VBox();
         simulationBox.getChildren().addAll(myGridView, buttonBox);
-
         applyCSS(simulationBox, myCSSFile);
-        return simulationBox;
     }
 
     private void populateSimulatorButtonMap(){
@@ -176,7 +176,13 @@ public class SimulatorView {
         simulatorButtonMap.put(myLanguageResources.getString(PLAY_LABEL), event -> play());
         simulatorButtonMap.put(myLanguageResources.getString(STEP_LABEL), event -> step());
         simulatorButtonMap.put(myLanguageResources.getString(SAVE_LABEL), event -> mySimulatorController.saveCSVFile());
-        simulatorButtonMap.put(myLanguageResources.getString(LOAD_LABEL), event -> mySimulatorController.loadNewCSV());
+        simulatorButtonMap.put(myLanguageResources.getString(LOAD_LABEL), event -> changeSimulation());
+    }
+
+    private void changeSimulation(){
+        Main newSimulationMain = new Main();
+        Stage newStage = new Stage();
+        newSimulationMain.start(newStage);
     }
 
     private HBox generateSimulatorButtonBox(){
