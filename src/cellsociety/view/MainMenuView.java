@@ -2,16 +2,15 @@ package cellsociety.view;
 
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
+import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.util.*;
@@ -21,15 +20,13 @@ public class MainMenuView {
     private FileManager myFileManager;
     private Pane homePageRoot;
     private MainController myMainController;
-    private ArrayList<String> modelOptions = new ArrayList<>();;
-    private Map<String, EventHandler<ActionEvent>> mainMenuButtonMap = new LinkedHashMap<>();
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private String homePageRootID = "home-page-root";
     public ResourceBundle myActionEventsResources;
-    private MainMenuButtonView but;
+    private MainMenuButtonView myMainMenuButtonView;
     private ResourceBundle gameNames;
     private String myModelType;
-    private ArrayList<String> cssFileOptions = new ArrayList<>();
+    private SimulatorController simulatorController;
 
     public MainMenuView(ResourceBundle languageResourceBundle, ResourceBundle actionResourceBundle){
         myLanguageResources = languageResourceBundle;
@@ -43,8 +40,7 @@ public class MainMenuView {
      */
     public Scene setMenuDisplay(MainController mainController, int width, int height, ResourceBundle gameNames) {
         myMainController = mainController;
-        but = new MainMenuButtonView(this, myLanguageResources, myActionEventsResources, myFileManager);
-        myMainController = mainController;
+        myMainMenuButtonView = new MainMenuButtonView(this, myMainController, myLanguageResources, myActionEventsResources, myFileManager);
         this.gameNames = gameNames;
         setLabel("Cell Society", "title");
         initializeHomePageRoot();
@@ -54,7 +50,7 @@ public class MainMenuView {
 
     private void initializeHomePageRoot(){
         homePageRoot = new TilePane();
-        homePageRoot.getChildren().add(but.generateMainMenuPanel());
+        homePageRoot.getChildren().add(myMainMenuButtonView.generateMainMenuPanel());
         homePageRoot.setId(homePageRootID);
     }
 
@@ -74,11 +70,6 @@ public class MainMenuView {
         myModelType = choiceDialog.getSelectedItem();
     }
 
-    private Node generateMainMenuPanel(){
-        VBox panel = new VBox();
-        mainMenuButtonMap.forEach((key,value) -> but.addButtonToPanel(key,value,panel));
-        return panel;
-    }
 
     public ChoiceDialog<String> generateChoiceDialogBox(String defaultChoice, ArrayList<String> options, String resultType, String content){
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(defaultChoice);
@@ -93,6 +84,9 @@ public class MainMenuView {
         choiceDialog.showAndWait();
         if(resultType.equals("cssFile")){
             myMainController.updateCSS(choiceDialog.getSelectedItem());
+        }
+        if(resultType.equals("modelType")){
+            myMainController.updateModelType(choiceDialog.getSelectedItem(), myFileManager);
         }
     }
 

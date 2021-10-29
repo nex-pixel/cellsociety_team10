@@ -57,6 +57,7 @@ public class SimulatorView {
         myGridHeight = myGame.getNumCols();
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
+        mySimulatorButtonView = new SimulatorButtonView(this, mySimulatorController);
         populateSimulatorButtonMap();
         setDefaultGrid();
         initializeSimulationScene();

@@ -27,13 +27,16 @@ public class MainMenuButtonView extends ButtonView {
     private ResourceBundle myLanguageResources;
     private FileManager myFileManager;
     private MainMenuView myMainMenuView;
+    private MainController myMainMenuController;
+    private String ERROR_PACKAGE = "cellsociety.error.resources.";
+    private ResourceBundle errorResources;
 
-
-    public MainMenuButtonView(MainMenuView menuView, ResourceBundle langResourceBundle, ResourceBundle actionResourceBundle, FileManager fileManager){
+    public MainMenuButtonView(MainMenuView menuView, MainController mainMenuController, ResourceBundle langResourceBundle, ResourceBundle actionResourceBundle, FileManager fileManager){
         myMainMenuView = menuView;
         myLanguageResources = langResourceBundle;
         myActionEventsResources = actionResourceBundle;
         myFileManager = fileManager;
+        myMainMenuController = mainMenuController;
         buttonID = "main-menu-button";
         populateOptions(modelOptions, modelLabelOptions);
         populateOptions(cssFileOptions, cssFileLabelOptions);
@@ -65,10 +68,9 @@ public class MainMenuButtonView extends ButtonView {
         return event-> myMainMenuView.generateChoiceDialogBox(myLanguageResources.getString(cssFileLabelOptions[0]),
                 cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent"));
     }
-// TODO: NEED TO UPDATE WAY myModelType IS PASSED TO GENERATE NEW SIMULATION --> SHOULDN'T HAVE TO GO THROUGH GENERATE NEW SIM
+
     private EventHandler<ActionEvent> generateNewSimEvent(){
-        return event -> System.out.println("help");
-                //myMainController.generateNewSimulation(myModelType, myFileManager.getCurrentTextFile(), myFileManager);
+        return event -> myMainMenuController.generateNewSimulation(myFileManager.getCurrentTextFile());
     }
 
     @Override

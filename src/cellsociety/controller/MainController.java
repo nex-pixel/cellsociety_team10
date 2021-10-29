@@ -10,8 +10,8 @@ import java.util.ResourceBundle;
 public class MainController {
 
     private static final String RESOURCE_PACKAGE = "cellsociety.resources.";
-    public static final String RESOURCE_ACTIONS_NAME = MainController.class.getPackageName() + ".Resources.ActionName";
-    public static final String RESOURCE_ACTIONS_LABEL = MainController.class.getPackageName() + ".Resources.ActionLabel";
+    public static final String RESOURCE_ACTIONS_NAME = MainController.class.getPackageName() + ".Resources.ModelNames";
+    public static final String RESOURCE_ACTIONS_LABEL = MainController.class.getPackageName() + ".Resources.ModelLabel";
     private static final String ACTION_BUNDLE = "MainMenuActionEvents";
 
     private ResourceBundle myActionEventsResources;
@@ -29,6 +29,7 @@ public class MainController {
     private static ResourceBundle actionLabelBundle;
 
 
+
     public MainController(Stage stage, String language){
         myStage = stage;
         myLanguageResources = initializeResourceBundle(language);
@@ -41,8 +42,7 @@ public class MainController {
     public void startMainMenu() {
         mainMenu  = new MainMenuView(myLanguageResources, myActionEventsResources);
         myStage.setScene(mainMenu.setMenuDisplay(this, MAIN_SCREEN_SIZE, MAIN_SCREEN_SIZE, actionNameBundle));
-        cssFile = DEFAULT_CSS_FILE_LABEL;
-        updateCSS(cssFile);
+        updateCSS(DEFAULT_CSS_FILE_LABEL);
         myStage.show();
     }
 
@@ -50,8 +50,9 @@ public class MainController {
      * setter for modelType
      * @param result modelType
      */
-    public void updateModelType(String result){
-        modelType = result;
+    public void updateModelType(String result, FileManager fileManager){
+        simulatorController = new SimulatorController(fileManager, cssFile, myLanguageResources);
+        simulatorController.updateModelType(result);
     }
 
     public void updateCSS(String result) {
@@ -63,10 +64,10 @@ public class MainController {
         }
     }
 
-    public void generateNewSimulation(String modelType, File csvFile, FileManager fileManager){
-        simulatorController = new SimulatorController(fileManager, cssFile, myLanguageResources);
-        simulatorController.createNewSimulation(modelType, csvFile);
+    public void generateNewSimulation(File csvFile){
+        simulatorController.createNewSimulation(csvFile);
     }
+
 
     private ResourceBundle initializeResourceBundle(String name) {
         try {
@@ -79,10 +80,5 @@ public class MainController {
     private ResourceBundle generateResourceBundle(String name) {
         return ResourceBundle.getBundle(RESOURCE_PACKAGE + name);
     }
-
-    public ResourceBundle getMyActionEventsResources(){
-        return myActionEventsResources;
-    }
-
 
 }

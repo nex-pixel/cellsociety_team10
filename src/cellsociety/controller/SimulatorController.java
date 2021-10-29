@@ -31,14 +31,14 @@ public class SimulatorController {
      * Receives csvFile with the initial state of the cells and repeats the rule indefinitely until the user stops it
      * @param csvFile file containing the initial state
      */
-    public void createNewSimulation(String modelType, File csvFile){
+    public void createNewSimulation(File csvFile){
         try{
-            myModelType = modelType;
-            Method m = this.getClass().getDeclaredMethod(modelType, String.class);
+            Method m = this.getClass().getDeclaredMethod(myModelType, String.class);
             m.invoke(this, csvFile.getAbsolutePath());
             mySimulatorView = new SimulatorView(myGame,
                     myCSSFile, myLanguageResources, this);
         } catch(Exception e){
+            // TODO: this doesnt really catch the method validity so we might want to change this
             myFileManager.checkFileValidity(csvFile);
         }
     }
@@ -77,7 +77,7 @@ public class SimulatorController {
     public void loadNewCSV(){
         myFileManager.chooseFile();
         File file = myFileManager.getCurrentTextFile();
-        createNewSimulation(myModelType, file);
+        createNewSimulation(file);
         // createNewSimulation(0, file);
         /*
         myGame = new GameOfLifeModel(myFileManager.getCurrentTextFile().getAbsolutePath());
@@ -89,6 +89,10 @@ public class SimulatorController {
         stage.show();
         playAnimation();
          */
+    }
+
+    public void updateModelType(String modelType){
+        myModelType = modelType;
     }
 
 
