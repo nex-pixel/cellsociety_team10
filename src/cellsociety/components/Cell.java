@@ -95,6 +95,7 @@ public class Cell {
         return isCorner;
     }
 
+
     @Override
     public boolean equals(Object obj) {
         final Cell other = (Cell) obj;

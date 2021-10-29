@@ -9,6 +9,8 @@ import java.util.Set;
 public abstract class Grid {
     private int myNumRows, myNumCols;
     private Map<Point, Cell> myBoard;
+    private int[] myNeighborRows; //To determine neighbor cell locations by using integer displacement in that direction
+    private int[] myNeighborCols; //same as above but for columns
     private int myEdgePolicy;
     private int myNeighborMode;
     private int EDGE_POLICY_FINITE = 0;
@@ -38,13 +40,13 @@ public abstract class Grid {
     public int getEdgePolicy () { return myEdgePolicy; }
     public int getNeighborMode () { return myNeighborMode; }
 
-    public Set<Point> getPoints (){
-        return myBoard.keySet();
-    }
+    public void setNeighborRows (int[] rows) { myNeighborRows = rows; }
+    public int[] getNeighborRows () { return myNeighborRows; }
+    public void setNeighborCols (int[] cols) { myNeighborCols = cols; }
+    public int[] getNeighborCols () { return myNeighborCols; }
 
-    public Cell getBoardCell (Point point){
-        return myBoard.get(point);
-    }
+    public Set<Point> getPoints (){ return myBoard.keySet(); }
+    public Cell getBoardCell (Point point){ return myBoard.get(point); }
 
     public Cell getXYBoardCell (int x, int y){
         Point point = new Point(x, y);
@@ -53,16 +55,38 @@ public abstract class Grid {
 
     protected Map<Point, Cell> getBoard () { return myBoard; }
 
-    protected abstract void initializeNeighbors();
+    protected abstract void initializeNeighbors ();
 
     protected Point applyEdgePolicy (int x, int y) {
         if (myEdgePolicy != EDGE_POLICY_FINITE) {
-            x = x % myNumCols;
+            x = Math.floorMod(x, myNumCols);
         }
         if (myEdgePolicy == EDGE_POLICY_TORUS) {
-            y = y % myNumRows;
+            y = Math.floorMod(y, myNumRows);
         }
         return new Point(x, y);
+    }
+
+    protected boolean isEdge (Cell c) {
+        if (isCorner(c)) return false;
+
+        int x = c.getXyPosition()[0];
+        int y = c.getXyPosition()[1];
+
+        if (x == 0 || x == myNumCols - 1 || y == 0 || y == myNumCols - 1)  return true;
+
+        return false;
+    }
+
+    protected boolean isCorner (Cell c) {
+        int x = c.getXyPosition()[0];
+        int y = c.getXyPosition()[1];
+        if (x == 0 || x == myNumCols - 1) {
+            if (y == 0 || y == myNumCols - 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected boolean isInsideBoard (Point point) {
@@ -90,10 +114,12 @@ public abstract class Grid {
         this.myNumCols += top + bottom;
     }
 
-    private Grid clearNeighborsForCells(Grid passedInGrid){
-        for(Point point: passedInGrid.myBoard.keySet()){
-            passedInGrid.myBoard.get(point).clearNeighborCells();
-        }
-        return passedInGrid;
-    }
+//    private Grid clearNeighborsForCells(Grid passedInGrid){
+//        for(Point point: passedInGrid.myBoard.keySet()){
+//            passedInGrid.myBoard.get(point).clearNeighborCells();
+//        }
+//        return passedInGrid;
+//    }
+
+
 }
