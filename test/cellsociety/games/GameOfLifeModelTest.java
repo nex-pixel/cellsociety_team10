@@ -24,7 +24,6 @@ class GameOfLifeModelTest {
         GameOfLifeModel board1 = new GameOfLifeModel(boat);
 
         assertEquals(board0, board1);
-
     }
 
     @Test
