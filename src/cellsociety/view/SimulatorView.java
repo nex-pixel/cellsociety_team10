@@ -1,5 +1,6 @@
 package cellsociety.view;
 
+import cellsociety.controller.MainController;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import cellsociety.games.Game;
@@ -45,7 +46,7 @@ public class SimulatorView {
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private Game myGame;
     private Scene myScene;
-    private SimulatorButtonView mySimulatorButtonView;
+
 
     public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController){
         mySimulatorController = simulatorController;
@@ -57,12 +58,9 @@ public class SimulatorView {
         myGridHeight = myGame.getNumCols();
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
-        mySimulatorButtonView = new SimulatorButtonView(this, mySimulatorController);
         populateSimulatorButtonMap();
         setDefaultGrid();
         initializeSimulationScene();
-        mySimulatorButtonView = new SimulatorButtonView(this, mySimulatorController);
-
     }
 
     private void initializeSimulationScene(){
@@ -75,7 +73,7 @@ public class SimulatorView {
         playAnimation();
     }
 
-    public void step(){
+    private void step(){
         myGame.update();
         updateSimulation(myGame);
     }
@@ -90,11 +88,11 @@ public class SimulatorView {
         myAnimation.play();
     }
 
-    public void pause(){
+    private void pause(){
         myAnimation.pause();
     }
 
-    public void play(){
+    private void play(){
         myAnimation.play();
     }
 
@@ -181,8 +179,8 @@ public class SimulatorView {
      * @return VBox containing gridpane of the simulation and control buttons
      */
     private VBox generateSimulationVBox(){
-        HBox buttonBox = mySimulatorButtonView.generateSimulatorButtonBox();
-        buttonBox.getChildren().add(makeSlider("Speed", 0.1, 5.0));
+        HBox buttonBox = generateSimulatorButtonBox();
+        buttonBox.getChildren().add(makeSlider(myLanguageResources.getString("SpeedLabel"), 0.1, 5.0));
 
         VBox simulationBox = new VBox();
         simulationBox.getChildren().addAll(myGridView, buttonBox);

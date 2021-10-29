@@ -36,13 +36,17 @@ public class SimulatorButtonView {
         mySimulatorController = simulatorController;
     }
 
-    private void populateSimulatorButtonMap(){
+  private void populateSimulatorButtonMap() {
+    /*
         simulatorButtonMap.put(myLanguageResources.getString(PAUSE_LABEL), event -> mySimulatorView.pause());
         simulatorButtonMap.put(myLanguageResources.getString(PLAY_LABEL), event -> mySimulatorView.play());
         simulatorButtonMap.put(myLanguageResources.getString(STEP_LABEL), event -> mySimulatorView.step());
         simulatorButtonMap.put(myLanguageResources.getString(SAVE_LABEL), event -> mySimulatorController.saveCSVFile());
         simulatorButtonMap.put(myLanguageResources.getString(LOAD_LABEL), event -> mySimulatorController.loadNewCSV());
+
     }
+         */
+  }
 
     public HBox generateSimulatorButtonBox(){
         HBox buttonBox = new HBox();

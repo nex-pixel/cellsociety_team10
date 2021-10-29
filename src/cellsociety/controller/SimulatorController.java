@@ -1,6 +1,7 @@
 package cellsociety.controller;
 
 import cellsociety.games.*;
+import cellsociety.view.MainMenuButtonView;
 import cellsociety.view.SimulatorView;
 import javafx.scene.Scene;
 import javafx.scene.control.TextInputDialog;
@@ -12,6 +13,9 @@ import java.util.ResourceBundle;
 
 public class SimulatorController {
 
+    public static final String RESOURCE_ACTIONS_NAME = MainController.class.getPackageName() + ".Resources.ModelNames";
+    public static final String RESOURCE_ACTIONS_LABEL = MainController.class.getPackageName() + ".Resources.ModelLabel";
+
     private Game myGame;
     private SimulatorView mySimulatorView;
     private FileManager myFileManager;
@@ -20,11 +24,15 @@ public class SimulatorController {
     private ResourceBundle myLanguageResources;
     private VBox simulationBox;
     private String myModelType;
+    private ResourceBundle actionNameBundle;
+    private ResourceBundle actionLabelBundle;
+    private File myCSVFile;
 
     public SimulatorController(FileManager fileManager, String cssFile, ResourceBundle resourceBundle) {
         myFileManager = fileManager;
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
+        actionLabelBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_LABEL);
     }
 
     /**
@@ -32,19 +40,34 @@ public class SimulatorController {
      * @param csvFile file containing the initial state
      */
     public void createNewSimulation(File csvFile){
+        myCSVFile = csvFile;
+        actionNameBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_NAME);
         try{
-            Method m = this.getClass().getDeclaredMethod(myModelType, String.class);
-            m.invoke(this, csvFile.getAbsolutePath());
+            handleMethod(actionNameBundle.getString(myModelType)).invoke(SimulatorController.this);
+           // Method m = this.getClass().getDeclaredMethod(actionNameBundle.getString(myModelType), String.class);
+            //m.invoke(this, csvFile.getAbsolutePath());
             mySimulatorView = new SimulatorView(myGame,
                     myCSSFile, myLanguageResources, this);
         } catch(Exception e){
             // TODO: this doesnt really catch the method validity so we might want to change this
             myFileManager.checkFileValidity(csvFile);
+            e.printStackTrace();
         }
     }
 
-    private void makeGameOfLife(String csvFile){
-        myGame = new GameOfLifeModel(csvFile);
+    protected Method handleMethod(String name) {
+        try{
+            Method m = SimulatorController.class.getDeclaredMethod(name);
+            return m;
+        }catch(NoSuchMethodException e){
+            //TODO: FIX THIS
+            e.printStackTrace();
+        }
+        //TODO: BAD
+        return null;
+    }
+    private void makeGameOfLife(){
+        myGame = new GameOfLifeModel(myCSVFile.getAbsolutePath());
     }
     private void makePercolation(String csvFile){
         myGame = new PercolationModel(csvFile);
