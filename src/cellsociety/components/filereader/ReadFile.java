@@ -1,4 +1,4 @@
-package cellsociety.components;
+package cellsociety.components.filereader;
 
 
 public abstract class ReadFile {

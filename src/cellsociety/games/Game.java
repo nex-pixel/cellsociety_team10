@@ -2,14 +2,17 @@ package cellsociety.games;
 
 
 import cellsociety.components.*;
-import cellsociety.controller.MainController;
+import cellsociety.components.filereader.ReadCSVFile;
+import cellsociety.components.filereader.ReadFile;
+import cellsociety.components.filereader.ReadJSONFile;
 import com.opencsv.CSVWriter;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -108,6 +111,16 @@ public abstract class Game {
 
     protected int getIntProperty(String label) {
         return Integer.parseInt(myGameData.getString(label));
+    }
+
+    protected List<Cell> checkNumCellsThisCase(int state, List<Cell> cellList){
+        List<Cell> retList = new ArrayList<>();
+        for(Cell cellInList: cellList){
+            if(cellInList.getCurrentStatus() == state){
+                retList.add(cellInList);
+            }
+        }
+        return retList;
     }
 
     @Override

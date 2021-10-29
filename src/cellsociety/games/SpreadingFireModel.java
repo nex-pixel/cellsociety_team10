@@ -37,34 +37,29 @@ public class SpreadingFireModel extends Game{
 
     @Override
     public void update() {
-        Set<Point> points = getGrid().getPoints();
-        int fireCount = 0;
-//        Map<Point, Cell> board = myGrid.getBoard();
-        for (Point point: points) {
-            Cell cellBeingChecked = getGrid().getBoardCell(point);
-            if(cellBeingChecked.getCurrentStatus() == BURNING) {
-                fireCount++;
-            }
-            applyRule(getGrid().getBoardCell(point));
-        }
-        if(fireCount == 0){
-            firePresentInGrid = false;
-        }
+        checkForFire();
         if(firePresentInGrid) {
-            for (Point point : points) {
-                getGrid().getBoardCell(point).changeStatus();
+            super.update();
+        }
+    }
+
+    private void checkForFire(){
+        firePresentInGrid = false;
+        for(Point point: getGrid().getPoints()){
+            if(getGrid().getBoardCell(point).getCurrentStatus() == BURNING) {
+                firePresentInGrid = true;
             }
         }
     }
 
     @Override
     protected boolean applyRule(Cell cell){
-        List<Cell> adjacentNeighbors = cell.getAdjacentNeighbors();
+        List<Cell> neighbors = cell.getNeighborCells();
         if(cell.getCurrentStatus() == EMPTY){
             int willATreeGrow = willNewTreeGrow();
             cell.setNextStatus(willATreeGrow);
         } else if(cell.getCurrentStatus() == TREE){
-            int willItCatchFire = spread(adjacentNeighbors);
+            int willItCatchFire = spread(neighbors);
             cell.setNextStatus(willItCatchFire);
         } else if (cell.getCurrentStatus() == BURNING){
             cell.setNextStatus(EMPTY);
@@ -74,8 +69,7 @@ public class SpreadingFireModel extends Game{
 
     private int spread(List<Cell> neighbors){
         double randNumber = Math.random();
-        if(neighbors.get(0).getCurrentStatus() == BURNING || neighbors.get(1).getCurrentStatus() == BURNING ||
-                neighbors.get(2).getCurrentStatus() == BURNING || neighbors.get(3).getCurrentStatus() == BURNING) {
+        if(checkNumCellsThisCase(BURNING, neighbors).size() > 0) {
             if (randNumber < probCatch) {
                 return BURNING;
             }
