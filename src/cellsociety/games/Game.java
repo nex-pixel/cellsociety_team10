@@ -2,6 +2,7 @@ package cellsociety.games;
 
 
 import cellsociety.components.*;
+import cellsociety.controller.MainController;
 import com.opencsv.CSVWriter;
 
 import java.awt.*;
@@ -16,7 +17,7 @@ public abstract class Game {
 
     private ReadFile myReader;
     private Grid myGrid;
-    private static final String DEFAULT_GAME_DATA = "cellsociety.resources.";
+    private static final String DEFAULT_GAME_DATA = "cellsociety.resources.GameData";
     protected ResourceBundle myGameData;
 
     public Game () {}
@@ -30,7 +31,7 @@ public abstract class Game {
         populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
-        myGrid = new Grid(states, 0, 0);
+        myGrid = new SquareGrid(states, 0, 0);
     }
 
     public Game (int[][] states) {
@@ -39,7 +40,7 @@ public abstract class Game {
 
 //    protected Map<Point, Cell> getGrid () { return myGrid.getBoard(); }
     protected Grid getGrid () { return myGrid; }
-    protected void setGrid (int[][] states) { myGrid = new Grid(states, 0, 0); }
+    protected void setGrid (int[][] states) { myGrid = new SquareGrid(states, 0, 0); }
 
     public int getCellStatus (int x, int y) { return myGrid.getBoardCell(new Point(x, y)).getCurrentStatus(); }
     public int getNumRows () { return myGrid.getNumRows(); }
