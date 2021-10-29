@@ -43,12 +43,9 @@ public class SimulatorController {
         actionNameBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_NAME);
         try{
             handleMethod(actionNameBundle.getString(myModelType)).invoke(SimulatorController.this);
-           // Method m = this.getClass().getDeclaredMethod(actionNameBundle.getString(myModelType), String.class);
-            //m.invoke(this, csvFile.getAbsolutePath());
             mySimulatorView = new SimulatorView(myGame,
                     myCSSFile, myLanguageResources, this);
         } catch(Exception e){
-            // TODO: this doesnt really catch the method validity so we might want to change this
             myFileManager.checkFileValidity(csvFile);
             e.printStackTrace();
         }
@@ -56,30 +53,27 @@ public class SimulatorController {
 
     protected Method handleMethod(String name) {
         try{
-            Method m = SimulatorController.class.getDeclaredMethod(name);
+            Method m = this.getClass().getDeclaredMethod(name);
             return m;
         }catch(NoSuchMethodException e){
-            //TODO: FIX THIS
-            e.printStackTrace();
+            return null;
         }
-        //TODO: BAD
-        return null;
     }
 
     private void makeGameOfLife(){
         myGame = new GameOfLifeModel(myCSVFile.getAbsolutePath());
     }
-    private void makePercolation(String csvFile){
-        myGame = new PercolationModel(csvFile);
+    private void makePercolation(){
+        myGame = new PercolationModel(myCSVFile.getAbsolutePath());
     }
-    private void makeSegregation(String csvFile){
+    private void makeSegregation(){
         //myGame = new SegregationModel(csvFile);
     }
-    private void makeSpreadingFire(String csvFile){
-        myGame = new SpreadingFireModel(csvFile);
+    private void makeSpreadingFire(){
+        myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath());
     }
-    private void MakeWaTorWorld(String csvFile){
-        myGame = new WaTorWorldModel(csvFile);
+    private void MakeWaTorWorld(){
+        myGame = new WaTorWorldModel(myCSVFile.getAbsolutePath());
     }
 
     /**

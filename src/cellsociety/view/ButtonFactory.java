@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,7 +27,7 @@ public abstract class ButtonFactory {
         buttonMap = new LinkedHashMap<>();
     }
 
-    protected void addButtonToPanel(String label, EventHandler<ActionEvent> event, VBox panel){
+    protected void addButtonToPanel(String label, EventHandler<ActionEvent> event, Pane panel){
         Button button = generateButton(label,
                 event);
         button.setId(buttonID);
@@ -41,11 +42,21 @@ public abstract class ButtonFactory {
     }
 
     protected abstract void populateButtonEvents();
-    protected abstract Method handleMethod(String name);
 
-    public Node generateMainMenuPanel(){
+    protected Method handleMethod(String name) {
+        try{
+            Method m = this.getClass().getDeclaredMethod(name);
+            return m;
+        }catch(NoSuchMethodException e){
+            return null;
+        }
+    }
+
+    public Node generateButtonPanel(){
         VBox panel = new VBox();
         buttonMap.forEach((key,value) -> addButtonToPanel(key,value,panel));
         return panel;
     }
+
+
 }

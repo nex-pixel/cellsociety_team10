@@ -9,17 +9,11 @@ import javafx.scene.layout.VBox;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 public class MainMenuButtonFactory extends ButtonFactory {
     private ArrayList<String> modelOptions = new ArrayList<>();;
-    private Map<String, EventHandler<ActionEvent>> mainMenuButtonMap = new LinkedHashMap<>();
-    private String[] buttonLabelOptions = {"ChooseSimulationTypeLabel", "LoadFileLabel", "ChooseColorScheme", "CreateNewSimulationLabel"};
-    private ArrayList<EventHandler<ActionEvent>> buttonEventLists = new ArrayList<>();
     private String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
     private String[] modelLabelOptions = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
     private ResourceBundle myActionEventsResources;
@@ -30,6 +24,7 @@ public class MainMenuButtonFactory extends ButtonFactory {
     private MainController myMainMenuController;
 
     public MainMenuButtonFactory(MainMenuView menuView, MainController mainMenuController, ResourceBundle langResourceBundle, ResourceBundle actionResourceBundle, FileManager fileManager){
+        super();
         myMainMenuView = menuView;
         myLanguageResources = langResourceBundle;
         myActionEventsResources = actionResourceBundle;
@@ -44,9 +39,11 @@ public class MainMenuButtonFactory extends ButtonFactory {
     @Override
     protected void populateButtonEvents(){
         try{
-            for(String key : buttonLabelOptions){
+            ArrayList<String> list = Collections.list(myActionEventsResources.getKeys());
+            Collections.sort(list);
+            for(String key : list){
                 EventHandler<ActionEvent> buttonEvent = (EventHandler<ActionEvent>) handleMethod(myActionEventsResources.getString(key)).invoke(MainMenuButtonFactory.this);
-                mainMenuButtonMap.put(myLanguageResources.getString(key), buttonEvent);
+                buttonMap.put(myLanguageResources.getString(key), buttonEvent);
             }
         }catch(IllegalAccessException | InvocationTargetException e){
             e.printStackTrace();
@@ -69,25 +66,6 @@ public class MainMenuButtonFactory extends ButtonFactory {
 
     private EventHandler<ActionEvent> generateNewSimEvent(){
         return event -> myMainMenuController.generateNewSimulation(myFileManager.getCurrentTextFile());
-    }
-
-    @Override
-    protected Method handleMethod(String name) {
-        try{
-            Method m = MainMenuButtonFactory.class.getDeclaredMethod(name);
-            return m;
-        }catch(NoSuchMethodException e){
-            //TODO: FIX THIS
-            e.printStackTrace();
-        }
-        //TODO: BAD
-        return null;
-    }
-
-    public Node generateMainMenuPanel(){
-        VBox panel = new VBox();
-        mainMenuButtonMap.forEach((key,value) -> addButtonToPanel(key,value,panel));
-        return panel;
     }
 
     private void populateOptions(ArrayList<String> optionsList, String[] labelList){

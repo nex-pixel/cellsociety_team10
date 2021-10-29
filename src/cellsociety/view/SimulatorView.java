@@ -34,18 +34,13 @@ public class SimulatorView {
     private int myGridHeight;
     private SimulatorController mySimulatorController;
     private String myCSSFile;
-    private Map<String, EventHandler<ActionEvent>> simulatorButtonMap = new LinkedHashMap<>();
-    private String simulatorButtonID = "simulator-button";
     private ResourceBundle myLanguageResources;
-    private String PLAY_LABEL = "PlayLabel";
-    private String PAUSE_LABEL = "PauseLabel";
-    private String STEP_LABEL = "StepLabel";
-    private String SAVE_LABEL = "SaveLabel";
-    private String LOAD_LABEL = "LoadLabel";
-    private String ADD_SIM_LABEL = "AddLabel";
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private Game myGame;
     private Scene myScene;
+    private SimulatorButtonFactory mySimulatorButtonFactory;
+    private ResourceBundle myActionResources;
+
 
 
     public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController){
@@ -58,7 +53,8 @@ public class SimulatorView {
         myGridHeight = myGame.getNumCols();
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
-        populateSimulatorButtonMap();
+        myActionResources = ResourceBundle.getBundle("cellsociety.resources.SimulatorActionEvents");
+        mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources,myActionResources);
         setDefaultGrid();
         initializeSimulationScene();
     }
@@ -73,7 +69,7 @@ public class SimulatorView {
         playAnimation();
     }
 
-    private void step(){
+    public void step(){
         myGame.update();
         updateSimulation(myGame);
     }
@@ -88,11 +84,11 @@ public class SimulatorView {
         myAnimation.play();
     }
 
-    private void pause(){
+    public void pause(){
         myAnimation.pause();
     }
 
-    private void play(){
+    public void play(){
         myAnimation.play();
     }
 
@@ -138,20 +134,6 @@ public class SimulatorView {
                 myGridView.getChildren().add(gridNumber, currCell);
             }
         }
-//        for(Point coordinate: cellStatus.keySet()){
-//            int gridNumber = (int) (coordinate.getX() * myGridHeight + coordinate.getY());
-//            Node currNode = myGridView.getChildren().get(gridNumber);
-//            myGridView.getChildren().remove(currNode);
-//            squareCell currCell = (squareCell) currNode;
-//            if(cellStatus.get(coordinate).getCurrentStatus() == 0){ // TODO: assumed dead is 0
-//                currCell.setId("dead-cell");
-//            }else if(cellStatus.get(coordinate).getCurrentStatus() == 1){ //TODO assumed alive is 1
-//                currCell.setId("alive-cell");
-//            }else if(cellStatus.get(coordinate).getCurrentStatus() == 2) {
-//                currCell.setId("default-cell");
-//            }
-//            myGridView.getChildren().add(gridNumber, currCell);
-//        }
     }
 
     /**
@@ -179,43 +161,16 @@ public class SimulatorView {
      * @return VBox containing gridpane of the simulation and control buttons
      */
     private VBox generateSimulationVBox(){
-        HBox buttonBox = generateSimulatorButtonBox();
+        HBox buttonBox = (HBox) mySimulatorButtonFactory.generateButtonPanel();
         buttonBox.getChildren().add(makeSlider(myLanguageResources.getString("SpeedLabel"), 0.1, 5.0));
 
         VBox simulationBox = new VBox();
-        simulationBox.getChildren().addAll(myGridView, buttonBox);
+        simulationBox.getChildren().addAll(myGridView, mySimulatorButtonFactory.generateButtonPanel());
 
         applyCSS(simulationBox, myCSSFile);
         return simulationBox;
     }
 
-    private void populateSimulatorButtonMap(){
-        simulatorButtonMap.put(myLanguageResources.getString(PAUSE_LABEL), event -> pause());
-        simulatorButtonMap.put(myLanguageResources.getString(PLAY_LABEL), event -> play());
-        simulatorButtonMap.put(myLanguageResources.getString(STEP_LABEL), event -> step());
-        simulatorButtonMap.put(myLanguageResources.getString(SAVE_LABEL), event -> mySimulatorController.saveCSVFile());
-        simulatorButtonMap.put(myLanguageResources.getString(LOAD_LABEL), event -> mySimulatorController.loadNewCSV());
-    }
-
-    private HBox generateSimulatorButtonBox(){
-        HBox buttonBox = new HBox();
-        simulatorButtonMap.forEach((key,value) -> addButtonToPanel(key,value,buttonBox));
-        return buttonBox;
-    }
-
-    private void addButtonToPanel(String label, EventHandler<ActionEvent> event, HBox panel){
-        Button button = generateButton(label,
-                event);
-        button.setId(simulatorButtonID);
-        panel.getChildren().add(button);
-    }
-
-    private Button generateButton(String label, EventHandler<ActionEvent> event) {
-        javafx.scene.control.Button button = new javafx.scene.control.Button();
-        button.setText(label);
-        button.setOnAction(event);
-        return button;
-    }
 
     private Node makeSlider(String text, double minVal, double maxVal) {
         Slider lengthSlider = new Slider(minVal, maxVal, 1);

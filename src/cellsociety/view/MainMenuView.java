@@ -48,7 +48,7 @@ public class MainMenuView {
 
     private void initializeHomePageRoot(){
         homePageRoot = new TilePane();
-        homePageRoot.getChildren().add(myMainMenuButtonView.generateMainMenuPanel());
+        homePageRoot.getChildren().add(myMainMenuButtonView.generateButtonPanel());
         homePageRoot.setId(homePageRootID);
     }
 
