@@ -116,7 +116,9 @@ public abstract class Game {
     protected List<Cell> checkNumCellsThisCase(int state, List<Cell> cellList){
         List<Cell> retList = new ArrayList<>();
         for(Cell cellInList: cellList){
-            if(cellInList.getCurrentStatus() == state){
+            if(cellInList == null){
+              //skip
+            } else if(cellInList.getCurrentStatus() == state){
                 retList.add(cellInList);
             }
         }
