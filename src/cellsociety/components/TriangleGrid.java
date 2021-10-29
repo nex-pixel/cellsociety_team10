@@ -36,8 +36,6 @@ public class TriangleGrid extends Grid {
                 setNeighborRows(new int[]{-1, 0, 0});
                 setNeighborCols(new int[]{0, 1, -1});
             }
-
         }
-
     }
 }

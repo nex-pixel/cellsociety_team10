@@ -1,4 +1,6 @@
-package cellsociety.components;
+package cellsociety.components.filereader;
+
+import cellsociety.components.filereader.ReadFile;
 
 public class ReadJSONFile extends ReadFile {
 
