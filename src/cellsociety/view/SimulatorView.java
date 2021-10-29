@@ -123,7 +123,7 @@ public class SimulatorView {
     public void updateSimulation(Game game){
         for (int x = 0; x < game.getNumCols(); x++) {
             for (int y = 0; y < game.getNumRows(); y++) {
-                int gridNumber = (int) (x * myGridHeight + y);
+                int gridNumber = y * myGridHeight + x;
                 Node currNode = myGridView.getChildren().get(gridNumber);
                 myGridView.getChildren().remove(currNode);
                 squareCell currCell = (squareCell) currNode;

@@ -69,17 +69,17 @@ public class SimulatorController {
     private void makeGameOfLife(){
         myGame = new GameOfLifeModel(myCSVFile.getAbsolutePath());
     }
-    private void makePercolation(String csvFile){
-        myGame = new PercolationModel(csvFile);
+    private void makePercolation(){
+        myGame = new PercolationModel(myCSVFile.getAbsolutePath());
     }
     private void makeSegregation(String csvFile){
         //myGame = new SegregationModel(csvFile);
     }
-    private void makeSpreadingFire(String csvFile){
-        myGame = new SpreadingFireModel(csvFile);
+    private void makeSpreadingFire(){
+        myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath());
     }
-    private void MakeWaTorWorld(String csvFile){
-        myGame = new WaTorWorldModel(csvFile);
+    private void MakeWaTorWorld(){
+        myGame = new WaTorWorldModel(myCSVFile.getAbsolutePath());
     }
 
     /**
