@@ -20,6 +20,7 @@ public class SegregationModel extends Game {
     private List<Cell> myEmptyCells;
 
     public SegregationModel (int numRows, int numCols, double emptyRate, double agentXRate, double threshold) {
+        populateGameConditions();
         EMPTY = getIntProperty("SegregationEmpty");
         AGENT_X = getIntProperty("SegregationAgentX");
         AGENT_O = getIntProperty("SegregationAgent0");
