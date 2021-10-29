@@ -6,11 +6,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Grid {
+public abstract class Grid {
     private int myNumRows, myNumCols;
     private Map<Point, Cell> myBoard;
     private int myEdgePolicy;
     private int myNeighborMode;
+    private int EDGE_POLICY_FINITE = 0;
+    private int EDGE_POLICY_TORUS = 1;
+    private int EDGE_POLICY_CYLINDER = 2;
+
 
     public Grid (int[][] states, int neighborMode, int edgePolicy) {
         myNumRows = states.length;
@@ -18,6 +22,7 @@ public class Grid {
         myNeighborMode = neighborMode;
         myEdgePolicy = edgePolicy;
         myBoard = new HashMap<>();
+
         for (int rowIndex = 0; rowIndex < myNumRows; rowIndex++) {
             for (int colIndex = 0; colIndex < myNumCols; colIndex++) {
                 Point point = new Point(colIndex, rowIndex);
@@ -30,6 +35,8 @@ public class Grid {
 
     public int getNumRows () { return myNumRows; }
     public int getNumCols () { return myNumCols; }
+    public int getEdgePolicy () { return myEdgePolicy; }
+    public int getNeighborMode () { return myNeighborMode; }
 
     public Set<Point> getPoints (){
         return myBoard.keySet();
@@ -44,48 +51,30 @@ public class Grid {
         return myBoard.get(point);
     }
 
-//    //Get Rid Of this
-//    public Map<Point, Cell> getBoard () { return myBoard; }
+    protected Map<Point, Cell> getBoard () { return myBoard; }
 
-    protected void initializeNeighbors() {
-        for (Point currentPoint: myBoard.keySet()) {
-            myBoard.get(currentPoint).clearNeighborCells();
-            Cell currentCell = myBoard.get(currentPoint);
-            //removed 0 in cols and rows because a cell can't be a neighbor of itself
-            int[] rows = {-1, -1, -1, 0, 1, 1, 1, 0}; //To determine neighbor cell locations by using integer displacement in that direction
-            int[] cols = {-1, 0, 1, 1, 1, 0, -1, -1}; //same as above but for columns
-            int numOfNeighbors = 0;
-            for (int i = 0; i < rows.length; i++) {
-                int x = currentPoint.x + cols[i];
-                int y = currentPoint.y + rows[i];
-                if (isInsideBoard(x, y)) {
-                    Point neighborPosition = new Point(x, y);
-                    Cell c = myBoard.get(neighborPosition);
-                    currentCell.getNeighborCells().add(c);
-                    numOfNeighbors++;
-                }
-                else {
-                    currentCell.getNeighborCells().add(null);
-                }
-            }
+    protected abstract void initializeNeighbors();
 
-            if (numOfNeighbors == 5) {
-                currentCell.setEdge(true);
-            }
-            else if (numOfNeighbors == 3) {
-                currentCell.setCorner(true);
-            }
-
+    protected Point applyEdgePolicy (int x, int y) {
+        if (myEdgePolicy != EDGE_POLICY_FINITE) {
+            x = x % myNumCols;
         }
+        if (myEdgePolicy == EDGE_POLICY_TORUS) {
+            y = y % myNumRows;
+        }
+        return new Point(x, y);
     }
 
-    private boolean isInsideBoard (int x, int y) {
+    protected boolean isInsideBoard (Point point) {
+        int x = point.x;
+        int y = point.y;
         return (x >= 0 && x < myNumCols && y >= 0 && y < myNumRows);
     }
 
     //expand the board with empty cells to each side depending on what's written
-    public void expandGrid(int left, int top, int right, int bottom){
-        Grid newGrid = new Grid(new int[myNumRows + top + bottom][myNumRows + left + right]);
+    public void expandGrid (int left, int top, int right, int bottom){
+        //ToDo: Grid is now abstract so "new Grid" doesn't work now
+        Grid newGrid = new SquareGrid(new int[myNumRows + top + bottom][myNumRows + left + right], myNeighborMode, myEdgePolicy);
         for(Point point: myBoard.keySet()){
             Cell movedCell = myBoard.get(point);
             movedCell.setXyPosition(point.x + left, point.y + top);

@@ -17,7 +17,7 @@ public class GridTest {
 
     @BeforeEach
     public void setUp () {
-        myGrid = new Grid(passedInGridArray);
+        myGrid = new SquareGrid(passedInGridArray, 0, 0);
     }
 
     @Test
