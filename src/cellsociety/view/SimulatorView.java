@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -46,6 +47,7 @@ public class SimulatorView {
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private Game myGame;
     private Scene myScene;
+    private Map<Integer, EventHandler<ActionEvent>> cellStatusAction;
 
 
     public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController){
@@ -124,34 +126,16 @@ public class SimulatorView {
         for (int x = 0; x < game.getNumCols(); x++) {
             for (int y = 0; y < game.getNumRows(); y++) {
                 int gridNumber = y * myGridHeight + x;
-                Node currNode = myGridView.getChildren().get(gridNumber);
-                myGridView.getChildren().remove(currNode);
-                squareCell currCell = (squareCell) currNode;
                 int cellStatus = game.getCellStatus(x, y);
-                if(cellStatus == 0){ // TODO: assumed dead is 0
-                    currCell.setId("dead-cell");
-                }else if(cellStatus == 1){ //TODO assumed alive is 1
-                    currCell.setId("alive-cell");
-                }else if(cellStatus == 2) {
-                    currCell.setId("default-cell");
-                }
-                myGridView.getChildren().add(gridNumber, currCell);
+                updateCell(game, gridNumber, cellStatus);
             }
         }
-//        for(Point coordinate: cellStatus.keySet()){
-//            int gridNumber = (int) (coordinate.getX() * myGridHeight + coordinate.getY());
-//            Node currNode = myGridView.getChildren().get(gridNumber);
-//            myGridView.getChildren().remove(currNode);
-//            squareCell currCell = (squareCell) currNode;
-//            if(cellStatus.get(coordinate).getCurrentStatus() == 0){ // TODO: assumed dead is 0
-//                currCell.setId("dead-cell");
-//            }else if(cellStatus.get(coordinate).getCurrentStatus() == 1){ //TODO assumed alive is 1
-//                currCell.setId("alive-cell");
-//            }else if(cellStatus.get(coordinate).getCurrentStatus() == 2) {
-//                currCell.setId("default-cell");
-//            }
-//            myGridView.getChildren().add(gridNumber, currCell);
-//        }
+    }
+
+    // updates cell status
+    private void updateCell(Game game, int cellNumber, int cellStatus){
+        Node currNode = myGridView.getChildren().get(cellNumber);
+        currNode.setId(cellStatus+"-cell");
     }
 
     /**
