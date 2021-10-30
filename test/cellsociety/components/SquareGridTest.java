@@ -19,6 +19,7 @@ public class SquareGridTest {
 
     private int NEIGHBOR_MODE_COMPLETE = 0;
     private int NEIGHBOR_MODE_EDGE = 1;
+    private int NEIGHBOR_MODE_RANDOM_HALF = 2;
 
     int[][] passedInGridArray = {{0,1,0},{1,0,1},{1,1,1}};
     int[][] expandedGridArray = {{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,1,0,0,0},{0,0,1,0,1,0,0},{0,0,1,1,1,0,0},

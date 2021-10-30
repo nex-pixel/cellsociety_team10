@@ -57,8 +57,7 @@ public class WaTorWorldModel extends Game{
     private void fishMovement(Cell cell, List<Cell> neighbors, int stepsAlive, int energy){
         List<Cell> adjNeigh = checkNumCellsThisCase(EMPTY, neighbors);
         if(adjNeigh.size() > 0){
-            int whichAdjacentCell = rand.nextInt(adjNeigh.size());
-            Cell chosenNextCell = adjNeigh.get(whichAdjacentCell);
+            Cell chosenNextCell = adjNeigh.get(getRandomInt(adjNeigh.size() - 1));
             energy = STARTING_VAL;
             reproduceCell(cell, chosenNextCell, stepsAlive, energy, STARTING_VAL);
         }
@@ -68,12 +67,16 @@ public class WaTorWorldModel extends Game{
         List<Cell> adjFishNeigh = checkNumCellsThisCase(FISH, neighbors);
         List<Cell> adjEmptyNeigh = checkNumCellsThisCase(EMPTY, neighbors);
         if(adjFishNeigh.size() > 0){
-            Cell chosenNextCell = adjFishNeigh.get(rand.nextInt(adjFishNeigh.size()));
+            Cell chosenNextCell = adjFishNeigh.get(adjFishNeigh.size() - 1);
             sharkReproduceCell(cell, chosenNextCell, stepsAlive, energy + ENERGY_FROM_EATING_FISH);
         } else if(adjEmptyNeigh.size() > 0){
-            Cell chosenNextCell = adjEmptyNeigh.get(rand.nextInt(adjEmptyNeigh.size()));
+            Cell chosenNextCell = adjEmptyNeigh.get(adjEmptyNeigh.size() - 1);
             sharkReproduceCell(cell, chosenNextCell, stepsAlive, energy);
         }
+    }
+
+    private int getRandomInt(int max){
+        return (int)(Math.random() * (max + 1));
     }
 
     private void sharkReproduceCell(Cell cell, Cell chosenCell, int stepsAlive, int energy){
