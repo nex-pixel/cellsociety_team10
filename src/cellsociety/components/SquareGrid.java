@@ -14,11 +14,6 @@ public class SquareGrid extends Grid {
         super(states, neighborMode, edgePolicy);
     }
 
-    @Override
-    protected void initializeNeighbors () {
-        super.initializeNeighbors();
-    }
-
     protected void applyNeighborMode (Point point) {
         if (getNeighborMode() == NEIGHBOR_MODE_COMPLETE) {
             setNeighborRows(new int[]{-1, -1, -1, 0, 1, 1, 1, 0});

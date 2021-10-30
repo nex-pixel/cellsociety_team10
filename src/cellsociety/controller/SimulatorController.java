@@ -8,6 +8,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -16,11 +17,10 @@ import java.util.ResourceBundle;
 
 public class SimulatorController {
 
-    public static final String RESOURCE_ACTIONS_NAME = MainController.class.getPackageName() + ".Resources.ModelNames";
+    public String RESOURCE_ACTIONS_NAME = "cellsociety.controller.resources.modelNames.";
 
     private Game myGame;
     private List<Game> myGameList;
-
     private SimulatorView mySimulatorView;
     private FileManager myFileManager;
     private String myCSSFile;
@@ -28,11 +28,13 @@ public class SimulatorController {
     private String myModelType;
     private ResourceBundle actionNameBundle;
     private File myCSVFile;
+    private String LANG_KEY = "language";
 
     public SimulatorController(FileManager fileManager, String cssFile, ResourceBundle resourceBundle) {
         myFileManager = fileManager;
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
+        RESOURCE_ACTIONS_NAME += myLanguageResources.getString(LANG_KEY);
         myGameList = new ArrayList<>();
     }
 
@@ -71,13 +73,13 @@ public class SimulatorController {
         myGameList.add(myGame);
     }
     private void makeSegregation(){
-        //myGame = new SegregationModel(csvFile);
+        myGame = new SegregationModel(myCSVFile.getAbsolutePath(), 0.5);
     }
     private void makeSpreadingFire(){
         myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath());
         myGameList.add(myGame);
     }
-    private void MakeWaTorWorld(){
+    private void makeWaTorWorld(){
         myGame = new WaTorWorldModel(myCSVFile.getAbsolutePath());
         myGameList.add(myGame);
     }
@@ -110,5 +112,10 @@ public class SimulatorController {
 
     public void updateCSSFile(String cssFile){
         myCSSFile = cssFile;
+    }
+
+    public void updateCellOnClick(int xCoordinate, int yCoordinate){
+        Point point = new Point(xCoordinate, yCoordinate);
+        myGame.changeCellOnClick(point);
     }
 }
