@@ -114,6 +114,7 @@ public class WaTorWorldModel extends Game{
         } else if (cell.getCurrentStatus() == SHARK){
             cell.setMiscellaneousVal((Arrays.asList(STARTING_VAL, SHARK_STARTING_ENERGY)));
         }
+        update();
     }
 
     @Override

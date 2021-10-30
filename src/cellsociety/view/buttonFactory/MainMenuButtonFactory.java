@@ -35,19 +35,6 @@ public class MainMenuButtonFactory extends ButtonFactory {
         populateOptions(cssFileOptions, cssFileLabelOptions);
         populateButtonEvents();
     }
-/*
-    public MainMenuButtonFactory(ResourceBundle langResourceBundle){
-        myActionEventsResources = ResourceBundle.getBundle(ACTIONS_NAME_PATH);
-        myLanguageResources = langResourceBundle;
-        myMainMenuView = new MainMenuView(langResourceBundle;
-        myMainMenuController = new MainController(langResourceBundle);
-        myFileManager = new FileManager(langResourceBundle);
-        buttonID = "main-menu-button";
-        populateOptions(modelOptions, modelLabelOptions);
-        populateOptions(cssFileOptions, cssFileLabelOptions);
-        populateButtonEvents();
-    }
- */
 
     @Override
     protected void populateButtonEvents(){
