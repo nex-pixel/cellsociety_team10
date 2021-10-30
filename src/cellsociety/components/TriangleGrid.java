@@ -19,6 +19,8 @@ public class TriangleGrid extends Grid {
     protected void applyNeighborMode (Point point) {
         if (getNeighborMode() == NEIGHBOR_MODE_COMPLETE) {
             if ((point.x + point.y) % 2 == 0) { // upward triangle
+                //TODO: make the int[] magic lists
+                //TODO: make a new method that includes both lines
                 setNeighborRows(new int[]{-1, -1, -1, 0, 0, 1, 1, 1, 1, 1, 0, 0});
                 setNeighborCols(new int[]{-1, 0, 1, 1, 2, 2, 1, 0, -1, -2, -2, -1});
             }

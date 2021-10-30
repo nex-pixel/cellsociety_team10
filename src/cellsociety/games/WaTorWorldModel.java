@@ -22,14 +22,6 @@ public class WaTorWorldModel extends Game{
 
     public WaTorWorldModel(String filename){
         super(filename);
-        EMPTY = getIntProperty("WatorWorldEmpty");
-        FISH = getIntProperty("WatorWorldFish");
-        SHARK = getIntProperty("WatorWorldShark");
-        SHARK_STARTING_ENERGY = getIntProperty("WatorWorldSharkStartingEnergy");
-        STARTING_VAL = getIntProperty("WatorWorldRepStartVal");
-        REPRODUCE_VAL = getIntProperty("WatorWorldReproduceNum");
-        ENERGY_FROM_EATING_FISH = getIntProperty("WatorWorldEnergyFromFish");
-        ENERGY_LOST_FROM_MOVING = getIntProperty("WatorWorldEnergyLostFromMoving");
         setSharkEnergyValues();
     }
 
@@ -119,5 +111,18 @@ public class WaTorWorldModel extends Game{
         } else if (cell.getCurrentStatus() == SHARK){
             cell.setMiscellaneousVal((Arrays.asList(STARTING_VAL, SHARK_STARTING_ENERGY)));
         }
+    }
+
+    @Override
+    protected void populateGameConditions () {
+        super.populateGameConditions();
+        EMPTY = getIntProperty("WatorWorldEmpty");
+        FISH = getIntProperty("WatorWorldFish");
+        SHARK = getIntProperty("WatorWorldShark");
+        SHARK_STARTING_ENERGY = getIntProperty("WatorWorldSharkStartingEnergy");
+        STARTING_VAL = getIntProperty("WatorWorldRepStartVal");
+        REPRODUCE_VAL = getIntProperty("WatorWorldReproduceNum");
+        ENERGY_FROM_EATING_FISH = getIntProperty("WatorWorldEnergyFromFish");
+        ENERGY_LOST_FROM_MOVING = getIntProperty("WatorWorldEnergyLostFromMoving");
     }
 }

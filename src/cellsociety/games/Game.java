@@ -10,10 +10,8 @@ import com.opencsv.CSVWriter;
 import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
 
 
 public abstract class Game {
@@ -35,6 +33,7 @@ public abstract class Game {
         populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
+        //TODO: currently only implement SquareGrid
         myGrid = new SquareGrid(states, 0, 0);
     }
 
@@ -48,8 +47,10 @@ public abstract class Game {
     protected void setGrid (int[][] states) { myGrid = new SquareGrid(states, 0, 0); }
 
     public int getCellStatus (int x, int y) { return myGrid.getBoardCell(new Point(x, y)).getCurrentStatus(); }
+    public int getCellStatus (Point point) { return myGrid.getBoardCell(point).getCurrentStatus(); }
     public int getNumRows () { return myGrid.getNumRows(); }
     public int getNumCols () { return myGrid.getNumCols(); }
+    public Set<Point> getAllPoints () { return myGrid.getPoints(); }
 
     private void createReader (String filename) {
         String[] temp = filename.split("\\.");
@@ -106,6 +107,7 @@ public abstract class Game {
         }
 
     }
+
 
     protected void populateGameConditions() {
         myGameData = ResourceBundle.getBundle(DEFAULT_GAME_DATA);

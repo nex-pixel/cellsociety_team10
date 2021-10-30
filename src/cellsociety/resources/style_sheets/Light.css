@@ -15,15 +15,15 @@
     -fx-alignment: center;
 }
 
-#alive-cell{
+#0-cell{
     -fx-fill: #e8da37;
 }
 
-#dead-cell{
+#1-cell{
     -fx-fill: #F3F2F1;
 }
 
-#default-cell{
+#2-cell{
     -fx-fill: #262626;
 }
 

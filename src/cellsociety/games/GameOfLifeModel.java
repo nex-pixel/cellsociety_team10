@@ -11,22 +11,14 @@ public class GameOfLifeModel extends Game {
 
     public GameOfLifeModel (String filename) {
         super(filename);
-        setStateProperties();
     }
 
     public GameOfLifeModel (GameOfLifeModel copy) {
         super(copy);
-        setStateProperties();
     }
 
     public GameOfLifeModel (int[][] states) {
         super(states);
-        setStateProperties();
-    }
-
-    private void setStateProperties(){
-        DEAD = getIntProperty("GameOfLifeDead");
-        ALIVE = getIntProperty("GameOfLifeAlive");
     }
 
     @Override
@@ -55,10 +47,17 @@ public class GameOfLifeModel extends Game {
     @Override
     public void changeCellOnClick(Point point) {
         Cell cell = getGrid().getBoardCell(point);
-        if(cell.getCurrentStatus() == DEAD){
+        if (cell.getCurrentStatus() == DEAD) {
             cell.setCurrentStatus(ALIVE);
-        } else if (cell.getCurrentStatus() == ALIVE){
+        } else if (cell.getCurrentStatus() == ALIVE) {
             cell.setCurrentStatus(DEAD);
         }
+    }
+
+    @Override
+    protected void populateGameConditions () {
+        super.populateGameConditions();
+        DEAD = getIntProperty("GameOfLifeDead");
+        ALIVE = getIntProperty("GameOfLifeAlive");
     }
 }
