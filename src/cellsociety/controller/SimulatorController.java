@@ -72,13 +72,13 @@ public class SimulatorController {
         myGameList.add(myGame);
     }
     private void makeSegregation(){
-        //myGame = new SegregationModel(csvFile);
+        myGame = new SegregationModel(myCSVFile.getAbsolutePath(), 0.5);
     }
     private void makeSpreadingFire(){
         myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath());
         myGameList.add(myGame);
     }
-    private void MakeWaTorWorld(){
+    private void makeWaTorWorld(){
         myGame = new WaTorWorldModel(myCSVFile.getAbsolutePath());
         myGameList.add(myGame);
     }
