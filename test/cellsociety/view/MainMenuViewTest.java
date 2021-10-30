@@ -24,7 +24,7 @@ class MainMenuViewTest extends DukeApplicationTest {
 
     @Override
     public void start(Stage stage) throws IOException {
-        testView = new MainMenuView(langResourceBundle, eventResourceBundle);
+        //testView = new MainMenuView(langResourceBundle, eventResourceBundle);
         stage.show();
         testLabel2 = lookup("Select a type of simulation to run").query();
         testLabel3 = lookup("Load File").query();

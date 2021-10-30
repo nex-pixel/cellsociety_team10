@@ -10,8 +10,7 @@ import java.util.ResourceBundle;
 public class MainController {
 
     private static final String RESOURCE_PACKAGE = "cellsociety.resources.";
-    public static final String RESOURCE_ACTIONS_NAME = MainController.class.getPackageName() + ".Resources.ModelNames";
-    private static final String ACTION_BUNDLE = "MainMenuActionEvents";
+    public static final String RESOURCE_ACTIONS_NAME = MainController.class.getPackageName() + ".resources.ModelNames";
 
     private ResourceBundle myActionEventsResources;
     private Stage myStage;
@@ -23,29 +22,14 @@ public class MainController {
     private String DEFAULT_CSS_FILE_LABEL = "Duke";
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private static final int MAIN_SCREEN_SIZE = 500;
-    private static ResourceBundle actionNameBundle;
-    private static ResourceBundle actionLabelBundle;
-
-
 
     public MainController(Stage stage, String language){
         myStage = stage;
         myLanguageResources = initializeResourceBundle(language);
-        actionNameBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_NAME);
-        myActionEventsResources = initializeResourceBundle(ACTION_BUNDLE);
     }
-
-    public MainController(ResourceBundle languageResourceBundle){
-        myStage = new Stage();
-        myLanguageResources = languageResourceBundle;
-        actionNameBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_NAME);
-        myActionEventsResources = initializeResourceBundle(ACTION_BUNDLE);
-    }
-
-
 
     public void startMainMenu() {
-        mainMenu  = new MainMenuView(myLanguageResources, myActionEventsResources);
+        mainMenu  = new MainMenuView(myLanguageResources);
         myStage.setScene(mainMenu.setMenuDisplay(this, MAIN_SCREEN_SIZE, MAIN_SCREEN_SIZE));
         updateCSS(DEFAULT_CSS_FILE_LABEL);
         myStage.show();

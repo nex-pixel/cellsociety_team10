@@ -16,13 +16,13 @@ public class SimulatorButtonFactory extends ButtonFactory {
     private SimulatorController mySimulatorController;
     private SimulatorView mySimulatorView;
 
-    public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController, ResourceBundle langResourceBundle, ResourceBundle actionResourceBundle){
+    public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController, ResourceBundle langResourceBundle){
         super();
-        ACTIONS_NAME_PATH += "SimulatorActionEvents.properties";
+        ACTIONS_NAME_PATH += "SimulatorActionEvents";
+        myActionEventsResources = ResourceBundle.getBundle(ACTIONS_NAME_PATH);
         mySimulatorView = simulatorView;
         mySimulatorController = simulatorController;
         myLanguageResources = langResourceBundle;
-        myActionEventsResources = actionResourceBundle;
         buttonID = "simulator-button";
         populateButtonEvents();
     }

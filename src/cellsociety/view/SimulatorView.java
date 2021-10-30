@@ -55,8 +55,7 @@ public class SimulatorView {
         myCSSFile = cssFile;
         gameGridPaneMap.put(myGame, myGridView);
         myLanguageResources = resourceBundle;
-        myActionResources = ResourceBundle.getBundle("cellsociety.resources.SimulatorActionEvents");
-        mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources,myActionResources);
+        mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
         setDefaultGrid(myGridWidth, myGridHeight, myGridView);
         initializeSimulationScene();
     }

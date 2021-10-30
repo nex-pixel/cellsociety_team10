@@ -2,10 +2,8 @@ package cellsociety.view;
 
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
-import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import cellsociety.view.buttonFactory.MainMenuButtonFactory;
-import cellsociety.view.buttonFactory.NewSimulatorButtonFactory;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
@@ -25,12 +23,6 @@ public class MainMenuView {
     public ResourceBundle myActionEventsResources;
     private MainMenuButtonFactory myMainMenuButtonView;
 
-    public MainMenuView(ResourceBundle languageResourceBundle, ResourceBundle actionResourceBundle){
-        myLanguageResources = languageResourceBundle;
-        myFileManager = new FileManager(myLanguageResources);
-        myActionEventsResources = actionResourceBundle;
-    }
-
     public MainMenuView(ResourceBundle languageResourceBundle){
         myLanguageResources = languageResourceBundle;
         myFileManager = new FileManager(myLanguageResources);
@@ -42,7 +34,7 @@ public class MainMenuView {
      */
     public Scene setMenuDisplay(MainController mainController, int width, int height) {
         myMainController = mainController;
-        myMainMenuButtonView = new MainMenuButtonFactory(this, myMainController, myLanguageResources, myActionEventsResources, myFileManager);
+        myMainMenuButtonView = new MainMenuButtonFactory(this, myMainController, myLanguageResources, myFileManager);
         setLabel("Cell Society", "title");
         initializeHomePageRoot();
         Scene scene = new Scene(homePageRoot, width, height);
@@ -53,6 +45,7 @@ public class MainMenuView {
      * creates mainMenu and returns the scene
      * @return scene of main menu
      */
+    /*
     public Scene setNewGameChoiceDisplay(int width, int height) {
         myMainMenuButtonView = new NewSimulatorButtonFactory(myLanguageResources);
         setLabel("Cell Society", "title");
@@ -60,6 +53,8 @@ public class MainMenuView {
         Scene scene = new Scene(homePageRoot, width, height);
         return scene;
     }
+    
+     */
 
     private void initializeHomePageRoot(){
         homePageRoot = new TilePane();

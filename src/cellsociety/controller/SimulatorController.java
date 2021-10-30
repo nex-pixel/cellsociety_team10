@@ -100,7 +100,7 @@ public class SimulatorController {
     public void loadNewCSV(){
         MainMenuView newGameOptionView = new MainMenuView(myLanguageResources);
         Stage optionStage = new Stage();
-        optionStage.setScene(newGameOptionView.setNewGameChoiceDisplay(300,300));
+       // optionStage.setScene(newGameOptionView.setNewGameChoiceDisplay(300,300));
         optionStage.show();
     }
 
