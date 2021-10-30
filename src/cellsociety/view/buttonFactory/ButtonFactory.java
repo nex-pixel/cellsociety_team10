@@ -15,10 +15,11 @@ import java.util.ResourceBundle;
 public abstract class ButtonFactory {
 
     protected Map<String, EventHandler<ActionEvent>> buttonMap;
-    protected String[] buttonLabelOptions;
+    public String ACTIONS_NAME_PATH = "cellsociety.resources.buttonEvents.";
     protected ResourceBundle myActionEventsResources;
     protected ResourceBundle myLanguageResources;
     protected String buttonID;
+    protected String INVALID_BUTTON_GENERATION = "InvalidButtonGeneration";
 
     public ButtonFactory(){
         buttonMap = new LinkedHashMap<>();

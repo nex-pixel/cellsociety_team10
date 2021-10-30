@@ -12,21 +12,19 @@ import java.util.*;
 
 
 public class MainMenuButtonFactory extends ButtonFactory {
-    private static final String ERROR_CHOOSE_ALL_OPTIONS = "SelectAllOptionsMessage";
-    public static final String ACTIONS_NAME_PATH = "cellsociety/resources/MainMenuActionEvents.properties";
 
+    private static final String ERROR_CHOOSE_ALL_OPTIONS = "SelectAllOptionsMessage";
     private ArrayList<String> modelOptions = new ArrayList<>();;
     private String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
     private String[] modelLabelOptions = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
-    private ResourceBundle myActionEventsResources;
     private ArrayList<String> cssFileOptions = new ArrayList<>();
-    private ResourceBundle myLanguageResources;
     private FileManager myFileManager;
     private MainMenuView myMainMenuView;
     private MainController myMainMenuController;
 
     public MainMenuButtonFactory(MainMenuView menuView, MainController mainMenuController, ResourceBundle langResourceBundle, ResourceBundle actionResourceBundle, FileManager fileManager){
         super();
+        ACTIONS_NAME_PATH += "MainMenuActionEvents.properties";
         myMainMenuView = menuView;
         myLanguageResources = langResourceBundle;
         myActionEventsResources = actionResourceBundle;
@@ -60,7 +58,7 @@ public class MainMenuButtonFactory extends ButtonFactory {
                 buttonMap.put(myLanguageResources.getString(key), buttonEvent);
             }
         }catch(IllegalAccessException | InvocationTargetException e){
-            e.printStackTrace();
+            new GenerateError(myLanguageResources, INVALID_BUTTON_GENERATION);
         }
     }
 

@@ -1,6 +1,7 @@
 package cellsociety.view.buttonFactory;
 
 import cellsociety.controller.SimulatorController;
+import cellsociety.error.GenerateError;
 import cellsociety.games.Game;
 import cellsociety.view.SimulatorView;
 import javafx.event.ActionEvent;
@@ -13,19 +14,11 @@ import java.util.*;
 public class SimulatorButtonFactory extends ButtonFactory {
 
     private SimulatorController mySimulatorController;
-    private String myCSSFile;
-    private Map<String, EventHandler<ActionEvent>> simulatorButtonMap = new LinkedHashMap<>();
-    private String simulatorButtonID = "simulator-button";
-    private ResourceBundle myLanguageResources;
-    private ResourceBundle myActionEventsResources;
-    private String INVALID_CSS_ERROR = "InvalidCSSFile";
-    private Game myGame;
-    private Scene myScene;
-
     private SimulatorView mySimulatorView;
 
     public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController, ResourceBundle langResourceBundle, ResourceBundle actionResourceBundle){
         super();
+        ACTIONS_NAME_PATH += "SimulatorActionEvents.properties";
         mySimulatorView = simulatorView;
         mySimulatorController = simulatorController;
         myLanguageResources = langResourceBundle;
@@ -44,7 +37,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
                 buttonMap.put(myLanguageResources.getString(key), buttonEvent);
             }
         }catch(IllegalAccessException | InvocationTargetException e){
-            e.printStackTrace();
+            new GenerateError(myLanguageResources, INVALID_BUTTON_GENERATION);
         }
     }
 

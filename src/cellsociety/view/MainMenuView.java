@@ -24,7 +24,6 @@ public class MainMenuView {
     private String homePageRootID = "home-page-root";
     public ResourceBundle myActionEventsResources;
     private MainMenuButtonFactory myMainMenuButtonView;
-    private SimulatorController mySimulatorController;
 
     public MainMenuView(ResourceBundle languageResourceBundle, ResourceBundle actionResourceBundle){
         myLanguageResources = languageResourceBundle;
