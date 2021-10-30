@@ -25,6 +25,11 @@ public abstract class Grid {
         myEdgePolicy = edgePolicy;
         myBoard = new HashMap<>();
 
+        initializeBoard(states);
+        initializeNeighbors();
+    }
+
+    protected void initializeBoard (int[][] states) {
         for (int rowIndex = 0; rowIndex < myNumRows; rowIndex++) {
             for (int colIndex = 0; colIndex < myNumCols; colIndex++) {
                 Point point = new Point(colIndex, rowIndex);
@@ -32,7 +37,6 @@ public abstract class Grid {
                 myBoard.put(point, cell);
             }
         }
-        initializeNeighbors();
     }
 
     public int getNumRows () { return myNumRows; }
@@ -64,16 +68,19 @@ public abstract class Grid {
             cell.setCorner(isCorner(cell));
 
             applyNeighborMode(point);
+
             for (int i = 0; i < getNeighborRows().length; i++) {
                 int x = point.x + getNeighborCols()[i];
                 int y = point.y + getNeighborRows()[i];
 
                 Point neighborPosition = applyEdgePolicy(x, y);
-                if (isInsideBoard(neighborPosition)) {
-                    Cell c = getBoard().get(neighborPosition);
-                    cell.getNeighborCells().add(c);
-                } else {
-                    cell.getNeighborCells().add(null);
+                if (getBoard().containsKey(neighborPosition)) {
+                    if (isInsideBoard(neighborPosition)) {
+                        Cell c = getBoard().get(neighborPosition);
+                        cell.getNeighborCells().add(c);
+                    } else {
+                        cell.getNeighborCells().add(null);
+                    }
                 }
             }
         }

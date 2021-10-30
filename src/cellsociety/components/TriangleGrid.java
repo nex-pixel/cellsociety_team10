@@ -6,15 +6,9 @@ public class TriangleGrid extends Grid {
 
     private int NEIGHBOR_MODE_COMPLETE = 0;
     private int NEIGHBOR_MODE_EDGE = 1;
+    private int NEIGHBOR_MODE_RANDOM_HALF = 2;
 
-    public TriangleGrid (int[][] states, int neighborMode, int edgePolicy) {
-        super(states, neighborMode, edgePolicy);
-    }
-
-    @Override
-    protected void initializeNeighbors () {
-        super.initializeNeighbors();
-    }
+    public TriangleGrid (int[][] states, int neighborMode, int edgePolicy) { super(states, neighborMode, edgePolicy); }
 
     protected void applyNeighborMode (Point point) {
         if (getNeighborMode() == NEIGHBOR_MODE_COMPLETE) {
