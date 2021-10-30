@@ -2,26 +2,31 @@ package cellsociety.games;
 
 
 import cellsociety.components.*;
+import cellsociety.components.filereader.ReadCSVFile;
+import cellsociety.components.filereader.ReadFile;
+import cellsociety.components.filereader.ReadJSONFile;
 import com.opencsv.CSVWriter;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
 public abstract class Game {
 
     private ReadFile myReader;
-    protected Grid myGrid;
+    private Grid myGrid;
     private static final String DEFAULT_GAME_DATA = "cellsociety.resources.GameData";
     protected ResourceBundle myGameData;
 
     public Game () {}
 
     public Game (Game copy) {
+        populateGameConditions();
         this.myReader = copy.myReader;
         this.myGrid = copy.myGrid;
     }
@@ -30,17 +35,19 @@ public abstract class Game {
         populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
-        myGrid = new Grid(states);
+        myGrid = new SquareGrid(states, 0, 0);
     }
 
     public Game (int[][] states) {
+        populateGameConditions();
         setGrid(states);
     }
 
-    protected Map<Point, Cell> getGrid () { return myGrid.getBoard(); }
-    protected void setGrid (int[][] states) { myGrid = new Grid(states); }
+//    protected Map<Point, Cell> getGrid () { return myGrid.getBoard(); }
+    protected Grid getGrid () { return myGrid; }
+    protected void setGrid (int[][] states) { myGrid = new SquareGrid(states, 0, 0); }
 
-    public int getCellStatus (int x, int y) { return getGrid().get(new Point(x, y)).getCurrentStatus(); }
+    public int getCellStatus (int x, int y) { return myGrid.getBoardCell(new Point(x, y)).getCurrentStatus(); }
     public int getNumRows () { return myGrid.getNumRows(); }
     public int getNumCols () { return myGrid.getNumCols(); }
 
@@ -61,12 +68,11 @@ public abstract class Game {
     protected abstract boolean applyRule(Cell cell);
 
     public void update() {
-        Map<Point, Cell> board = myGrid.getBoard();
-        for (Point point: board.keySet()) {
-            applyRule(board.get(point));
+        for (Point point: myGrid.getPoints()) {
+            applyRule(myGrid.getBoardCell(point));
         }
-        for (Point point: board.keySet()) {
-            board.get(point).changeStatus();
+        for (Point point: myGrid.getPoints()) {
+            myGrid.getBoardCell(point).changeStatus();
         }
     }
 
@@ -99,12 +105,24 @@ public abstract class Game {
 
     }
 
-    private void populateGameConditions() {
+    protected void populateGameConditions() {
         myGameData = ResourceBundle.getBundle(DEFAULT_GAME_DATA);
     }
 
     protected int getIntProperty(String label) {
         return Integer.parseInt(myGameData.getString(label));
+    }
+
+    protected List<Cell> checkNumCellsThisCase(int state, List<Cell> cellList){
+        List<Cell> retList = new ArrayList<>();
+        for(Cell cellInList: cellList){
+            if(cellInList == null){
+              //skip
+            } else if(cellInList.getCurrentStatus() == state){
+                retList.add(cellInList);
+            }
+        }
+        return retList;
     }
 
     @Override

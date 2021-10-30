@@ -29,14 +29,14 @@ public class SegregationModelTest {
         SegregationModel grid = new SegregationModel(game);
 
         assertEquals(grid, game);
-        assertTrue(game.isSatisfied(game.getGrid().get(new Point(0,0))));
+        assertTrue(game.isSatisfied(game.getGrid().getBoardCell(new Point(0,0))));
     }
 
     @Test
     void testIsSatisfied () {
         int[][] states = {{1,2,2}, {2,1,0}, {2,2,1}};
         SegregationModel game = new SegregationModel(states, 0.4);
-        assertFalse(game.isSatisfied(game.getGrid().get(new Point(0,0))));
+        assertFalse(game.isSatisfied(game.getGrid().getBoardCell(new Point(0,0))));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class SegregationModelTest {
         SegregationModel game = new SegregationModel(states, 0.3);
         game.update();
         List<Cell> emptyCells = game.getEmptyCells();
-        assertTrue(emptyCells.contains(game.getGrid().get(new Point(2, 0))));
+        assertTrue(emptyCells.contains(game.getGrid().getBoardCell(new Point(2, 0))));
         System.out.println(emptyCells);
     }
 

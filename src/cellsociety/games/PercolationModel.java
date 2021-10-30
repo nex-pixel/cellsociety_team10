@@ -4,16 +4,14 @@ import cellsociety.components.Cell;
 import cellsociety.components.Grid;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public class PercolationModel extends Game {
 
-    private int BLOCKED = 0;
-    private int OPEN = 1;
-    private int PERCOLATED = 2;
+    private int BLOCKED;
+    private int OPEN;
+    private int PERCOLATED;
 
     private List<Cell> myOpenCells;
     private List<Cell> cellsToBeRemoved;
@@ -28,16 +26,16 @@ public class PercolationModel extends Game {
 
     public PercolationModel (int numRows, int numCols) {
         int[][] states = new int[numRows][numCols];
-        myGrid = new Grid(states);
+        setGrid(states);
         setOpenCells();
     }
 
     private void setOpenCells () {
         cellsToBeRemoved = new ArrayList<>();
         myOpenCells = new ArrayList<>();
-        Map<Point, Cell> board = getGrid();
-        for (Point point: board.keySet()) {
-            Cell cell = board.get(point);
+//        Map<Point, Cell> board = getGrid();
+        for (Point point: getGrid().getPoints()) {
+            Cell cell = getGrid().getBoardCell(point);
             if (cell.getCurrentStatus() == OPEN) {
                 myOpenCells.add(cell);
             }

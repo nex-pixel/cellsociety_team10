@@ -1,6 +1,6 @@
-package cellsociety.components;
+package cellsociety.components.filereader;
 
-import cellsociety.error.GenerateError;
+import cellsociety.components.filereader.ReadFile;
 import com.opencsv.CSVReader;
 
 import java.io.FileReader;

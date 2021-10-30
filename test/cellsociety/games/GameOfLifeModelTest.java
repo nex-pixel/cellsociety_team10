@@ -24,7 +24,6 @@ class GameOfLifeModelTest {
         GameOfLifeModel board1 = new GameOfLifeModel(boat);
 
         assertEquals(board0, board1);
-
     }
 
     @Test
@@ -69,8 +68,8 @@ class GameOfLifeModelTest {
         GameOfLifeModel glider = new GameOfLifeModel("./data/game_of_life/glider.csv");
         glider.saveCSVFile("./data/game_of_life/gliderCopyTest.csv");
         GameOfLifeModel gliderCopyTest = new GameOfLifeModel("./data/game_of_life/gliderCopyTest.csv");
-        for (Point p: glider.getGrid().keySet()) {
-            assertEquals(glider.getGrid().get(p), gliderCopyTest.getGrid().get(p));
+        for (Point p: glider.getGrid().getPoints()) {
+            assertEquals(glider.getGrid().getBoardCell(p), gliderCopyTest.getGrid().getBoardCell(p));
         }
     }
 }

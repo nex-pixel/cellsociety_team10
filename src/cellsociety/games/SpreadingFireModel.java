@@ -5,6 +5,7 @@ import cellsociety.components.Cell;
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SpreadingFireModel extends Game{
     private int EMPTY;
@@ -23,7 +24,7 @@ public class SpreadingFireModel extends Game{
         EMPTY = getIntProperty("SpreadingFireEmpty");
         TREE = getIntProperty("SpreadingFireTree");
         BURNING = getIntProperty("SpreadingFireBurning");
-        myGrid.expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
+        //getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
     }
 
     public void setProbOfFire(double probability){
@@ -36,33 +37,29 @@ public class SpreadingFireModel extends Game{
 
     @Override
     public void update() {
-        Map<Point, Cell> board = myGrid.getBoard();
-        int fireCount = 0;
-        for (Point point: board.keySet()) {
-            Cell cellBeingChecked = board.get(point);
-            if(cellBeingChecked.getCurrentStatus() == BURNING) {
-                fireCount++;
-            }
-            applyRule(board.get(point));
-        }
-        if(fireCount == 0){
-            firePresentInGrid = false;
-        }
+        checkForFire();
         if(firePresentInGrid) {
-            for (Point point : board.keySet()) {
-                board.get(point).changeStatus();
+            super.update();
+        }
+    }
+
+    private void checkForFire(){
+        firePresentInGrid = false;
+        for(Point point: getGrid().getPoints()){
+            if(getGrid().getBoardCell(point).getCurrentStatus() == BURNING) {
+                firePresentInGrid = true;
             }
         }
     }
 
     @Override
     protected boolean applyRule(Cell cell){
-        List<Cell> adjacentNeighbors = cell.getAdjacentNeighbors();
+        List<Cell> neighbors = cell.getNeighborCells();
         if(cell.getCurrentStatus() == EMPTY){
-            int willATreeGrow = willNewTreeGrow();
+            int willATreeGrow = willNewTreeGrow(neighbors);
             cell.setNextStatus(willATreeGrow);
         } else if(cell.getCurrentStatus() == TREE){
-            int willItCatchFire = spread(adjacentNeighbors);
+            int willItCatchFire = spread(neighbors);
             cell.setNextStatus(willItCatchFire);
         } else if (cell.getCurrentStatus() == BURNING){
             cell.setNextStatus(EMPTY);
@@ -72,8 +69,7 @@ public class SpreadingFireModel extends Game{
 
     private int spread(List<Cell> neighbors){
         double randNumber = Math.random();
-        if(neighbors.get(0).getCurrentStatus() == BURNING || neighbors.get(1).getCurrentStatus() == BURNING ||
-                neighbors.get(2).getCurrentStatus() == BURNING || neighbors.get(3).getCurrentStatus() == BURNING) {
+        if(checkNumCellsThisCase(BURNING, neighbors).size() > 0) {
             if (randNumber < probCatch) {
                 return BURNING;
             }
@@ -81,10 +77,12 @@ public class SpreadingFireModel extends Game{
         return TREE;
     }
 
-    private int willNewTreeGrow(){
+    private int willNewTreeGrow(List<Cell> neighbors){
         double randomGrow = Math.random();
-        if(randomGrow < probGrow){
-            return TREE;
+        if(checkNumCellsThisCase(TREE, neighbors).size() > 0) {
+            if (randomGrow < probGrow) {
+                return TREE;
+            }
         }
         return EMPTY;
     }
