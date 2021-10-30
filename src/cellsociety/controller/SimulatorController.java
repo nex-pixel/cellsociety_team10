@@ -17,27 +17,22 @@ import java.util.ResourceBundle;
 public class SimulatorController {
 
     public static final String RESOURCE_ACTIONS_NAME = MainController.class.getPackageName() + ".Resources.ModelNames";
-    public static final String RESOURCE_ACTIONS_LABEL = MainController.class.getPackageName() + ".Resources.ModelLabel";
 
     private Game myGame;
     private List<Game> myGameList;
 
     private SimulatorView mySimulatorView;
     private FileManager myFileManager;
-    private Scene myScene;
     private String myCSSFile;
     private ResourceBundle myLanguageResources;
-    private VBox simulationBox;
     private String myModelType;
     private ResourceBundle actionNameBundle;
-    private ResourceBundle actionLabelBundle;
     private File myCSVFile;
 
     public SimulatorController(FileManager fileManager, String cssFile, ResourceBundle resourceBundle) {
         myFileManager = fileManager;
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
-        actionLabelBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_LABEL);
         myGameList = new ArrayList<>();
     }
 
@@ -105,7 +100,7 @@ public class SimulatorController {
     public void loadNewCSV(){
         MainMenuView newGameOptionView = new MainMenuView(myLanguageResources);
         Stage optionStage = new Stage();
-        optionStage.setScene(newGameOptionView.setNewGameChoiceDisplay(300,300, actionNameBundle));
+        optionStage.setScene(newGameOptionView.setNewGameChoiceDisplay(300,300));
         optionStage.show();
     }
 

@@ -1,10 +1,10 @@
 package cellsociety.view;
 
-import cellsociety.Main;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
-import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
+import cellsociety.view.buttonFactory.MainMenuButtonFactory;
+import cellsociety.view.buttonFactory.NewSimulatorButtonFactory;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
@@ -23,9 +23,6 @@ public class MainMenuView {
     private String homePageRootID = "home-page-root";
     public ResourceBundle myActionEventsResources;
     private MainMenuButtonFactory myMainMenuButtonView;
-    private ResourceBundle gameNames;
-    private String myModelType;
-    private SimulatorController simulatorController;
 
     public MainMenuView(ResourceBundle languageResourceBundle, ResourceBundle actionResourceBundle){
         myLanguageResources = languageResourceBundle;
@@ -42,10 +39,9 @@ public class MainMenuView {
      * creates mainMenu and returns the scene
      * @return scene of main menu
      */
-    public Scene setMenuDisplay(MainController mainController, int width, int height, ResourceBundle gameNames) {
+    public Scene setMenuDisplay(MainController mainController, int width, int height) {
         myMainController = mainController;
         myMainMenuButtonView = new MainMenuButtonFactory(this, myMainController, myLanguageResources, myActionEventsResources, myFileManager);
-        this.gameNames = gameNames;
         setLabel("Cell Society", "title");
         initializeHomePageRoot();
         Scene scene = new Scene(homePageRoot, width, height);
@@ -56,9 +52,8 @@ public class MainMenuView {
      * creates mainMenu and returns the scene
      * @return scene of main menu
      */
-    public Scene setNewGameChoiceDisplay(int width, int height, ResourceBundle gameNames) {
+    public Scene setNewGameChoiceDisplay(int width, int height) {
         myMainMenuButtonView = new NewSimulatorButtonFactory(myLanguageResources);
-        this.gameNames = gameNames;
         setLabel("Cell Society", "title");
         initializeHomePageRoot();
         Scene scene = new Scene(homePageRoot, width, height);
@@ -75,18 +70,6 @@ public class MainMenuView {
         Label titleLabel = new Label(label);
         titleLabel.setId(id);
     }
-
-    //TODO: connect to simulation button 
-    public void generateSimulatorChoiceDialogBox(String resultType, String content){
-        ArrayList<String> buttonNameList = Collections.list(gameNames.getKeys());
-        ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(buttonNameList.get(0));
-        addItemsToOptionsList(choiceDialog, gameNames);
-        choiceDialog.setContentText(content);
-        showAndWaitForChoiceDialogResult(choiceDialog, resultType);
-        choiceDialog.showAndWait();
-        myModelType = choiceDialog.getSelectedItem();
-    }
-
 
     public ChoiceDialog<String> generateChoiceDialogBox(String defaultChoice, ArrayList<String> options, String resultType, String content){
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(defaultChoice);
@@ -114,11 +97,6 @@ public class MainMenuView {
         }
     }
 
-    private void addItemsToOptionsList(ChoiceDialog<String> choiceDialog, ResourceBundle choiceNames){
-        for(String s : choiceNames.keySet()){
-            choiceDialog.getItems().add(s);
-        }
-    }
 
     public void applyCSS(Scene scene, String cssFile) {
         try{

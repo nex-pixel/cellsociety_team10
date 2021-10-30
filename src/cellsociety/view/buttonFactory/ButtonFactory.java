@@ -1,15 +1,12 @@
-package cellsociety.view;
+package cellsociety.view.buttonFactory;
 
-import cellsociety.controller.MainController;
-import cellsociety.controller.SimulatorController;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -57,6 +54,5 @@ public abstract class ButtonFactory {
         buttonMap.forEach((key,value) -> addButtonToPanel(key,value,panel));
         return panel;
     }
-
 
 }

@@ -1,15 +1,11 @@
-package cellsociety.view;
+package cellsociety.view.buttonFactory;
 
-import cellsociety.controller.FileManager;
-import cellsociety.controller.MainController;
 import cellsociety.controller.SimulatorController;
 import cellsociety.games.Game;
+import cellsociety.view.SimulatorView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -73,15 +69,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
     }
 
     private EventHandler<ActionEvent> generateAddSimEvent(){
-        System.out.println("hey");
         return event -> mySimulatorController.loadNewCSV();
-    }
-
-    @Override
-    public Node generateButtonPanel(){
-        HBox panel = new HBox();
-        buttonMap.forEach((key,value) -> addButtonToPanel(key,value,panel));
-        return panel;
     }
 
 }

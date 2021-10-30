@@ -1,16 +1,13 @@
-package cellsociety.view;
+package cellsociety.view.buttonFactory;
 
-import cellsociety.Main;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
 import cellsociety.error.GenerateError;
+import cellsociety.view.MainMenuView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.layout.VBox;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 
 
@@ -90,7 +87,6 @@ public class MainMenuButtonFactory extends ButtonFactory {
             }
         };
     }
-
 
     private void populateOptions(ArrayList<String> optionsList, String[] labelList){
         for(String key: labelList){

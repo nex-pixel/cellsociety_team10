@@ -11,7 +11,6 @@ public class MainController {
 
     private static final String RESOURCE_PACKAGE = "cellsociety.resources.";
     public static final String RESOURCE_ACTIONS_NAME = MainController.class.getPackageName() + ".Resources.ModelNames";
-    public static final String RESOURCE_ACTIONS_LABEL = MainController.class.getPackageName() + ".Resources.ModelLabel";
     private static final String ACTION_BUNDLE = "MainMenuActionEvents";
 
     private ResourceBundle myActionEventsResources;
@@ -19,7 +18,6 @@ public class MainController {
     private static ResourceBundle myLanguageResources;
     private String DEFAULT_LANGUAGE = "English";
     private SimulatorController simulatorController;
-    private String modelType;
     private String cssFile;
     private MainMenuView mainMenu;
     private String DEFAULT_CSS_FILE_LABEL = "Duke";
@@ -48,7 +46,7 @@ public class MainController {
 
     public void startMainMenu() {
         mainMenu  = new MainMenuView(myLanguageResources, myActionEventsResources);
-        myStage.setScene(mainMenu.setMenuDisplay(this, MAIN_SCREEN_SIZE, MAIN_SCREEN_SIZE, actionNameBundle));
+        myStage.setScene(mainMenu.setMenuDisplay(this, MAIN_SCREEN_SIZE, MAIN_SCREEN_SIZE));
         updateCSS(DEFAULT_CSS_FILE_LABEL);
         myStage.show();
     }

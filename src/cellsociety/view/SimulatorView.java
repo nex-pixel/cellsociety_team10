@@ -1,23 +1,17 @@
 package cellsociety.view;
 
-import cellsociety.components.Grid;
-import cellsociety.controller.MainController;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import cellsociety.games.Game;
+import cellsociety.view.buttonFactory.SimulatorButtonFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import java.awt.Point;
-import cellsociety.components.Cell;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;

@@ -1,14 +1,14 @@
-package cellsociety.view;
+package cellsociety.view.buttonFactory;
 
-import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
-import cellsociety.error.GenerateError;
+import cellsociety.view.SimulatorView;
+import cellsociety.view.buttonFactory.MainMenuButtonFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 import java.util.ResourceBundle;
 
-public class NewSimulatorButtonFactory extends MainMenuButtonFactory{
+public class NewSimulatorButtonFactory extends MainMenuButtonFactory {
     private SimulatorView mySimulatorView;
     private MainController myMainMenuController;
 
