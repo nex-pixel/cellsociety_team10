@@ -108,5 +108,7 @@ public class SimulatorController {
         myModelType = modelType;
     }
 
-
+    public void updateCSSFile(String cssFile){
+        myCSSFile = cssFile;
+    }
 }

@@ -70,10 +70,9 @@ public class MainController {
     }
 
     public void generateNewSimulation(File csvFile){
+        simulatorController.updateCSSFile(cssFile);
         simulatorController.createNewSimulation(csvFile);
     }
-
-
 
 
     private ResourceBundle initializeResourceBundle(String name) {
