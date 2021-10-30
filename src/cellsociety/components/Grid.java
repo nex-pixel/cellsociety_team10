@@ -63,17 +63,21 @@ public abstract class Grid {
             cell.setCorner(isCorner(cell));
 
             applyNeighborMode(point);
-            for (int i = 0; i < getNeighborRows().length; i++) {
-                int x = point.x + getNeighborCols()[i];
-                int y = point.y + getNeighborRows()[i];
+            iterativelyAddNeighbors(point, cell);
+        }
+    }
 
-                Point neighborPosition = applyEdgePolicy(x, y);
-                if (isInsideBoard(neighborPosition)) {
-                    Cell c = getBoard().get(neighborPosition);
-                    cell.getNeighborCells().add(c);
-                } else {
-                    cell.getNeighborCells().add(null);
-                }
+    private void iterativelyAddNeighbors(Point point, Cell cell) {
+        for (int i = 0; i < getNeighborRows().length; i++) {
+            int x = point.x + getNeighborCols()[i];
+            int y = point.y + getNeighborRows()[i];
+
+            Point neighborPosition = applyEdgePolicy(x, y);
+            if (isInsideBoard(neighborPosition)) {
+                Cell c = getBoard().get(neighborPosition);
+                cell.getNeighborCells().add(c);
+            } else {
+                cell.getNeighborCells().add(null);
             }
         }
     }
