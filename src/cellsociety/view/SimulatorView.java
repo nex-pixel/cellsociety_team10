@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import java.awt.Point;
 import cellsociety.components.Cell;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -112,8 +113,7 @@ public class SimulatorView {
     }
 
     private void setAnimationSpeed(double speed){
-        animationSpeed = speed;
-        myAnimation.setRate(animationSpeed);
+        myAnimation.setRate(speed);
     }
 
     // fills the grid with squareCells of defaultColor
@@ -166,27 +166,27 @@ public class SimulatorView {
      * @return VBox containing gridpane of the simulation and control buttons
      */
     private VBox generateSimulationVBox(GridPane gameGrid){
-        HBox buttonBox = (HBox) mySimulatorButtonFactory.generateButtonPanel();
+        HBox buttonBox = new HBox();
+        buttonBox.getChildren().add(mySimulatorButtonFactory.generateButtonPanel());
         buttonBox.getChildren().add(makeSlider(myLanguageResources.getString("SpeedLabel"), 0.1, 5.0));
-
         VBox simulationBox = new VBox();
-        simulationBox.getChildren().addAll(gameGrid, mySimulatorButtonFactory.generateButtonPanel());
-
+        simulationBox.getChildren().addAll(gameGrid, buttonBox);
         applyCSS(simulationBox, myCSSFile);
         return simulationBox;
     }
 
 
     private Node makeSlider(String text, double minVal, double maxVal) {
-        Slider lengthSlider = new Slider(minVal, maxVal, 1);
+        HBox sliderBox = new HBox();
+        Slider lengthSlider = new Slider(minVal, maxVal, 1.0);
         lengthSlider.setShowTickMarks(true);
         lengthSlider.setShowTickLabels(true);
         lengthSlider.setMajorTickUnit(1);
         lengthSlider.setMaxWidth(100);
-        lengthSlider.valueProperty().addListener((obs, oldval, newVal) ->
-                setAnimationSpeed(newVal.intValue()));
-
-        return lengthSlider;
+        lengthSlider.valueProperty().addListener((obs, oldVal, newVal) ->
+                setAnimationSpeed((double)newVal));
+        sliderBox.getChildren().addAll(new Text(text), lengthSlider);
+        return sliderBox;
     }
 
     private void applyCSS(VBox scene, String cssFile) {
