@@ -122,6 +122,23 @@ public class SimulatorView {
         }
     }
 
+    // fills the grid with squareCells of defaultColor
+    private void setDefaultTriangleGrid(int gridWidth, int gridHeight, GridPane gamePane){
+        int counter = 0;
+        for(int i = 0; i < gridHeight; i ++){
+            for(int j = 0; j < gridWidth; j++){
+                TriangleCell cell = new TriangleCell(mySimulatorController, counter % 2, j, i);
+                cell.setId("default-cell");
+                gamePane.getChildren().add(cell);
+                cell.setTranslateX(j*25);
+                cell.setTranslateY(i*43.30125);
+                counter += 1;
+            }
+        }
+        gamePane.setPrefWidth(gridWidth*25);
+        gamePane.setPrefHeight(gridHeight*43.30125);
+    }
+
     /**
      * updates the cells based on the values in Map
      * dead cells are colored with deadColor, alive cells are colored with aliveColor
