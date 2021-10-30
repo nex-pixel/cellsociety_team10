@@ -69,18 +69,6 @@ public class PercolationModel extends Game {
         return false;
     }
 
-    public void clickCell (Point point) {
-        Cell cell = getGrid().getBoardCell(point);
-        if (cell.getXyPosition()[1] == 0) {
-            cell.setCurrentStatus(PERCOLATED);
-        }
-        else if (cell.getCurrentStatus() == BLOCKED) {
-            cell.setCurrentStatus(OPEN);
-            myOpenCells.add(cell);
-        }
-        update();
-    }
-
     public boolean isPercolated () {
         int r = getNumRows() - 1;
         for (int c = 0; c < getNumCols(); c++) {
@@ -94,7 +82,14 @@ public class PercolationModel extends Game {
     @Override
     public void changeCellOnClick(Point point) {
         Cell cell = getGrid().getBoardCell(point);
-        cell.setCurrentStatus((cell.getCurrentStatus() + 1) % 3);
+        if (cell.getXyPosition()[1] == 0) {
+            cell.setCurrentStatus(PERCOLATED);
+        }
+        else if (cell.getCurrentStatus() == BLOCKED) {
+            cell.setCurrentStatus(OPEN);
+            myOpenCells.add(cell);
+        }
+        update();
     }
 
     @Override
