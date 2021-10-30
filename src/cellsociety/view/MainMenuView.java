@@ -20,7 +20,6 @@ public class MainMenuView {
     private MainController myMainController;
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private String homePageRootID = "home-page-root";
-    public ResourceBundle myActionEventsResources;
     private MainMenuButtonFactory myMainMenuButtonView;
 
     public MainMenuView(ResourceBundle languageResourceBundle){
@@ -40,21 +39,6 @@ public class MainMenuView {
         Scene scene = new Scene(homePageRoot, width, height);
         return scene;
     }
-
-    /**
-     * creates mainMenu and returns the scene
-     * @return scene of main menu
-     */
-    /*
-    public Scene setNewGameChoiceDisplay(int width, int height) {
-        myMainMenuButtonView = new NewSimulatorButtonFactory(myLanguageResources);
-        setLabel("Cell Society", "title");
-        initializeHomePageRoot();
-        Scene scene = new Scene(homePageRoot, width, height);
-        return scene;
-    }
-    
-     */
 
     private void initializeHomePageRoot(){
         homePageRoot = new TilePane();
@@ -86,13 +70,11 @@ public class MainMenuView {
         }
     }
 
-
     private void addItemsToOptionsList(ArrayList<String> options, ChoiceDialog<String> choiceDialog){
         for(String s : options){
             choiceDialog.getItems().add(s);
         }
     }
-
 
     public void applyCSS(Scene scene, String cssFile) {
         try{
@@ -102,6 +84,5 @@ public class MainMenuView {
             new GenerateError(myLanguageResources, INVALID_CSS_ERROR);
         }
     }
-
 }
 

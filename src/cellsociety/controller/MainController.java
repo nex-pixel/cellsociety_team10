@@ -9,10 +9,7 @@ import java.util.ResourceBundle;
 
 public class MainController {
 
-    private static final String RESOURCE_PACKAGE = "cellsociety.resources.";
-    public static final String RESOURCE_ACTIONS_NAME = MainController.class.getPackageName() + ".resources.ModelNames";
-
-    private ResourceBundle myActionEventsResources;
+    private static final String RESOURCE_PACKAGE = "cellsociety.resources.languages.";
     private Stage myStage;
     private static ResourceBundle myLanguageResources;
     private String DEFAULT_LANGUAGE = "English";
@@ -22,10 +19,12 @@ public class MainController {
     private String DEFAULT_CSS_FILE_LABEL = "Duke";
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private static final int MAIN_SCREEN_SIZE = 500;
+    private String myLanguage;
 
     public MainController(Stage stage, String language){
+        myLanguage = language;
         myStage = stage;
-        myLanguageResources = initializeResourceBundle(language);
+        myLanguageResources = initializeResourceBundle(myLanguage);
     }
 
     public void startMainMenu() {

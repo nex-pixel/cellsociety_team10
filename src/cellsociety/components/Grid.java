@@ -2,9 +2,8 @@ package cellsociety.components;
 
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 public abstract class Grid {
     private int myNumRows, myNumCols;
@@ -68,20 +67,21 @@ public abstract class Grid {
             cell.setCorner(isCorner(cell));
 
             applyNeighborMode(point);
+            iterativelyAddNeighbors(point, cell);
+        }
+    }
 
-            for (int i = 0; i < getNeighborRows().length; i++) {
-                int x = point.x + getNeighborCols()[i];
-                int y = point.y + getNeighborRows()[i];
+    private void iterativelyAddNeighbors(Point point, Cell cell) {
+        for (int i = 0; i < getNeighborRows().length; i++) {
+            int x = point.x + getNeighborCols()[i];
+            int y = point.y + getNeighborRows()[i];
 
-                Point neighborPosition = applyEdgePolicy(x, y);
-                if (getBoard().containsKey(neighborPosition)) {
-                    if (isInsideBoard(neighborPosition)) {
-                        Cell c = getBoard().get(neighborPosition);
-                        cell.getNeighborCells().add(c);
-                    } else {
-                        cell.getNeighborCells().add(null);
-                    }
-                }
+            Point neighborPosition = applyEdgePolicy(x, y);
+            if (isInsideBoard(neighborPosition)) {
+                Cell c = getBoard().get(neighborPosition);
+                cell.getNeighborCells().add(c);
+            } else {
+                cell.getNeighborCells().add(null);
             }
         }
     }
