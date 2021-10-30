@@ -2,6 +2,7 @@ package cellsociety.games;
 
 import cellsociety.components.Cell;
 
+import java.awt.*;
 import java.util.List;
 
 public class GameOfLifeModel extends Game {
@@ -41,6 +42,16 @@ public class GameOfLifeModel extends Game {
             cell.setNextStatus(numCellsAlive == 3 ? 1 : 0);
         }
         return true;
+    }
+
+    @Override
+    public void changeCellOnClick(Point point) {
+        Cell cell = getGrid().getBoardCell(point);
+        if (cell.getCurrentStatus() == DEAD) {
+            cell.setCurrentStatus(ALIVE);
+        } else if (cell.getCurrentStatus() == ALIVE) {
+            cell.setCurrentStatus(DEAD);
+        }
     }
 
     @Override
