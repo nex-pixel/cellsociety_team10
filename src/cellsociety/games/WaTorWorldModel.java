@@ -22,14 +22,6 @@ public class WaTorWorldModel extends Game{
 
     public WaTorWorldModel(String filename){
         super(filename);
-        EMPTY = getIntProperty("WatorWorldEmpty");
-        FISH = getIntProperty("WatorWorldFish");
-        SHARK = getIntProperty("WatorWorldShark");
-        SHARK_STARTING_ENERGY = getIntProperty("WatorWorldSharkStartingEnergy");
-        STARTING_VAL = getIntProperty("WatorWorldRepStartVal");
-        REPRODUCE_VAL = getIntProperty("WatorWorldReproduceNum");
-        ENERGY_FROM_EATING_FISH = getIntProperty("WatorWorldEnergyFromFish");
-        ENERGY_LOST_FROM_MOVING = getIntProperty("WatorWorldEnergyLostFromMoving");
         setSharkEnergyValues();
     }
 
@@ -68,7 +60,7 @@ public class WaTorWorldModel extends Game{
             int whichAdjacentCell = rand.nextInt(adjNeigh.size());
             Cell chosenNextCell = adjNeigh.get(whichAdjacentCell);
             energy = STARTING_VAL;
-            reproduceCell(cell, chosenNextCell, stepsAlive, energy);
+            reproduceCell(cell, chosenNextCell, stepsAlive, energy, STARTING_VAL);
         }
     }
 
@@ -87,7 +79,7 @@ public class WaTorWorldModel extends Game{
     private void sharkReproduceCell(Cell cell, Cell chosenCell, int stepsAlive, int energy){
         energy -= ENERGY_LOST_FROM_MOVING;
         if(energy > 0) {
-            reproduceCell(cell, chosenCell, stepsAlive, energy);
+            reproduceCell(cell, chosenCell, stepsAlive, energy, SHARK_STARTING_ENERGY);
         } else if (energy <= 0){
             chosenCell.setNextStatus(chosenCell.getCurrentStatus());
             cell.setCurrentStatus(EMPTY);
@@ -97,7 +89,7 @@ public class WaTorWorldModel extends Game{
     }
 
 
-    private void reproduceCell(Cell cell, Cell chosenCell, int stepsAlive, int energy){
+    private void reproduceCell(Cell cell, Cell chosenCell, int stepsAlive, int energy, int startingEnergy){
         chosenCell.setNextStatus(cell.getCurrentStatus());
         if(stepsAlive <= REPRODUCE_VAL) {
             cell.setNextStatus(EMPTY);
@@ -105,10 +97,33 @@ public class WaTorWorldModel extends Game{
             chosenCell.setMiscellaneousVal(Arrays.asList(stepsAlive,energy));
         } else if(stepsAlive > REPRODUCE_VAL){
             cell.setNextStatus(cell.getCurrentStatus());
-            chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL,STARTING_VAL));
+            chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, startingEnergy));
         }
-        cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL,STARTING_VAL));
+        cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, startingEnergy));
     }
 
+    @Override
+    public void changeCellOnClick(Point point) {
+        Cell cell = getGrid().getBoardCell(point);
+        cell.setCurrentStatus((cell.getCurrentStatus() + 1) % 3);
+        if (cell.getCurrentStatus() == FISH){
+            cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL,STARTING_VAL));
+        } else if (cell.getCurrentStatus() == SHARK){
+            cell.setMiscellaneousVal((Arrays.asList(STARTING_VAL, SHARK_STARTING_ENERGY)));
+        }
+        update();
+    }
 
+    @Override
+    protected void populateGameConditions () {
+        super.populateGameConditions();
+        EMPTY = getIntProperty("WatorWorldEmpty");
+        FISH = getIntProperty("WatorWorldFish");
+        SHARK = getIntProperty("WatorWorldShark");
+        SHARK_STARTING_ENERGY = getIntProperty("WatorWorldSharkStartingEnergy");
+        STARTING_VAL = getIntProperty("WatorWorldRepStartVal");
+        REPRODUCE_VAL = getIntProperty("WatorWorldReproduceNum");
+        ENERGY_FROM_EATING_FISH = getIntProperty("WatorWorldEnergyFromFish");
+        ENERGY_LOST_FROM_MOVING = getIntProperty("WatorWorldEnergyLostFromMoving");
+    }
 }

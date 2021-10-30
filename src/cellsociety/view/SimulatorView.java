@@ -112,7 +112,7 @@ public class SimulatorView {
     private void setDefaultGrid(int gridWidth, int gridHeight, GridPane gamePane){
         for(int i = 0; i < gridWidth; i ++){
             for(int j = 0; j < gridHeight; j++){
-                SquareCell cell = new SquareCell();
+                SquareCell cell = new SquareCell(mySimulatorController, i, j);
                 cell.setWidth(40); // TODO: Needs to change based on the size of the stage
                 cell.setHeight(40); // TODO: need refactoring?
                 cell.setId("default-cell");

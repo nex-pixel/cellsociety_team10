@@ -19,12 +19,10 @@ public class PercolationModel extends Game {
     public PercolationModel (String filename) {
         super(filename);
         setOpenCells();
-        BLOCKED = getIntProperty("PercolationBlocked");
-        OPEN = getIntProperty("PercolationOpen");
-        PERCOLATED = getIntProperty("PercolationPercolated");
     }
 
     public PercolationModel (int numRows, int numCols) {
+        populateGameConditions();
         int[][] states = new int[numRows][numCols];
         setGrid(states);
         setOpenCells();
@@ -71,16 +69,6 @@ public class PercolationModel extends Game {
         return false;
     }
 
-    public void clickCell (Cell cell) {
-        if (cell.getXyPosition()[1] == 0) {
-            cell.setCurrentStatus(PERCOLATED);
-        }
-        else if (cell.getCurrentStatus() == BLOCKED) {
-            cell.setCurrentStatus(OPEN);
-            myOpenCells.add(cell);
-        }
-    }
-
     public boolean isPercolated () {
         int r = getNumRows() - 1;
         for (int c = 0; c < getNumCols(); c++) {
@@ -89,5 +77,26 @@ public class PercolationModel extends Game {
             }
         }
         return false;
+    }
+
+    @Override
+    public void changeCellOnClick(Point point) {
+        Cell cell = getGrid().getBoardCell(point);
+        if (cell.getXyPosition()[1] == 0) {
+            cell.setCurrentStatus(PERCOLATED);
+        }
+        else if (cell.getCurrentStatus() == BLOCKED) {
+            cell.setCurrentStatus(OPEN);
+            myOpenCells.add(cell);
+        }
+        update();
+    }
+
+    @Override
+    protected void populateGameConditions () {
+        super.populateGameConditions();
+        BLOCKED = getIntProperty("PercolationBlocked");
+        OPEN = getIntProperty("PercolationOpen");
+        PERCOLATED = getIntProperty("PercolationPercolated");
     }
 }

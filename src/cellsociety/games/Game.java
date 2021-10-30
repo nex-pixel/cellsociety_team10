@@ -33,6 +33,7 @@ public abstract class Game {
         populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
+        //TODO: currently only implement SquareGrid
         myGrid = new SquareGrid(states, 0, 0);
     }
 
@@ -76,6 +77,8 @@ public abstract class Game {
         }
     }
 
+    public abstract void changeCellOnClick(Point point);
+
     protected int[][] toGridArray () {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];
         for (int r = 0; r < myGrid.getNumRows(); r++) {
@@ -104,6 +107,7 @@ public abstract class Game {
         }
 
     }
+
 
     protected void populateGameConditions() {
         myGameData = ResourceBundle.getBundle(DEFAULT_GAME_DATA);

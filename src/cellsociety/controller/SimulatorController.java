@@ -8,6 +8,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -72,13 +73,13 @@ public class SimulatorController {
         myGameList.add(myGame);
     }
     private void makeSegregation(){
-        //myGame = new SegregationModel(csvFile);
+        myGame = new SegregationModel(myCSVFile.getAbsolutePath(), 0.5);
     }
     private void makeSpreadingFire(){
         myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath());
         myGameList.add(myGame);
     }
-    private void MakeWaTorWorld(){
+    private void makeWaTorWorld(){
         myGame = new WaTorWorldModel(myCSVFile.getAbsolutePath());
         myGameList.add(myGame);
     }
@@ -111,5 +112,10 @@ public class SimulatorController {
 
     public void updateCSSFile(String cssFile){
         myCSSFile = cssFile;
+    }
+
+    public void updateCellOnClick(int xCoordinate, int yCoordinate){
+        Point point = new Point(xCoordinate, yCoordinate);
+        myGame.changeCellOnClick(point);
     }
 }

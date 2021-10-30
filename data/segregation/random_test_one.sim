@@ -1,0 +1,6 @@
+Type=Segregation
+Title=Random Test One
+Author=Norah Tan
+Description=A very random initialization
+InitialStates=segregation/random_test_one.csv
+StateColors=FFFFFF,0000FF,000000
