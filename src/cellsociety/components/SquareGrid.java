@@ -7,15 +7,11 @@ public class SquareGrid extends Grid {
 
     private int NEIGHBOR_MODE_COMPLETE = 0;
     private int NEIGHBOR_MODE_EDGE = 1;
+    private int NEIGHBOR_MODE_RANDOM_HALF = 2;
 
 
     public SquareGrid (int[][] states, int neighborMode, int edgePolicy) {
         super(states, neighborMode, edgePolicy);
-    }
-
-    @Override
-    protected void initializeNeighbors () {
-        super.initializeNeighbors();
     }
 
     protected void applyNeighborMode (Point point) {
