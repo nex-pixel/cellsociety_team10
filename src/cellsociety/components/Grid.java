@@ -2,9 +2,8 @@ package cellsociety.components;
 
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 public abstract class Grid {
     private int myNumRows, myNumCols;
