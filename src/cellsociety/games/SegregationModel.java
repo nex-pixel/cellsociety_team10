@@ -120,6 +120,12 @@ public class SegregationModel extends Game {
     }
 
     @Override
+    public void changeCellOnClick(Point point) {
+        Cell cell = getGrid().getBoardCell(point);
+        cell.setCurrentStatus((cell.getCurrentStatus() + 1) % 3);
+    }
+
+    @Override
     public boolean equals (Object o) {
         return super.equals(o) && (myThreshold == ((SegregationModel) o).getThreshold());
     }

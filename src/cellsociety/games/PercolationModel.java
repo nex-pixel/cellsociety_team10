@@ -90,4 +90,10 @@ public class PercolationModel extends Game {
         }
         return false;
     }
+
+    @Override
+    public void changeCellOnClick(Point point) {
+        Cell cell = getGrid().getBoardCell(point);
+        cell.setCurrentStatus((cell.getCurrentStatus() + 1) % 3);
+    }
 }

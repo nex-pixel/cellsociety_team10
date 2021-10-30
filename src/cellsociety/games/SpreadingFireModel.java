@@ -86,4 +86,10 @@ public class SpreadingFireModel extends Game{
         }
         return EMPTY;
     }
+
+    @Override
+    public void changeCellOnClick(Point point) {
+        Cell cell = getGrid().getBoardCell(point);
+        cell.setCurrentStatus((cell.getCurrentStatus() + 1) % 3);
+    }
 }

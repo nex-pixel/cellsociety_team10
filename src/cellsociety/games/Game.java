@@ -76,6 +76,8 @@ public abstract class Game {
         }
     }
 
+    public abstract void changeCellOnClick(Point point);
+
     protected int[][] toGridArray () {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];
         for (int r = 0; r < myGrid.getNumRows(); r++) {
