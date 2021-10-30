@@ -8,6 +8,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -110,5 +111,10 @@ public class SimulatorController {
 
     public void updateCSSFile(String cssFile){
         myCSSFile = cssFile;
+    }
+
+    public void updateCellOnClick(int xCoordinate, int yCoordinate){
+        Point point = new Point(xCoordinate, yCoordinate);
+        myGame.changeCellOnClick(point);
     }
 }
