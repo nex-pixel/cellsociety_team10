@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 
 public class SimulatorController {
 
-    public String RESOURCE_ACTIONS_NAME = "cellsociety.controller.resources.ModelNames.";
+    public String RESOURCE_ACTIONS_NAME = "cellsociety.controller.resources.modelNames.";
 
     private Game myGame;
     private List<Game> myGameList;
