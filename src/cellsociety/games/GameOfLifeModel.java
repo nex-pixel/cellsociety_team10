@@ -10,22 +10,14 @@ public class GameOfLifeModel extends Game {
 
     public GameOfLifeModel (String filename) {
         super(filename);
-        setStateProperties();
     }
 
     public GameOfLifeModel (GameOfLifeModel copy) {
         super(copy);
-        setStateProperties();
     }
 
     public GameOfLifeModel (int[][] states) {
         super(states);
-        setStateProperties();
-    }
-
-    private void setStateProperties(){
-        DEAD = getIntProperty("GameOfLifeDead");
-        ALIVE = getIntProperty("GameOfLifeAlive");
     }
 
     @Override
@@ -49,5 +41,12 @@ public class GameOfLifeModel extends Game {
             cell.setNextStatus(numCellsAlive == 3 ? 1 : 0);
         }
         return true;
+    }
+
+    @Override
+    protected void populateGameConditions () {
+        super.populateGameConditions();
+        DEAD = getIntProperty("GameOfLifeDead");
+        ALIVE = getIntProperty("GameOfLifeAlive");
     }
 }
