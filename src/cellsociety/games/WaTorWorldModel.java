@@ -30,8 +30,8 @@ public class WaTorWorldModel extends Game{
             Cell cell = getGrid().getBoardCell(point);
             if(cell.getCurrentStatus() == SHARK){
                 cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, SHARK_STARTING_ENERGY));
-            } else if (cell.getCurrentStatus() == FISH){
-                cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL,STARTING_VAL));
+            } else {
+                cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, STARTING_VAL));
             }
         }
     }
