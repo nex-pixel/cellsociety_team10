@@ -52,6 +52,7 @@ public class GameOfLifeModel extends Game {
         } else if (cell.getCurrentStatus() == ALIVE) {
             cell.setCurrentStatus(DEAD);
         }
+        update();
     }
 
     @Override
