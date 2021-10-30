@@ -1,7 +1,9 @@
 package cellsociety.view;
 
+import cellsociety.Main;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
+import cellsociety.error.GenerateError;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -13,6 +15,9 @@ import java.util.*;
 
 
 public class MainMenuButtonFactory extends ButtonFactory {
+    private static final String ERROR_CHOOSE_ALL_OPTIONS = "SelectAllOptionsMessage";
+    public static final String ACTIONS_NAME_PATH = "cellsociety/resources/MainMenuActionEvents.properties";
+
     private ArrayList<String> modelOptions = new ArrayList<>();;
     private String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
     private String[] modelLabelOptions = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
@@ -30,6 +35,18 @@ public class MainMenuButtonFactory extends ButtonFactory {
         myActionEventsResources = actionResourceBundle;
         myFileManager = fileManager;
         myMainMenuController = mainMenuController;
+        buttonID = "main-menu-button";
+        populateOptions(modelOptions, modelLabelOptions);
+        populateOptions(cssFileOptions, cssFileLabelOptions);
+        populateButtonEvents();
+    }
+
+    public MainMenuButtonFactory(ResourceBundle langResourceBundle){
+        myActionEventsResources = ResourceBundle.getBundle(ACTIONS_NAME_PATH);
+        myLanguageResources = langResourceBundle;
+        myMainMenuView = new MainMenuView(langResourceBundle, myActionEventsResources);
+        myMainMenuController = new MainController(langResourceBundle);
+        myFileManager = new FileManager(langResourceBundle);
         buttonID = "main-menu-button";
         populateOptions(modelOptions, modelLabelOptions);
         populateOptions(cssFileOptions, cssFileLabelOptions);
@@ -64,9 +81,16 @@ public class MainMenuButtonFactory extends ButtonFactory {
                 cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent"));
     }
 
-    private EventHandler<ActionEvent> generateNewSimEvent(){
-        return event -> myMainMenuController.generateNewSimulation(myFileManager.getCurrentTextFile());
+    protected EventHandler<ActionEvent> generateNewSimEvent(){
+        return event -> {
+            try {
+                myMainMenuController.generateNewSimulation(myFileManager.getCurrentTextFile());
+            } catch (Exception e) {
+                new GenerateError(myLanguageResources, ERROR_CHOOSE_ALL_OPTIONS);
+            }
+        };
     }
+
 
     private void populateOptions(ArrayList<String> optionsList, String[] labelList){
         for(String key: labelList){

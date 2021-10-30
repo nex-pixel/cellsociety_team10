@@ -1,5 +1,6 @@
 package cellsociety.view;
 
+import cellsociety.Main;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
 import cellsociety.error.GenerateError;
@@ -29,6 +30,11 @@ public class MainMenuView {
         myActionEventsResources = actionResourceBundle;
     }
 
+    public MainMenuView(ResourceBundle languageResourceBundle){
+        myLanguageResources = languageResourceBundle;
+        myFileManager = new FileManager(myLanguageResources);
+    }
+
     /**
      * creates mainMenu and returns the scene
      * @return scene of main menu
@@ -36,6 +42,19 @@ public class MainMenuView {
     public Scene setMenuDisplay(MainController mainController, int width, int height, ResourceBundle gameNames) {
         myMainController = mainController;
         myMainMenuButtonView = new MainMenuButtonFactory(this, myMainController, myLanguageResources, myActionEventsResources, myFileManager);
+        this.gameNames = gameNames;
+        setLabel("Cell Society", "title");
+        initializeHomePageRoot();
+        Scene scene = new Scene(homePageRoot, width, height);
+        return scene;
+    }
+
+    /**
+     * creates mainMenu and returns the scene
+     * @return scene of main menu
+     */
+    public Scene setNewGameChoiceDisplay(int width, int height, ResourceBundle gameNames) {
+        myMainMenuButtonView = new NewSimulatorButtonFactory(myLanguageResources);
         this.gameNames = gameNames;
         setLabel("Cell Society", "title");
         initializeHomePageRoot();
