@@ -33,6 +33,7 @@ public abstract class Game {
         populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
+        //TODO: currently only implement SquareGrid
         myGrid = new SquareGrid(states, 0, 0);
     }
 
@@ -104,6 +105,7 @@ public abstract class Game {
         }
 
     }
+
 
     protected void populateGameConditions() {
         myGameData = ResourceBundle.getBundle(DEFAULT_GAME_DATA);

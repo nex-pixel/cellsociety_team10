@@ -18,12 +18,6 @@ public class SpreadingFireModel extends Game{
 
     public SpreadingFireModel(String filename) {
         super(filename);
-        probCatch = Double.parseDouble(myGameData.getString("SpreadingFireProbSpread"));;
-        probGrow = Double.parseDouble(myGameData.getString("SpreadingFireProbGrow"));
-        expandGridByInt = getIntProperty("SpreadingFireExpandGridBy");
-        EMPTY = getIntProperty("SpreadingFireEmpty");
-        TREE = getIntProperty("SpreadingFireTree");
-        BURNING = getIntProperty("SpreadingFireBurning");
         //getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
     }
 
@@ -85,5 +79,16 @@ public class SpreadingFireModel extends Game{
             }
         }
         return EMPTY;
+    }
+
+    @Override
+    protected void populateGameConditions () {
+        super.populateGameConditions();
+        probCatch = Double.parseDouble(myGameData.getString("SpreadingFireProbSpread"));;
+        probGrow = Double.parseDouble(myGameData.getString("SpreadingFireProbGrow"));
+        expandGridByInt = getIntProperty("SpreadingFireExpandGridBy");
+        EMPTY = getIntProperty("SpreadingFireEmpty");
+        TREE = getIntProperty("SpreadingFireTree");
+        BURNING = getIntProperty("SpreadingFireBurning");
     }
 }

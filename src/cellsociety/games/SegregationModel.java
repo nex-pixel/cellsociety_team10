@@ -19,12 +19,16 @@ public class SegregationModel extends Game {
 
     private List<Cell> myEmptyCells;
 
+    public SegregationModel (String filename, double threshold) {
+        super(filename);
+        populateGameConditions();
+        myEmptyCells = new ArrayList<>();
+        myThreshold = threshold;
+        setEmptyCells();
+    }
+
     public SegregationModel (int numRows, int numCols, double emptyRate, double agentXRate, double threshold) {
         populateGameConditions();
-        EMPTY = getIntProperty("SegregationEmpty");
-        AGENT_X = getIntProperty("SegregationAgentX");
-        AGENT_O = getIntProperty("SegregationAgent0");
-        RANGE = getIntProperty("SegregationRange");
         myEmptyCells = new ArrayList<>();
         myThreshold = threshold;
         myNumOfAgents = 0;
@@ -117,6 +121,15 @@ public class SegregationModel extends Game {
             }
         }
         return (double) numSameNeighbors / numOccupiedNeighbors > myThreshold;
+    }
+
+    @Override
+    protected void populateGameConditions () {
+        super.populateGameConditions();
+        EMPTY = getIntProperty("SegregationEmpty");
+        AGENT_X = getIntProperty("SegregationAgentX");
+        AGENT_O = getIntProperty("SegregationAgent0");
+        RANGE = getIntProperty("SegregationRange");
     }
 
     @Override
