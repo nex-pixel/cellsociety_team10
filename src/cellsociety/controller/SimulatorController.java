@@ -1,13 +1,17 @@
 package cellsociety.controller;
 
 import cellsociety.games.*;
+import cellsociety.view.MainMenuView;
 import cellsociety.view.SimulatorView;
 import javafx.scene.Scene;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class SimulatorController {
@@ -16,6 +20,8 @@ public class SimulatorController {
     public static final String RESOURCE_ACTIONS_LABEL = MainController.class.getPackageName() + ".Resources.ModelLabel";
 
     private Game myGame;
+    private List<Game> myGameList;
+
     private SimulatorView mySimulatorView;
     private FileManager myFileManager;
     private Scene myScene;
@@ -32,6 +38,7 @@ public class SimulatorController {
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
         actionLabelBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_LABEL);
+        myGameList = new ArrayList<>();
     }
 
     /**
@@ -43,12 +50,9 @@ public class SimulatorController {
         actionNameBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_NAME);
         try{
             handleMethod(actionNameBundle.getString(myModelType)).invoke(SimulatorController.this);
-            // Method m = this.getClass().getDeclaredMethod(actionNameBundle.getString(myModelType), String.class);
-            //m.invoke(this, csvFile.getAbsolutePath());
             mySimulatorView = new SimulatorView(myGame,
                     myCSSFile, myLanguageResources, this);
         } catch(Exception e){
-            // TODO: this doesnt really catch the method validity so we might want to change this
             myFileManager.checkFileValidity(csvFile);
             e.printStackTrace();
         }
@@ -56,30 +60,31 @@ public class SimulatorController {
 
     protected Method handleMethod(String name) {
         try{
-            Method m = SimulatorController.class.getDeclaredMethod(name);
+            Method m = this.getClass().getDeclaredMethod(name);
             return m;
         }catch(NoSuchMethodException e){
-            //TODO: FIX THIS
-            e.printStackTrace();
+            return null;
         }
-        //TODO: BAD
-        return null;
     }
 
     private void makeGameOfLife(){
         myGame = new GameOfLifeModel(myCSVFile.getAbsolutePath());
+        myGameList.add(myGame);
     }
     private void makePercolation(){
         myGame = new PercolationModel(myCSVFile.getAbsolutePath());
+        myGameList.add(myGame);
     }
-    private void makeSegregation(String csvFile){
+    private void makeSegregation(){
         //myGame = new SegregationModel(csvFile);
     }
     private void makeSpreadingFire(){
         myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath());
+        myGameList.add(myGame);
     }
     private void MakeWaTorWorld(){
         myGame = new WaTorWorldModel(myCSVFile.getAbsolutePath());
+        myGameList.add(myGame);
     }
 
     /**
@@ -98,9 +103,10 @@ public class SimulatorController {
     //TODO; rethink this part - need to take timeline out of controller
 
     public void loadNewCSV(){
-        myFileManager.chooseFile();
-        File file = myFileManager.getCurrentTextFile();
-        createNewSimulation(file);
+        MainMenuView newGameOptionView = new MainMenuView(myLanguageResources);
+        Stage optionStage = new Stage();
+        optionStage.setScene(newGameOptionView.setNewGameChoiceDisplay(300,300, actionNameBundle));
+        optionStage.show();
     }
 
     public void updateModelType(String modelType){

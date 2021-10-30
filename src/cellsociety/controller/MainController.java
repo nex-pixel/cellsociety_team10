@@ -37,6 +37,14 @@ public class MainController {
         myActionEventsResources = initializeResourceBundle(ACTION_BUNDLE);
     }
 
+    public MainController(ResourceBundle languageResourceBundle){
+        myStage = new Stage();
+        myLanguageResources = languageResourceBundle;
+        actionNameBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_NAME);
+        myActionEventsResources = initializeResourceBundle(ACTION_BUNDLE);
+    }
+
+
 
     public void startMainMenu() {
         mainMenu  = new MainMenuView(myLanguageResources, myActionEventsResources);
@@ -66,6 +74,8 @@ public class MainController {
     public void generateNewSimulation(File csvFile){
         simulatorController.createNewSimulation(csvFile);
     }
+
+
 
 
     private ResourceBundle initializeResourceBundle(String name) {
