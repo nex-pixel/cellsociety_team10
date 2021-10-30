@@ -16,11 +16,10 @@ import java.util.ResourceBundle;
 
 public class SimulatorController {
 
-    public static final String RESOURCE_ACTIONS_NAME = MainController.class.getPackageName() + ".Resources.ModelNames";
+    public String RESOURCE_ACTIONS_NAME = "cellsociety.controller.resources.ModelNames.";
 
     private Game myGame;
     private List<Game> myGameList;
-
     private SimulatorView mySimulatorView;
     private FileManager myFileManager;
     private String myCSSFile;
@@ -28,11 +27,13 @@ public class SimulatorController {
     private String myModelType;
     private ResourceBundle actionNameBundle;
     private File myCSVFile;
+    private String LANG_KEY = "language";
 
     public SimulatorController(FileManager fileManager, String cssFile, ResourceBundle resourceBundle) {
         myFileManager = fileManager;
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
+        RESOURCE_ACTIONS_NAME += myLanguageResources.getString(LANG_KEY);
         myGameList = new ArrayList<>();
     }
 

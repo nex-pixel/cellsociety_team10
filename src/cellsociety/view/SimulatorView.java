@@ -33,7 +33,6 @@ public class SimulatorView {
     private Game myGame;
     private Scene myScene;
     private SimulatorButtonFactory mySimulatorButtonFactory;
-    private ResourceBundle myActionResources;
     private HBox simulationBox;
     private List<Game> myGameList;
     private Map<Game, GridPane> gameGridPaneMap;
