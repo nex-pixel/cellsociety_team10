@@ -1,10 +1,14 @@
 package cellsociety.view;
 
-
+import cellsociety.controller.FileManager;
+import cellsociety.controller.MainController;
 import cellsociety.controller.SimulatorController;
+import cellsociety.games.Game;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 import java.lang.reflect.InvocationTargetException;
@@ -13,8 +17,14 @@ import java.util.*;
 public class SimulatorButtonFactory extends ButtonFactory {
 
     private SimulatorController mySimulatorController;
+    private String myCSSFile;
+    private Map<String, EventHandler<ActionEvent>> simulatorButtonMap = new LinkedHashMap<>();
+    private String simulatorButtonID = "simulator-button";
     private ResourceBundle myLanguageResources;
     private ResourceBundle myActionEventsResources;
+    private String INVALID_CSS_ERROR = "InvalidCSSFile";
+    private Game myGame;
+    private Scene myScene;
 
     private SimulatorView mySimulatorView;
 
@@ -63,6 +73,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
     }
 
     private EventHandler<ActionEvent> generateAddSimEvent(){
+        System.out.println("hey");
         return event -> mySimulatorController.loadNewCSV();
     }
 

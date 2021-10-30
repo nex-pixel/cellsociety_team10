@@ -3,6 +3,7 @@ package cellsociety.view;
 import cellsociety.Main;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
+import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
@@ -23,6 +24,8 @@ public class MainMenuView {
     public ResourceBundle myActionEventsResources;
     private MainMenuButtonFactory myMainMenuButtonView;
     private ResourceBundle gameNames;
+    private String myModelType;
+    private SimulatorController simulatorController;
 
     public MainMenuView(ResourceBundle languageResourceBundle, ResourceBundle actionResourceBundle){
         myLanguageResources = languageResourceBundle;
@@ -73,6 +76,17 @@ public class MainMenuView {
         titleLabel.setId(id);
     }
 
+    //TODO: connect to simulation button 
+    public void generateSimulatorChoiceDialogBox(String resultType, String content){
+        ArrayList<String> buttonNameList = Collections.list(gameNames.getKeys());
+        ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(buttonNameList.get(0));
+        addItemsToOptionsList(choiceDialog, gameNames);
+        choiceDialog.setContentText(content);
+        showAndWaitForChoiceDialogResult(choiceDialog, resultType);
+        choiceDialog.showAndWait();
+        myModelType = choiceDialog.getSelectedItem();
+    }
+
 
     public ChoiceDialog<String> generateChoiceDialogBox(String defaultChoice, ArrayList<String> options, String resultType, String content){
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(defaultChoice);
@@ -93,8 +107,15 @@ public class MainMenuView {
         }
     }
 
+
     private void addItemsToOptionsList(ArrayList<String> options, ChoiceDialog<String> choiceDialog){
         for(String s : options){
+            choiceDialog.getItems().add(s);
+        }
+    }
+
+    private void addItemsToOptionsList(ChoiceDialog<String> choiceDialog, ResourceBundle choiceNames){
+        for(String s : choiceNames.keySet()){
             choiceDialog.getItems().add(s);
         }
     }

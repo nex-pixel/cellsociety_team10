@@ -18,6 +18,9 @@ import java.util.ResourceBundle;
 public abstract class ButtonFactory {
 
     protected Map<String, EventHandler<ActionEvent>> buttonMap;
+    protected String[] buttonLabelOptions;
+    protected ResourceBundle myActionEventsResources;
+    protected ResourceBundle myLanguageResources;
     protected String buttonID;
 
     public ButtonFactory(){
