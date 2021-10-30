@@ -124,6 +124,12 @@ public class SegregationModel extends Game {
     }
 
     @Override
+    public void changeCellOnClick(Point point) {
+        Cell cell = getGrid().getBoardCell(point);
+        cell.setCurrentStatus((cell.getCurrentStatus() + 1) % 3);
+    }
+
+    @Override
     protected void populateGameConditions () {
         super.populateGameConditions();
         EMPTY = getIntProperty("SegregationEmpty");
