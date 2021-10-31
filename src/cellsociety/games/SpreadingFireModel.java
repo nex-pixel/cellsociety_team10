@@ -19,6 +19,10 @@ public class SpreadingFireModel extends Game{
         //getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
     }
 
+    public SpreadingFireModel (String filename, int gridType, int neighborMode, int edgePolicy) {
+        super(filename, gridType, neighborMode, edgePolicy);
+    }
+
     public void setProbOfFire(double probability){
         probCatch = probability;
     }
