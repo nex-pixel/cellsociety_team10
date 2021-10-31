@@ -13,6 +13,10 @@ public class GameOfLifeModel extends Game {
         super(filename);
     }
 
+    public GameOfLifeModel (String filename, int gridType, int neighborMode, int edgePolicy) {
+        super(filename, gridType, neighborMode, edgePolicy);
+    }
+
     public GameOfLifeModel (GameOfLifeModel copy) {
         super(copy);
     }

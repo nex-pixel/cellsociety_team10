@@ -20,15 +20,16 @@ public class SegregationModel extends Game {
 
     public SegregationModel (String filename, double threshold) {
         super(filename);
-        myEmptyCells = new ArrayList<>();
-        myThreshold = threshold;
-        setEmptyCells();
+        setEmptyCells(threshold);
+    }
+
+    public SegregationModel (String filename, int gridType, int neighborMode, int edgePolicy, double threshold) {
+        super(filename, gridType, neighborMode, edgePolicy);
+        setEmptyCells(threshold);
     }
 
     public SegregationModel (int numRows, int numCols, double emptyRate, double agentXRate, double threshold) {
         populateGameConditions();
-        myEmptyCells = new ArrayList<>();
-        myThreshold = threshold;
         myNumOfAgents = 0;
         int[][] randArray = new int[numRows][numCols];
         for (int r = 0; r < numRows; r++) {
@@ -48,20 +49,13 @@ public class SegregationModel extends Game {
             }
         }
         setGrid(randArray, 0 , 0, 0);
-        setEmptyCells();
+        setEmptyCells(threshold);
     }
-
-    public void setMyThreshold(double newThreshold){
-        myThreshold = newThreshold;
-    }
-
 
     // Default constructor for testing purposes
     public SegregationModel (int[][] states, double threshold) {
-        myThreshold = threshold;
-        myEmptyCells = new ArrayList<>();
         setGrid(states, 0, 0, 0);
-        setEmptyCells();
+        setEmptyCells(threshold);
     }
 
     public SegregationModel (SegregationModel copy) {
@@ -69,9 +63,9 @@ public class SegregationModel extends Game {
         myThreshold = copy.myThreshold;
     }
 
-    public double getThreshold () { return myThreshold; }
-
-    private void setEmptyCells () {
+    private void setEmptyCells (double threshold) {
+        myThreshold = threshold;
+        myEmptyCells = new ArrayList<>();
         for (Point point: getGrid().getPoints()) {
             Cell cell = getGrid().getBoardCell(point);
             if (cell.getCurrentStatus() == EMPTY) {
@@ -81,6 +75,10 @@ public class SegregationModel extends Game {
     }
 
     public List<Cell> getEmptyCells () { return myEmptyCells; }
+    public void setThreshold (double newThreshold){
+        myThreshold = newThreshold;
+    }
+    public double getThreshold () { return myThreshold; }
 
     @Override
     public void update () {
