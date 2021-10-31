@@ -58,7 +58,7 @@ public class GameOfLifeModel extends Game {
     @Override
     protected void populateGameConditions () {
         super.populateGameConditions();
-        DEAD = getIntProperty("GameOfLifeDead");
-        ALIVE = getIntProperty("GameOfLifeAlive");
+        DEAD = retrieveIntProperty("GameOfLifeDead");
+        ALIVE = retrieveIntProperty("GameOfLifeAlive");
     }
 }

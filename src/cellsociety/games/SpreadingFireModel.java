@@ -4,8 +4,6 @@ import cellsociety.components.Cell;
 
 import java.awt.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class SpreadingFireModel extends Game{
     private int EMPTY;
@@ -91,11 +89,11 @@ public class SpreadingFireModel extends Game{
     @Override
     protected void populateGameConditions () {
         super.populateGameConditions();
-        probCatch = Double.parseDouble(myGameData.getString("SpreadingFireProbSpread"));;
-        probGrow = Double.parseDouble(myGameData.getString("SpreadingFireProbGrow"));
-        expandGridByInt = getIntProperty("SpreadingFireExpandGridBy");
-        EMPTY = getIntProperty("SpreadingFireEmpty");
-        TREE = getIntProperty("SpreadingFireTree");
-        BURNING = getIntProperty("SpreadingFireBurning");
+        probCatch = myGameDataReader.getDoubleProperty("SpreadingFireProbSpread");;
+        probGrow = myGameDataReader.getDoubleProperty("SpreadingFireProbGrow");
+        expandGridByInt = retrieveIntProperty("SpreadingFireExpandGridBy");
+        EMPTY = retrieveIntProperty("SpreadingFireEmpty");
+        TREE = retrieveIntProperty("SpreadingFireTree");
+        BURNING = retrieveIntProperty("SpreadingFireBurning");
     }
 }

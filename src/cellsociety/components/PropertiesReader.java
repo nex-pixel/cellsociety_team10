@@ -15,6 +15,10 @@ public class PropertiesReader {
         setNewFilePath(filepath);
     }
 
+    public ResourceBundle getMyFile() {
+        return myFile;
+    }
+
     public void setNewFilePath(String filePath){
         try{
             myFile = ResourceBundle.getBundle(filePath);
@@ -26,7 +30,17 @@ public class PropertiesReader {
     public int getIntProperty(String label) {
         int ret = -1000;
         try{
-            ret = Integer.parseInt(myFile.getString(label));
+            ret = Integer.parseInt(myFile.getString(label).replaceAll(" ", ""));
+        } catch (Exception labelError){
+            labelError.printStackTrace();
+        }
+        return ret;
+    }
+
+    public double getDoubleProperty(String label){
+        double ret = -0.0000001;
+        try{
+            ret = Double.parseDouble(myFile.getString(label).replaceAll(" ", ""));
         } catch (Exception labelError){
             labelError.printStackTrace();
         }
@@ -34,7 +48,7 @@ public class PropertiesReader {
     }
 
     public int[] getIntListProperty(String label){
-        String[] importedList = myFile.getString(label).split(",");
+        String[] importedList = myFile.getString(label).replaceAll(" ", "").split(",");
         int[] ret = new int[importedList.length];
         try{
             for(int i = 0; i < importedList.length; i++){
