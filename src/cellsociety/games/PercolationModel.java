@@ -23,7 +23,7 @@ public class PercolationModel extends Game {
     public PercolationModel (int numRows, int numCols) {
         populateGameConditions();
         int[][] states = new int[numRows][numCols];
-        setGrid(states);
+        setGrid(states, 0,0,0);
         setOpenCells();
     }
 

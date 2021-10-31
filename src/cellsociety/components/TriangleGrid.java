@@ -1,6 +1,7 @@
 package cellsociety.components;
 
 import java.awt.*;
+import java.util.Set;
 
 public class TriangleGrid extends Grid {
 
@@ -56,6 +57,16 @@ public class TriangleGrid extends Grid {
 //                setNeighborCols(new int[]{1, 2, 1, 0, -1, -2, -1});
 //            }
 //        }
+    }
+
+    @Override
+    public void expandGrid(int left, int top, int right, int bottom) {
+        //ToDo: Grid is now abstract so "new Grid" doesn't work now
+        int myNumRows = getNumRows();
+        int myNumCols = getNumCols();
+        Set<Point> points = getPoints();
+        Grid newGrid = new TriangleGrid(new int[myNumRows + top + bottom][myNumRows + left + right], getNeighborMode(), getEdgePolicy());
+        initializeNewGridasOriginal(1, left, top, right, bottom, myNumRows, myNumCols, points, newGrid);
     }
 
     @Override

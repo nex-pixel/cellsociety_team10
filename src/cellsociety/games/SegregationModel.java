@@ -48,7 +48,7 @@ public class SegregationModel extends Game {
                 }
             }
         }
-        setGrid(randArray);
+        setGrid(randArray, 0 , 0, 0);
         setEmptyCells();
     }
 
@@ -61,7 +61,7 @@ public class SegregationModel extends Game {
     public SegregationModel (int[][] states, double threshold) {
         myThreshold = threshold;
         myEmptyCells = new ArrayList<>();
-        setGrid(states);
+        setGrid(states, 0, 0, 0);
         setEmptyCells();
     }
 
