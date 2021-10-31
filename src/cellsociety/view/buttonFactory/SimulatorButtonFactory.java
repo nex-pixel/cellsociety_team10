@@ -61,8 +61,4 @@ public class SimulatorButtonFactory extends ButtonFactory {
         return event -> mySimulatorController.loadNewCSV();
     }
 
-    private EventHandler<ActionEvent> generateAddSimEvent(){
-        return event -> mySimulatorController.loadNewCSV();
-    }
-
 }

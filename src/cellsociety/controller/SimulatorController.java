@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.Main;
 import cellsociety.games.*;
 import cellsociety.view.MainMenuView;
 import cellsociety.view.SimulatorView;
@@ -100,10 +101,10 @@ public class SimulatorController {
     //TODO; rethink this part - need to take timeline out of controller
 
     public void loadNewCSV(){
-        MainMenuView newGameOptionView = new MainMenuView(myLanguageResources);
-        Stage optionStage = new Stage();
-       // optionStage.setScene(newGameOptionView.setNewGameChoiceDisplay(300,300));
-        optionStage.show();
+        Stage stage = new Stage();
+        MainController mainController = new MainController(stage, myLanguageResources.getString("language"));
+        mainController.startMainMenu();
+
     }
 
     public void updateModelType(String modelType){

@@ -93,15 +93,6 @@ public class SimulatorView {
         myAnimation.play();
     }
 
-    public void addNewSimulation(Game game){
-        GridPane newGamePane = new GridPane();
-        setDefaultGrid(game.getNumRows(), game.getNumCols(), newGamePane);
-        updateSimulation(game, newGamePane);
-        simulationBox.getChildren().add(generateSimulationVBox(newGamePane));
-        gameGridPaneMap.put(game, newGamePane);
-
-    }
-
     public void pause(){
         myAnimation.pause();
     }
