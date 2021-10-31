@@ -131,13 +131,11 @@ public abstract class Grid {
             int y = point.y + getNeighborRows()[i];
 
             Point neighborPosition = applyEdgePolicy(x, y);
-            if (myBoard.containsKey(neighborPosition)) {
-                if (isInsideBoard(neighborPosition)) {
-                    Cell c = getBoard().get(neighborPosition);
-                    cell.getNeighborCells().add(c);
-                } else {
-                    cell.getNeighborCells().add(null);
-                }
+            if (myBoard.containsKey(neighborPosition) && isInsideBoard(neighborPosition)) {
+                Cell c = getBoard().get(neighborPosition);
+                cell.getNeighborCells().add(c);
+            } else {
+                cell.getNeighborCells().add(null);
             }
         }
     }
