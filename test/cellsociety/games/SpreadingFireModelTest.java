@@ -4,10 +4,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
+import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SpreadingFireModelTest {
+
+    private ResourceBundle myLanguageResources = ResourceBundle.getBundle("cellsociety.resources.languages.English");
 
     @BeforeEach
     void setUp() {
@@ -65,7 +68,7 @@ class SpreadingFireModelTest {
     @Test
     void saveCSV () {
         GameOfLifeModel sparseForest = new GameOfLifeModel("data/spreading_fire/multiple_burning_trees_sparse_forest.csv");
-        sparseForest.saveCSVFile("data/spreading_fire/copyof_multiple_burning_trees_sparse_forest.csv");
+        sparseForest.saveCSVFile("data/spreading_fire/copyof_multiple_burning_trees_sparse_forest.csv", myLanguageResources);
         GameOfLifeModel sparseForestCopy = new GameOfLifeModel("data/spreading_fire/copyof_multiple_burning_trees_sparse_forest.csv");
         for (Point p: sparseForest.getGrid().getPoints()) {
             assertEquals(sparseForest.getGrid().getBoardCell(p), sparseForestCopy.getGrid().getBoardCell(p));

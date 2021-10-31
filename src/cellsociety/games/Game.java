@@ -5,6 +5,7 @@ import cellsociety.components.*;
 import cellsociety.components.filereader.ReadCSVFile;
 import cellsociety.components.filereader.ReadFile;
 import cellsociety.components.filereader.ReadJSONFile;
+import cellsociety.error.GenerateError;
 import com.opencsv.CSVWriter;
 
 import java.awt.*;
@@ -20,6 +21,8 @@ public abstract class Game {
     private Grid myGrid;
     private static final String DEFAULT_GAME_DATA = "cellsociety.resources.GameData";
     protected PropertiesReader myGameDataReader;
+    private String LANG_KEY = "language";
+    private String INVALID_SAVE = "InvalidSaveFile";
 
     public Game () {}
 
@@ -30,7 +33,7 @@ public abstract class Game {
         this.myGrid = copy.myGrid;
     }
 
-    // default game with SquareGrid, complete neighbor mode, finite edge policy
+    // default game with SquareGrid, complete neighbo52wdc r mode, finite edge policy
     public Game (String filename) {
         populateGameConditions();
         createReader(filename);
@@ -121,7 +124,7 @@ public abstract class Game {
         return ret;
     }
 
-    public void saveCSVFile (String filename) {
+    public void saveCSVFile (String filename, ResourceBundle languageResource) {
         try {
             File file = new File(filename);
             CSVWriter writer = new CSVWriter(new FileWriter(file));
@@ -135,7 +138,7 @@ public abstract class Game {
             writer.close();
         }
         catch (Exception e) {
-            e.printStackTrace();
+            new GenerateError(languageResource.getString(LANG_KEY), INVALID_SAVE);
         }
 
     }

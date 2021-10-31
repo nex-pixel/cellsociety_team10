@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.error.GenerateError;
 import cellsociety.games.*;
 import cellsociety.view.SimulatorView;
 
@@ -22,6 +23,8 @@ public class SimulatorController {
     private File myCSVFile;
     private String LANG_KEY = "language";
     private MainController myMainController;
+    private String INVALID_SIM_GENERATION = "InvalidSimulation";
+    private String INVALID_METHOD = "InvalidMethod";
 
     public SimulatorController(MainController mainController, FileManager fileManager, String cssFile, ResourceBundle resourceBundle) {
         myMainController = mainController;
@@ -44,7 +47,7 @@ public class SimulatorController {
                     myCSSFile, myLanguageResources, this);
         } catch(Exception e){
             myFileManager.checkFileValidity(csvFile);
-            e.printStackTrace();
+            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_SIM_GENERATION);
         }
     }
 
@@ -53,6 +56,7 @@ public class SimulatorController {
             Method m = this.getClass().getDeclaredMethod(name);
             return m;
         }catch(NoSuchMethodException e){
+            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_METHOD);
             return null;
         }
     }

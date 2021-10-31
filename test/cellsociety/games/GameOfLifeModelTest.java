@@ -7,10 +7,12 @@ import org.junit.jupiter.api.Test;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameOfLifeModelTest {
+    private ResourceBundle myLanguageResources = ResourceBundle.getBundle("cellsociety.resources.languages.English");
 
     @BeforeEach
     void setUp() {}
@@ -66,7 +68,7 @@ class GameOfLifeModelTest {
     @Test
     void saveCSV () {
         GameOfLifeModel glider = new GameOfLifeModel("./data/game_of_life/glider.csv");
-        glider.saveCSVFile("./data/game_of_life/gliderCopyTest.csv");
+        glider.saveCSVFile("./data/game_of_life/gliderCopyTest.csv", myLanguageResources);
         GameOfLifeModel gliderCopyTest = new GameOfLifeModel("./data/game_of_life/gliderCopyTest.csv");
         for (Point p: glider.getGrid().getPoints()) {
             assertEquals(glider.getGrid().getBoardCell(p), gliderCopyTest.getGrid().getBoardCell(p));

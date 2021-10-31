@@ -44,6 +44,7 @@ public class SimulatorView {
     private HBox simulationBox = new HBox();
     private Stage myStage;
     private final String LANG_KEY = "language";
+    private String INVALID_SAVE = "InvalidSaveFile";
 
 
 
@@ -64,8 +65,12 @@ public class SimulatorView {
     public void saveCSVFile(){
         TextInputDialog dialog = new TextInputDialog();
         dialog.setContentText("Enter File Name");
-        String fileName = dialog.showAndWait().get(); //TODO: check for ispresent
-        myGame.saveCSVFile(fileName);
+        try{
+            String fileName = dialog.showAndWait().get(); //TODO: check for ispresent
+            myGame.saveCSVFile(fileName, myLanguageResources);
+        }catch(Exception e){
+            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_SAVE);
+        }
     }
 
 

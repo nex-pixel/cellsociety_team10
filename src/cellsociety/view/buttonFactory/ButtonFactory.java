@@ -1,6 +1,7 @@
 package cellsociety.view.buttonFactory;
 
 
+import cellsociety.error.GenerateError;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,6 +27,7 @@ public abstract class ButtonFactory {
     protected String buttonID;
     protected String INVALID_BUTTON_GENERATION = "InvalidButtonGeneration";
     protected String LANG_KEY = "language";
+    private String INVALID_METHOD = "InvalidMethod";
 
     public ButtonFactory(){
         buttonMap = new LinkedHashMap<>();
@@ -65,6 +67,7 @@ public abstract class ButtonFactory {
             Method m = this.getClass().getDeclaredMethod(name);
             return m;
         }catch(NoSuchMethodException e){
+            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_METHOD);
             return null;
         }
     }
