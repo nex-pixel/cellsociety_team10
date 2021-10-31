@@ -18,6 +18,7 @@ public abstract class Game {
 
     private ReadFile myReader;
     private Grid myGrid;
+    private String myFileName;
     private static final String DEFAULT_GAME_DATA = "cellsociety.resources.GameData";
     protected PropertiesReader myGameDataReader;
 
@@ -30,6 +31,7 @@ public abstract class Game {
     }
 
     public Game (String filename) {
+        myFileName = filename;
         populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();

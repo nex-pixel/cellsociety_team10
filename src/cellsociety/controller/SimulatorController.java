@@ -13,6 +13,7 @@ import java.awt.*;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -61,6 +62,10 @@ public class SimulatorController {
         }catch(NoSuchMethodException e){
             return null;
         }
+    }
+
+    public String getSimFilePath () {
+        return myCSVFile.getAbsolutePath().replaceAll("csv", "sim");
     }
 
     private void makeGameOfLife(){
