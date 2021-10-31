@@ -18,7 +18,10 @@ public class HexagonGrid extends Grid {
     protected void initializeBoard (int[][] states) {
         for (int rowIndex = 0; rowIndex < getNumRows(); rowIndex++) {
             for (int colIndex = 0; colIndex < getNumCols(); colIndex++) {
-                Point point = new Point(2 * colIndex + 1, rowIndex);
+                Point point = switch (rowIndex % 2) {
+                    case 0 -> new Point(2 * colIndex + 1, rowIndex);
+                    default -> new Point(2 * colIndex, rowIndex);
+                };
                 Cell cell = new Cell(states[rowIndex][colIndex], 2 * colIndex + 1, rowIndex);
                 getBoard().put(point, cell);
             }
