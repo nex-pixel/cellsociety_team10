@@ -21,11 +21,16 @@ public class WaTorWorldModel extends Game{
 
     public WaTorWorldModel(String filename){
         super(filename);
-        rand = new Random();
+        setSharkEnergyValues();
+    }
+
+    public WaTorWorldModel (String filename, int gridType, int neighborMode, int edgePolicy) {
+        super(filename, gridType, neighborMode, edgePolicy);
         setSharkEnergyValues();
     }
 
     private void setSharkEnergyValues(){
+        rand = new Random();
         for(Point point: getGrid().getPoints()){
             Cell cell = getGrid().getBoardCell(point);
             if(cell.getCurrentStatus() == SHARK){

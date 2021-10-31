@@ -20,6 +20,11 @@ public class PercolationModel extends Game {
         setOpenCells();
     }
 
+    public PercolationModel (String filename, int gridType, int neighborMode, int edgePolicy) {
+        super(filename, gridType, neighborMode, edgePolicy);
+        setOpenCells();
+    }
+
     public PercolationModel (int numRows, int numCols) {
         populateGameConditions();
         int[][] states = new int[numRows][numCols];
