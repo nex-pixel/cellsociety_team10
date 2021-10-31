@@ -34,12 +34,16 @@ public class MainController {
         myStage.show();
     }
 
+    public void loadNewGame() {
+        myStage.close();
+        startMainMenu();
+    }
     /**
      * setter for modelType
      * @param result modelType
      */
     public void updateModelType(String result, FileManager fileManager){
-        simulatorController = new SimulatorController(fileManager, cssFile, myLanguageResources);
+        simulatorController = new SimulatorController(this, fileManager, cssFile, myLanguageResources);
         simulatorController.updateModelType(result);
     }
 

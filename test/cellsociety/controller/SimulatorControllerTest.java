@@ -14,8 +14,8 @@ class SimulatorControllerTest {
     void setUp() {
         ResourceBundle englishResource = ResourceBundle.getBundle("src/cellsociety/resources/English.properties");
         FileManager testFileManager = new FileManager(englishResource);
-        testSimulatorController = new SimulatorController(testFileManager,
-                "src/cellsociety/resources/style_sheets/Duke.css", englishResource);
+       // testSimulatorController = new SimulatorController(testFileManager,
+        //        "src/cellsociety/resources/style_sheets/Duke.css", englishResource);
     }
 
     @Test

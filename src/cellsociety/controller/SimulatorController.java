@@ -30,8 +30,10 @@ public class SimulatorController {
     private ResourceBundle actionNameBundle;
     private File myCSVFile;
     private String LANG_KEY = "language";
+    private MainController myMainController;
 
-    public SimulatorController(FileManager fileManager, String cssFile, ResourceBundle resourceBundle) {
+    public SimulatorController(MainController mainController, FileManager fileManager, String cssFile, ResourceBundle resourceBundle) {
+        myMainController = mainController;
         myFileManager = fileManager;
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
@@ -84,27 +86,16 @@ public class SimulatorController {
         myGame = new WaTorWorldModel(myCSVFile.getAbsolutePath());
     }
 
-
-    /**
-     * saves the current grid status into a CSV file
-     */
-    public void saveCSVFile(){
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setContentText("Enter File Name");
-        String fileName = dialog.showAndWait().get(); //TODO: check for ispresent
-        myGame.saveCSVFile(fileName);
-    }
-
     /**
      * load a new simulation from the CSV file selected by the user
      */
-    //TODO; rethink this part - need to take timeline out of controller
-
     public void loadNewCSV(){
-        Stage stage = new Stage();
-        MainController mainController = new MainController(stage, myLanguageResources.getString("language"));
-        mainController.startMainMenu();
+        myMainController.loadNewGame();
+    }
 
+    public void replaceWithNewCSV(){
+        mySimulatorView.stopSimulation();
+        myMainController.loadNewGame();
     }
 
     public void updateModelType(String modelType){

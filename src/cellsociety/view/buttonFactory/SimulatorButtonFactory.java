@@ -71,12 +71,15 @@ public class SimulatorButtonFactory extends ButtonFactory {
     }
 
     private EventHandler<ActionEvent> generateSaveEvent(){
-        return event -> mySimulatorController.saveCSVFile();
+        return event -> mySimulatorView.saveCSVFile();
     }
 
     private EventHandler<ActionEvent> generateLoadEvent(){
         return event -> mySimulatorController.loadNewCSV();
     }
+
+    private EventHandler<ActionEvent> generateReplaceEvent(){return event -> mySimulatorController.replaceWithNewCSV();}
+
 
     private EventHandler<ActionEvent> generateAboutEvent() {return event -> {
         try {
