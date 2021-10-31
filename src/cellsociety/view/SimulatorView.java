@@ -11,8 +11,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Cell;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -22,7 +24,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.File;
+import java.io.*;
 import java.util.*;
 
 public class SimulatorView {
@@ -40,6 +42,7 @@ public class SimulatorView {
     private Scene myScene;
     private SimulatorButtonFactory mySimulatorButtonFactory;
     private HBox simulationBox;
+    private Stage myStage;
 
 
 
@@ -59,14 +62,27 @@ public class SimulatorView {
         initializeSimulationScene();
     }
 
+    public void saveCSVFile(){
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setContentText("Enter File Name");
+        String fileName = dialog.showAndWait().get(); //TODO: check for ispresent
+        myGame.saveCSVFile(fileName);
+    }
+
+
+
     private void initializeSimulationScene(){
-        Stage stage = new Stage();
+        myStage = new Stage();
         updateSimulation(myGame, myGridView);
         simulationBox.getChildren().add(generateSimulationVBox(myGridView));
         myScene = new Scene(simulationBox);
-        stage.setScene(myScene);
-        stage.show();
+        myStage.setScene(myScene);
+        myStage.show();
         playAnimation();
+    }
+
+    public void stopSimulation(){
+        myStage.close();
     }
 
     public void step(){
@@ -94,6 +110,16 @@ public class SimulatorView {
 
     public void setAnimationSpeed(double speed){
         myAnimation.setRate(speed);
+    }
+
+    public void showAbout() throws FileNotFoundException {
+        Scanner file = new Scanner(new File(mySimulatorController.getSimFilePath()));
+        StringBuilder simInfo = new StringBuilder();
+        while(file.hasNextLine()) simInfo.append(file.nextLine()).append("\n");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("About This Simulation");
+        alert.setContentText(String.valueOf(simInfo));
+        alert.showAndWait();
     }
 
     // fills the grid with squareCells of defaultColor
