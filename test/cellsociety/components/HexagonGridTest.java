@@ -12,12 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HexagonGridTest {
-    private HexagonGrid myGrid_Complete_Finite_OddRows, myGrid_Complete_Torus_OddRows;
-    private HexagonGrid myGrid_Edge_Torus_EvenRows;
-    private HexagonGrid myGrid_Complete_Torus, myGrid_Complete_Cylinder;
-    private HexagonGrid myGrid_Edge_Finite, myGrid_Edge_Torus;
-    private HexagonGrid myGrid_BottomHalf_Torus;
-    private List<HexagonGrid> myGridsOdd, myGridsEven, myGridsComplete;
+    private HexagonGrid myGrid_Complete_Finite_OddRows, myGrid_Complete_Torus_OddRows, myGrid_BottomHalf_Torus_OddRows;
+    private HexagonGrid myGrid_Edge_Torus_EvenRows, myGrid_BottomHalf_Torus_EvenRows, myGrid_Complete_Cylinder_EvenRows;
+    private List<HexagonGrid> myGridsOdd, myGridsEven;
     private int EDGE_POLICY_FINITE = 0;
     private int EDGE_POLICY_TORUS = 1;
     private int EDGE_POLICY_CYLINDER = 2;
@@ -35,30 +32,20 @@ public class HexagonGridTest {
     public void setUp () {
         myGrid_Complete_Finite_OddRows = new HexagonGrid(gridArrayOddRows, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_FINITE);
         myGrid_Complete_Torus_OddRows = new HexagonGrid(gridArrayOddRows, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_TORUS);
+        myGrid_BottomHalf_Torus_OddRows = new HexagonGrid(gridArrayOddRows, NEIGHBOR_MODE_BOTTOM_HALF, EDGE_POLICY_TORUS);
         myGrid_Edge_Torus_EvenRows = new HexagonGrid(gridArrayEvenRows, NEIGHBOR_MODE_EDGE, EDGE_POLICY_TORUS);
-//        myGrid_Complete_Torus = new HexagonGrid(passedInGridArray, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_TORUS);
-//        myGrid_Complete_Cylinder = new HexagonGrid(passedInGridArray, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_CYLINDER);
-//
-//        myGrid_Edge_Finite = new HexagonGrid(passedInGridArray, NEIGHBOR_MODE_EDGE, EDGE_POLICY_FINITE);
-//        myGrid_Edge_Torus = new HexagonGrid(passedInGridArray, NEIGHBOR_MODE_EDGE, EDGE_POLICY_TORUS);
-//        myGrid_BottomHalf_Torus = new HexagonGrid(passedInGridArray, NEIGHBOR_MODE_BOTTOM_HALF, EDGE_POLICY_TORUS);
+        myGrid_BottomHalf_Torus_EvenRows = new HexagonGrid(gridArrayEvenRows, NEIGHBOR_MODE_BOTTOM_HALF, EDGE_POLICY_TORUS);
+        myGrid_Complete_Cylinder_EvenRows = new HexagonGrid(gridArrayEvenRows, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_CYLINDER);
 
         myGridsOdd = new ArrayList<>();
         myGridsOdd.add(myGrid_Complete_Finite_OddRows);
         myGridsOdd.add(myGrid_Complete_Torus_OddRows);
+        myGridsOdd.add( myGrid_BottomHalf_Torus_OddRows);
 
         myGridsEven = new ArrayList<>();
         myGridsEven.add(myGrid_Edge_Torus_EvenRows);
-//        myGrids.add(myGrid_Complete_Torus);
-//        myGrids.add(myGrid_Complete_Cylinder);
-//        myGrids.add(myGrid_Edge_Finite);
-//        myGrids.add(myGrid_Edge_Torus);
-//        myGrids.add(myGrid_BottomHalf_Torus);
-//
-//        myGridsComplete = new ArrayList<>();
-//        myGridsComplete.add(myGrid_Complete_Finite);
-//        myGridsComplete.add(myGrid_Complete_Torus);
-//        myGridsComplete.add(myGrid_Complete_Cylinder);
+        myGridsEven.add(myGrid_BottomHalf_Torus_EvenRows);
+        myGridsEven.add(myGrid_Complete_Cylinder_EvenRows);
     }
 
     @Test
@@ -121,6 +108,38 @@ public class HexagonGridTest {
         Cell cornerUpperLeft = myGrid_Edge_Torus_EvenRows.getBoardCell(new Point(1,0));
         List<Cell> expectedNeighbors = Arrays.asList(new Cell(0, 0, 3),
                 new Cell(0, 2, 3),
+                new Cell(1, 3,0),
+                new Cell(0, 2, 1),
+                new Cell(1, 0,1),
+                new Cell(0, 5, 0));
+        assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
+    }
+
+    @Test
+    void checkCornerNeighbors_BottomHalf_Torus_Even (){
+        Cell cornerUpperLeft = myGrid_BottomHalf_Torus_EvenRows.getBoardCell(new Point(1,0));
+        List<Cell> expectedNeighbors = Arrays.asList(new Cell(1, 3,0),
+                new Cell(0, 2, 1),
+                new Cell(1, 0,1),
+                new Cell(0, 5, 0));
+        assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
+    }
+
+    @Test
+    void checkCornerNeighbors_BottomHalf_Torus_Odd (){
+        Cell cornerUpperLeft = myGrid_BottomHalf_Torus_OddRows.getBoardCell(new Point(1,2));
+        List<Cell> expectedNeighbors = Arrays.asList(new Cell(1, 3,2),
+                null,
+                null,
+                new Cell(1, 5,2));
+        assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
+    }
+
+    @Test
+    void checkCornerNeighbors_Complete_Cylinder_Even (){
+        Cell cornerUpperLeft = myGrid_Complete_Cylinder_EvenRows.getBoardCell(new Point(1,0));
+        List<Cell> expectedNeighbors = Arrays.asList(null,
+                null,
                 new Cell(1, 3,0),
                 new Cell(0, 2, 1),
                 new Cell(1, 0,1),
