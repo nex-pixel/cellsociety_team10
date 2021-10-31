@@ -15,9 +15,12 @@ public abstract class Grid {
     private int EDGE_POLICY_FINITE = 0;
     private int EDGE_POLICY_TORUS = 1;
     private int EDGE_POLICY_CYLINDER = 2;
+    protected PropertiesReader myReader;
+    private final String neighborDataFile = "cellsociety/resources/NeighborPositionData.properties";
 
 
-    public Grid (int[][] states, int neighborMode, int edgePolicy) {
+    public Grid(int[][] states, int neighborMode, int edgePolicy) {
+        populateNeighborData();
         myNumRows = states.length;
         myNumCols = states[0].length;
         myNeighborMode = neighborMode;
@@ -28,7 +31,7 @@ public abstract class Grid {
         initializeNeighbors();
     }
 
-    protected void initializeBoard (int[][] states) {
+    protected void initializeBoard(int[][] states) {
         for (int rowIndex = 0; rowIndex < myNumRows; rowIndex++) {
             for (int colIndex = 0; colIndex < myNumCols; colIndex++) {
                 Point point = new Point(colIndex, rowIndex);
@@ -38,28 +41,57 @@ public abstract class Grid {
         }
     }
 
-    public int getNumRows () { return myNumRows; }
-    public int getNumCols () { return myNumCols; }
-    public int getEdgePolicy () { return myEdgePolicy; }
-    public int getNeighborMode () { return myNeighborMode; }
+    public int getNumRows() {
+        return myNumRows;
+    }
 
-    public void setNeighborRows (int[] rows) { myNeighborRows = rows; }
-    public int[] getNeighborRows () { return myNeighborRows; }
-    public void setNeighborCols (int[] cols) { myNeighborCols = cols; }
-    public int[] getNeighborCols () { return myNeighborCols; }
+    public int getNumCols() {
+        return myNumCols;
+    }
 
-    public Set<Point> getPoints (){ return myBoard.keySet(); }
-    public Cell getBoardCell (Point point){ return myBoard.get(point); }
+    public int getEdgePolicy() {
+        return myEdgePolicy;
+    }
 
-    public Cell getXYBoardCell (int x, int y){
+    public int getNeighborMode() {
+        return myNeighborMode;
+    }
+
+    public void setNeighborRows(int[] rows) {
+        myNeighborRows = rows;
+    }
+
+    public int[] getNeighborRows() {
+        return myNeighborRows;
+    }
+
+    public void setNeighborCols(int[] cols) {
+        myNeighborCols = cols;
+    }
+
+    public int[] getNeighborCols() {
+        return myNeighborCols;
+    }
+
+    public Set<Point> getPoints() {
+        return myBoard.keySet();
+    }
+
+    public Cell getBoardCell(Point point) {
+        return myBoard.get(point);
+    }
+
+    public Cell getXYBoardCell(int x, int y) {
         Point point = new Point(x, y);
         return myBoard.get(point);
     }
 
-    protected Map<Point, Cell> getBoard () { return myBoard; }
+    protected Map<Point, Cell> getBoard() {
+        return myBoard;
+    }
 
-    protected void initializeNeighbors () {
-        for (Point point: getBoard().keySet()) {
+    protected void initializeNeighbors() {
+        for (Point point : getBoard().keySet()) {
             getBoard().get(point).clearNeighborCells();
             Cell cell = getBoard().get(point);
 
@@ -86,9 +118,9 @@ public abstract class Grid {
         }
     }
 
-    protected abstract void applyNeighborMode (Point point);
+    protected abstract void applyNeighborMode(Point point);
 
-    protected Point applyEdgePolicy (int x, int y) {
+    protected Point applyEdgePolicy(int x, int y) {
         if (myEdgePolicy != EDGE_POLICY_FINITE) {
             x = Math.floorMod(x, myNumCols);
         }
@@ -98,18 +130,18 @@ public abstract class Grid {
         return new Point(x, y);
     }
 
-    protected boolean isEdge (Cell c) {
+    protected boolean isEdge(Cell c) {
         if (isCorner(c)) return false;
 
         int x = c.getXyPosition()[0];
         int y = c.getXyPosition()[1];
 
-        if (x == 0 || x == myNumCols - 1 || y == 0 || y == myNumCols - 1)  return true;
+        if (x == 0 || x == myNumCols - 1 || y == 0 || y == myNumCols - 1) return true;
 
         return false;
     }
 
-    protected boolean isCorner (Cell c) {
+    protected boolean isCorner(Cell c) {
         int x = c.getXyPosition()[0];
         int y = c.getXyPosition()[1];
         if (x == 0 || x == myNumCols - 1) {
@@ -120,17 +152,17 @@ public abstract class Grid {
         return false;
     }
 
-    protected boolean isInsideBoard (Point point) {
+    protected boolean isInsideBoard(Point point) {
         int x = point.x;
         int y = point.y;
         return (x >= 0 && x < myNumCols && y >= 0 && y < myNumRows);
     }
 
     //expand the board with empty cells to each side depending on what's written
-    public void expandGrid (int left, int top, int right, int bottom){
+    public void expandGrid(int left, int top, int right, int bottom) {
         //ToDo: Grid is now abstract so "new Grid" doesn't work now
         Grid newGrid = new SquareGrid(new int[myNumRows + top + bottom][myNumRows + left + right], myNeighborMode, myEdgePolicy);
-        for(Point point: myBoard.keySet()){
+        for (Point point : myBoard.keySet()) {
             Cell movedCell = myBoard.get(point);
             movedCell.setXyPosition(point.x + left, point.y + top);
             Point movedPoint = point;
@@ -152,5 +184,15 @@ public abstract class Grid {
 //        return passedInGrid;
 //    }
 
+    protected void populateNeighborData() {
+        myReader = new PropertiesReader(neighborDataFile);
+        EDGE_POLICY_FINITE = myReader.getIntProperty("EDGE_POLICY_FINITE");
+        EDGE_POLICY_TORUS = myReader.getIntProperty("EDGE_POLICY_TORUS");
+        EDGE_POLICY_CYLINDER = myReader.getIntProperty("EDGE_POLICY_CYLINDER");
+    }
 
+    protected void setRowColValues(String row, String col) {
+        setNeighborRows(myReader.getIntListProperty(row));
+        setNeighborCols(myReader.getIntListProperty(col));
+    }
 }
