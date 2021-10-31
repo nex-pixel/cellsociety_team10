@@ -4,8 +4,8 @@ import java.util.ResourceBundle;
 
 public class GenerateError {
 
-    public GenerateError(ResourceBundle resourceBundle, String message){
-        Error myError = new Error(resourceBundle);
+    public GenerateError(String language, String message){
+        Error myError = new Error(language);
         myError.prepareError(message);
         myError.showError();
     }

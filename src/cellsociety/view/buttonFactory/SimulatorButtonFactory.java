@@ -21,6 +21,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
 
     private SimulatorController mySimulatorController;
     private SimulatorView mySimulatorView;
+    private String InvalidSimFile = "simFileNotFound";
 
     public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController, ResourceBundle langResourceBundle){
         super();
@@ -43,7 +44,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
                 buttonMap.put(myLanguageResources.getString(key), buttonEvent);
             }
         }catch(IllegalAccessException | InvocationTargetException e){
-            new GenerateError(myLanguageResources, INVALID_BUTTON_GENERATION);
+            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_BUTTON_GENERATION);
         }
     }
 
@@ -85,9 +86,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
         try {
             mySimulatorView.showAbout();
         } catch (FileNotFoundException e) {
-            Error simFileNotFound = new Error(myLanguageResources);
-            simFileNotFound.prepareError("simFileNotFound");
-            simFileNotFound.showError();
+            new GenerateError(myLanguageResources.getString(LANG_KEY), InvalidSimFile);
         }};
     }
 

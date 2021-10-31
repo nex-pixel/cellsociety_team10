@@ -46,7 +46,7 @@ public class MainMenuButtonFactory extends ButtonFactory {
                 buttonMap.put(myLanguageResources.getString(key), buttonEvent);
             }
         }catch(IllegalAccessException | InvocationTargetException e){
-            new GenerateError(myLanguageResources, INVALID_BUTTON_GENERATION);
+            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_BUTTON_GENERATION);
         }
     }
 
@@ -69,7 +69,7 @@ public class MainMenuButtonFactory extends ButtonFactory {
             try {
                 myMainMenuController.generateNewSimulation(myFileManager.getCurrentTextFile());
             } catch (Exception e) {
-                new GenerateError(myLanguageResources, ERROR_CHOOSE_ALL_OPTIONS);
+                new GenerateError(myLanguageResources.getString(LANG_KEY), ERROR_CHOOSE_ALL_OPTIONS);
             }
         };
     }

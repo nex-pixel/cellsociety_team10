@@ -52,7 +52,7 @@ public class MainController {
         try{
             mainMenu.applyCSS(myStage.getScene(), cssFile);
         }catch(Exception e){
-            new GenerateError(myLanguageResources, INVALID_CSS_ERROR);
+            new GenerateError(myLanguageResources.getString(myLanguage), INVALID_CSS_ERROR);
         }
     }
 
