@@ -1,6 +1,7 @@
 package cellsociety.view.buttonFactory;
 
 import cellsociety.controller.SimulatorController;
+import cellsociety.error.Error;
 import cellsociety.error.GenerateError;
 import cellsociety.games.Game;
 import cellsociety.view.SimulatorView;
@@ -12,6 +13,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -69,11 +71,24 @@ public class SimulatorButtonFactory extends ButtonFactory {
     }
 
     private EventHandler<ActionEvent> generateSaveEvent(){
-        return event -> mySimulatorController.saveCSVFile();
+        return event -> mySimulatorView.saveCSVFile();
     }
 
     private EventHandler<ActionEvent> generateLoadEvent(){
         return event -> mySimulatorController.loadNewCSV();
+    }
+
+    private EventHandler<ActionEvent> generateReplaceEvent(){return event -> mySimulatorController.replaceWithNewCSV();}
+
+
+    private EventHandler<ActionEvent> generateAboutEvent() {return event -> {
+        try {
+            mySimulatorView.showAbout();
+        } catch (FileNotFoundException e) {
+            Error simFileNotFound = new Error(myLanguageResources);
+            simFileNotFound.prepareError("simFileNotFound");
+            simFileNotFound.showError();
+        }};
     }
 
 

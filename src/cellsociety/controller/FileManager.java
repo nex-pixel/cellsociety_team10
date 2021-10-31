@@ -27,7 +27,6 @@ public class FileManager {
     public void loadFile() throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("./"));
-
         File file = fileChooser.showOpenDialog(null);
 
         if (file != null) {
