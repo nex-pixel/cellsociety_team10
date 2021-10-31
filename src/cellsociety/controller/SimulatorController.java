@@ -1,5 +1,6 @@
 package cellsociety.controller;
 
+import cellsociety.Main;
 import cellsociety.games.*;
 import cellsociety.view.MainMenuView;
 import cellsociety.view.SimulatorView;
@@ -20,7 +21,6 @@ public class SimulatorController {
     public String RESOURCE_ACTIONS_NAME = "cellsociety.controller.resources.modelNames.";
 
     private Game myGame;
-    private List<Game> myGameList;
     private SimulatorView mySimulatorView;
     private FileManager myFileManager;
     private String myCSSFile;
@@ -35,7 +35,6 @@ public class SimulatorController {
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
         RESOURCE_ACTIONS_NAME += myLanguageResources.getString(LANG_KEY);
-        myGameList = new ArrayList<>();
     }
 
     /**
@@ -66,23 +65,20 @@ public class SimulatorController {
 
     private void makeGameOfLife(){
         myGame = new GameOfLifeModel(myCSVFile.getAbsolutePath());
-        myGameList.add(myGame);
     }
     private void makePercolation(){
         myGame = new PercolationModel(myCSVFile.getAbsolutePath());
-        myGameList.add(myGame);
     }
     private void makeSegregation(){
         myGame = new SegregationModel(myCSVFile.getAbsolutePath(), 0.5);
     }
     private void makeSpreadingFire(){
         myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath());
-        myGameList.add(myGame);
     }
     private void makeWaTorWorld(){
         myGame = new WaTorWorldModel(myCSVFile.getAbsolutePath());
-        myGameList.add(myGame);
     }
+
 
     /**
      * saves the current grid status into a CSV file
@@ -100,10 +96,10 @@ public class SimulatorController {
     //TODO; rethink this part - need to take timeline out of controller
 
     public void loadNewCSV(){
-        MainMenuView newGameOptionView = new MainMenuView(myLanguageResources);
-        Stage optionStage = new Stage();
-       // optionStage.setScene(newGameOptionView.setNewGameChoiceDisplay(300,300));
-        optionStage.show();
+        Stage stage = new Stage();
+        MainController mainController = new MainController(stage, myLanguageResources.getString("language"));
+        mainController.startMainMenu();
+
     }
 
     public void updateModelType(String modelType){

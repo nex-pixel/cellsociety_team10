@@ -40,17 +40,12 @@ public class SimulatorView {
     private Scene myScene;
     private SimulatorButtonFactory mySimulatorButtonFactory;
     private HBox simulationBox;
-    private List<Game> myGameList;
-    private Map<Game, GridPane> gameGridPaneMap;
 
 
 
     public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController){
         mySimulatorController = simulatorController;
         myGame = game;
-        myGameList = new ArrayList<>();
-        gameGridPaneMap = new HashMap<>();
-        myGameList.add(myGame);
         animationSpeed = 0.3;
         myAnimation = new Timeline();
         myGridView = new GridPane();
@@ -58,7 +53,6 @@ public class SimulatorView {
         myGridWidth = myGame.getNumCols();
         myGridHeight = myGame.getNumRows();
         myCSSFile = cssFile;
-        gameGridPaneMap.put(myGame, myGridView);
         myLanguageResources = resourceBundle;
         mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
         setDefaultTriangleGrid(myGridWidth, myGridHeight, myGridView);
@@ -76,11 +70,8 @@ public class SimulatorView {
     }
 
     public void step(){
-        for(Game game : gameGridPaneMap.keySet()){
-            game.update();
-            updateSimulation(game, gameGridPaneMap.get(game));
-        }
-
+            myGame.update();
+            updateSimulation(myGame, myGridView);
     }
 
     // Start new animation to show search algorithm's steps
@@ -93,15 +84,6 @@ public class SimulatorView {
         myAnimation.play();
     }
 
-    public void addNewSimulation(Game game){
-        GridPane newGamePane = new GridPane();
-        setDefaultGrid(game.getNumRows(), game.getNumCols(), newGamePane);
-        updateSimulation(game, newGamePane);
-        simulationBox.getChildren().add(generateSimulationVBox(newGamePane));
-        gameGridPaneMap.put(game, newGamePane);
-
-    }
-
     public void pause(){
         myAnimation.pause();
     }
@@ -110,7 +92,7 @@ public class SimulatorView {
         myAnimation.play();
     }
 
-    private void setAnimationSpeed(double speed){
+    public void setAnimationSpeed(double speed){
         myAnimation.setRate(speed);
     }
 
@@ -136,7 +118,7 @@ public class SimulatorView {
                 counter += 1;
             }
         }
-        setPaneSize(gamePane, gridWidth*25, gridHeight*43.30125);
+        setPaneSize(gamePane, (gridWidth+1)*25, gridHeight*43.30125);
     }
 
     // fills the grid with hexagons of defaultColor
@@ -192,27 +174,10 @@ public class SimulatorView {
      * @return VBox containing gridpane of the simulation and control buttons
      */
     private VBox generateSimulationVBox(GridPane gameGrid){
-        HBox buttonBox = new HBox();
-        buttonBox.getChildren().add(mySimulatorButtonFactory.generateButtonPanel());
-        buttonBox.getChildren().add(makeSlider(myLanguageResources.getString("SpeedLabel"), 0.1, 5.0));
         VBox simulationBox = new VBox();
-        simulationBox.getChildren().addAll(gameGrid, buttonBox);
+        simulationBox.getChildren().addAll(gameGrid, mySimulatorButtonFactory.generateButtonPanel());
         applyCSS(simulationBox, myCSSFile);
         return simulationBox;
-    }
-
-
-    private Node makeSlider(String text, double minVal, double maxVal) {
-        HBox sliderBox = new HBox();
-        Slider lengthSlider = new Slider(minVal, maxVal, 1.0);
-        lengthSlider.setShowTickMarks(true);
-        lengthSlider.setShowTickLabels(true);
-        lengthSlider.setMajorTickUnit(1);
-        lengthSlider.setMaxWidth(100);
-        lengthSlider.valueProperty().addListener((obs, oldVal, newVal) ->
-                setAnimationSpeed((double)newVal));
-        sliderBox.getChildren().addAll(new Text(text), lengthSlider);
-        return sliderBox;
     }
 
     private void applyCSS(VBox scene, String cssFile) {

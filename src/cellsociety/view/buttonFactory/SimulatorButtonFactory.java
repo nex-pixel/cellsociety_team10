@@ -6,7 +6,11 @@ import cellsociety.games.Game;
 import cellsociety.view.SimulatorView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -41,6 +45,17 @@ public class SimulatorButtonFactory extends ButtonFactory {
         }
     }
 
+    @Override
+    public Node generateButtonPanel(){
+        HBox panel = new HBox();
+        VBox buttonBox = new VBox();
+        Node animationSpeedSlider = makeSlider("Animation Speed", 0.1, 5.0,
+                (obs, oldVal, newVal) -> mySimulatorView.setAnimationSpeed((double)newVal));
+        buttonMap.forEach((key,value) -> addButtonToPanel(key,value,buttonBox));
+        panel.getChildren().addAll(buttonBox, animationSpeedSlider);
+        return panel;
+    }
+
     private EventHandler<ActionEvent> generatePlayEvent(){
         return event -> mySimulatorView.play();
     }
@@ -61,8 +76,5 @@ public class SimulatorButtonFactory extends ButtonFactory {
         return event -> mySimulatorController.loadNewCSV();
     }
 
-    private EventHandler<ActionEvent> generateAddSimEvent(){
-        return event -> mySimulatorController.loadNewCSV();
-    }
 
 }

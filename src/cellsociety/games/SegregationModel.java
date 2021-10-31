@@ -53,6 +53,11 @@ public class SegregationModel extends Game {
         setEmptyCells();
     }
 
+    public void setMyThreshold(double newThreshold){
+        myThreshold = newThreshold;
+    }
+
+
     // Default constructor for testing purposes
     public SegregationModel (int[][] states, double threshold) {
         myThreshold = threshold;
