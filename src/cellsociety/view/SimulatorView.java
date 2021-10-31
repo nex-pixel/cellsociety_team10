@@ -55,7 +55,7 @@ public class SimulatorView {
         gameGridPaneMap.put(myGame, myGridView);
         myLanguageResources = resourceBundle;
         mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
-        setDefaultGrid(myGridWidth, myGridHeight, myGridView);
+        setDefaultTriangleGrid(myGridWidth, myGridHeight, myGridView);
         initializeSimulationScene();
     }
 
@@ -119,6 +119,39 @@ public class SimulatorView {
                 gamePane.add(cell, i, j);
             }
         }
+    }
+
+    private void setDefaultTriangleGrid(int gridWidth, int gridHeight, GridPane gamePane){
+        int counter = 0;
+        for(int i = 0; i < gridHeight; i ++){
+            for(int j = 0; j < gridWidth; j++){
+                TriangleCell cell = new TriangleCell(mySimulatorController, counter % 2, j, i);
+                cell.setId("default-cell");
+                gamePane.getChildren().add(cell);
+                cell.setTranslateX(j*25);
+                cell.setTranslateY(i*43.30125);
+                counter += 1;
+            }
+        }
+        gamePane.setPrefWidth(gridWidth*25);
+        gamePane.setPrefHeight(gridHeight*43.30125);
+    }
+
+    private void setDefaultHexagonGrid(int gridWidth, int gridHeight, GridPane gamePane){
+        int counter = 0;
+        for(int i = 0; i < gridHeight; i ++){
+            for(int j = 0; j < gridWidth; j++){
+                HexagonCell cell = new HexagonCell(mySimulatorController, j, i);
+                cell.setId("default-cell");
+                gamePane.getChildren().add(cell);
+                cell.setTranslateX(j*30.1);
+                cell.setTranslateY(i*34.64 + 17.321*(counter%2));
+                counter += 1;
+            }
+            counter = 0;
+        }
+        gamePane.setPrefWidth((gridWidth+1)*30);
+        gamePane.setPrefHeight((gridHeight+1)*34.64);
     }
 
     /**

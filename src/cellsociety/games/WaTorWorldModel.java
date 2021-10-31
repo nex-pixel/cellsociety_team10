@@ -22,6 +22,7 @@ public class WaTorWorldModel extends Game{
 
     public WaTorWorldModel(String filename){
         super(filename);
+        rand = new Random();
         setSharkEnergyValues();
     }
 
