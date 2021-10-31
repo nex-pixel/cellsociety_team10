@@ -21,7 +21,6 @@ public class SimulatorController {
     public String RESOURCE_ACTIONS_NAME = "cellsociety.controller.resources.modelNames.";
 
     private Game myGame;
-    private List<Game> myGameList;
     private SimulatorView mySimulatorView;
     private FileManager myFileManager;
     private String myCSSFile;
@@ -36,7 +35,6 @@ public class SimulatorController {
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
         RESOURCE_ACTIONS_NAME += myLanguageResources.getString(LANG_KEY);
-        myGameList = new ArrayList<>();
     }
 
     /**
@@ -67,23 +65,20 @@ public class SimulatorController {
 
     private void makeGameOfLife(){
         myGame = new GameOfLifeModel(myCSVFile.getAbsolutePath());
-        myGameList.add(myGame);
     }
     private void makePercolation(){
         myGame = new PercolationModel(myCSVFile.getAbsolutePath());
-        myGameList.add(myGame);
     }
     private void makeSegregation(){
         myGame = new SegregationModel(myCSVFile.getAbsolutePath(), 0.5);
     }
     private void makeSpreadingFire(){
         myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath());
-        myGameList.add(myGame);
     }
     private void makeWaTorWorld(){
         myGame = new WaTorWorldModel(myCSVFile.getAbsolutePath());
-        myGameList.add(myGame);
     }
+
 
     /**
      * saves the current grid status into a CSV file
