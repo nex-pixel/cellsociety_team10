@@ -194,7 +194,7 @@ public abstract class Grid {
 
     protected void initializeNewGridasOriginal(int multiplicationFactor, int left, int top, int right, int bottom, int myNumRows, int myNumCols, Set<Point> points, Grid newGrid) {
         for (Point point : points) {
-            Cell movedCell = newGrid.getBoardCell(point);
+            Cell movedCell = getBoardCell(point);
             movedCell.setXyPosition(point.x + (left * multiplicationFactor), point.y + top);
             Point movedPoint = point;
             movedPoint.setLocation(point.x + (left * multiplicationFactor), point.y + top);
