@@ -8,7 +8,10 @@ public class HexagonGrid extends Grid {
     private int NEIGHBOR_MODE_EDGE = 1;
     private int NEIGHBOR_MODE_BOTTOM_HALF = 2;
 
-    public HexagonGrid (int[][] states, int neighborMode, int edgePolicy) { super(states, neighborMode, edgePolicy); }
+    public HexagonGrid (int[][] states, int neighborMode, int edgePolicy) {
+        super(states, neighborMode, edgePolicy);
+        populateNeighborData();
+    }
 
     @Override
     protected void initializeBoard (int[][] states) {
@@ -22,12 +25,26 @@ public class HexagonGrid extends Grid {
     }
 
     protected void applyNeighborMode (Point point) {
-        if (getNeighborMode() != NEIGHBOR_MODE_BOTTOM_HALF) {
-            setNeighborRows(new int[]{-1, -1, 0, 1, 1, 0});
-            setNeighborCols(new int[]{-1, 1, 2, 1, -1, -2});
-        } else if(getNeighborMode() == NEIGHBOR_MODE_BOTTOM_HALF) {
-            setNeighborRows(new int[]{0, 1, 1, 0});
-            setNeighborCols(new int[]{2, 1, -1, -2});
+        if(getNeighborMode() == NEIGHBOR_MODE_BOTTOM_HALF){
+            setRowColValues("HexagonGrid_BottomHalf_Rows", "HexagonGrid_BottomHalf_Cols");
+        } else{
+            setRowColValues("HexagonGrid_Complete_Rows","HexagonGrid_Complete_Cols");
         }
+
+//        if (getNeighborMode() != NEIGHBOR_MODE_BOTTOM_HALF) {
+//            setNeighborRows(new int[]{-1, -1, 0, 1, 1, 0});
+//            setNeighborCols(new int[]{-1, 1, 2, 1, -1, -2});
+//        } else if(getNeighborMode() == NEIGHBOR_MODE_BOTTOM_HALF) {
+//            setNeighborRows(new int[]{0, 1, 1, 0});
+//            setNeighborCols(new int[]{2, 1, -1, -2});
+//        }
+    }
+
+    @Override
+    protected void populateNeighborData() {
+        super.populateNeighborData();
+        NEIGHBOR_MODE_COMPLETE = myReader.getIntProperty("NEIGHBOR_MODE_COMPLETE");
+        NEIGHBOR_MODE_EDGE = myReader.getIntProperty("NEIGHBOR_MODE_EDGE");
+        NEIGHBOR_MODE_BOTTOM_HALF = myReader.getIntProperty("NEIGHBOR_MODE_BOTTOM_HALF");
     }
 }
