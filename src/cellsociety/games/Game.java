@@ -33,24 +33,51 @@ public abstract class Game {
         populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
-        //TODO: currently only implement SquareGrid
+        //TODO: currently only implement SquareGrid for no passed in variables
         myGrid = new SquareGrid(states, 0, 0);
     }
 
     public Game (int[][] states) {
         populateGameConditions();
-        setGrid(states);
+        setGrid(states, 0, 0 , 0);
+    }
+
+    public Game (String filename, int gridType, int neighborMode, int edgePolicy) {
+        populateGameConditions();
+        createReader(filename);
+        int[][] states = myReader.read();
+        //TODO: currently only implement SquareGrid
+        setGrid(states, gridType, neighborMode, edgePolicy);
+    }
+
+    public Game (int[][] states, int gridType, int neighborMode, int edgePolicy) {
+        populateGameConditions();
+        setGrid(states, gridType, neighborMode, edgePolicy);
     }
 
 //    protected Map<Point, Cell> getGrid () { return myGrid.getBoard(); }
     protected Grid getGrid () { return myGrid; }
-    protected void setGrid (int[][] states) { myGrid = new SquareGrid(states, 0, 0); }
+    protected void setGrid (int[][] states, int gridType, int neighborMode, int edgePolicy) {
+        switch (gridType){
+            case 1 -> myGrid = new TriangleGrid(states, neighborMode, edgePolicy);
+            case 2 -> myGrid = new HexagonGrid(states, neighborMode, edgePolicy);
+            default -> myGrid = new SquareGrid(states, neighborMode, edgePolicy);
+        }
+    }
 
     public int getCellStatus (int x, int y) { return myGrid.getBoardCell(new Point(x, y)).getCurrentStatus(); }
     public int getCellStatus (Point point) { return myGrid.getBoardCell(point).getCurrentStatus(); }
     public int getNumRows () { return myGrid.getNumRows(); }
     public int getNumCols () { return myGrid.getNumCols(); }
     public Set<Point> getAllPoints () { return myGrid.getPoints(); }
+
+    public void changeNeighborMode(int newNeighborMode){
+        this.myGrid.changeNeighborMode(newNeighborMode);
+    }
+
+    public void changeEdgePolicy(int newEdgePolicy){
+        this.myGrid.changeEdgePolicy(newEdgePolicy);
+    }
 
     private void createReader (String filename) {
         String[] temp = filename.split("\\.");

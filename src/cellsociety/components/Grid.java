@@ -41,12 +41,30 @@ public abstract class Grid {
         }
     }
 
+    public void changeEdgePolicy(int newEdgePolicy){
+        myEdgePolicy = newEdgePolicy;
+        initializeNeighbors();
+    }
+
+    public void changeNeighborMode(int newNeighborMode){
+        myNeighborMode = newNeighborMode;
+        initializeNeighbors();
+    }
+
     public int getNumRows() {
         return myNumRows;
     }
 
     public int getNumCols() {
         return myNumCols;
+    }
+
+    public void setMyNumRows(int newNumRows) {
+        this.myNumRows = newNumRows;
+    }
+
+    public void setMyNumCols(int newNumCols) {
+        this.myNumCols = newNumCols;
     }
 
     public int getEdgePolicy() {
@@ -88,6 +106,10 @@ public abstract class Grid {
 
     protected Map<Point, Cell> getBoard() {
         return myBoard;
+    }
+
+    protected void setBoard(Map<Point, Cell> passedInBoard) {
+        this.myBoard = passedInBoard;
     }
 
     protected void initializeNeighbors() {
@@ -159,23 +181,7 @@ public abstract class Grid {
     }
 
     //expand the board with empty cells to each side depending on what's written
-    public void expandGrid(int left, int top, int right, int bottom) {
-        //ToDo: Grid is now abstract so "new Grid" doesn't work now
-        Grid newGrid = new SquareGrid(new int[myNumRows + top + bottom][myNumRows + left + right], myNeighborMode, myEdgePolicy);
-        for (Point point : myBoard.keySet()) {
-            Cell movedCell = myBoard.get(point);
-            movedCell.setXyPosition(point.x + left, point.y + top);
-            Point movedPoint = point;
-            movedPoint.setLocation(point.x + left, point.y + top);
-
-            newGrid.myBoard.put(movedPoint, movedCell);
-        }
-        this.myBoard = newGrid.myBoard;
-        initializeNeighbors();
-
-        this.myNumRows += left + right;
-        this.myNumCols += top + bottom;
-    }
+    public abstract void expandGrid(int left, int top, int right, int bottom);
 
 //    private Grid clearNeighborsForCells(Grid passedInGrid){
 //        for(Point point: passedInGrid.myBoard.keySet()){
@@ -183,6 +189,22 @@ public abstract class Grid {
 //        }
 //        return passedInGrid;
 //    }
+
+    protected void initializeNewGridasOriginal(int multiplicationFactor, int left, int top, int right, int bottom, int myNumRows, int myNumCols, Set<Point> points, Grid newGrid) {
+        for (Point point : points) {
+            Cell movedCell = newGrid.getBoardCell(point);
+            movedCell.setXyPosition(point.x + (left * multiplicationFactor), point.y + top);
+            Point movedPoint = point;
+            movedPoint.setLocation(point.x + (left * multiplicationFactor), point.y + top);
+
+            newGrid.getBoard().put(movedPoint,movedCell);
+        }
+        setBoard(newGrid.getBoard());
+        initializeNeighbors();
+
+        setMyNumRows(myNumRows + left + right);
+        setMyNumCols(myNumCols + top + bottom);
+    }
 
     protected void populateNeighborData() {
         myReader = new PropertiesReader(neighborDataFile);
