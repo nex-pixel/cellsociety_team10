@@ -1,7 +1,6 @@
 package cellsociety.games;
 
 import cellsociety.components.Cell;
-import cellsociety.components.Grid;
 
 import java.awt.*;
 import java.util.*;
@@ -95,8 +94,8 @@ public class PercolationModel extends Game {
     @Override
     protected void populateGameConditions () {
         super.populateGameConditions();
-        BLOCKED = getIntProperty("PercolationBlocked");
-        OPEN = getIntProperty("PercolationOpen");
-        PERCOLATED = getIntProperty("PercolationPercolated");
+        BLOCKED = retrieveIntProperty("PercolationBlocked");
+        OPEN = retrieveIntProperty("PercolationOpen");
+        PERCOLATED = retrieveIntProperty("PercolationPercolated");
     }
 }

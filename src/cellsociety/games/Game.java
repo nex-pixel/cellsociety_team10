@@ -19,7 +19,7 @@ public abstract class Game {
     private ReadFile myReader;
     private Grid myGrid;
     private static final String DEFAULT_GAME_DATA = "cellsociety.resources.GameData";
-    protected ResourceBundle myGameData;
+    protected PropertiesReader myGameDataReader;
 
     public Game () {}
 
@@ -110,11 +110,11 @@ public abstract class Game {
 
 
     protected void populateGameConditions() {
-        myGameData = ResourceBundle.getBundle(DEFAULT_GAME_DATA);
+        myGameDataReader = new PropertiesReader(DEFAULT_GAME_DATA);
     }
 
-    protected int getIntProperty(String label) {
-        return Integer.parseInt(myGameData.getString(label));
+    protected int retrieveIntProperty(String label) {
+        return myGameDataReader.getIntProperty(label);
     }
 
     protected List<Cell> checkNumCellsThisCase(int state, List<Cell> cellList){

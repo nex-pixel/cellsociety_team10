@@ -3,7 +3,6 @@ package cellsociety.games;
 import cellsociety.components.Cell;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -121,13 +120,13 @@ public class WaTorWorldModel extends Game{
     @Override
     protected void populateGameConditions () {
         super.populateGameConditions();
-        EMPTY = getIntProperty("WatorWorldEmpty");
-        FISH = getIntProperty("WatorWorldFish");
-        SHARK = getIntProperty("WatorWorldShark");
-        SHARK_STARTING_ENERGY = getIntProperty("WatorWorldSharkStartingEnergy");
-        STARTING_VAL = getIntProperty("WatorWorldRepStartVal");
-        REPRODUCE_VAL = getIntProperty("WatorWorldReproduceNum");
-        ENERGY_FROM_EATING_FISH = getIntProperty("WatorWorldEnergyFromFish");
-        ENERGY_LOST_FROM_MOVING = getIntProperty("WatorWorldEnergyLostFromMoving");
+        EMPTY = retrieveIntProperty("WatorWorldEmpty");
+        FISH = retrieveIntProperty("WatorWorldFish");
+        SHARK = retrieveIntProperty("WatorWorldShark");
+        SHARK_STARTING_ENERGY = retrieveIntProperty("WatorWorldSharkStartingEnergy");
+        STARTING_VAL = retrieveIntProperty("WatorWorldRepStartVal");
+        REPRODUCE_VAL = retrieveIntProperty("WatorWorldReproduceNum");
+        ENERGY_FROM_EATING_FISH = retrieveIntProperty("WatorWorldEnergyFromFish");
+        ENERGY_LOST_FROM_MOVING = retrieveIntProperty("WatorWorldEnergyLostFromMoving");
     }
 }

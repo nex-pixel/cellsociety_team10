@@ -6,7 +6,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
-import java.util.Set;
 
 public class SegregationModel extends Game {
 
@@ -138,10 +137,10 @@ public class SegregationModel extends Game {
     @Override
     protected void populateGameConditions () {
         super.populateGameConditions();
-        EMPTY = getIntProperty("SegregationEmpty");
-        AGENT_X = getIntProperty("SegregationAgentX");
-        AGENT_O = getIntProperty("SegregationAgent0");
-        RANGE = getIntProperty("SegregationRange");
+        EMPTY = retrieveIntProperty("SegregationEmpty");
+        AGENT_X = retrieveIntProperty("SegregationAgentX");
+        AGENT_O = retrieveIntProperty("SegregationAgent0");
+        RANGE = retrieveIntProperty("SegregationRange");
     }
 
     @Override
