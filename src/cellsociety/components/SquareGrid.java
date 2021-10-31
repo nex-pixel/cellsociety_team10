@@ -12,7 +12,6 @@ public class SquareGrid extends Grid {
 
     public SquareGrid (int[][] states, int neighborMode, int edgePolicy) {
         super(states, neighborMode, edgePolicy);
-        populateNeighborData();
     }
 
     protected void applyNeighborMode (Point point) {
@@ -23,17 +22,6 @@ public class SquareGrid extends Grid {
         } else if (getNeighborMode() == NEIGHBOR_MODE_BOTTOM_HALF) {
             setRowColValues("SquareGrid_BottomHalf_Rows", "SquareGrid_BottomHalf_Cols");
         }
-        
-//        if (getNeighborMode() == NEIGHBOR_MODE_COMPLETE) {
-//            setNeighborRows(new int[]{-1, -1, -1, 0, 1, 1, 1, 0});
-//            setNeighborCols(new int[]{-1, 0, 1, 1, 1, 0, -1, -1});
-//        } else if (getNeighborMode() == NEIGHBOR_MODE_EDGE) {
-//            setNeighborRows(new int[]{-1, 0, 1, 0});
-//            setNeighborCols(new int[]{0, 1, 0, -1});
-//        } else if (getNeighborMode() == NEIGHBOR_MODE_BOTTOM_HALF) {
-//            setNeighborRows(new int[]{0, 1, 1, 1, 0});
-//            setNeighborCols(new int[]{1, 1, 0, -1, -1});
-//        }
     }
 
     @Override

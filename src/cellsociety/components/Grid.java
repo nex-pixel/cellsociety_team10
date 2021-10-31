@@ -7,6 +7,7 @@ import java.util.List;
 
 public abstract class Grid {
     private int myNumRows, myNumCols;
+    private int myMaxRow, myMaxCol;
     private Map<Point, Cell> myBoard;
     private int[] myNeighborRows; //To determine neighbor cell locations by using integer displacement in that direction
     private int[] myNeighborCols; //same as above but for columns
@@ -27,8 +28,12 @@ public abstract class Grid {
         myEdgePolicy = edgePolicy;
         myBoard = new HashMap<>();
 
+        myMaxRow = myNumRows;
+        assignMaxCol();
+
         initializeBoard(states);
         initializeNeighbors();
+        populateNeighborData();
     }
 
     protected void initializeBoard(int[][] states) {
@@ -60,12 +65,15 @@ public abstract class Grid {
     }
 
     public void setMyNumRows(int newNumRows) {
-        this.myNumRows = newNumRows;
+        myNumRows = newNumRows;
     }
 
     public void setMyNumCols(int newNumCols) {
-        this.myNumCols = newNumCols;
+        myNumCols = newNumCols;
     }
+
+    protected void setMaxCol (int maxCol) { myMaxCol = maxCol; }
+    protected void assignMaxCol () { setMaxCol(myNumCols); }
 
     public int getEdgePolicy() {
         return myEdgePolicy;
@@ -113,9 +121,9 @@ public abstract class Grid {
     }
 
     protected void initializeNeighbors() {
-        for (Point point : getBoard().keySet()) {
-            getBoard().get(point).clearNeighborCells();
-            Cell cell = getBoard().get(point);
+        for (Point point : myBoard.keySet()) {
+            myBoard.get(point).clearNeighborCells();
+            Cell cell = myBoard.get(point);
 
 //            cell.setEdge(isEdge(cell));
 //            cell.setCorner(isCorner(cell));
@@ -126,13 +134,13 @@ public abstract class Grid {
     }
 
     private void iterativelyAddNeighbors(Point point, Cell cell) {
-        for (int i = 0; i < getNeighborRows().length; i++) {
-            int x = point.x + getNeighborCols()[i];
-            int y = point.y + getNeighborRows()[i];
+        for (int i = 0; i < myNeighborRows.length; i++) {
+            int x = point.x + myNeighborCols[i];
+            int y = point.y + myNeighborRows[i];
 
             Point neighborPosition = applyEdgePolicy(x, y);
-            if (myBoard.containsKey(neighborPosition) && isInsideBoard(neighborPosition)) {
-                Cell c = getBoard().get(neighborPosition);
+            if (myBoard.containsKey(neighborPosition) && isInsideBoard(neighborPosition.x, neighborPosition.y)) {
+                Cell c = myBoard.get(neighborPosition);
                 cell.getNeighborCells().add(c);
             } else {
                 cell.getNeighborCells().add(null);
@@ -144,10 +152,10 @@ public abstract class Grid {
 
     protected Point applyEdgePolicy(int x, int y) {
         if (myEdgePolicy != EDGE_POLICY_FINITE) {
-            x = Math.floorMod(x, myNumCols);
+            x = Math.floorMod(x, myMaxCol);
         }
         if (myEdgePolicy == EDGE_POLICY_TORUS) {
-            y = Math.floorMod(y, myNumRows);
+            y = Math.floorMod(y, myMaxRow);
         }
         return new Point(x, y);
     }
@@ -176,9 +184,7 @@ public abstract class Grid {
 //        return false;
 //    }
 
-    protected boolean isInsideBoard(Point point) {
-        int x = point.x;
-        int y = point.y;
+    protected boolean isInsideBoard(int x, int y) {
         return (x >= 0 && x < myNumCols && y >= 0 && y < myNumRows);
     }
 

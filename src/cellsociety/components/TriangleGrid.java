@@ -11,7 +11,9 @@ public class TriangleGrid extends Grid {
     private String rowMode = "TriangleGrid_";
     private String colMode = "TriangleGrid_";
 
-    public TriangleGrid (int[][] states, int neighborMode, int edgePolicy) { super(states, neighborMode, edgePolicy); populateNeighborData();}
+    public TriangleGrid (int[][] states, int neighborMode, int edgePolicy) {
+        super(states, neighborMode, edgePolicy); populateNeighborData();
+    }
 
     protected void applyNeighborMode (Point point) {
         if (getNeighborMode() == NEIGHBOR_MODE_EDGE) {
@@ -30,33 +32,6 @@ public class TriangleGrid extends Grid {
         } else {
             setRowColValues(rowMode + "Rows_" + "Downward", colMode + "Cols_" + "Downward");
         }
-
-
-//        if (getNeighborMode() == NEIGHBOR_MODE_COMPLETE) {
-//            if ((point.x + point.y) % 2 == 0) { // upward triangle
-//                setNeighborRows(new int[]{-1, -1, -1, 0, 0, 1, 1, 1, 1, 1, 0, 0});
-//                setNeighborCols(new int[]{-1, 0, 1, 1, 2, 2, 1, 0, -1, -2, -2, -1});
-//            } else {
-//                setNeighborRows(new int[]{-1, -1, -1, -1, -1, 0, 0, 1, 1, 1, 0, 0});
-//                setNeighborCols(new int[]{-2, -1, 0, 1, 2, 1, 2, 1, 0, -1, -2, -1});
-//            }
-//        } else if (getNeighborMode() == NEIGHBOR_MODE_EDGE) {
-//            if ((point.x + point.y) % 2 == 0) { // upward triangle
-//                setNeighborRows(new int[]{0, 1, 0});
-//                setNeighborCols(new int[]{1, 0, -1});
-//            } else {
-//                setNeighborRows(new int[]{-1, 0, 0});
-//                setNeighborCols(new int[]{0, 1, -1});
-//            }
-//        } else if (getNeighborMode() == NEIGHBOR_MODE_BOTTOM_HALF) {
-//            if ((point.x + point.y) % 2 == 0) { // upward triangle
-//                setNeighborRows(new int[]{0, 0, 1, 1, 1, 1, 1, 0, 0});
-//                setNeighborCols(new int[]{1, 2, 2, 1, 0, -1, -2, -2, -1});
-//            } else {
-//                setNeighborRows(new int[]{0, 0, 1, 1, 1, 0, 0});
-//                setNeighborCols(new int[]{1, 2, 1, 0, -1, -2, -1});
-//            }
-//        }
     }
 
     @Override
