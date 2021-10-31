@@ -12,14 +12,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SquareGridTest {
     private SquareGrid myGrid_Complete_Finite, myGrid_Complete_Torus, myGrid_Complete_Cylinder;
-    private List<SquareGrid> myGrids;
+    private SquareGrid myGrid_Edge_Finite, myGrid_Edge_Torus;
+    private SquareGrid myGrid_BottomHalf_Torus;
+    private List<SquareGrid> myGrids, myGridsComplete;
     private int EDGE_POLICY_FINITE = 0;
     private int EDGE_POLICY_TORUS = 1;
     private int EDGE_POLICY_CYLINDER = 2;
 
     private int NEIGHBOR_MODE_COMPLETE = 0;
     private int NEIGHBOR_MODE_EDGE = 1;
-    private int NEIGHBOR_MODE_RANDOM_HALF = 2;
+    private int NEIGHBOR_MODE_BOTTOM_HALF = 2;
 
     int[][] passedInGridArray = {{0,1,0},{1,0,1},{1,1,1}};
     int[][] expandedGridArray = {{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,1,0,0,0},{0,0,1,0,1,0,0},{0,0,1,1,1,0,0},
@@ -31,10 +33,22 @@ public class SquareGridTest {
         myGrid_Complete_Torus = new SquareGrid(passedInGridArray, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_TORUS);
         myGrid_Complete_Cylinder = new SquareGrid(passedInGridArray, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_CYLINDER);
 
+        myGrid_Edge_Finite = new SquareGrid(passedInGridArray, NEIGHBOR_MODE_EDGE, EDGE_POLICY_FINITE);
+        myGrid_Edge_Torus = new SquareGrid(passedInGridArray, NEIGHBOR_MODE_EDGE, EDGE_POLICY_TORUS);
+        myGrid_BottomHalf_Torus = new SquareGrid(passedInGridArray, NEIGHBOR_MODE_BOTTOM_HALF, EDGE_POLICY_TORUS);
+
         myGrids = new ArrayList<>();
         myGrids.add(myGrid_Complete_Finite);
         myGrids.add(myGrid_Complete_Torus);
         myGrids.add(myGrid_Complete_Cylinder);
+        myGrids.add(myGrid_Edge_Finite);
+        myGrids.add(myGrid_Edge_Torus);
+        myGrids.add(myGrid_BottomHalf_Torus);
+
+        myGridsComplete = new ArrayList<>();
+        myGridsComplete.add(myGrid_Complete_Finite);
+        myGridsComplete.add(myGrid_Complete_Torus);
+        myGridsComplete.add(myGrid_Complete_Cylinder);
     }
 
     @Test
@@ -89,6 +103,36 @@ public class SquareGridTest {
         assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
     }
 
+    @Test
+    void checkCornerNeighbors_Edge_Finite () {
+        Cell cornerUpperLeft = myGrid_Edge_Finite.getBoardCell(new Point(0,0));
+        List<Cell> expectedNeighbors = Arrays.asList(null,
+                new Cell(1, 1,0),
+                new Cell(1, 0,1),
+                null);
+        assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
+    }
+
+    @Test
+    void checkCornerNeighbors_Edge_TORUS () {
+        Cell cornerUpperLeft = myGrid_Edge_Torus.getBoardCell(new Point(0,0));
+        List<Cell> expectedNeighbors = Arrays.asList(new Cell(1, 0, 2),
+                new Cell(1, 1,0),
+                new Cell(1, 0,1),
+                new Cell(0, 2, 0));
+        assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
+    }
+
+    @Test
+    void checkCornerNeighbors_BottomHalf_Torus () {
+        Cell cornerUpperLeft = myGrid_BottomHalf_Torus.getBoardCell(new Point(0,0));
+        List<Cell> expectedNeighbors = Arrays.asList(new Cell(1, 1,0),
+                new Cell(0, 1, 1),
+                new Cell(1, 0,1),
+                new Cell(1, 2, 1),
+                new Cell(0, 2, 0));
+        assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
+    }
 
     @Test
     void checkEdgeNeighbors_Complete_Finite () {
@@ -134,12 +178,15 @@ public class SquareGridTest {
 
     @Test
     void checkCenterNeighbors () {
-        for (SquareGrid grid: myGrids) {
+        for (SquareGrid grid: myGridsComplete) {
             Cell centerCell = grid.getBoardCell(new Point(1, 1));
             List<Cell> expectedNeighbors = Arrays.asList(new Cell(0, 0, 0),
-                    new Cell(1, 1, 0), new Cell(0, 2, 0),
-                    new Cell(1, 2, 1), new Cell(1, 2, 2),
-                    new Cell(1, 1, 2), new Cell(1, 0, 2),
+                    new Cell(1, 1, 0),
+                    new Cell(0, 2, 0),
+                    new Cell(1, 2, 1),
+                    new Cell(1, 2, 2),
+                    new Cell(1, 1, 2),
+                    new Cell(1, 0, 2),
                     new Cell(1, 0, 1));
             assertTrue(expectedNeighbors.equals(centerCell.getNeighborCells()));
         }
