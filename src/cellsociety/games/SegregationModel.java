@@ -20,7 +20,6 @@ public class SegregationModel extends Game {
 
     public SegregationModel (String filename, double threshold) {
         super(filename);
-        populateGameConditions();
         myEmptyCells = new ArrayList<>();
         myThreshold = threshold;
         setEmptyCells();

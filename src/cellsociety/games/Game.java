@@ -18,28 +18,28 @@ public abstract class Game {
 
     private ReadFile myReader;
     private Grid myGrid;
-    private String myFileName;
     private static final String DEFAULT_GAME_DATA = "cellsociety.resources.GameData";
     protected PropertiesReader myGameDataReader;
 
     public Game () {}
 
+    // Constructor for testing purposes
     public Game (Game copy) {
         populateGameConditions();
         this.myReader = copy.myReader;
         this.myGrid = copy.myGrid;
     }
 
+    // default game with SquareGrid, complete neighbor mode, finite edge policy
     public Game (String filename) {
-        myFileName = filename;
         populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
-        //TODO: currently only implement SquareGrid for no passed in variables
-        myGrid = new SquareGrid(states, 0, 0);
+        setGrid(states, 0, 0, 0);
     }
 
     public Game (int[][] states) {
+        // default game with SquareGrid, complete neighbor mode, finite edge policy
         populateGameConditions();
         setGrid(states, 0, 0 , 0);
     }
@@ -48,7 +48,6 @@ public abstract class Game {
         populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
-        //TODO: currently only implement SquareGrid
         setGrid(states, gridType, neighborMode, edgePolicy);
     }
 
@@ -60,7 +59,7 @@ public abstract class Game {
     protected Grid getGrid () { return myGrid; }
 
     protected void setGrid (int[][] states, int gridType, int neighborMode, int edgePolicy) {
-        switch (gridType){
+        switch (gridType) {
             case 1 -> myGrid = new TriangleGrid(states, neighborMode, edgePolicy);
             case 2 -> myGrid = new HexagonGrid(states, neighborMode, edgePolicy);
             default -> myGrid = new SquareGrid(states, neighborMode, edgePolicy);

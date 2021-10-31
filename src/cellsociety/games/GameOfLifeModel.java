@@ -48,11 +48,6 @@ public class GameOfLifeModel extends Game {
     public void changeCellOnClick(Point point) {
         Cell cell = getGrid().getBoardCell(point);
         cell.setCurrentStatus((cell.getCurrentStatus() + 1) % 2);
-//        if (cell.getCurrentStatus() == DEAD) {
-//            cell.setCurrentStatus(ALIVE);
-//        } else if (cell.getCurrentStatus() == ALIVE) {
-//            cell.setCurrentStatus(DEAD);
-//        }
     }
 
     @Override
