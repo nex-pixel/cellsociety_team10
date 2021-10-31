@@ -8,8 +8,8 @@ import java.util.List;
 public class Cell {
     private final int[] xyPosition = new int[2];
     private List<Cell> neighborCells;
-    private boolean isEdge;
-    private boolean isCorner;
+//    private boolean isEdge;
+//    private boolean isCorner;
     private int currentStatus;
     private int nextStatus;
     private List<Integer> miscellaneousVal;
@@ -19,8 +19,8 @@ public class Cell {
         neighborCells = new ArrayList<>();
         currentStatus = statusPassedIn;
         nextStatus = currentStatus;
-        isCorner = false;
-        isEdge = false;
+//        isCorner = false;
+//        isEdge = false;
         miscellaneousVal = new ArrayList<>();
     }
 
@@ -50,13 +50,13 @@ public class Cell {
         miscellaneousVal = valueList;
     }
 
-    public void setEdge(boolean edgeCase){
-        isEdge = edgeCase;
-    }
-
-    public void setCorner(boolean cornerCase){
-        isCorner = cornerCase;
-    }
+//    public void setEdge(boolean edgeCase){
+//        isEdge = edgeCase;
+//    }
+//
+//    public void setCorner(boolean cornerCase){
+//        isCorner = cornerCase;
+//    }
 
     public void setNeighborCells(List<Cell> neighborCellsPassedIn){
         neighborCells = neighborCellsPassedIn;
@@ -87,13 +87,13 @@ public class Cell {
         return adjacentCells;
     }
 
-    public boolean getEdge(){
-        return isEdge;
-    }
-
-    public boolean getCorner(){
-        return isCorner;
-    }
+//    public boolean getEdge(){
+//        return isEdge;
+//    }
+//
+//    public boolean getCorner(){
+//        return isCorner;
+//    }
 
 
     @Override

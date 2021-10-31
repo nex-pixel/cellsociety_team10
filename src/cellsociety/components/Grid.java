@@ -117,8 +117,8 @@ public abstract class Grid {
             getBoard().get(point).clearNeighborCells();
             Cell cell = getBoard().get(point);
 
-            cell.setEdge(isEdge(cell));
-            cell.setCorner(isCorner(cell));
+//            cell.setEdge(isEdge(cell));
+//            cell.setCorner(isCorner(cell));
 
             applyNeighborMode(point);
             iterativelyAddNeighbors(point, cell);
@@ -131,11 +131,13 @@ public abstract class Grid {
             int y = point.y + getNeighborRows()[i];
 
             Point neighborPosition = applyEdgePolicy(x, y);
-            if (isInsideBoard(neighborPosition)) {
-                Cell c = getBoard().get(neighborPosition);
-                cell.getNeighborCells().add(c);
-            } else {
-                cell.getNeighborCells().add(null);
+            if (myBoard.containsKey(neighborPosition)) {
+                if (isInsideBoard(neighborPosition)) {
+                    Cell c = getBoard().get(neighborPosition);
+                    cell.getNeighborCells().add(c);
+                } else {
+                    cell.getNeighborCells().add(null);
+                }
             }
         }
     }
@@ -152,27 +154,29 @@ public abstract class Grid {
         return new Point(x, y);
     }
 
-    protected boolean isEdge(Cell c) {
-        if (isCorner(c)) return false;
+    //TODO: What defines an edge?
+//    protected boolean isEdge(Cell c) {
+//        if (isCorner(c)) return false;
+//
+//        int x = c.getXyPosition()[0];
+//        int y = c.getXyPosition()[1];
+//
+//        if (x == 0 || x == myNumCols - 1 || y == 0 || y == myNumCols - 1) return true;
+//
+//        return false;
+//    }
 
-        int x = c.getXyPosition()[0];
-        int y = c.getXyPosition()[1];
-
-        if (x == 0 || x == myNumCols - 1 || y == 0 || y == myNumCols - 1) return true;
-
-        return false;
-    }
-
-    protected boolean isCorner(Cell c) {
-        int x = c.getXyPosition()[0];
-        int y = c.getXyPosition()[1];
-        if (x == 0 || x == myNumCols - 1) {
-            if (y == 0 || y == myNumCols - 1) {
-                return true;
-            }
-        }
-        return false;
-    }
+    //TODO: What defines a corner?
+//    protected boolean isCorner(Cell c) {
+//        int x = c.getXyPosition()[0];
+//        int y = c.getXyPosition()[1];
+//        if (x == 0 || x == myNumCols - 1) {
+//            if (y == 0 || y == myNumCols - 1) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     protected boolean isInsideBoard(Point point) {
         int x = point.x;

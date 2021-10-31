@@ -55,8 +55,8 @@ public abstract class Game {
         setGrid(states, gridType, neighborMode, edgePolicy);
     }
 
-//    protected Map<Point, Cell> getGrid () { return myGrid.getBoard(); }
     protected Grid getGrid () { return myGrid; }
+
     protected void setGrid (int[][] states, int gridType, int neighborMode, int edgePolicy) {
         switch (gridType){
             case 1 -> myGrid = new TriangleGrid(states, neighborMode, edgePolicy);
@@ -66,17 +66,21 @@ public abstract class Game {
     }
 
     public int getCellStatus (int x, int y) { return myGrid.getBoardCell(new Point(x, y)).getCurrentStatus(); }
+
     public int getCellStatus (Point point) { return myGrid.getBoardCell(point).getCurrentStatus(); }
+
     public int getNumRows () { return myGrid.getNumRows(); }
+
     public int getNumCols () { return myGrid.getNumCols(); }
+
     public Set<Point> getAllPoints () { return myGrid.getPoints(); }
 
-    public void changeNeighborMode(int newNeighborMode){
-        this.myGrid.changeNeighborMode(newNeighborMode);
+    public void changeNeighborMode (int newNeighborMode){
+        myGrid.changeNeighborMode(newNeighborMode);
     }
 
-    public void changeEdgePolicy(int newEdgePolicy){
-        this.myGrid.changeEdgePolicy(newEdgePolicy);
+    public void changeEdgePolicy (int newEdgePolicy){
+        myGrid.changeEdgePolicy(newEdgePolicy);
     }
 
     private void createReader (String filename) {
@@ -93,9 +97,9 @@ public abstract class Game {
     }
 
     //boolean
-    protected abstract boolean applyRule(Cell cell);
+    protected abstract boolean applyRule (Cell cell);
 
-    public void update() {
+    public void update () {
         for (Point point: myGrid.getPoints()) {
             applyRule(myGrid.getBoardCell(point));
         }
@@ -104,7 +108,7 @@ public abstract class Game {
         }
     }
 
-    public abstract void changeCellOnClick(Point point);
+    public abstract void changeCellOnClick (Point point);
 
     protected int[][] toGridArray () {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];
@@ -136,15 +140,15 @@ public abstract class Game {
     }
 
 
-    protected void populateGameConditions() {
+    protected void populateGameConditions () {
         myGameDataReader = new PropertiesReader(DEFAULT_GAME_DATA);
     }
 
-    protected int retrieveIntProperty(String label) {
+    protected int retrieveIntProperty (String label) {
         return myGameDataReader.getIntProperty(label);
     }
 
-    protected List<Cell> checkNumCellsThisCase(int state, List<Cell> cellList){
+    protected List<Cell> checkNumCellsThisCase (int state, List<Cell> cellList){
         List<Cell> retList = new ArrayList<>();
         for(Cell cellInList: cellList){
             if(cellInList == null){
