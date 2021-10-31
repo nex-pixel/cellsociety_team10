@@ -4,14 +4,20 @@ import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import cellsociety.games.Game;
 import cellsociety.view.buttonFactory.SimulatorButtonFactory;
+import cellsociety.view.cell.HexagonCell;
+import cellsociety.view.cell.SquareCell;
+import cellsociety.view.cell.TriangleCell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Cell;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -34,17 +40,12 @@ public class SimulatorView {
     private Scene myScene;
     private SimulatorButtonFactory mySimulatorButtonFactory;
     private HBox simulationBox;
-    private List<Game> myGameList;
-    private Map<Game, GridPane> gameGridPaneMap;
 
 
 
     public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController){
         mySimulatorController = simulatorController;
         myGame = game;
-        myGameList = new ArrayList<>();
-        gameGridPaneMap = new HashMap<>();
-        myGameList.add(myGame);
         animationSpeed = 0.3;
         myAnimation = new Timeline();
         myGridView = new GridPane();
@@ -52,7 +53,6 @@ public class SimulatorView {
         myGridWidth = myGame.getNumCols();
         myGridHeight = myGame.getNumRows();
         myCSSFile = cssFile;
-        gameGridPaneMap.put(myGame, myGridView);
         myLanguageResources = resourceBundle;
         mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
         setDefaultTriangleGrid(myGridWidth, myGridHeight, myGridView);
@@ -70,11 +70,8 @@ public class SimulatorView {
     }
 
     public void step(){
-        for(Game game : gameGridPaneMap.keySet()){
-            game.update();
-            updateSimulation(game, gameGridPaneMap.get(game));
-        }
-
+            myGame.update();
+            updateSimulation(myGame, myGridView);
     }
 
     // Start new animation to show search algorithm's steps
@@ -87,15 +84,6 @@ public class SimulatorView {
         myAnimation.play();
     }
 
-    public void addNewSimulation(Game game){
-        GridPane newGamePane = new GridPane();
-        setDefaultGrid(game.getNumRows(), game.getNumCols(), newGamePane);
-        updateSimulation(game, newGamePane);
-        simulationBox.getChildren().add(generateSimulationVBox(newGamePane));
-        gameGridPaneMap.put(game, newGamePane);
-
-    }
-
     public void pause(){
         myAnimation.pause();
     }
@@ -104,7 +92,7 @@ public class SimulatorView {
         myAnimation.play();
     }
 
-    private void setAnimationSpeed(double speed){
+    public void setAnimationSpeed(double speed){
         myAnimation.setRate(speed);
     }
 
@@ -113,14 +101,12 @@ public class SimulatorView {
         for(int i = 0; i < gridWidth; i ++){
             for(int j = 0; j < gridHeight; j++){
                 SquareCell cell = new SquareCell(mySimulatorController, i, j);
-                cell.setWidth(40); // TODO: Needs to change based on the size of the stage
-                cell.setHeight(40); // TODO: need refactoring?
                 cell.setId("default-cell");
                 gamePane.add(cell, i, j);
             }
         }
     }
-
+    // fills the grid with triangles of defaultColor
     private void setDefaultTriangleGrid(int gridWidth, int gridHeight, GridPane gamePane){
         int counter = 0;
         for(int i = 0; i < gridHeight; i ++){
@@ -128,15 +114,14 @@ public class SimulatorView {
                 TriangleCell cell = new TriangleCell(mySimulatorController, counter % 2, j, i);
                 cell.setId("default-cell");
                 gamePane.getChildren().add(cell);
-                cell.setTranslateX(j*25);
-                cell.setTranslateY(i*43.30125);
+                setCellLocation(cell,j*25,  i*43.30125);
                 counter += 1;
             }
         }
-        gamePane.setPrefWidth(gridWidth*25);
-        gamePane.setPrefHeight(gridHeight*43.30125);
+        setPaneSize(gamePane, (gridWidth+1)*25, gridHeight*43.30125);
     }
 
+    // fills the grid with hexagons of defaultColor
     private void setDefaultHexagonGrid(int gridWidth, int gridHeight, GridPane gamePane){
         int counter = 0;
         for(int i = 0; i < gridHeight; i ++){
@@ -144,14 +129,22 @@ public class SimulatorView {
                 HexagonCell cell = new HexagonCell(mySimulatorController, j, i);
                 cell.setId("default-cell");
                 gamePane.getChildren().add(cell);
-                cell.setTranslateX(j*30.1);
-                cell.setTranslateY(i*34.64 + 17.321*(counter%2));
+                setCellLocation(cell, j*30.1, i*34.64 + 17.321*(counter%2));
                 counter += 1;
             }
             counter = 0;
         }
-        gamePane.setPrefWidth((gridWidth+1)*30);
-        gamePane.setPrefHeight((gridHeight+1)*34.64);
+        setPaneSize(gamePane,(gridWidth+1)*30,(gridHeight+1)*34.64);
+    }
+
+    private void setPaneSize(Pane gamePane, double xSize, double ySize){
+        gamePane.setPrefWidth(xSize);
+        gamePane.setPrefHeight(ySize);
+    }
+
+    private void setCellLocation(Polygon cell, double xLocation, double yLocation){
+        cell.setTranslateX(xLocation);
+        cell.setTranslateY(yLocation);
     }
 
     /**
@@ -176,42 +169,15 @@ public class SimulatorView {
         currNode.setId(cellStatus+"-cell");
     }
 
-
-
-    /**
-     * getter for getMyGridView
-     * @return getMyGridView
-     */
-    public GridPane getMyGridView(){
-        return myGridView;
-    }
-
     /**
      * Returns a scene of the simulation with the control buttons
      * @return VBox containing gridpane of the simulation and control buttons
      */
     private VBox generateSimulationVBox(GridPane gameGrid){
-        HBox buttonBox = new HBox();
-        buttonBox.getChildren().add(mySimulatorButtonFactory.generateButtonPanel());
-        buttonBox.getChildren().add(makeSlider(myLanguageResources.getString("SpeedLabel"), 0.1, 5.0));
         VBox simulationBox = new VBox();
-        simulationBox.getChildren().addAll(gameGrid, buttonBox);
+        simulationBox.getChildren().addAll(gameGrid, mySimulatorButtonFactory.generateButtonPanel());
         applyCSS(simulationBox, myCSSFile);
         return simulationBox;
-    }
-
-
-    private Node makeSlider(String text, double minVal, double maxVal) {
-        HBox sliderBox = new HBox();
-        Slider lengthSlider = new Slider(minVal, maxVal, 1.0);
-        lengthSlider.setShowTickMarks(true);
-        lengthSlider.setShowTickLabels(true);
-        lengthSlider.setMajorTickUnit(1);
-        lengthSlider.setMaxWidth(100);
-        lengthSlider.valueProperty().addListener((obs, oldVal, newVal) ->
-                setAnimationSpeed((double)newVal));
-        sliderBox.getChildren().addAll(new Text(text), lengthSlider);
-        return sliderBox;
     }
 
     private void applyCSS(VBox scene, String cssFile) {

@@ -1,12 +1,17 @@
 package cellsociety.view.buttonFactory;
 
 
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -37,6 +42,19 @@ public abstract class ButtonFactory {
         button.setText(label);
         button.setOnAction(event);
         return button;
+    }
+
+    protected Node makeSlider(String text, double minVal, double maxVal, ChangeListener listener ) {
+        HBox sliderBox = new HBox();
+        Slider lengthSlider = new Slider(minVal, maxVal, 1.0);
+        lengthSlider.setShowTickMarks(true);
+        lengthSlider.setShowTickLabels(true);
+        lengthSlider.setMajorTickUnit(1);
+        lengthSlider.setMaxWidth(100);
+        lengthSlider.valueProperty().addListener(listener);
+        // lengthSlider.valueProperty().addListener((obs, oldVal, newVal) -> setAnimationSpeed((double)newVal));
+        sliderBox.getChildren().addAll(new Text(text), lengthSlider);
+        return sliderBox;
     }
 
     protected abstract void populateButtonEvents();
