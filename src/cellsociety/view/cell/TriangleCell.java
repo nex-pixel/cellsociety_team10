@@ -1,4 +1,4 @@
-package cellsociety.view;
+package cellsociety.view.cell;
 
 import cellsociety.controller.SimulatorController;
 import javafx.scene.shape.Polygon;
