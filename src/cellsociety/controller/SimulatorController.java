@@ -1,20 +1,11 @@
 package cellsociety.controller;
 
-import cellsociety.Main;
 import cellsociety.games.*;
-import cellsociety.view.MainMenuView;
 import cellsociety.view.SimulatorView;
-import javafx.scene.Scene;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class SimulatorController {

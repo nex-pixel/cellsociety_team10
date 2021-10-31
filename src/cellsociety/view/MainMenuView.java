@@ -21,6 +21,7 @@ public class MainMenuView {
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private String homePageRootID = "home-page-root";
     private MainMenuButtonFactory myMainMenuButtonView;
+    private String LANG_KEY;
 
     public MainMenuView(ResourceBundle languageResourceBundle){
         myLanguageResources = languageResourceBundle;
@@ -81,7 +82,7 @@ public class MainMenuView {
             File styleFile = new File(cssFile);
             scene.getStylesheets().add(styleFile.toURI().toURL().toString());
         }catch(Exception e){
-            new GenerateError(myLanguageResources, INVALID_CSS_ERROR);
+            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_CSS_ERROR);
         }
     }
 }

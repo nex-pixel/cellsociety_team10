@@ -31,7 +31,7 @@ public class SimulatorView {
 
     private Timeline myAnimation;
     private double animationSpeed;
-    private GridPane myGridView;
+    private GridPane myGridView = new GridPane();
     private int myGridWidth;
     private int myGridHeight;
     private SimulatorController mySimulatorController;
@@ -41,8 +41,9 @@ public class SimulatorView {
     private Game myGame;
     private Scene myScene;
     private SimulatorButtonFactory mySimulatorButtonFactory;
-    private HBox simulationBox;
+    private HBox simulationBox = new HBox();
     private Stage myStage;
+    private final String LANG_KEY = "language";
 
 
 
@@ -51,8 +52,6 @@ public class SimulatorView {
         myGame = game;
         animationSpeed = 0.3;
         myAnimation = new Timeline();
-        myGridView = new GridPane();
-        simulationBox = new HBox();
         myGridWidth = myGame.getNumCols();
         myGridHeight = myGame.getNumRows();
         myCSSFile = cssFile;
@@ -211,7 +210,7 @@ public class SimulatorView {
             File styleFile = new File(cssFile);
             scene.getStylesheets().add(styleFile.toURI().toURL().toString());
         }catch(Exception e){
-            new GenerateError(myLanguageResources, INVALID_CSS_ERROR);
+            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_CSS_ERROR);
         }
     }
 }

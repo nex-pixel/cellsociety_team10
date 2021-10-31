@@ -25,6 +25,7 @@ public abstract class ButtonFactory {
     protected ResourceBundle myLanguageResources;
     protected String buttonID;
     protected String INVALID_BUTTON_GENERATION = "InvalidButtonGeneration";
+    protected String LANG_KEY = "language";
 
     public ButtonFactory(){
         buttonMap = new LinkedHashMap<>();

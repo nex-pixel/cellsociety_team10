@@ -12,6 +12,7 @@ public class FileManager {
     private File currentTextFile;
     private ResourceBundle myLanguageResources;
     private String INVALID_FILE = "InvalidFileError";
+    private String LANG_KEY = "language";
 
     public FileManager(ResourceBundle resourceBundle){
         myLanguageResources = resourceBundle;
@@ -21,7 +22,7 @@ public class FileManager {
         try {
             loadFile();
         } catch (IOException e) {
-            new GenerateError(myLanguageResources, INVALID_FILE);
+            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_FILE);
         }
     }
     public void loadFile() throws IOException {
@@ -36,7 +37,7 @@ public class FileManager {
 
     public void checkFileValidity(File file){
         if(file == null){
-            new GenerateError(myLanguageResources, INVALID_FILE);
+            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_FILE);
         }
     }
 

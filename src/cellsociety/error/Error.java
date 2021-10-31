@@ -7,11 +7,12 @@ import javafx.scene.control.Alert;
 public class Error{
 
     private final String KEY_UNAVAILABLE = "InvalidMessagePassed";
+    private final String ERROR_RESOURCE_PATH = "cellsociety.error.resources.languages.";
     private ResourceBundle myResourceBundle;
     private String myMessage;
 
-    public Error(ResourceBundle resourceBundle) {
-        myResourceBundle = resourceBundle;
+    public Error(String language) {
+        myResourceBundle = ResourceBundle.getBundle(ERROR_RESOURCE_PATH + language);
         setMessageToDefault();
     }
 
