@@ -4,14 +4,20 @@ import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import cellsociety.games.Game;
 import cellsociety.view.buttonFactory.SimulatorButtonFactory;
+import cellsociety.view.cell.HexagonCell;
+import cellsociety.view.cell.SquareCell;
+import cellsociety.view.cell.TriangleCell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Cell;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -113,14 +119,12 @@ public class SimulatorView {
         for(int i = 0; i < gridWidth; i ++){
             for(int j = 0; j < gridHeight; j++){
                 SquareCell cell = new SquareCell(mySimulatorController, i, j);
-                cell.setWidth(40); // TODO: Needs to change based on the size of the stage
-                cell.setHeight(40); // TODO: need refactoring?
                 cell.setId("default-cell");
                 gamePane.add(cell, i, j);
             }
         }
     }
-
+    // fills the grid with triangles of defaultColor
     private void setDefaultTriangleGrid(int gridWidth, int gridHeight, GridPane gamePane){
         int counter = 0;
         for(int i = 0; i < gridHeight; i ++){
@@ -128,15 +132,14 @@ public class SimulatorView {
                 TriangleCell cell = new TriangleCell(mySimulatorController, counter % 2, j, i);
                 cell.setId("default-cell");
                 gamePane.getChildren().add(cell);
-                cell.setTranslateX(j*25);
-                cell.setTranslateY(i*43.30125);
+                setCellLocation(cell,j*25,  i*43.30125);
                 counter += 1;
             }
         }
-        gamePane.setPrefWidth(gridWidth*25);
-        gamePane.setPrefHeight(gridHeight*43.30125);
+        setPaneSize(gamePane, gridWidth*25, gridHeight*43.30125);
     }
 
+    // fills the grid with hexagons of defaultColor
     private void setDefaultHexagonGrid(int gridWidth, int gridHeight, GridPane gamePane){
         int counter = 0;
         for(int i = 0; i < gridHeight; i ++){
@@ -144,14 +147,22 @@ public class SimulatorView {
                 HexagonCell cell = new HexagonCell(mySimulatorController, j, i);
                 cell.setId("default-cell");
                 gamePane.getChildren().add(cell);
-                cell.setTranslateX(j*30.1);
-                cell.setTranslateY(i*34.64 + 17.321*(counter%2));
+                setCellLocation(cell, j*30.1, i*34.64 + 17.321*(counter%2));
                 counter += 1;
             }
             counter = 0;
         }
-        gamePane.setPrefWidth((gridWidth+1)*30);
-        gamePane.setPrefHeight((gridHeight+1)*34.64);
+        setPaneSize(gamePane,(gridWidth+1)*30,(gridHeight+1)*34.64);
+    }
+
+    private void setPaneSize(Pane gamePane, double xSize, double ySize){
+        gamePane.setPrefWidth(xSize);
+        gamePane.setPrefHeight(ySize);
+    }
+
+    private void setCellLocation(Polygon cell, double xLocation, double yLocation){
+        cell.setTranslateX(xLocation);
+        cell.setTranslateY(yLocation);
     }
 
     /**
@@ -174,16 +185,6 @@ public class SimulatorView {
     private void updateCell(Game game, GridPane gamePane, int cellNumber, int cellStatus){
         Node currNode = gamePane.getChildren().get(cellNumber);
         currNode.setId(cellStatus+"-cell");
-    }
-
-
-
-    /**
-     * getter for getMyGridView
-     * @return getMyGridView
-     */
-    public GridPane getMyGridView(){
-        return myGridView;
     }
 
     /**

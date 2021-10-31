@@ -1,4 +1,4 @@
-package cellsociety.view;
+package cellsociety.view.cell;
 
 import cellsociety.components.Cell;
 import cellsociety.controller.SimulatorController;
