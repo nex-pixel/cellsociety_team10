@@ -5,6 +5,11 @@ import cellsociety.components.Cell;
 import java.awt.*;
 import java.util.List;
 
+/***
+ * The class models the Spreading Of Fire
+ *
+ * @author Norah Tan, Haseeb Chaudhry
+ */
 public class SpreadingFireModel extends Game{
     private int EMPTY;
     private int TREE;
@@ -16,11 +21,23 @@ public class SpreadingFireModel extends Game{
     private final int NUM_STATES = 3;
     private final int DEFAULT_GRID_CHOICE = 0;
 
+    /***
+     * Constructor that takes in a CSV file for grid initialization,
+     * with default square grid, complete neighbors and finite edge policy.
+     *
+     * @param filename gives the CSV figuration file for the grid
+     */
     public SpreadingFireModel(String filename) {
         super(filename);
         getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
     }
 
+    /***
+     * Constructor for testing purpose.
+     *
+     * @param filename gives the CSV figuration file for the grid
+     * @param TEST is an indicator
+     */
     public SpreadingFireModel(String filename, boolean TEST) {
         super(filename);
         if(TEST == false) {
@@ -28,22 +45,58 @@ public class SpreadingFireModel extends Game{
         }
     }
 
+    /***
+     * Constructor that randomly generates the grid by specifying the numbers of rows, columns, and threshold for satisfaction,
+     * with default square grid, complete neighbors and finite edge policy.
+     *
+     * @param numCols is the number of columns of the grid
+     * @param numRows is the number of rows of the grid
+     */
     public SpreadingFireModel (int numCols, int numRows){
         super(numCols, numRows);
     }
 
+    /***
+     * Constructor that randomly generates the grid by specifying the numbers of rows, columns,
+     * with a specified grid shape, neighbor mode and edge policy.
+     *
+     * @param numCols is the number of columns of the grid
+     * @param numRows is the number of rows of the grid
+     * @param gridType gives one of square, triangle, and hexagon grid shapes.
+     * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
+     * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
+     *
+     */
     public SpreadingFireModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
     }
 
+    /***
+     * Constructor that takes in a CSV file for grid initialization,
+     * with a specified grid shape, neighbor mode and edge policy.
+     *
+     * @param filename gives the CSV figuration file for the grid
+     * @param gridType gives one of square, triangle, and hexagon grid shapes.
+     * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
+     * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
+     */
     public SpreadingFireModel (String filename, int gridType, int neighborMode, int edgePolicy) {
         super(filename, gridType, neighborMode, edgePolicy);
     }
 
+    /***
+     * Setter method that changes the probability of having fire
+     *
+     * @param probability is the new probability
+     */
     public void setProbOfFire(double probability){
         probCatch = probability;
     }
 
+    /***
+     * Setter method that changes the probability of growing new trees
+     * @param probability is the new probability
+     */
     public void setProbGrowNewTrees(double probability){
         probGrow = probability;
     }
@@ -106,8 +159,7 @@ public class SpreadingFireModel extends Game{
 
     @Override
     public void changeCellOnClick(int x, int y) {
-        Cell cell = getGrid().getBoardCell(x, y);
-        cell.setCurrentStatus((cell.getCurrentStatus() + 1) % 3);
+        super.changeCellOnClick(x, y);
         update();
     }
 
