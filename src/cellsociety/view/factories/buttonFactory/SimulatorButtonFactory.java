@@ -1,22 +1,12 @@
-package cellsociety.view.buttonFactory;
+package cellsociety.view.factories.buttonFactory;
 
-import cellsociety.controller.FileManager;
 import cellsociety.controller.SimulatorController;
-import cellsociety.error.Error;
 import cellsociety.error.GenerateError;
-import cellsociety.games.Game;
 import cellsociety.view.SimulatorView;
-import javafx.beans.value.ChangeListener;
+import cellsociety.view.factories.choiceDialogBoxFactory.SimulatorChoiceDialogBoxFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Slider;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -26,6 +16,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
     private SimulatorView mySimulatorView;
     private String simulatorActionEventsPath = "SimulatorActionEvents";
     private String simulatorButtonID = "simulator-button";
+    private SimulatorChoiceDialogBoxFactory mySimulatorChoiceDialogBoxFactory;
 
     public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController, ResourceBundle langResourceBundle){
         super();
@@ -35,6 +26,8 @@ public class SimulatorButtonFactory extends ButtonFactory {
         mySimulatorController = simulatorController;
         myLanguageResources = langResourceBundle;
         buttonID = simulatorButtonID;
+        mySimulatorChoiceDialogBoxFactory = new SimulatorChoiceDialogBoxFactory(mySimulatorController);
+        populateOptions(cssFileOptions, cssFileLabelOptions);
         populateButtonEvents();
     }
 
@@ -78,6 +71,9 @@ public class SimulatorButtonFactory extends ButtonFactory {
         mySimulatorView.showAbout();
     };
     }
+
+    private EventHandler<ActionEvent> generateNewCSSEvent(){ return event -> mySimulatorChoiceDialogBoxFactory.generateChoiceDialogBox(myLanguageResources.getString(cssFileLabelOptions[0]),
+            cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent"));}
 
 
 }

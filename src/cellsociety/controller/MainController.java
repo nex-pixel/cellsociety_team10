@@ -57,7 +57,7 @@ public class MainController {
     }
 
     public void generateNewSimulation(File csvFile){
-        simulatorController.updateCSSFile(cssFile);
+        simulatorController.applyCSSFile(cssFile);
         simulatorController.createNewSimulation(csvFile);
     }
 

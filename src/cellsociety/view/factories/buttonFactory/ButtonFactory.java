@@ -1,19 +1,16 @@
-package cellsociety.view.buttonFactory;
+package cellsociety.view.factories.buttonFactory;
 
 
 import cellsociety.error.GenerateError;
-import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -28,6 +25,8 @@ public abstract class ButtonFactory {
     protected String INVALID_BUTTON_GENERATION = "InvalidButtonGeneration";
     protected String LANG_KEY = "language";
     private String INVALID_METHOD = "InvalidMethod";
+    protected String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
+    protected ArrayList<String> cssFileOptions = new ArrayList<>();
 
     public ButtonFactory(){
         buttonMap = new LinkedHashMap<>();
@@ -63,6 +62,12 @@ public abstract class ButtonFactory {
         VBox panel = new VBox();
         buttonMap.forEach((key,value) -> addButtonToPanel(key,value,panel));
         return panel;
+    }
+
+    protected void populateOptions(ArrayList<String> optionsList, String[] labelList){
+        for(String key: labelList){
+            optionsList.add(myLanguageResources.getString(key));
+        }
     }
 
 }

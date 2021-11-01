@@ -101,7 +101,12 @@ public class SimulatorController {
         myModelType = modelType;
     }
 
-    public void updateCSSFile(String cssFile){
+    public void updateCSSFile(String result){
+        String cssFile = myLanguageResources.getString(result);
+        mySimulatorView.updateCSS(cssFile);
+    }
+
+    public void applyCSSFile(String cssFile){
         myCSSFile = cssFile;
     }
 

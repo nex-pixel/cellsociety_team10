@@ -3,12 +3,11 @@ package cellsociety.view;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import cellsociety.games.Game;
-import cellsociety.view.buttonFactory.SimulatorButtonFactory;
+import cellsociety.view.factories.buttonFactory.SimulatorButtonFactory;
 import cellsociety.view.cell.HexagonCell;
 import cellsociety.view.cell.SquareCell;
 import cellsociety.view.cell.TriangleCell;
-import cellsociety.view.colorPickerFactory.ColorPickerFactory;
-import cellsociety.view.sliderFactory.SliderFactory;
+import cellsociety.view.factories.sliderFactory.SliderFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Node;
@@ -49,7 +48,6 @@ public class SimulatorView {
     private double sliderMin = 0.1;
     private double sliderMax = 5.0;
     private String simulatorBoxId = "simulator-root";
-    private ColorPickerFactory myColorPickerFactory = new ColorPickerFactory();
     private String[] colorPickerList = {"AliveLabel", "DeadLabel", "DefaultLabel"};
 
 
@@ -73,6 +71,7 @@ public class SimulatorView {
         updateSimulation(myGame, myGridView);
         simulationBox.getChildren().add(generateSimulationVBox(myGridView));
         myScene = new Scene(simulationBox);
+        applyCSS(myScene, myCSSFile);
         myStage.setScene(myScene);
         myStage.show();
         playAnimation();
@@ -209,16 +208,19 @@ public class SimulatorView {
         simulationBox.setId(simulatorBoxId);
         simulationBox.getChildren().addAll(gameGrid, mySimulatorButtonFactory.generateButtonPanel(), mySliderFactory.makeSlider(sliderMin, sliderMax,
                 (obs, oldVal, newVal) -> setAnimationSpeed((double)newVal)));
-        applyCSS(simulationBox, myCSSFile);
         return simulationBox;
     }
 
-    private void applyCSS(VBox scene, String cssFile) {
+    private void applyCSS(Scene scene, String cssFile) {
         try{
             File styleFile = new File(cssFile);
             scene.getStylesheets().add(styleFile.toURI().toURL().toString());
         }catch(Exception e){
             new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_CSS_ERROR);
         }
+    }
+
+    public void updateCSS(String cssFile){
+        applyCSS(myScene, cssFile);
     }
 }

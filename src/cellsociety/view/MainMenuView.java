@@ -3,10 +3,8 @@ package cellsociety.view;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
 import cellsociety.error.GenerateError;
-import cellsociety.view.buttonFactory.MainMenuButtonFactory;
-import cellsociety.view.colorPickerFactory.ColorPickerFactory;
+import cellsociety.view.factories.buttonFactory.MainMenuButtonFactory;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
@@ -23,7 +21,6 @@ public class MainMenuView {
     private String homePageRootID = "home-page-root";
     private MainMenuButtonFactory myMainMenuButtonView;
     private String LANG_KEY;
-    private ColorPickerFactory myColorPickerFactory;
 
     public MainMenuView(ResourceBundle languageResourceBundle){
         myLanguageResources = languageResourceBundle;
@@ -52,31 +49,6 @@ public class MainMenuView {
     private void setLabel(String label, String id){
         Label titleLabel = new Label(label);
         titleLabel.setId(id);
-    }
-
-    public ChoiceDialog<String> generateChoiceDialogBox(String defaultChoice, ArrayList<String> options, String resultType, String content){
-        ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(defaultChoice);
-        addItemsToOptionsList(options, choiceDialog);
-        choiceDialog.setContentText(content);
-        showAndWaitForChoiceDialogResult(choiceDialog, resultType);
-        return choiceDialog;
-    }
-
-    //TODO: use reflection to make this easier
-    private void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog, String resultType){
-        choiceDialog.showAndWait();
-        if(resultType.equals("cssFile")){
-            myMainController.updateCSS(choiceDialog.getSelectedItem());
-        }
-        if(resultType.equals("modelType")){
-            myMainController.updateModelType(choiceDialog.getSelectedItem(), myFileManager);
-        }
-    }
-
-    private void addItemsToOptionsList(ArrayList<String> options, ChoiceDialog<String> choiceDialog){
-        for(String s : options){
-            choiceDialog.getItems().add(s);
-        }
     }
 
     public void applyCSS(Scene scene, String cssFile) {

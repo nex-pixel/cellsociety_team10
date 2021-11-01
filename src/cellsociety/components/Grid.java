@@ -17,7 +17,7 @@ public abstract class Grid {
     private int EDGE_POLICY_TORUS = 1;
     private int EDGE_POLICY_CYLINDER = 2;
     protected PropertiesReader myReader;
-    private final String neighborDataFile = "cellsociety.resources.NeighborPositionData";
+    private final String neighborDataFile = "cellsociety.resources.gameData.NeighborPositionData";
 
 
     public Grid(int[][] states, int neighborMode, int edgePolicy) {

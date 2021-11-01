@@ -1,4 +1,4 @@
-package cellsociety.view.sliderFactory;
+package cellsociety.view.factories.sliderFactory;
 
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Slider;
