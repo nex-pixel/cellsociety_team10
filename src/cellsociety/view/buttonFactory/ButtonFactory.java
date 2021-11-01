@@ -47,19 +47,6 @@ public abstract class ButtonFactory {
         return button;
     }
 
-    protected Node makeSlider(String text, double minVal, double maxVal, ChangeListener listener ) {
-        HBox sliderBox = new HBox();
-        Slider lengthSlider = new Slider(minVal, maxVal, 1.0);
-        lengthSlider.setShowTickMarks(true);
-        lengthSlider.setShowTickLabels(true);
-        lengthSlider.setMajorTickUnit(1);
-        lengthSlider.setMaxWidth(100);
-        lengthSlider.valueProperty().addListener(listener);
-        // lengthSlider.valueProperty().addListener((obs, oldVal, newVal) -> setAnimationSpeed((double)newVal));
-        sliderBox.getChildren().addAll(new Text(text), lengthSlider);
-        return sliderBox;
-    }
-
     protected abstract void populateButtonEvents();
 
     protected Method handleMethod(String name) {
