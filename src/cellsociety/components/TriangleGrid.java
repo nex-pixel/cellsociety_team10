@@ -8,23 +8,23 @@ public class TriangleGrid extends Grid {
     private int NEIGHBOR_MODE_COMPLETE;
     private int NEIGHBOR_MODE_EDGE;
     private int NEIGHBOR_MODE_BOTTOM_HALF;
-    private String rowMode = "TriangleGrid_";
-    private String colMode = "TriangleGrid_";
+    private String mode, rowMode, colMode;
 
     public TriangleGrid (int[][] states, int neighborMode, int edgePolicy) {
         super(states, neighborMode, edgePolicy); populateNeighborData();
     }
 
     protected void applyNeighborMode (Point point) {
+        mode = "TriangleGrid_";
         if (getNeighborMode() == NEIGHBOR_MODE_EDGE) {
-            rowMode += "Edge_";
-            colMode += "Edge_";
+            rowMode = mode + "Edge_";
+            colMode = mode + "Edge_";
         } else if (getNeighborMode() == NEIGHBOR_MODE_BOTTOM_HALF) {
-            rowMode += "BottomHalf_";
-            colMode += "BottomHalf_";
+            rowMode = mode + "BottomHalf_";
+            colMode = mode + "BottomHalf_";
         } else {
-            rowMode += "Complete_";
-            colMode += "Complete_";
+            rowMode = mode + "Complete_";
+            colMode = mode + "Complete_";
         }
 
         if ((point.x + point.y) % 2 == 0) { // upward triangle

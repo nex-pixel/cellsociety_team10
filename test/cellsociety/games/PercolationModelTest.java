@@ -41,6 +41,6 @@ public class PercolationModelTest {
         gameLongPipe.changeCellOnClick(new Point(0, 2));
         assertTrue(gameLongPipe.getCellStatus(0, 2) == 1);
     }
-    
+
 
 }
