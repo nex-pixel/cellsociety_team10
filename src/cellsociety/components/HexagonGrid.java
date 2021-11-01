@@ -55,7 +55,7 @@ public class HexagonGrid extends Grid {
 
     @Override
     public Point getPoint(int x, int y){
-        return new Point((y)%2 + 2*x, y); // TODO please check if this is correct
+        return new Point((y+1)%2 + 2*x, y);
     }
 
     @Override
