@@ -71,7 +71,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
     private EventHandler<ActionEvent> generateReplaceEvent(){return event -> mySimulatorController.replaceWithNewCSV();}
 
     private EventHandler<ActionEvent> generateAboutEvent() {return event -> {
-        mySimulatorView.showSimulationInfo();
+        mySimulatorView.displaySimulationInfo();
     };
     }
 
