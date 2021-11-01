@@ -32,14 +32,14 @@ public class GameOfLifeModel extends Game {
 
     public GameOfLifeModel (int numCols, int numRows){
         super(numCols, numRows);
-        setNumStatesOnBoard(NUM_STATES);
-        setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
     }
 
     public GameOfLifeModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
-        setNumStatesOnBoard(NUM_STATES);
-        setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
+    }
+
+    protected void setNumStatesOnBoard () {
+        setNumStates(NUM_STATES);
     }
 
     @Override

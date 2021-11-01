@@ -48,10 +48,6 @@ public abstract class Game {
         setGrid(states, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE , DEFAULT_GRID_CHOICE);
     }
 
-    public Game (int numCols, int numRows){
-        populateGameConditions();
-    }
-
     public Game (String filename, int gridType, int neighborMode, int edgePolicy) {
         populateGameConditions();
         createReader(filename);
@@ -64,8 +60,16 @@ public abstract class Game {
         setGrid(states, gridType, neighborMode, edgePolicy);
     }
 
+    public Game (int numCols, int numRows){
+        populateGameConditions();
+        setNumStatesOnBoard();
+        setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
+    }
+
     public Game (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         populateGameConditions();
+        setNumStatesOnBoard();
+        setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
     }
 
     protected Grid getGrid () { return myGrid; }
@@ -78,9 +82,9 @@ public abstract class Game {
         }
     }
 
-    protected void setNumStatesOnBoard(int numStates){
-        NUM_STATES = numStates;
-    }
+    protected abstract void setNumStatesOnBoard ();
+
+    protected void setNumStates (int numStates) { NUM_STATES = numStates; }
 
     protected int[][] createRandomIntTwoDArray(int numCols, int numRows){
         int[][] retArray = new int[numRows][numCols];

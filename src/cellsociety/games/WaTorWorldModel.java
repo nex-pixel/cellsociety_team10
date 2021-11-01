@@ -33,14 +33,10 @@ public class WaTorWorldModel extends Game{
 
     public WaTorWorldModel (int numCols, int numRows){
         super(numCols, numRows);
-        setNumStatesOnBoard(NUM_STATES);
-        setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
     }
 
     public WaTorWorldModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
-        setNumStatesOnBoard(NUM_STATES);
-        setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
     }
 
     private void setSharkEnergyValues(){
@@ -53,6 +49,10 @@ public class WaTorWorldModel extends Game{
                 cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, STARTING_VAL));
             }
         }
+    }
+
+    protected void setNumStatesOnBoard () {
+        setNumStates(NUM_STATES);
     }
 
     @Override
