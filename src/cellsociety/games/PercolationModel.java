@@ -27,7 +27,7 @@ public class PercolationModel extends Game {
      *
      * @param filename gives the CSV figuration file for the grid
      */
-    public PercolationModel (String filename) {
+    public PercolationModel(String filename) {
         super(filename);
         setOpenCells();
     }
@@ -41,7 +41,7 @@ public class PercolationModel extends Game {
      * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
      * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
      */
-    public PercolationModel (String filename, int gridType, int neighborMode, int edgePolicy) {
+    public PercolationModel(String filename, int gridType, int neighborMode, int edgePolicy) {
         super(filename, gridType, neighborMode, edgePolicy);
         setOpenCells();
     }
@@ -60,7 +60,7 @@ public class PercolationModel extends Game {
      * @param numCols is the number of columns of the grid
      * @param numRows is the number of rows of the grid
      */
-    public PercolationModel (int numCols, int numRows){
+    public PercolationModel(int numCols, int numRows) {
         super(numCols, numRows);
         setOpenCells();
     }
@@ -76,7 +76,7 @@ public class PercolationModel extends Game {
      * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
      *
      */
-    public PercolationModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
+    public PercolationModel(int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
         setOpenCells();
     }
@@ -86,12 +86,14 @@ public class PercolationModel extends Game {
      *
      * @return a list of Cells whose currentStatus are open.
      */
-    public List<Cell> getOpenCells () { return myOpenCells; }
+    public List<Cell> getOpenCells() {
+        return myOpenCells;
+    }
 
-    private void setOpenCells () {
+    private void setOpenCells() {
         cellsToBeRemoved = new ArrayList<>();
         myOpenCells = new ArrayList<>();
-        for (Point point: getGrid().getPoints()) {
+        for (Point point : getGrid().getPoints()) {
             Cell cell = getGrid().getBoardCell(point);
             if (cell.getCurrentStatus() == OPEN) {
                 myOpenCells.add(cell);
@@ -99,7 +101,7 @@ public class PercolationModel extends Game {
         }
     }
 
-    protected void setNumStatesOnBoard () {
+    protected void setNumStatesOnBoard() {
         setNumStates(NUM_STATES);
     }
 
@@ -108,10 +110,10 @@ public class PercolationModel extends Game {
         boolean isSpanning = true;
         while (isSpanning) {
             isSpanning = false;
-            for (Cell cell: myOpenCells) {
+            for (Cell cell : myOpenCells) {
                 isSpanning = isSpanning || applyRule(cell);
             }
-            for (Cell cell: myOpenCells) {
+            for (Cell cell : myOpenCells) {
                 cell.changeStatus();
             }
             myOpenCells.removeAll(cellsToBeRemoved);
@@ -120,9 +122,9 @@ public class PercolationModel extends Game {
     }
 
     @Override
-    protected boolean applyRule (Cell cell) {
+    protected boolean applyRule(Cell cell) {
         // cell must be OPEN
-        for (Cell neighbor: cell.getNeighborCells()) {
+        for (Cell neighbor : cell.getNeighborCells()) {
             if (neighbor != null && neighbor.getCurrentStatus() == PERCOLATED) {
                 cell.setNextStatus(PERCOLATED);
                 cellsToBeRemoved.add(cell);
@@ -145,11 +147,10 @@ public class PercolationModel extends Game {
 
     @Override
     public void changeCellOnClick(int x, int y) {
-        Cell cell = getGrid().getBoardCell(x,y);
+        Cell cell = getGrid().getBoardCell(x, y);
         if (cell.getXyPosition()[1] == 0) {
             cell.setCurrentStatus(PERCOLATED);
-        }
-        else if (cell.getCurrentStatus() == BLOCKED) {
+        } else if (cell.getCurrentStatus() == BLOCKED) {
             cell.setCurrentStatus(OPEN);
             myOpenCells.add(cell);
         }
@@ -157,7 +158,7 @@ public class PercolationModel extends Game {
     }
 
     @Override
-    protected void populateGameConditions () {
+    protected void populateGameConditions() {
         super.populateGameConditions();
         BLOCKED = retrieveIntProperty("PercolationBlocked");
         OPEN = retrieveIntProperty("PercolationOpen");

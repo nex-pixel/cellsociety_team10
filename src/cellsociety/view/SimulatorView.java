@@ -21,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,6 +35,7 @@ public class SimulatorView {
     private static final String INVALID_SIM_FILE = "InvalidSimFile";
     private static final String ABOUT_SIMULATION_LABEL = "AboutSimulationLabel";
     private static final String SIMULATOR_BOX_ID = "simulator-root";
+    private static final String CELL_DEFAULT_ID = "-cell";
     private static final double DEFAULT_ANIMATION_SPEED = 0.3;
     private static final double SLIDER_VALUE = 1.0;
     private static final double SLIDER_MIN = 0.1;
@@ -56,7 +58,7 @@ public class SimulatorView {
     private CSSFactory myCSSFactory;
 
 
-    public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController, int cellType){
+    public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController, int cellType) {
         mySimulatorController = simulatorController;
         myGame = game;
         myAnimation = new Timeline();
@@ -68,46 +70,50 @@ public class SimulatorView {
         showSimulationScene();
     }
 
-    private void initializeGridProperties(){
+    private void initializeGridProperties() {
         myGridWidth = myGame.getNumCols();
         myGridHeight = myGame.getNumRows();
         myGridView = new GridPane();
     }
+
     // initializes all factory classes used
-    private void initializeFactories(){
+    private void initializeFactories() {
         mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
         mySliderFactory = new SliderFactory(SLIDER_VALUE);
         myCSSFactory = new CSSFactory(myLanguageResources);
     }
 
     // uses reflection to populate grid based on the cellType
-    private void setInitialGrid(int cellType){
+    private void setInitialGrid(int cellType) {
         try {
             ResourceBundle gridTypeName = ResourceBundle.getBundle(GRID_NAME_FILE_PATH);
-            Method m = this.getClass().getDeclaredMethod(gridTypeName.getString(cellType + ".Cell"));
+            Method m = this.getClass().getDeclaredMethod(gridTypeName.getString(cellType + ""));
             m.invoke(this);
-        } catch(Exception e){
+        } catch (Exception e) {
             new GenerateError(myLanguageResources, INVALID_SIM_GENERATION);
         }
     }
+
     // method used in reflection - creates SquareGrid
-    private void createSquareGrid(){
+    private void createSquareGrid() {
         myGridBuilder = new SquareGridBuilder();
         myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
     }
+
     // method used in reflection - creates TriangleGrid
-    private void createTriangleGrid(){
+    private void createTriangleGrid() {
         myGridBuilder = new TriangleGridBuilder();
         myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
     }
+
     // method used in reflection - creates HexagonGrid
-    private void createHexagonGrid(){
+    private void createHexagonGrid() {
         myGridBuilder = new HexagonGridBuilder();
         myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
     }
 
     // creates a stage for the simulation and shows it with the scene of the simulation
-    private void showSimulationScene(){
+    private void showSimulationScene() {
         myStage = new Stage();
         updateSimulation(myGame, myGridView);
         simulationBox.getChildren().add(generateSimulationVBox(myGridView));
@@ -126,17 +132,17 @@ public class SimulatorView {
     }
 
     // creates and returns a VBox containing the gameGrid and buttons
-    private VBox generateSimulationVBox(GridPane gameGrid){
+    private VBox generateSimulationVBox(GridPane gameGrid) {
         VBox simulationBox = new VBox();
         simulationBox.setId(SIMULATOR_BOX_ID);
         simulationBox.getChildren().addAll(gameGrid, mySimulatorButtonFactory.generateButtonPanel(), mySliderFactory.makeSlider(SLIDER_MIN, SLIDER_MAX,
-                (obs, oldVal, newVal) -> setAnimationSpeed((double)newVal)));
+                (obs, oldVal, newVal) -> setAnimationSpeed((double) newVal)));
         return simulationBox;
     }
 
     // updates the gamePane based on the values from backend
-    private void updateSimulation(Game game, GridPane gamePane){
-        for(Node node : gamePane.getChildren()){
+    private void updateSimulation(Game game, GridPane gamePane) {
+        for (Node node : gamePane.getChildren()) {
             Cell cell = (Cell) node;
             Point point = cell.getPoint();
             int cellStatus = game.getCellStatus(point.x, point.y);
@@ -145,10 +151,10 @@ public class SimulatorView {
     }
 
     // updates cell's status
-    private void updateCell(GridPane gamePane, Point point, int cellStatus){
+    private void updateCell(GridPane gamePane, Point point, int cellStatus) {
         int cellNumber = (point.x) * myGridHeight + point.y;
         Node currNode = gamePane.getChildren().get(cellNumber);
-        currNode.setId(cellStatus+"-cell");
+        currNode.setId(cellStatus + CELL_DEFAULT_ID);
     }
 
     /**
@@ -156,31 +162,27 @@ public class SimulatorView {
      * This method is executed when About button is clicked by the user
      */
     public void displaySimulationInfo() {
-        try{
+        try {
             Scanner file = new Scanner(new File(mySimulatorController.getSimFilePath()));
             StringBuilder simInfo = new StringBuilder();
-            while(file.hasNextLine()) simInfo.append(file.nextLine()).append("\n");
+            while (file.hasNextLine()) simInfo.append(file.nextLine()).append("\n");
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            setAlertContent(alert,myLanguageResources.getString(ABOUT_SIMULATION_LABEL), String.valueOf(simInfo));
+            alert.setHeaderText(myLanguageResources.getString(ABOUT_SIMULATION_LABEL));
+            alert.setContentText(String.valueOf(simInfo));
             alert.showAndWait();
             alert.showAndWait();
-        }catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             new GenerateError(myLanguageResources, INVALID_SIM_FILE);
         }
-    }
-
-    // generates alert content to be displayed
-    private void setAlertContent(Alert alert, String text, String info){
-        alert.setHeaderText(text);
-        alert.setContentText(String.valueOf(info));
     }
 
     /**
      * Changes the CSS file used for the simulation
      * This method is executed when user clicks on Choose a new color scheme button
+     *
      * @param cssFile new cssFile to be applied
      */
-    public void updateCSS(String cssFile){
+    public void updateCSS(String cssFile) {
         myCSSFactory.applyCSS(myScene, cssFile);
     }
 
@@ -188,7 +190,7 @@ public class SimulatorView {
      * Updates the grid to the next step
      * This method is executed when user clicks on Step button
      */
-    public void step(){
+    public void step() {
         myGame.update();
         updateSimulation(myGame, myGridView);
     }
@@ -197,7 +199,7 @@ public class SimulatorView {
      * Pauses the simulation animation
      * This method is executed when user clicks on Pause button
      */
-    public void pause(){
+    public void pause() {
         myAnimation.pause();
     }
 
@@ -205,23 +207,24 @@ public class SimulatorView {
      * Resumes the simulation animation
      * This method is executed when user clicks on Play button
      */
-    public void play(){
+    public void play() {
         myAnimation.play();
     }
 
     /**
      * Changes the animation speed of simulation
      * This method is executed when moves the Speed slider
+     *
      * @param speed rate to be applied to current animation speed
      */
-    public void setAnimationSpeed(double speed){
+    public void setAnimationSpeed(double speed) {
         myAnimation.setRate(speed);
     }
 
     /**
      * Closes the stage of the current simulation
      */
-    public void closeSimulation(){
+    public void closeSimulation() {
         myStage.close();
     }
 }

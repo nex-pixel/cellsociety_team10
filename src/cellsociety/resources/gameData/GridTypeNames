@@ -1,3 +1,0 @@
-0.Cell = createSquareGrid
-1.Cell = createTriangleGrid
-2.Cell = createHexagonGrid

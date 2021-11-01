@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Norah Tan, Haseeb Chaudhry
  */
-public class SpreadingFireModel extends Game{
+public class SpreadingFireModel extends Game {
     private int EMPTY;
     private int TREE;
     private int BURNING;
@@ -39,7 +39,7 @@ public class SpreadingFireModel extends Game{
      */
     public SpreadingFireModel(String filename, boolean TEST) {
         super(filename);
-        if(TEST == false) {
+        if (TEST == false) {
             getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
         }
     }
@@ -51,7 +51,7 @@ public class SpreadingFireModel extends Game{
      * @param numCols is the number of columns of the grid
      * @param numRows is the number of rows of the grid
      */
-    public SpreadingFireModel (int numCols, int numRows){
+    public SpreadingFireModel(int numCols, int numRows) {
         super(numCols, numRows);
     }
 
@@ -66,7 +66,7 @@ public class SpreadingFireModel extends Game{
      * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
      *
      */
-    public SpreadingFireModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
+    public SpreadingFireModel(int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
     }
 
@@ -79,7 +79,7 @@ public class SpreadingFireModel extends Game{
      * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
      * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
      */
-    public SpreadingFireModel (String filename, int gridType, int neighborMode, int edgePolicy) {
+    public SpreadingFireModel(String filename, int gridType, int neighborMode, int edgePolicy) {
         super(filename, gridType, neighborMode, edgePolicy);
     }
 
@@ -88,7 +88,7 @@ public class SpreadingFireModel extends Game{
      *
      * @param probability is the new probability
      */
-    public void setProbOfFire(double probability){
+    public void setProbOfFire(double probability) {
         probCatch = probability;
     }
 
@@ -96,49 +96,49 @@ public class SpreadingFireModel extends Game{
      * Setter method that changes the probability of growing new trees
      * @param probability is the new probability
      */
-    public void setProbGrowNewTrees(double probability){
+    public void setProbGrowNewTrees(double probability) {
         probGrow = probability;
     }
 
-    protected void setNumStatesOnBoard () {
+    protected void setNumStatesOnBoard() {
         setNumStates(NUM_STATES);
     }
 
     @Override
     public void update() {
         checkForFire();
-        if(firePresentInGrid) {
+        if (firePresentInGrid) {
             super.update();
         }
     }
 
-    private void checkForFire(){
+    private void checkForFire() {
         firePresentInGrid = false;
-        for(Point point: getGrid().getPoints()){
-            if(getGrid().getBoardCell(point).getCurrentStatus() == BURNING) {
+        for (Point point : getGrid().getPoints()) {
+            if (getGrid().getBoardCell(point).getCurrentStatus() == BURNING) {
                 firePresentInGrid = true;
             }
         }
     }
 
     @Override
-    protected boolean applyRule(Cell cell){
+    protected boolean applyRule(Cell cell) {
         List<Cell> neighbors = cell.getNeighborCells();
-        if(cell.getCurrentStatus() == EMPTY){
+        if (cell.getCurrentStatus() == EMPTY) {
             int willATreeGrow = willNewTreeGrow(neighbors);
             cell.setNextStatus(willATreeGrow);
-        } else if(cell.getCurrentStatus() == TREE){
+        } else if (cell.getCurrentStatus() == TREE) {
             int willItCatchFire = spread(neighbors);
             cell.setNextStatus(willItCatchFire);
-        } else if (cell.getCurrentStatus() == BURNING){
+        } else if (cell.getCurrentStatus() == BURNING) {
             cell.setNextStatus(EMPTY);
         }
         return true;
     }
 
-    private int spread(List<Cell> neighbors){
+    private int spread(List<Cell> neighbors) {
         double randNumber = Math.random();
-        if(checkNumCellsThisCase(BURNING, neighbors).size() > 0) {
+        if (checkNumCellsThisCase(BURNING, neighbors).size() > 0) {
             if (randNumber < probCatch) {
                 return BURNING;
             }
@@ -146,9 +146,9 @@ public class SpreadingFireModel extends Game{
         return TREE;
     }
 
-    private int willNewTreeGrow(List<Cell> neighbors){
+    private int willNewTreeGrow(List<Cell> neighbors) {
         double randomGrow = Math.random();
-        if(checkNumCellsThisCase(TREE, neighbors).size() > 0) {
+        if (checkNumCellsThisCase(TREE, neighbors).size() > 0) {
             if (randomGrow < probGrow) {
                 return TREE;
             }
@@ -163,9 +163,10 @@ public class SpreadingFireModel extends Game{
     }
 
     @Override
-    protected void populateGameConditions () {
+    protected void populateGameConditions() {
         super.populateGameConditions();
-        probCatch = myGameDataReader.getDoubleProperty("SpreadingFireProbSpread");;
+        probCatch = myGameDataReader.getDoubleProperty("SpreadingFireProbSpread");
+        ;
         probGrow = myGameDataReader.getDoubleProperty("SpreadingFireProbGrow");
         expandGridByInt = retrieveIntProperty("SpreadingFireExpandGridBy");
         EMPTY = retrieveIntProperty("SpreadingFireEmpty");

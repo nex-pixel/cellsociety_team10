@@ -32,14 +32,15 @@ public abstract class Game {
     /***
      * Default constructor
      */
-    public Game () {}
+    public Game() {
+    }
 
     /***
      * Constructor for testing purpose.
      *
      * @param copy is the Game that we want to copy from
      */
-    public Game (Game copy) {
+    public Game(Game copy) {
         populateGameConditions();
         this.myReader = copy.myReader;
         this.myGrid = copy.myGrid;
@@ -51,7 +52,7 @@ public abstract class Game {
      *
      * @param filename gives the CSV figuration file for the grid
      */
-    public Game (String filename) {
+    public Game(String filename) {
         populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
@@ -63,9 +64,9 @@ public abstract class Game {
      *
      * @param states specifies the grid
      */
-    public Game (int[][] states) {
+    public Game(int[][] states) {
         populateGameConditions();
-        setGrid(states, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE , DEFAULT_GRID_CHOICE);
+        setGrid(states, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
     }
 
     /***
@@ -77,7 +78,7 @@ public abstract class Game {
      * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
      * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
      */
-    public Game (String filename, int gridType, int neighborMode, int edgePolicy) {
+    public Game(String filename, int gridType, int neighborMode, int edgePolicy) {
         populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
@@ -92,7 +93,7 @@ public abstract class Game {
      * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
      * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
      */
-    public Game (int[][] states, int gridType, int neighborMode, int edgePolicy) {
+    public Game(int[][] states, int gridType, int neighborMode, int edgePolicy) {
         populateGameConditions();
         setGrid(states, gridType, neighborMode, edgePolicy);
     }
@@ -104,7 +105,7 @@ public abstract class Game {
      * @param numCols is the number of columns of the grid
      * @param numRows is the number of rows of the grid
      */
-    public Game (int numCols, int numRows){
+    public Game(int numCols, int numRows) {
         populateGameConditions();
         setNumStatesOnBoard();
         setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
@@ -121,7 +122,7 @@ public abstract class Game {
      * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
      *
      */
-    public Game (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
+    public Game(int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         populateGameConditions();
         setNumStatesOnBoard();
         setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
@@ -132,7 +133,9 @@ public abstract class Game {
      *
      * @return myGrid
      */
-    protected Grid getGrid () { return myGrid; }
+    protected Grid getGrid() {
+        return myGrid;
+    }
 
     /***
      * Setter method that initialize the grid according to the following parameters
@@ -142,7 +145,7 @@ public abstract class Game {
      * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
      * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
      */
-    protected void setGrid (int[][] states, int gridType, int neighborMode, int edgePolicy) {
+    protected void setGrid(int[][] states, int gridType, int neighborMode, int edgePolicy) {
         switch (gridType) {
             case 0 -> myGrid = new SquareGrid(states, neighborMode, edgePolicy);
             case 1 -> myGrid = new TriangleGrid(states, neighborMode, edgePolicy);
@@ -153,14 +156,16 @@ public abstract class Game {
     /***
      * An abstract method that helps set the number of states on board that is unique to each child game
      */
-    protected abstract void setNumStatesOnBoard ();
+    protected abstract void setNumStatesOnBoard();
 
     /***
      * Setter method that sets the number of states on the board as specified
      *
      * @param numStates
      */
-    protected void setNumStates (int numStates) { NUM_STATES = numStates; }
+    protected void setNumStates(int numStates) {
+        NUM_STATES = numStates;
+    }
 
     /***
      * Create a random 2d array with states being a non-negative integer up to NUM_STATES
@@ -169,18 +174,18 @@ public abstract class Game {
      * @param numRows specifies the number of columns in the 2d array
      * @return the random 2d array
      */
-    protected int[][] createRandomIntTwoDArray(int numCols, int numRows){
+    protected int[][] createRandomIntTwoDArray(int numCols, int numRows) {
         int[][] retArray = new int[numRows][numCols];
-        for(int i = 0; i < numRows; i++){
-            for (int j = 0; j < numCols; j++){
-                retArray[i][j] = getRandomInt( this.NUM_STATES - 1);
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                retArray[i][j] = getRandomInt(this.NUM_STATES - 1);
             }
         }
         return retArray;
     }
 
-    private int getRandomInt(int max){
-        return (int)(Math.random() * (max + 1));
+    private int getRandomInt(int max) {
+        return (int) (Math.random() * (max + 1));
     }
 
     /***
@@ -190,7 +195,9 @@ public abstract class Game {
      * @param y is the y-location
      * @return the current status of the Cell located at (x, y)
      */
-    public int getCellStatus (int x, int y) { return myGrid.getCellStatus(x,y); }
+    public int getCellStatus(int x, int y) {
+        return myGrid.getCellStatus(x, y);
+    }
 
     /***
      * Getter method that returns the current status of a Cell at a location
@@ -198,35 +205,43 @@ public abstract class Game {
      * @param point is the Point representation of the xy-location
      * @return the current status of the Cell located at (point.x, point.y)
      */
-    public int getCellStatus (Point point) { return myGrid.getBoardCell(point).getCurrentStatus(); }
+    public int getCellStatus(Point point) {
+        return myGrid.getBoardCell(point).getCurrentStatus();
+    }
 
     /***
      * Getter method
      *
      * @return the number of rows in the grid
      */
-    public int getNumRows () { return myGrid.getNumRows(); }
+    public int getNumRows() {
+        return myGrid.getNumRows();
+    }
 
     /***
      * Getter method
      *
      * @return the number of columns in the grid
      */
-    public int getNumCols () { return myGrid.getNumCols(); }
+    public int getNumCols() {
+        return myGrid.getNumCols();
+    }
 
     /***
      * Getter method
      *
      * @return a list of the locations of all Cells in the grid
      */
-    public Set<Point> getAllPoints () { return myGrid.getPoints(); }
+    public Set<Point> getAllPoints() {
+        return myGrid.getPoints();
+    }
 
     /***
      * Setter method that changes the neighbor mode
      *
      * @param newNeighborMode
      */
-    public void changeNeighborMode (int newNeighborMode){
+    public void changeNeighborMode(int newNeighborMode) {
         myGrid.changeNeighborMode(newNeighborMode);
     }
 
@@ -235,18 +250,17 @@ public abstract class Game {
      *
      * @param newEdgePolicy
      */
-    public void changeEdgePolicy (int newEdgePolicy){
+    public void changeEdgePolicy(int newEdgePolicy) {
         myGrid.changeEdgePolicy(newEdgePolicy);
     }
 
-    private void createReader (String filename) {
+    private void createReader(String filename) {
         String[] temp = filename.split("\\.");
         String fileType = temp[temp.length - 1];
 
         if (fileType.equals("csv")) {
             myReader = new ReadCSVFile(filename);
-        }
-        else if (fileType.equals("json")) {
+        } else if (fileType.equals("json")) {
             myReader = new ReadJSONFile(filename);
         }
         // There may be some more types
@@ -257,16 +271,16 @@ public abstract class Game {
      * @param cell
      * @return whether the status of the cell has been changes
      */
-    protected abstract boolean applyRule (Cell cell);
+    protected abstract boolean applyRule(Cell cell);
 
     /***
      * Complete one round of update on each Cell on the board, change their statuses
      */
-    public void update () {
-        for (Point point: myGrid.getPoints()) {
+    public void update() {
+        for (Point point : myGrid.getPoints()) {
             applyRule(myGrid.getBoardCell(point));
         }
-        for (Point point: myGrid.getPoints()) {
+        for (Point point : myGrid.getPoints()) {
             myGrid.getBoardCell(point).changeStatus();
         }
     }
@@ -288,7 +302,7 @@ public abstract class Game {
      *
      * @return the 2d array of myGrid
      */
-    protected int[][] toGridArray () {
+    protected int[][] toGridArray() {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];
         for (int r = 0; r < myGrid.getNumRows(); r++) {
             for (int c = 0; c < myGrid.getNumCols(); c++) {
@@ -304,11 +318,11 @@ public abstract class Game {
      * @param filename specifies the path that the saved CSV file will be located in
      * @param languageResource specifies the language
      */
-    public void saveCSVFile (String filename, ResourceBundle languageResource) {
+    public void saveCSVFile(String filename, ResourceBundle languageResource) {
         try {
             File file = new File(filename);
             CSVWriter writer = new CSVWriter(new FileWriter(file));
-            writer.writeNext(new String[] {Integer.toString(myGrid.getNumRows()), Integer.toString(myGrid.getNumCols())}, false);
+            writer.writeNext(new String[]{Integer.toString(myGrid.getNumRows()), Integer.toString(myGrid.getNumCols())}, false);
             int[][] array = toGridArray();
             for (int r = 0; r < myGrid.getNumRows(); r++) {
                 writer.writeNext(Arrays.stream(array[r])
@@ -316,8 +330,7 @@ public abstract class Game {
                         .toArray(String[]::new), false);
             }
             writer.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             new GenerateError(languageResource, INVALID_SAVE);
         }
 
@@ -326,7 +339,7 @@ public abstract class Game {
     /***
      * Import all the "magic numbers" needed in models
      */
-    protected void populateGameConditions () {
+    protected void populateGameConditions() {
         myGameDataReader = new PropertiesReader(DEFAULT_GAME_DATA);
     }
 
@@ -335,7 +348,7 @@ public abstract class Game {
      * @param label is the name of the Integer variable
      * @return the Integer variable
      */
-    protected int retrieveIntProperty (String label) {
+    protected int retrieveIntProperty(String label) {
         return myGameDataReader.getIntProperty(label);
     }
 
@@ -346,10 +359,10 @@ public abstract class Game {
      * @param cellList is the list of Cells we want to filter from
      * @return the filtered list with Cells only with the desired state
      */
-    protected List<Cell> checkNumCellsThisCase (int state, List<Cell> cellList){
+    protected List<Cell> checkNumCellsThisCase(int state, List<Cell> cellList) {
         List<Cell> retList = new ArrayList<>();
-        for(Cell cellInList: cellList){
-            if(cellInList!= null && cellInList.getCurrentStatus() == state){
+        for (Cell cellInList : cellList) {
+            if (cellInList != null && cellInList.getCurrentStatus() == state) {
                 retList.add(cellInList);
             }
         }
@@ -357,7 +370,7 @@ public abstract class Game {
     }
 
     @Override
-    public boolean equals (Object o) {
+    public boolean equals(Object o) {
         return Arrays.deepEquals(((Game) o).toGridArray(), this.toGridArray());
     }
 }

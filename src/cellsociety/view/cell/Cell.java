@@ -8,11 +8,11 @@ import java.awt.*;
 public class Cell extends Polygon {
     private Point myPoint;
 
-    public Cell(SimulatorController simulatorController, int xCoordinate, int yCoordinate){
+    public Cell(SimulatorController simulatorController, int xCoordinate, int yCoordinate) {
         myPoint = new Point(xCoordinate, yCoordinate);
     }
 
-    public Point getPoint(){
+    public Point getPoint() {
         return myPoint;
     }
 }

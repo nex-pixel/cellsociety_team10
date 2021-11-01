@@ -9,15 +9,15 @@ public class SquareGrid extends Grid {
     private int NEIGHBOR_MODE_EDGE;
     private int NEIGHBOR_MODE_BOTTOM_HALF;
 
-    public SquareGrid (int[][] states, int neighborMode, int edgePolicy) {
+    public SquareGrid(int[][] states, int neighborMode, int edgePolicy) {
         super(states, neighborMode, edgePolicy);
     }
 
-    protected void applyNeighborMode (Point point) {
+    protected void applyNeighborMode(Point point) {
         if (getNeighborMode() == NEIGHBOR_MODE_COMPLETE) {
-            setRowColValues("SquareGrid_Complete_Rows","SquareGrid_Complete_Cols");
+            setRowColValues("SquareGrid_Complete_Rows", "SquareGrid_Complete_Cols");
         } else if (getNeighborMode() == NEIGHBOR_MODE_EDGE) {
-            setRowColValues("SquareGrid_Edge_Rows","SquareGrid_Edge_Cols");
+            setRowColValues("SquareGrid_Edge_Rows", "SquareGrid_Edge_Cols");
         } else if (getNeighborMode() == NEIGHBOR_MODE_BOTTOM_HALF) {
             setRowColValues("SquareGrid_BottomHalf_Rows", "SquareGrid_BottomHalf_Cols");
         }

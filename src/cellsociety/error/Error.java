@@ -2,9 +2,10 @@ package cellsociety.error;
 
 
 import java.util.ResourceBundle;
+
 import javafx.scene.control.Alert;
 
-public class Error{
+public class Error {
 
     private final String KEY_UNAVAILABLE = "InvalidMessagePassed";
     private final String ERROR_RESOURCE_PATH = "cellsociety.error.resources.languages.";

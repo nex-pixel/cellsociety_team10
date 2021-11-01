@@ -23,20 +23,20 @@ public abstract class ButtonFactory {
     protected ResourceBundle myLanguageResources;
     protected String buttonID;
     protected String INVALID_BUTTON_GENERATION = "InvalidButtonGeneration";
-   // protected String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
+    // protected String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
     protected ResourceBundle labelOptionsBundle;
     protected ArrayList<String> cssFileOptions = new ArrayList<>();
     protected String modelLabelKey = "modelLabelOptions";
     protected String cssFileLabelKey = "cssFileLabelOptions";
     protected String gridLabelKey = "gridLabelOptions";
 
-    public ButtonFactory(){
+    public ButtonFactory() {
         buttonMap = new LinkedHashMap<>();
         labelOptionsBundle = ResourceBundle.getBundle("cellsociety.resources.labelOptions.labelOptions");
         //populateOptions(cssFileOptions, labelOptionsBundle);
     }
 
-    protected void addButtonToPanel(String label, EventHandler<ActionEvent> event, Pane panel){
+    protected void addButtonToPanel(String label, EventHandler<ActionEvent> event, Pane panel) {
         Button button = generateButton(label,
                 event);
         button.setId(buttonID);
@@ -52,15 +52,15 @@ public abstract class ButtonFactory {
 
     protected abstract void populateButtonEvents();
 
-    public Node generateButtonPanel(){
+    public Node generateButtonPanel() {
         VBox panel = new VBox();
-        buttonMap.forEach((key,value) -> addButtonToPanel(key,value,panel));
+        buttonMap.forEach((key, value) -> addButtonToPanel(key, value, panel));
         return panel;
     }
 
-    protected void populateOptions(ArrayList<String> optionsList, ResourceBundle resourceBundle, String key){
+    protected void populateOptions(ArrayList<String> optionsList, ResourceBundle resourceBundle, String key) {
         String[] list = resourceBundle.getString(key).split(",");
-        for(String label: list){
+        for (String label : list) {
             optionsList.add(myLanguageResources.getString(label));
         }
     }
