@@ -16,7 +16,7 @@ public class PercolationModel extends Game {
     private int BLOCKED;
     private int OPEN;
     private int PERCOLATED;
-    private int NUM_STATES = 3;
+    private final int NUM_STATES = 3;
     private final int DEFAULT_GRID_CHOICE = 0;
 
     private List<Cell> myOpenCells;

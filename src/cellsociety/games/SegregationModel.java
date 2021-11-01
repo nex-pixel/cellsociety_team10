@@ -20,7 +20,7 @@ public class SegregationModel extends Game {
     private int RANGE;
     private double myThreshold;
     private int myNumOfAgents;
-    private int NUM_STATES = 3;
+    private final int NUM_STATES = 3;
     private final int DEFAULT_GRID_CHOICE = 0;
 
     private List<Cell> myEmptyCells;
@@ -231,8 +231,7 @@ public class SegregationModel extends Game {
 
     @Override
     public void changeCellOnClick(int x, int y) {
-        Cell cell = getGrid().getBoardCell(x, y);
-        cell.setCurrentStatus((cell.getCurrentStatus() + 1) % 3);
+        super.changeCellOnClick(x, y);
         update();
     }
 

@@ -18,6 +18,15 @@ class GameOfLifeModelTest {
     void setUp() {}
 
     @Test
+    void testRandomGridIsMade() {
+        GameOfLifeModel randomDefault = new GameOfLifeModel(10,15);
+        randomDefault.saveCSVFile("./data/game_of_life/randomDefaultTest.csv", myLanguageResources);
+
+        GameOfLifeModel randomChosen = new GameOfLifeModel(15, 10, 2,2, 2);
+        randomChosen.saveCSVFile("./data/game_of_life/randomChosenTest.csv", myLanguageResources);
+    }
+
+    @Test
     void testUpdateStillBoat () {
         GameOfLifeModel boat = new GameOfLifeModel("./data/game_of_life/boat.csv");
 
