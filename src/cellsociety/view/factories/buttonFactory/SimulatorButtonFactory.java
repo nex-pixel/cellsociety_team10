@@ -44,7 +44,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
                 buttonMap.put(myLanguageResources.getString(key), buttonEvent);
             }
         }catch(IllegalAccessException | InvocationTargetException e){
-            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_BUTTON_GENERATION);
+            new GenerateError(myLanguageResources, INVALID_BUTTON_GENERATION);
         }
     }
 

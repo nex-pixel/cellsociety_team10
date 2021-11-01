@@ -14,7 +14,6 @@ public class FileManager {
     private File currentTextFile;
     private ResourceBundle myLanguageResources;
     private String INVALID_FILE = "InvalidFileError";
-    private String LANG_KEY = "language";
     private String INVALID_SAVE = "InvalidSaveFile";
     private String SAVE_CSV_LABEL = "SaveCSVLabel";
 
@@ -26,10 +25,11 @@ public class FileManager {
         try {
             loadFile();
         } catch (IOException e) {
-            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_FILE);
+            new GenerateError(myLanguageResources, INVALID_FILE);
         }
     }
     public void loadFile() throws IOException {
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("./"));
         File file = fileChooser.showOpenDialog(null);
@@ -46,13 +46,13 @@ public class FileManager {
             String fileName = dialog.showAndWait().get();
             myGame.saveCSVFile(fileName, myLanguageResources);
         }catch(Exception e){
-            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_SAVE);
+            new GenerateError(myLanguageResources, INVALID_SAVE);
         }
     }
 
     public void checkFileValidity(File file){
         if(file == null){
-            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_FILE);
+            new GenerateError(myLanguageResources, INVALID_FILE);
         }
     }
 

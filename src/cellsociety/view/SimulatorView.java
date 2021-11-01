@@ -7,6 +7,7 @@ import cellsociety.view.factories.buttonFactory.SimulatorButtonFactory;
 import cellsociety.view.cell.HexagonCell;
 import cellsociety.view.cell.SquareCell;
 import cellsociety.view.cell.TriangleCell;
+import cellsociety.view.factories.cssFactory.CSSFactory;
 import cellsociety.view.factories.sliderFactory.SliderFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,22 +21,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.*;
-import java.lang.invoke.SwitchPoint;
 import java.util.*;
 
 public class SimulatorView {
 
     private Timeline myAnimation;
-    private double animationSpeed;
+    private double animationSpeed = 0.3;
     private GridPane myGridView;
     private int myGridWidth;
     private int myGridHeight;
     private SimulatorController mySimulatorController;
     private String myCSSFile;
     private ResourceBundle myLanguageResources;
-    private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private String INVALID_SIM_FILE = "InvalidSimFile";
     private String AboutSimulationLabel = "AboutSimulationLabel";
     private Game myGame;
@@ -43,43 +41,53 @@ public class SimulatorView {
     private SimulatorButtonFactory mySimulatorButtonFactory;
     private HBox simulationBox = new HBox();
     private Stage myStage;
-    private final String LANG_KEY = "language";
     private SliderFactory mySliderFactory;
     private double sliderValue = 1.0;
     private double sliderMin = 0.1;
     private double sliderMax = 5.0;
     private String simulatorBoxId = "simulator-root";
     private int cellType;
+    private CSSFactory myCSSFactory;
 
 
 
     public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController, int cellType){
         mySimulatorController = simulatorController;
         myGame = game;
-        animationSpeed = 0.3;
         myAnimation = new Timeline();
-        myGridWidth = myGame.getNumCols();
-        myGridHeight = myGame.getNumRows();
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
-        mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
-        mySliderFactory = new SliderFactory(sliderValue);
-        myGridView = new GridPane();
+        initializeGridProperties();
+        initializeFactories();
+        initializeDefaultGrid();
+        initializeSimulationScene();
+    }
+
+    private void initializeDefaultGrid(){
         switch (cellType) {
             case 0 -> setDefaultGrid(myGridWidth, myGridHeight, myGridView);
             case 1 -> setDefaultTriangleGrid(myGridWidth, myGridHeight, myGridView);
             case 2 -> setDefaultHexagonGrid(myGridWidth, myGridHeight, myGridView);
         }
-
-        initializeSimulationScene();
     }
 
+    private void initializeGridProperties(){
+        myGridWidth = myGame.getNumCols();
+        myGridHeight = myGame.getNumRows();
+        myGridView = new GridPane();
+    }
+
+    private void initializeFactories(){
+        mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
+        mySliderFactory = new SliderFactory(sliderValue);
+        myCSSFactory = new CSSFactory(myLanguageResources);
+    }
     private void initializeSimulationScene(){
         myStage = new Stage();
         updateSimulation(myGame, myGridView);
         simulationBox.getChildren().add(generateSimulationVBox(myGridView));
         myScene = new Scene(simulationBox);
-        applyCSS(myScene, myCSSFile);
+        myCSSFactory.applyCSS(myScene, myCSSFile);
         myStage.setScene(myScene);
         myStage.show();
         playAnimation();
@@ -125,7 +133,7 @@ public class SimulatorView {
             setAlertContent(alert,myLanguageResources.getString(AboutSimulationLabel), String.valueOf(simInfo));
             alert.showAndWait();
         }catch(FileNotFoundException e){
-            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_SIM_FILE);
+            new GenerateError(myLanguageResources, INVALID_SIM_FILE);
         }
     }
 
@@ -219,16 +227,7 @@ public class SimulatorView {
         return simulationBox;
     }
 
-    private void applyCSS(Scene scene, String cssFile) {
-        try{
-            File styleFile = new File(cssFile);
-            scene.getStylesheets().add(styleFile.toURI().toURL().toString());
-        }catch(Exception e){
-            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_CSS_ERROR);
-        }
-    }
-
     public void updateCSS(String cssFile){
-        applyCSS(myScene, cssFile);
+        myCSSFactory.applyCSS(myScene, cssFile);
     }
 }

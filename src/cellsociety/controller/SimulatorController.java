@@ -53,7 +53,7 @@ public class SimulatorController {
                     myCSSFile, myLanguageResources, this, cellType);
         } catch(Exception e){
             myFileManager.checkFileValidity(csvFile);
-            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_SIM_GENERATION);
+            new GenerateError(myLanguageResources, INVALID_SIM_GENERATION);
         }
     }
 
@@ -66,7 +66,7 @@ public class SimulatorController {
             Method m = this.getClass().getDeclaredMethod(name);
             return m;
         }catch(NoSuchMethodException e){
-            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_METHOD);
+            new GenerateError(myLanguageResources, INVALID_METHOD);
             return null;
         }
     }
@@ -113,7 +113,7 @@ public class SimulatorController {
         mySimulatorView.updateCSS(cssFile);
     }
 
-    public void applyCSSFile(String cssFile){
+    public void updateMyCSSFile(String cssFile){
         myCSSFile = cssFile;
     }
 

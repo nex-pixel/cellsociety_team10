@@ -22,11 +22,10 @@ public class MainMenuView {
     private FileManager myFileManager;
     private Pane homePageRoot;
     private MainController myMainController;
-    private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private String homePageRootID = "home-page-root";
     private MainMenuButtonFactory myMainMenuButtonView;
-    private String LANG_KEY;
     private double segregationThreshold;
+    private String threshold = "Threshold";
 
     public MainMenuView(ResourceBundle languageResourceBundle){
         myLanguageResources = languageResourceBundle;
@@ -57,20 +56,12 @@ public class MainMenuView {
         titleLabel.setId(id);
     }
 
-    public void applyCSS(Scene scene, String cssFile) {
-        try{
-            File styleFile = new File(cssFile);
-            scene.getStylesheets().add(styleFile.toURI().toURL().toString());
-        }catch(Exception e){
-            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_CSS_ERROR);
-        }
-    }
 
     public double getSegregationThreshold(){
         SliderFactory sliderFactory = new SliderFactory(0.5);
         Slider slider = sliderFactory.makeSlider(0.0, 1.0,
                 (obs, oldVal, newVal) -> setSegregationThreshold((double)newVal));
-        Scene popUp = new Scene(new HBox(new Text(myLanguageResources.getString("Threshold")), slider));
+        Scene popUp = new Scene(new HBox(new Text(myLanguageResources.getString(threshold)), slider));
         Stage stage = new Stage();
         stage.setScene(popUp);
         stage.showAndWait();
