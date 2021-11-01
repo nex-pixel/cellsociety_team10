@@ -3,6 +3,7 @@ package cellsociety.controller;
 import cellsociety.view.MainMenuView;
 import cellsociety.view.factories.cssFactory.CSSFactory;
 import javafx.stage.Stage;
+
 import java.io.File;
 import java.util.ResourceBundle;
 
@@ -22,14 +23,14 @@ public class MainController {
     private String modelType;
     private CSSFactory myCSSFactory;
 
-    public MainController(Stage stage, ResourceBundle langResourceBundle){
+    public MainController(Stage stage, ResourceBundle langResourceBundle) {
         myStage = stage;
         myLanguageResources = langResourceBundle;
         myCSSFactory = new CSSFactory(myLanguageResources);
     }
 
     public void startMainMenu() {
-        mainMenu  = new MainMenuView(myLanguageResources);
+        mainMenu = new MainMenuView(myLanguageResources);
         myStage.setScene(mainMenu.setMenuDisplay(this, MAIN_SCREEN_SIZE, MAIN_SCREEN_SIZE));
         updateCSS(DEFAULT_CSS_FILE_LABEL);
         myStage.show();
@@ -39,24 +40,26 @@ public class MainController {
         myStage.close();
         startMainMenu();
     }
+
     /**
      * setter for modelType
+     *
      * @param result modelType
      */
-    public void updateModelType(String result, FileManager fileManager){
+    public void updateModelType(String result, FileManager fileManager) {
         modelType = result;
         myFileManager = fileManager;
     }
 
-    public void setCellType(int cellType){
+    public void setCellType(int cellType) {
         myCellType = cellType;
     }
 
-    public void setMyNeighborMode(int modeType){
+    public void setMyNeighborMode(int modeType) {
         myNeighborMode = modeType;
     }
 
-    public void setMyEdgePolicy(int edgePolicy){
+    public void setMyEdgePolicy(int edgePolicy) {
         myEdgePolicy = edgePolicy;
     }
 
@@ -65,7 +68,7 @@ public class MainController {
         myCSSFactory.applyCSS(myStage.getScene(), cssFile);
     }
 
-    public void generateNewSimulation(File csvFile){
+    public void generateNewSimulation(File csvFile) {
         simulatorController = new SimulatorController(this, myFileManager, cssFile, myLanguageResources,
                 myCellType, myNeighborMode, myEdgePolicy);
         simulatorController.updateModelType(modelType);
@@ -73,7 +76,7 @@ public class MainController {
         simulatorController.createNewSimulation(csvFile);
     }
 
-    public double getSegregationThreshold(){
+    public double getSegregationThreshold() {
         return mainMenu.getSegregationThreshold();
     }
 

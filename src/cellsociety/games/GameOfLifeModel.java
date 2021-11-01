@@ -14,31 +14,31 @@ public class GameOfLifeModel extends Game {
     private int NUM_STATES = 2;
     private final int DEFAULT_GRID_CHOICE = 0;
 
-    public GameOfLifeModel (String filename) {
+    public GameOfLifeModel(String filename) {
         super(filename);
     }
 
-    public GameOfLifeModel (String filename, int gridType, int neighborMode, int edgePolicy) {
+    public GameOfLifeModel(String filename, int gridType, int neighborMode, int edgePolicy) {
         super(filename, gridType, neighborMode, edgePolicy);
     }
 
-    public GameOfLifeModel (GameOfLifeModel copy) {
+    public GameOfLifeModel(GameOfLifeModel copy) {
         super(copy);
     }
 
-    public GameOfLifeModel (int[][] states) {
+    public GameOfLifeModel(int[][] states) {
         super(states);
     }
 
-    public GameOfLifeModel (int numCols, int numRows){
+    public GameOfLifeModel(int numCols, int numRows) {
         super(numCols, numRows);
     }
 
-    public GameOfLifeModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
+    public GameOfLifeModel(int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
     }
 
-    protected void setNumStatesOnBoard () {
+    protected void setNumStatesOnBoard() {
         setNumStates(NUM_STATES);
     }
 
@@ -48,18 +48,17 @@ public class GameOfLifeModel extends Game {
     }
 
     @Override
-    protected boolean applyRule(Cell cell){
+    protected boolean applyRule(Cell cell) {
         List<Cell> neighbors = cell.getNeighborCells();
         int numCellsAlive = 0;
-        for (Cell cellNextDoor: neighbors) {
+        for (Cell cellNextDoor : neighbors) {
             if (cellNextDoor != null && cellNextDoor.getCurrentStatus() == ALIVE) {
                 numCellsAlive++;
             }
         }
         if (cell.getCurrentStatus() == ALIVE) {
             cell.setNextStatus(numCellsAlive == 2 || numCellsAlive == 3 ? 1 : 0);
-        }
-        else {
+        } else {
             cell.setNextStatus(numCellsAlive == 3 ? 1 : 0);
         }
         return true;
@@ -67,12 +66,12 @@ public class GameOfLifeModel extends Game {
 
     @Override
     public void changeCellOnClick(int x, int y) {
-        Cell cell = getGrid().getBoardCell(x,y);
+        Cell cell = getGrid().getBoardCell(x, y);
         cell.setCurrentStatus((cell.getCurrentStatus() + 1) % 2);
     }
 
     @Override
-    protected void populateGameConditions () {
+    protected void populateGameConditions() {
         super.populateGameConditions();
         DEAD = retrieveIntProperty("GameOfLifeDead");
         ALIVE = retrieveIntProperty("GameOfLifeAlive");

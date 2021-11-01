@@ -9,37 +9,39 @@ public class HexagonGrid extends Grid {
     private int NEIGHBOR_MODE_EDGE;
     private int NEIGHBOR_MODE_BOTTOM_HALF;
 
-    public HexagonGrid (int[][] states, int neighborMode, int edgePolicy) {
+    public HexagonGrid(int[][] states, int neighborMode, int edgePolicy) {
         super(states, neighborMode, edgePolicy);
     }
 
     @Override
-    public void assignMaxCol () { setMaxCol(2*getNumCols()); }
+    public void assignMaxCol() {
+        setMaxCol(2 * getNumCols());
+    }
 
     @Override
-    protected void initializeBoard (int[][] states) {
+    protected void initializeBoard(int[][] states) {
         for (int rowIndex = 0; rowIndex < getNumRows(); rowIndex++) {
             for (int colIndex = 0; colIndex < getNumCols(); colIndex++) {
-                int newColIndex = rowIndex % 2 == 0 ? 2 * colIndex + 1: 2 * colIndex;
-                Point point =  new Point(newColIndex, rowIndex);
+                int newColIndex = rowIndex % 2 == 0 ? 2 * colIndex + 1 : 2 * colIndex;
+                Point point = new Point(newColIndex, rowIndex);
                 Cell cell = new Cell(states[rowIndex][colIndex], newColIndex, rowIndex);
                 getBoard().put(point, cell);
             }
         }
     }
 
-    protected void applyNeighborMode (Point point) {
-        if(getNeighborMode() == NEIGHBOR_MODE_BOTTOM_HALF){
+    protected void applyNeighborMode(Point point) {
+        if (getNeighborMode() == NEIGHBOR_MODE_BOTTOM_HALF) {
             setRowColValues("HexagonGrid_BottomHalf_Rows", "HexagonGrid_BottomHalf_Cols");
-        } else{
-            setRowColValues("HexagonGrid_Complete_Rows","HexagonGrid_Complete_Cols");
+        } else {
+            setRowColValues("HexagonGrid_Complete_Rows", "HexagonGrid_Complete_Cols");
         }
     }
 
 
     @Override
-    protected boolean isInsideBoard (int x, int y) {
-        int oldX = y % 2 == 0 ? (x-1)/2 : x/2;
+    protected boolean isInsideBoard(int x, int y) {
+        int oldX = y % 2 == 0 ? (x - 1) / 2 : x / 2;
         return super.isInsideBoard(oldX, y);
     }
 
@@ -54,8 +56,8 @@ public class HexagonGrid extends Grid {
     }
 
     @Override
-    public Point getPoint(int x, int y){
-        return new Point((y+1)%2 + 2*x, y);
+    public Point getPoint(int x, int y) {
+        return new Point((y + 1) % 2 + 2 * x, y);
     }
 
     @Override

@@ -18,17 +18,18 @@ public class FileManager {
     private ResourceBundle myLanguageResources;
 
 
-    public FileManager(ResourceBundle resourceBundle){
+    public FileManager(ResourceBundle resourceBundle) {
         myLanguageResources = resourceBundle;
     }
 
-    public void chooseFile(){
+    public void chooseFile() {
         try {
             loadFile();
         } catch (IOException e) {
             new GenerateError(myLanguageResources, INVALID_FILE);
         }
     }
+
     public void loadFile() throws IOException {
 
         FileChooser fileChooser = new FileChooser();
@@ -40,19 +41,19 @@ public class FileManager {
         }
     }
 
-    public void saveCSVFile(Game myGame){
+    public void saveCSVFile(Game myGame) {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setContentText(myLanguageResources.getString(SAVE_CSV_LABEL));
-        try{
+        try {
             String fileName = dialog.showAndWait().get();
             myGame.saveCSVFile(fileName, myLanguageResources);
-        }catch(Exception e){
+        } catch (Exception e) {
             new GenerateError(myLanguageResources, INVALID_SAVE);
         }
     }
 
-    public void checkFileValidity(File file){
-        if(file == null){
+    public void checkFileValidity(File file) {
+        if (file == null) {
             new GenerateError(myLanguageResources, INVALID_FILE);
         }
     }

@@ -11,7 +11,7 @@ public class Cell {
     private int nextStatus;
     private List<Integer> miscellaneousVal;
 
-    public Cell(int statusPassedIn, int xPosition, int yPosition){
+    public Cell(int statusPassedIn, int xPosition, int yPosition) {
         setXyPosition(xPosition, yPosition);
         neighborCells = new ArrayList<>();
         currentStatus = statusPassedIn;
@@ -19,49 +19,49 @@ public class Cell {
         miscellaneousVal = new ArrayList<>();
     }
 
-    public void changeStatus(){
+    public void changeStatus() {
         currentStatus = nextStatus;
     }
 
-    public void clearNeighborCells(){
+    public void clearNeighborCells() {
         neighborCells = new ArrayList<>();
     }
 
-    public void setNextStatus(int newStatus){
+    public void setNextStatus(int newStatus) {
         nextStatus = newStatus;
     }
 
-    public void setCurrentStatus(int newCurrentStatus){
+    public void setCurrentStatus(int newCurrentStatus) {
         currentStatus = newCurrentStatus;
         nextStatus = newCurrentStatus;
     }
 
-    public void setXyPosition(int xPosition, int yPosition){
+    public void setXyPosition(int xPosition, int yPosition) {
         xyPosition[0] = xPosition;
         xyPosition[1] = yPosition;
     }
 
-    public void setMiscellaneousVal(List<Integer> valueList){
+    public void setMiscellaneousVal(List<Integer> valueList) {
         miscellaneousVal = valueList;
     }
 
-    public void setNeighborCells(List<Cell> neighborCellsPassedIn){
+    public void setNeighborCells(List<Cell> neighborCellsPassedIn) {
         neighborCells = neighborCellsPassedIn;
     }
 
-    public int[] getXyPosition(){
+    public int[] getXyPosition() {
         return xyPosition;
     }
 
-    public int getCurrentStatus(){
+    public int getCurrentStatus() {
         return currentStatus;
     }
 
-    public List<Integer> getMiscellaneousVal(){
+    public List<Integer> getMiscellaneousVal() {
         return miscellaneousVal;
     }
 
-    public List<Cell> getNeighborCells(){
+    public List<Cell> getNeighborCells() {
         return neighborCells;
     }
 
@@ -75,7 +75,7 @@ public class Cell {
     }
 
     @Override
-    public String toString () {
+    public String toString() {
         return xyPosition[0] + " " + xyPosition[1] + " with status " + currentStatus;
     }
 }

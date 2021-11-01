@@ -11,8 +11,8 @@ public class HexagonCell extends Cell {
 
     public HexagonCell(SimulatorController simulatorController, int xCoordinate, int yCoordinate) {
         super(simulatorController, xCoordinate, yCoordinate);
-        this.getPoints().addAll(HEXAGON_WIDTH/4, 0.0, HEXAGON_WIDTH*3/4, 0.0, HEXAGON_WIDTH, HEXAGON_HEIGHT/2,
-                HEXAGON_WIDTH*3/4, HEXAGON_HEIGHT, HEXAGON_WIDTH/4, HEXAGON_HEIGHT, 0.0, HEXAGON_HEIGHT/2);
+        this.getPoints().addAll(HEXAGON_WIDTH / 4, 0.0, HEXAGON_WIDTH * 3 / 4, 0.0, HEXAGON_WIDTH, HEXAGON_HEIGHT / 2,
+                HEXAGON_WIDTH * 3 / 4, HEXAGON_HEIGHT, HEXAGON_WIDTH / 4, HEXAGON_HEIGHT, 0.0, HEXAGON_HEIGHT / 2);
         this.setOnMouseClicked(event -> simulatorController.updateCellOnClick(xCoordinate, yCoordinate));
     }
 }

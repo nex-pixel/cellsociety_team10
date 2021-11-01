@@ -10,11 +10,12 @@ public class TriangleGrid extends Grid {
     private int NEIGHBOR_MODE_BOTTOM_HALF;
     private String mode, rowMode, colMode;
 
-    public TriangleGrid (int[][] states, int neighborMode, int edgePolicy) {
-        super(states, neighborMode, edgePolicy); populateNeighborData();
+    public TriangleGrid(int[][] states, int neighborMode, int edgePolicy) {
+        super(states, neighborMode, edgePolicy);
+        populateNeighborData();
     }
 
-    protected void applyNeighborMode (Point point) {
+    protected void applyNeighborMode(Point point) {
         mode = "TriangleGrid_";
         if (getNeighborMode() == NEIGHBOR_MODE_EDGE) {
             rowMode = mode + "Edge_";

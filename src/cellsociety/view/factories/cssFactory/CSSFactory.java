@@ -10,15 +10,16 @@ public class CSSFactory {
     private static final String INVALID_CSS_ERROR = "InvalidCSSFile";
 
     private ResourceBundle myLanguageResources;
-    public CSSFactory(ResourceBundle langResourceBundle){
+
+    public CSSFactory(ResourceBundle langResourceBundle) {
         myLanguageResources = langResourceBundle;
     }
 
     public void applyCSS(Scene scene, String cssFile) {
-        try{
+        try {
             File styleFile = new File(cssFile);
             scene.getStylesheets().add(styleFile.toURI().toURL().toString());
-        }catch(Exception e){
+        } catch (Exception e) {
             new GenerateError(myLanguageResources, INVALID_CSS_ERROR);
         }
     }

@@ -26,7 +26,7 @@ public class MainMenuButtonFactory extends ButtonFactory {
     private String edgePolicyLabelKey = "edgePolicyLabelOptions";
 
 
-    public MainMenuButtonFactory(MainController mainMenuController, ResourceBundle langResourceBundle, FileManager fileManager){
+    public MainMenuButtonFactory(MainController mainMenuController, ResourceBundle langResourceBundle, FileManager fileManager) {
         super();
         ACTIONS_NAME_PATH += "MainMenuActionEvents";
         myActionEventsResources = ResourceBundle.getBundle(ACTIONS_NAME_PATH);
@@ -37,7 +37,7 @@ public class MainMenuButtonFactory extends ButtonFactory {
         buttonID = "main-menu-button";
         myReflectionHandler = new ReflectionHandler(myLanguageResources);
         populateOptions(modelOptions, labelOptionsBundle, modelLabelKey);
-        populateOptions(cssFileOptions, labelOptionsBundle,cssFileLabelKey);
+        populateOptions(cssFileOptions, labelOptionsBundle, cssFileLabelKey);
         populateOptions(gridOptions, labelOptionsBundle, gridLabelKey);
         populateOptions(neighborOptions, labelOptionsBundle, neighborLabelKey);
         populateOptions(edgePolicyOptions, labelOptionsBundle, edgePolicyLabelKey);
@@ -45,49 +45,49 @@ public class MainMenuButtonFactory extends ButtonFactory {
     }
 
     @Override
-    protected void populateButtonEvents(){
-        try{
+    protected void populateButtonEvents() {
+        try {
             ArrayList<String> list = Collections.list(myActionEventsResources.getKeys());
             Collections.sort(list);
-            for(String key : list){
+            for (String key : list) {
                 EventHandler<ActionEvent> buttonEvent = (EventHandler<ActionEvent>) myReflectionHandler.handleMethod(myActionEventsResources.getString(key), "cellsociety.view.factories.buttonFactory.MainMenuButtonFactory").invoke(MainMenuButtonFactory.this);
                 buttonMap.put(myLanguageResources.getString(key), buttonEvent);
             }
-        }catch(IllegalAccessException | InvocationTargetException e){
+        } catch (IllegalAccessException | InvocationTargetException e) {
             new GenerateError(myLanguageResources, INVALID_BUTTON_GENERATION);
         }
     }
 
-    private EventHandler<ActionEvent> generateModelTypeEvent(){
+    private EventHandler<ActionEvent> generateModelTypeEvent() {
         return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(modelOptions.get(0),
                 modelOptions, "modelType", myLanguageResources.getString("ModelContent"));
     }
 
-    private EventHandler<ActionEvent> generateChooseFileEvent(){
+    private EventHandler<ActionEvent> generateChooseFileEvent() {
         return event -> myFileManager.chooseFile();
     }
 
-    private EventHandler<ActionEvent> generateCSSFileEvent(){
-        return event-> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(cssFileOptions.get(0),
+    private EventHandler<ActionEvent> generateCSSFileEvent() {
+        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(cssFileOptions.get(0),
                 cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent"));
     }
 
-    private EventHandler<ActionEvent> generateGridTypeEvent(){
-        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(gridOptions.get(0),gridOptions
+    private EventHandler<ActionEvent> generateGridTypeEvent() {
+        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(gridOptions.get(0), gridOptions
                 , "gridType", "Cell Type"); // TODO: update language resources
     }
 
-    private EventHandler<ActionEvent> generateNeighborModeEvent(){
-        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(neighborOptions.get(0),neighborOptions
+    private EventHandler<ActionEvent> generateNeighborModeEvent() {
+        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(neighborOptions.get(0), neighborOptions
                 , "neighborModeType", "Neighbor Mode"); // TODO: update language resources
     }
 
-    private EventHandler<ActionEvent> generateEdgePolicyEvent(){
-        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(edgePolicyOptions.get(0),edgePolicyOptions
+    private EventHandler<ActionEvent> generateEdgePolicyEvent() {
+        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(edgePolicyOptions.get(0), edgePolicyOptions
                 , "EdgePolicyType", "Edge Policy"); // TODO: update language resources
     }
 
-    protected EventHandler<ActionEvent> generateNewSimEvent(){
+    protected EventHandler<ActionEvent> generateNewSimEvent() {
         return event -> {
             try {
                 myMainMenuController.generateNewSimulation(myFileManager.getCurrentTextFile());
