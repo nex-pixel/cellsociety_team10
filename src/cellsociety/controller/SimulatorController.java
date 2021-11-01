@@ -29,7 +29,8 @@ public class SimulatorController {
     private int edgePolicy;
 
     public SimulatorController(MainController mainController, FileManager fileManager, String cssFile, ResourceBundle resourceBundle
-    ,int cellType, int neighborMode, int edgePolicy) {
+    ,int cellType, int neighborMode, int edgePolicy) { //TODO too much dependence?
+        // TODO property change listener simple String Property
         this.cellType = cellType;
         this.neighborMode = neighborMode;
         this.edgePolicy = edgePolicy;
@@ -75,23 +76,6 @@ public class SimulatorController {
         return myCSVFile.getAbsolutePath().replaceAll("csv", "sim");
     }
 
-    private void makeGameOfLife(){
-        myGame = new GameOfLifeModel(myCSVFile.getAbsolutePath(), cellType, neighborMode, edgePolicy );
-    }
-    private void makePercolation(){
-        myGame = new PercolationModel(myCSVFile.getAbsolutePath(), cellType, neighborMode, edgePolicy );
-    }
-    private void makeSegregation(){
-        double threshold = myMainController.getSegregationThreshold();
-        myGame = new SegregationModel(myCSVFile.getAbsolutePath(), threshold);
-    }
-    private void makeSpreadingFire(){
-        myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath(),cellType, neighborMode, edgePolicy );
-    }
-    private void makeWaTorWorld(){
-        myGame = new WaTorWorldModel(myCSVFile.getAbsolutePath(),  cellType, neighborMode, edgePolicy );
-    }
-
     /**
      * load a new simulation from the CSV file selected by the user
      */
@@ -119,5 +103,22 @@ public class SimulatorController {
 
     public void updateCellOnClick(int xCoordinate, int yCoordinate){
         myGame.changeCellOnClick(xCoordinate, yCoordinate);
+    }
+
+    private void makeGameOfLife(){
+        myGame = new GameOfLifeModel(myCSVFile.getAbsolutePath(), cellType, neighborMode, edgePolicy );
+    }
+    private void makePercolation(){
+        myGame = new PercolationModel(myCSVFile.getAbsolutePath(), cellType, neighborMode, edgePolicy );
+    }
+    private void makeSegregation(){
+        double threshold = myMainController.getSegregationThreshold();
+        myGame = new SegregationModel(myCSVFile.getAbsolutePath(), threshold);
+    }
+    private void makeSpreadingFire(){
+        myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath(),cellType, neighborMode, edgePolicy );
+    }
+    private void makeWaTorWorld(){
+        myGame = new WaTorWorldModel(myCSVFile.getAbsolutePath(),  cellType, neighborMode, edgePolicy );
     }
 }

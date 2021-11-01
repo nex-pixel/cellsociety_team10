@@ -28,6 +28,7 @@ public abstract class ButtonFactory {
     protected ArrayList<String> cssFileOptions = new ArrayList<>();
     protected String modelLabelKey = "modelLabelOptions";
     protected String cssFileLabelKey = "cssFileLabelOptions";
+    protected String gridLabelKey = "gridLabelOptions";
 
     public ButtonFactory(){
         buttonMap = new LinkedHashMap<>();

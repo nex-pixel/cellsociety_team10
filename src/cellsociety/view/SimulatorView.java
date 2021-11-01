@@ -3,12 +3,17 @@ package cellsociety.view;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import cellsociety.games.Game;
+import cellsociety.view.cell.Cell;
 import cellsociety.view.factories.buttonFactory.SimulatorButtonFactory;
 import cellsociety.view.cell.HexagonCell;
 import cellsociety.view.cell.SquareCell;
 import cellsociety.view.cell.TriangleCell;
 import cellsociety.view.factories.cssFactory.CSSFactory;
 import cellsociety.view.factories.sliderFactory.SliderFactory;
+import cellsociety.view.gridBuilder.GridBuilder;
+import cellsociety.view.gridBuilder.HexagonGridBuilder;
+import cellsociety.view.gridBuilder.SquareGridBuilder;
+import cellsociety.view.gridBuilder.TriangleGridBuilder;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Node;
@@ -21,6 +26,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import java.awt.*;
 import java.io.*;
 import java.util.*;
 
@@ -47,6 +53,7 @@ public class SimulatorView {
     private double sliderMax = 5.0;
     private String simulatorBoxId = "simulator-root";
     private int cellType;
+    private GridBuilder myGridBuilder;
     private CSSFactory myCSSFactory;
 
 
@@ -57,20 +64,16 @@ public class SimulatorView {
         myAnimation = new Timeline();
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
+        mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
+        mySliderFactory = new SliderFactory(sliderValue);
+        myGridView = new GridPane();
         initializeGridProperties();
         initializeFactories();
-        initializeDefaultGrid();
+        setInitialGrid(cellType);
         initializeSimulationScene();
     }
 
-    private void initializeDefaultGrid(){
-        switch (cellType) {
-            case 0 -> setDefaultGrid(myGridWidth, myGridHeight, myGridView);
-            case 1 -> setDefaultTriangleGrid(myGridWidth, myGridHeight, myGridView);
-            case 2 -> setDefaultHexagonGrid(myGridWidth, myGridHeight, myGridView);
-        }
-    }
-
+    //TODO: may have to move update to simulator controller
     private void initializeGridProperties(){
         myGridWidth = myGame.getNumCols();
         myGridHeight = myGame.getNumRows();
@@ -94,38 +97,24 @@ public class SimulatorView {
         playAnimation();
     }
 
-    public void stopSimulation(){
-        myStage.close();
-    }
-
-    public void step(){
-        myGame.update();
-        updateSimulation(myGame, myGridView);
-    }
-
-    // Start new animation to show search algorithm's steps
-    public void playAnimation () {
-        if (myAnimation != null) {
-            myAnimation.stop();
+    private void setInitialGrid(int cellType){
+        switch (cellType) {
+            case 0 -> {
+                myGridBuilder = new SquareGridBuilder();
+                myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
+            }
+            case 1 -> {
+                myGridBuilder = new TriangleGridBuilder();
+                myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
+            }
+            case 2 -> {
+                myGridBuilder = new HexagonGridBuilder();
+                myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
+            }
         }
-        myAnimation.setCycleCount(Timeline.INDEFINITE);
-        myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(animationSpeed), e -> step()));
-        myAnimation.play();
     }
 
-    public void pause(){
-        myAnimation.pause();
-    }
-
-    public void play(){
-        myAnimation.play();
-    }
-
-    public void setAnimationSpeed(double speed){
-        myAnimation.setRate(speed);
-    }
-
-    public void showAbout() {
+    public void showSimulationInfo() {
         try{
             Scanner file = new Scanner(new File(mySimulatorController.getSimFilePath()));
             StringBuilder simInfo = new StringBuilder();
@@ -143,57 +132,6 @@ public class SimulatorView {
         alert.setContentText(String.valueOf(info));
     }
 
-    // fills the grid with squareCells of defaultColor
-    private void setDefaultGrid(int gridWidth, int gridHeight, GridPane gamePane){
-        for(int i = 0; i < gridWidth; i ++){
-            for(int j = 0; j < gridHeight; j++){
-                SquareCell cell = new SquareCell(mySimulatorController, i, j);
-                cell.setId("default-cell");
-                gamePane.add(cell, i, j);
-            }
-        }
-    }
-    // fills the grid with triangles of defaultColor
-    private void setDefaultTriangleGrid(int gridWidth, int gridHeight, GridPane gamePane){
-        int counter = 0;
-        for(int i = 0; i < gridHeight; i ++){
-            for(int j = 0; j < gridWidth; j++){
-                TriangleCell cell = new TriangleCell(mySimulatorController, counter % 2, j, i);
-                cell.setId("default-cell");
-                gamePane.getChildren().add(cell);
-                setCellLocation(cell,j*25,  i*43.30125);
-                counter += 1;
-            }
-        }
-        setPaneSize(gamePane, (gridWidth+1)*25, gridHeight*43.30125);
-    }
-
-    // fills the grid with hexagons of defaultColor
-    private void setDefaultHexagonGrid(int gridWidth, int gridHeight, GridPane gamePane){
-        int counter = 0;
-        for(int i = 0; i < gridHeight; i ++){
-            for(int j = 0; j < gridWidth; j++){
-                HexagonCell cell = new HexagonCell(mySimulatorController, j, i);
-                cell.setId("default-cell");
-                gamePane.getChildren().add(cell);
-                setCellLocation(cell, j*30.1, i*34.64 + 17.321*(counter%2));
-                counter += 1;
-            }
-            counter = 0;
-        }
-        setPaneSize(gamePane,(gridWidth+1)*30,(gridHeight+1)*34.64);
-    }
-
-    private void setPaneSize(Pane gamePane, double xSize, double ySize){
-        gamePane.setPrefWidth(xSize);
-        gamePane.setPrefHeight(ySize);
-    }
-
-    private void setCellLocation(Polygon cell, double xLocation, double yLocation){
-        cell.setTranslateX(xLocation);
-        cell.setTranslateY(yLocation);
-    }
-
     /**
      * updates the cells based on the values in Map
      * dead cells are colored with deadColor, alive cells are colored with aliveColor
@@ -201,17 +139,16 @@ public class SimulatorView {
      * @return scene with updated cell status
      */
     public void updateSimulation(Game game, GridPane gamePane){
-        for (int x = 0; x < game.getNumCols(); x++) {
-            for (int y = 0; y < game.getNumRows(); y++) {
-                int gridNumber = x * myGridHeight + y;
-                int cellStatus = game.getCellStatus(x, y);
-                updateCell(game, gamePane, gridNumber, cellStatus);
-            }
+        for(Node node : gamePane.getChildren()){
+            Cell cell = (Cell) node;
+            int cellStatus = game.getCellStatus(cell.getPoint());
+            updateCell(gamePane, cell.getPoint(), cellStatus);
         }
     }
 
     // updates cell status
-    private void updateCell(Game game, GridPane gamePane, int cellNumber, int cellStatus){
+    private void updateCell(GridPane gamePane, Point point, int cellStatus){
+        int cellNumber = (point.x) * myGridHeight + point.y;
         Node currNode = gamePane.getChildren().get(cellNumber);
         currNode.setId(cellStatus+"-cell");
     }
@@ -230,5 +167,34 @@ public class SimulatorView {
 
     public void updateCSS(String cssFile){
         myCSSFactory.applyCSS(myScene, cssFile);
+    }
+
+    public void stopSimulation(){
+        myStage.close();
+    }
+
+    public void step(){
+        myGame.update();
+        updateSimulation(myGame, myGridView);
+    }
+
+    // Start new animation to show search algorithm's steps
+    public void playAnimation () {
+        assert myAnimation != null;
+        myAnimation.setCycleCount(Timeline.INDEFINITE);
+        myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(animationSpeed), e -> step()));
+        myAnimation.play();
+    }
+
+    public void pause(){
+        myAnimation.pause();
+    }
+
+    public void play(){
+        myAnimation.play();
+    }
+
+    public void setAnimationSpeed(double speed){
+        myAnimation.setRate(speed);
     }
 }
