@@ -94,5 +94,9 @@ public class MainController {
         return ResourceBundle.getBundle(RESOURCE_PACKAGE + name);
     }
 
+    public double getSegregationThreshold(){
+        return mainMenu.getSegregationThreshold();
+    }
+
 
 }

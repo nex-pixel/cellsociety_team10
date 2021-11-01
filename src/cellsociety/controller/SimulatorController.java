@@ -84,7 +84,8 @@ public class SimulatorController {
         myGame = new PercolationModel(myCSVFile.getAbsolutePath(), cellType, neighborMode, edgePolicy );
     }
     private void makeSegregation(){
-        myGame = new SegregationModel(myCSVFile.getAbsolutePath(), 0.5);
+        double threshold = myMainController.getSegregationThreshold();
+        myGame = new SegregationModel(myCSVFile.getAbsolutePath(), threshold);
     }
     private void makeSpreadingFire(){
         myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath(),cellType, neighborMode, edgePolicy );
