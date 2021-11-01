@@ -139,8 +139,8 @@ public class SegregationModel extends Game {
     }
 
     @Override
-    public void changeCellOnClick(Point point) {
-        Cell cell = getGrid().getBoardCell(point);
+    public void changeCellOnClick(int x, int y) {
+        Cell cell = getGrid().getBoardCell(x, y);
         cell.setCurrentStatus((cell.getCurrentStatus() + 1) % 3);
         update();
     }

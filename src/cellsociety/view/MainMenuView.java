@@ -3,12 +3,16 @@ package cellsociety.view;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
 import cellsociety.error.GenerateError;
-import cellsociety.view.buttonFactory.MainMenuButtonFactory;
+import cellsociety.view.factories.buttonFactory.MainMenuButtonFactory;
+import cellsociety.view.factories.sliderFactory.SliderFactory;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.*;
@@ -22,6 +26,7 @@ public class MainMenuView {
     private String homePageRootID = "home-page-root";
     private MainMenuButtonFactory myMainMenuButtonView;
     private String LANG_KEY;
+    private double segregationThreshold;
 
     public MainMenuView(ResourceBundle languageResourceBundle){
         myLanguageResources = languageResourceBundle;
@@ -34,7 +39,7 @@ public class MainMenuView {
      */
     public Scene setMenuDisplay(MainController mainController, int width, int height) {
         myMainController = mainController;
-        myMainMenuButtonView = new MainMenuButtonFactory(this, myMainController, myLanguageResources, myFileManager);
+        myMainMenuButtonView = new MainMenuButtonFactory(myMainController, myLanguageResources, myFileManager);
         setLabel("Cell Society", "title");
         initializeHomePageRoot();
         Scene scene = new Scene(homePageRoot, width, height);
@@ -43,47 +48,13 @@ public class MainMenuView {
 
     private void initializeHomePageRoot(){
         homePageRoot = new TilePane();
-        homePageRoot.getChildren().add(myMainMenuButtonView.generateButtonPanel());
+        homePageRoot.getChildren().addAll(myMainMenuButtonView.generateButtonPanel());
         homePageRoot.setId(homePageRootID);
     }
 
     private void setLabel(String label, String id){
         Label titleLabel = new Label(label);
         titleLabel.setId(id);
-    }
-
-    public ChoiceDialog<String> generateChoiceDialogBox(String defaultChoice, ArrayList<String> options, String resultType, String content){
-        ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(defaultChoice);
-        addItemsToOptionsList(options, choiceDialog);
-        choiceDialog.setContentText(content);
-        showAndWaitForChoiceDialogResult(choiceDialog, resultType);
-        return choiceDialog;
-    }
-
-    //TODO: use reflection to make this easier
-    private void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog, String resultType){
-        choiceDialog.showAndWait();
-        if(resultType.equals("cssFile")){
-            myMainController.updateCSS(choiceDialog.getSelectedItem());
-        }
-        if(resultType.equals("modelType")){
-            myMainController.updateModelType(choiceDialog.getSelectedItem(), myFileManager);
-        }
-        if(resultType.equals("gridType")){
-            myMainController.setCellType(Integer.parseInt(choiceDialog.getSelectedItem().substring(0,1)));
-        }
-        if(resultType.equals("neighborModeType")){
-            myMainController.setNeighborMode(Integer.parseInt(choiceDialog.getSelectedItem().substring(0,1)));
-        }
-        if(resultType.equals("EdgePolicyType")){
-            myMainController.setEdgePolicy(Integer.parseInt(choiceDialog.getSelectedItem().substring(0,1)));
-        }
-    }
-
-    private void addItemsToOptionsList(ArrayList<String> options, ChoiceDialog<String> choiceDialog){
-        for(String s : options){
-            choiceDialog.getItems().add(s);
-        }
     }
 
     public void applyCSS(Scene scene, String cssFile) {
@@ -93,6 +64,21 @@ public class MainMenuView {
         }catch(Exception e){
             new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_CSS_ERROR);
         }
+    }
+
+    public double getSegregationThreshold(){
+        SliderFactory sliderFactory = new SliderFactory(0.5);
+        Slider slider = sliderFactory.makeSlider(0.0, 1.0,
+                (obs, oldVal, newVal) -> setSegregationThreshold((double)newVal));
+        Scene popUp = new Scene(new HBox(new Text(myLanguageResources.getString("Threshold")), slider));
+        Stage stage = new Stage();
+        stage.setScene(popUp);
+        stage.showAndWait();
+        return segregationThreshold;
+    }
+
+    private void setSegregationThreshold(double value){
+        segregationThreshold = value;
     }
 }
 

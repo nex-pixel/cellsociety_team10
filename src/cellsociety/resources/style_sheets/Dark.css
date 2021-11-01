@@ -4,6 +4,12 @@
     -fx-tile-alignment: center;
 }
 
+#simulator-root{
+    -fx-background-color: #2c2c2c;
+    -fx-alignment: center;
+    -fx-tile-alignment: center;
+}
+
 #main-menu-button{
     -fx-background-color: #3b3f41;
     -fx-text-fill: #b5b5b5;
@@ -27,8 +33,12 @@
     -fx-fill: #ff5050;
 }
 
-#simulator-buttons{
+#simulator-button{
     -fx-background-color: #3b3f41;
     -fx-text-fill: #b5b5b5;
     -fx-border-color: #5c5e5e;
+}
+
+#colorPicker-text{
+    -fx-fill: #b5b5b5;
 }

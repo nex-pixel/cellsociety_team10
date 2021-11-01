@@ -77,7 +77,7 @@ public class MainController {
         simulatorController = new SimulatorController(this, fileManager, cssFile, myLanguageResources,
                 cellType, neighborMode, edgePolicy);
         simulatorController.updateModelType(modelType);
-        simulatorController.updateCSSFile(cssFile);
+        simulatorController.applyCSSFile(cssFile);
         simulatorController.createNewSimulation(csvFile);
     }
 
@@ -93,5 +93,10 @@ public class MainController {
     private ResourceBundle generateResourceBundle(String name) {
         return ResourceBundle.getBundle(RESOURCE_PACKAGE + name);
     }
+
+    public double getSegregationThreshold(){
+        return mainMenu.getSegregationThreshold();
+    }
+
 
 }

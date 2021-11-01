@@ -49,7 +49,6 @@ public class SimulatorController {
         myCSVFile = csvFile;
         actionNameBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_NAME);
         try{
-            System.out.println(cellType+ ","+ neighborMode+ "," +edgePolicy);
             handleMethod(actionNameBundle.getString(myModelType)).invoke(SimulatorController.this);
             mySimulatorView = new SimulatorView(myGame,
                     myCSSFile, myLanguageResources, this, cellType);
@@ -58,6 +57,10 @@ public class SimulatorController {
             myFileManager.checkFileValidity(csvFile);
             new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_SIM_GENERATION);
         }
+    }
+
+    public void saveCSVFile(){
+        myFileManager.saveCSVFile(myGame);
     }
 
     protected Method handleMethod(String name) {
@@ -76,13 +79,13 @@ public class SimulatorController {
 
     private void makeGameOfLife(){
         myGame = new GameOfLifeModel(myCSVFile.getAbsolutePath(), cellType, neighborMode, edgePolicy );
-        System.out.println("jfwnoewnfowe");
     }
     private void makePercolation(){
         myGame = new PercolationModel(myCSVFile.getAbsolutePath(), cellType, neighborMode, edgePolicy );
     }
     private void makeSegregation(){
-        myGame = new SegregationModel(myCSVFile.getAbsolutePath(), 0.5);
+        double threshold = myMainController.getSegregationThreshold();
+        myGame = new SegregationModel(myCSVFile.getAbsolutePath(), threshold);
     }
     private void makeSpreadingFire(){
         myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath(),cellType, neighborMode, edgePolicy );
@@ -107,12 +110,16 @@ public class SimulatorController {
         myModelType = modelType;
     }
 
-    public void updateCSSFile(String cssFile){
+    public void updateCSSFile(String result){
+        String cssFile = myLanguageResources.getString(result);
+        mySimulatorView.updateCSS(cssFile);
+    }
+
+    public void applyCSSFile(String cssFile){
         myCSSFile = cssFile;
     }
 
     public void updateCellOnClick(int xCoordinate, int yCoordinate){
-        Point point = new Point(xCoordinate, yCoordinate);
-        myGame.changeCellOnClick(point);
+        myGame.changeCellOnClick(xCoordinate, yCoordinate);
     }
 }

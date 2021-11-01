@@ -16,7 +16,7 @@ public abstract class Grid {
     private int EDGE_POLICY_TORUS = 1;
     private int EDGE_POLICY_CYLINDER = 2;
     protected PropertiesReader myReader;
-    private final String neighborDataFile = "cellsociety.resources.NeighborPositionData";
+    private final String neighborDataFile = "cellsociety.resources.gameData.NeighborPositionData";
 
 
     public Grid(int[][] states, int neighborMode, int edgePolicy) {
@@ -102,8 +102,20 @@ public abstract class Grid {
         return myBoard.keySet();
     }
 
+    public Cell getBoardCell(int x, int y) {
+        return myBoard.get(new Point(x, y));
+    }
+
     public Cell getBoardCell(Point point) {
         return myBoard.get(point);
+    }
+
+    public int getCellStatus(int x, int y){
+        return myBoard.get(getPoint(x, y)).getCurrentStatus();
+    }
+
+    protected Point getPoint(int x, int y){
+        return new Point(x, y);
     }
 
     public Cell getXYBoardCell(int x, int y) {

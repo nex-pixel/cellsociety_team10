@@ -1,6 +1,8 @@
 package cellsociety.controller;
 
 import cellsociety.error.GenerateError;
+import cellsociety.games.Game;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -13,6 +15,8 @@ public class FileManager {
     private ResourceBundle myLanguageResources;
     private String INVALID_FILE = "InvalidFileError";
     private String LANG_KEY = "language";
+    private String INVALID_SAVE = "InvalidSaveFile";
+    private String SAVE_CSV_LABEL = "SaveCSVLabel";
 
     public FileManager(ResourceBundle resourceBundle){
         myLanguageResources = resourceBundle;
@@ -32,6 +36,17 @@ public class FileManager {
 
         if (file != null) {
             currentTextFile = file;
+        }
+    }
+
+    public void saveCSVFile(Game myGame){
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setContentText(myLanguageResources.getString(SAVE_CSV_LABEL));
+        try{
+            String fileName = dialog.showAndWait().get();
+            myGame.saveCSVFile(fileName, myLanguageResources);
+        }catch(Exception e){
+            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_SAVE);
         }
     }
 

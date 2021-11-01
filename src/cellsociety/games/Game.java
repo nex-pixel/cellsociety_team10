@@ -19,7 +19,7 @@ public abstract class Game {
 
     private ReadFile myReader;
     private Grid myGrid;
-    private static final String DEFAULT_GAME_DATA = "cellsociety.resources.GameData";
+    private static final String DEFAULT_GAME_DATA = "cellsociety.resources.gameData.GameData";
     protected PropertiesReader myGameDataReader;
     private String LANG_KEY = "language";
     private String INVALID_SAVE = "InvalidSaveFile";
@@ -140,7 +140,7 @@ public abstract class Game {
         }
     }
 
-    public abstract void changeCellOnClick (Point point);
+    public abstract void changeCellOnClick (int x, int y);
 
     protected int[][] toGridArray () {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];
