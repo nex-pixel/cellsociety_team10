@@ -21,8 +21,7 @@ public class WaTorWorldModel extends Game{
     private int REPRODUCE_VAL;
     private int ENERGY_FROM_EATING_FISH;
     private int ENERGY_LOST_FROM_MOVING;
-    private final int NUM_STATES = 3;
-    private final int DEFAULT_GRID_CHOICE = 0;
+    private static final int NUM_STATES = 3;
 
     /***
      * Constructor that takes in a CSV file for grid initialization,

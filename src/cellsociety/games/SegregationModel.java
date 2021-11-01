@@ -20,8 +20,8 @@ public class SegregationModel extends Game {
     private int RANGE;
     private double myThreshold;
     private int myNumOfAgents;
-    private final int NUM_STATES = 3;
-    private final int DEFAULT_GRID_CHOICE = 0;
+    private static final int NUM_STATES = 3;
+    private static final int DEFAULT_GRID_CHOICE = 0;
 
     private List<Cell> myEmptyCells;
 

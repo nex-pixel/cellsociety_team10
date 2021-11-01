@@ -25,8 +25,8 @@ public abstract class Game {
     private Grid myGrid;
     private static final String DEFAULT_GAME_DATA = "cellsociety.resources.gameData.GameData";
     protected PropertiesReader myGameDataReader;
-    private String INVALID_SAVE = "InvalidSaveFile";
-    private final int DEFAULT_GRID_CHOICE = 0;
+    private static final String INVALID_SAVE = "InvalidSaveFile";
+    private static final int DEFAULT_GRID_CHOICE = 0;
     private int NUM_STATES;
 
     /***

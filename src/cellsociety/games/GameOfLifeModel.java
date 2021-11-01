@@ -12,8 +12,7 @@ import java.util.List;
 public class GameOfLifeModel extends Game {
     private int ALIVE;
     private int DEAD;
-    private final int NUM_STATES = 2;
-    private final int DEFAULT_GRID_CHOICE = 0;
+    private static final int NUM_STATES = 2;
 
 
     /***
