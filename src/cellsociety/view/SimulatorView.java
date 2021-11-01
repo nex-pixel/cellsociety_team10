@@ -56,7 +56,6 @@ public class SimulatorView {
     private CSSFactory myCSSFactory;
 
 
-
     public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController, int cellType){
         mySimulatorController = simulatorController;
         myGame = game;
@@ -69,7 +68,6 @@ public class SimulatorView {
         showSimulationScene();
     }
 
-    // initializes all grid properties
     private void initializeGridProperties(){
         myGridWidth = myGame.getNumCols();
         myGridHeight = myGame.getNumRows();
@@ -120,7 +118,7 @@ public class SimulatorView {
         playAnimation();
     }
 
-    private void playAnimation () {
+    private void playAnimation() {
         assert myAnimation != null;
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(DEFAULT_ANIMATION_SPEED), e -> step()));
@@ -163,12 +161,18 @@ public class SimulatorView {
             StringBuilder simInfo = new StringBuilder();
             while(file.hasNextLine()) simInfo.append(file.nextLine()).append("\n");
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(myLanguageResources.getString(ABOUT_SIMULATION_LABEL));
-            alert.setContentText(String.valueOf(simInfo));
+            setAlertContent(alert,myLanguageResources.getString(ABOUT_SIMULATION_LABEL), String.valueOf(simInfo));
+            alert.showAndWait();
             alert.showAndWait();
         }catch(FileNotFoundException e){
             new GenerateError(myLanguageResources, INVALID_SIM_FILE);
         }
+    }
+
+    // generates alert content to be displayed
+    private void setAlertContent(Alert alert, String text, String info){
+        alert.setHeaderText(text);
+        alert.setContentText(String.valueOf(info));
     }
 
     /**
