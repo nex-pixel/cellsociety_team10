@@ -25,8 +25,10 @@ public class HexagonGridTest {
 
     int[][] gridArrayOddRows = {{0,1,0},{1,0,1},{1,1,1}};
     int[][] gridArrayEvenRows = {{0,1,0},{1,0,1},{1,1,1},{0,0,1}};
-    int[][] expandedGridArray = {{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,1,0,0,0},{0,0,1,0,1,0,0},{0,0,1,1,1,0,0},
+    int[][] expandedGridArrayOdd = {{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,1,0,0,0},{0,0,1,0,1,0,0},{0,0,1,1,1,0,0},
             {0,0,0,0,0,0,0},{0,0,0,0,0,0,0}};
+    int[][] expandedGridArrayEven = {{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,1,0,0,0},{0,0,1,0,1,0,0},{0,0,1,1,1,0,0},
+            {0,0,0,0,1,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0}};
 
     @BeforeEach
     public void setUp () {
@@ -145,6 +147,94 @@ public class HexagonGridTest {
                 new Cell(1, 0,1),
                 new Cell(0, 5, 0));
         assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
+    }
+
+    @Test
+    void checkChangeOfNeighborModeOddRows () {
+        neighborModeCheckSpecificRowType(gridArrayOddRows);
+    }
+
+    @Test
+    void checkChangeOfNeighborModeEvenRows () {
+        neighborModeCheckSpecificRowType(gridArrayEvenRows);
+    }
+
+    private void neighborModeCheckSpecificRowType(int[][] array) {
+        //Complete to edge
+        Grid originalGrid = new HexagonGrid(array, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_FINITE);
+        originalGrid.changeNeighborMode(NEIGHBOR_MODE_EDGE);
+        Grid expectedGridEdge = new HexagonGrid(array, NEIGHBOR_MODE_EDGE, EDGE_POLICY_FINITE);
+        checkPointCellValues(expectedGridEdge, originalGrid);
+
+        //edge to bottom half
+        originalGrid.changeNeighborMode(NEIGHBOR_MODE_BOTTOM_HALF);
+        Grid expectedGridBottomHalf = new HexagonGrid(array, NEIGHBOR_MODE_BOTTOM_HALF, EDGE_POLICY_FINITE);
+        checkPointCellValues(expectedGridBottomHalf, originalGrid);
+
+        //bottom half to complete
+        originalGrid.changeNeighborMode(NEIGHBOR_MODE_COMPLETE);
+        Grid expectedGridComplete = new HexagonGrid(array, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_FINITE);
+        checkPointCellValues(expectedGridComplete, originalGrid);
+    }
+
+    @Test
+    void checkChangeOfEdgePolicyOddRows(){
+        edgePolicyCheckSpecificRowType(gridArrayOddRows);
+    }
+
+    @Test
+    void checkChangeOfEdgePolicyEvenRows(){
+        edgePolicyCheckSpecificRowType(gridArrayEvenRows);
+    }
+
+    private void edgePolicyCheckSpecificRowType(int[][] gridArrayOddRows) {
+        //Finite to cylinder
+        Grid originalGrid = new HexagonGrid(gridArrayOddRows, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_FINITE);
+        originalGrid.changeEdgePolicy(EDGE_POLICY_CYLINDER);
+        Grid expectedGridCylinder = new HexagonGrid(gridArrayOddRows, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_CYLINDER);
+        checkPointCellValues(expectedGridCylinder, originalGrid);
+
+        //Cylinder to torus
+        originalGrid.changeEdgePolicy(EDGE_POLICY_TORUS);
+        Grid expectedGridTorus = new HexagonGrid(gridArrayOddRows, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_TORUS);
+        checkPointCellValues(expectedGridTorus, originalGrid);
+
+        //torus to cylinder
+        originalGrid.changeEdgePolicy(EDGE_POLICY_FINITE);
+        Grid expectedGridFinite = new HexagonGrid(gridArrayOddRows, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_FINITE);
+        checkPointCellValues(expectedGridFinite, originalGrid);
+    }
+
+    @Test
+    void checkCompleteChangeNeighborEdge(){
+        //Odd number of rows was more risky so better check
+        Grid expectedGrid = myGrid_Complete_Finite_OddRows;
+        Grid originalGrid = new HexagonGrid(gridArrayOddRows, NEIGHBOR_MODE_BOTTOM_HALF, EDGE_POLICY_TORUS);
+        originalGrid.changeNeighborMode(NEIGHBOR_MODE_COMPLETE);
+        originalGrid.changeEdgePolicy(EDGE_POLICY_FINITE);
+        checkPointCellValues(expectedGrid, originalGrid);
+    }
+
+    @Test
+    void checkGridExpansion(){
+        HexagonGrid expandedGridOdd = new HexagonGrid(expandedGridArrayOdd, 0, 0);
+        for (HexagonGrid grid: myGridsOdd) {
+            grid.expandGrid(2, 2, 2, 2);
+            checkPointCellValues(expandedGridOdd, grid);
+        }
+
+        HexagonGrid expandedGridEven = new HexagonGrid(expandedGridArrayEven, 0, 0);
+        for (HexagonGrid grid: myGridsEven) {
+            grid.expandGrid(2, 2, 2, 2);
+            checkPointCellValues(expandedGridEven, grid);
+        }
+    }
+
+    private void checkPointCellValues(Grid expandedGrid, Grid grid) {
+        for (Point currPoint : grid.getPoints()) {
+            Cell myCell = grid.getBoardCell(currPoint);
+            assertEquals(expandedGrid.getBoardCell(currPoint).getCurrentStatus(), myCell.getCurrentStatus());
+        }
     }
 
 }

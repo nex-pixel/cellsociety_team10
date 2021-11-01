@@ -189,8 +189,8 @@ public abstract class Grid {
         setBoard(newGrid.getBoard());
         initializeNeighbors();
 
-        setMyNumRows(myNumRows + left + right);
-        setMyNumCols(myNumCols + top + bottom);
+        setMyNumRows(myNumRows + top + bottom);
+        setMyNumCols(myNumCols + right + left);
     }
 
     protected void populateNeighborData() {
@@ -204,4 +204,6 @@ public abstract class Grid {
         setNeighborRows(myReader.getIntListProperty(row));
         setNeighborCols(myReader.getIntListProperty(col));
     }
+
+
 }

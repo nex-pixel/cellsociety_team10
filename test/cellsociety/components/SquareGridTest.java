@@ -198,13 +198,65 @@ public class SquareGridTest {
     }
 
     @Test
+    void checkChangeOfNeighborMode () {
+        //Complete to edge
+        Grid originalGrid = myGrid_Complete_Finite;
+        originalGrid.changeNeighborMode(NEIGHBOR_MODE_EDGE);
+        Grid expectedGridEdge = myGrid_Edge_Finite;
+        checkPointCellValues(expectedGridEdge, originalGrid);
+
+        //edge to bottom half
+        originalGrid.changeNeighborMode(NEIGHBOR_MODE_BOTTOM_HALF);
+        Grid expectedGridBottomHalf = new SquareGrid(passedInGridArray, NEIGHBOR_MODE_BOTTOM_HALF, EDGE_POLICY_FINITE);
+        checkPointCellValues(expectedGridBottomHalf, originalGrid);
+
+        //bottom half to complete
+        originalGrid.changeNeighborMode(NEIGHBOR_MODE_COMPLETE);
+        Grid expectedGridComplete = new SquareGrid(passedInGridArray, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_FINITE);
+        checkPointCellValues(expectedGridComplete, originalGrid);
+    }
+
+    @Test
+    void checkChangeOfEdgePolicy(){
+        //Finite to cylinder
+        Grid originalGrid = myGrid_Complete_Finite;
+        originalGrid.changeEdgePolicy(EDGE_POLICY_CYLINDER);
+        Grid expectedGridCylinder = myGrid_Complete_Cylinder;
+        checkPointCellValues(expectedGridCylinder, originalGrid);
+
+        //Cylinder to torus
+        originalGrid.changeEdgePolicy(EDGE_POLICY_TORUS);
+        Grid expectedGridTorus = myGrid_Complete_Torus;
+        checkPointCellValues(expectedGridTorus, originalGrid);
+
+        //torus to cylinder
+        originalGrid.changeEdgePolicy(EDGE_POLICY_FINITE);
+        Grid expectedGridFinite = myGrid_Complete_Finite;
+        checkPointCellValues(expectedGridFinite, originalGrid);
+    }
+
+    @Test
+    void checkCompleteChangeNeighborEdge(){
+        Grid expectedGrid = myGrid_Complete_Finite;
+        Grid originalGrid = new SquareGrid(passedInGridArray, NEIGHBOR_MODE_BOTTOM_HALF, EDGE_POLICY_TORUS);
+        originalGrid.changeNeighborMode(NEIGHBOR_MODE_COMPLETE);
+        originalGrid.changeEdgePolicy(EDGE_POLICY_FINITE);
+        checkPointCellValues(expectedGrid, originalGrid);
+    }
+
+    @Test
     void checkGridExpansion(){
+        Grid expandedGrid = new SquareGrid(expandedGridArray, 0,0 );
         for (SquareGrid grid: myGrids) {
             grid.expandGrid(2, 2, 2, 2);
-            for (Point currPoint : grid.getPoints()) {
-                Cell myCell = grid.getBoardCell(currPoint);
-                assertEquals(expandedGridArray[currPoint.y][currPoint.x], myCell.getCurrentStatus());
-            }
+            checkPointCellValues(expandedGrid, grid);
+        }
+    }
+
+    private void checkPointCellValues(Grid expandedGrid, Grid grid) {
+        for (Point currPoint : grid.getPoints()) {
+            Cell myCell = grid.getBoardCell(currPoint);
+            assertEquals(expandedGrid.getBoardCell(currPoint).getCurrentStatus(), myCell.getCurrentStatus());
         }
     }
 }

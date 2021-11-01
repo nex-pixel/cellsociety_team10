@@ -40,7 +40,7 @@ public class TriangleGrid extends Grid {
         int myNumRows = getNumRows();
         int myNumCols = getNumCols();
         Set<Point> points = getPoints();
-        Grid newGrid = new TriangleGrid(new int[myNumRows + top + bottom][myNumRows + left + right], getNeighborMode(), getEdgePolicy());
+        Grid newGrid = new TriangleGrid(new int[myNumRows + top + bottom][myNumCols + left + right], getNeighborMode(), getEdgePolicy());
         initializeNewGridasOriginal(1, left, top, right, bottom, myNumRows, myNumCols, points, newGrid);
     }
 
