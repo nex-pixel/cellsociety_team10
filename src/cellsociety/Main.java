@@ -23,10 +23,11 @@ public class Main extends Application {
     private String dialogContent = "Please select a language";
     private String DEFAULT_LANG = "English";
     private ResourceBundle myLanguageResources;
+
     /**
      * A method to test (and a joke :).
      */
-    public double getVersion () {
+    public double getVersion() {
         return 0.001;
     }
 
@@ -43,13 +44,13 @@ public class Main extends Application {
         mainController.startMainMenu();
     }
 
-    private void populateLanguageOptions(){
+    private void populateLanguageOptions() {
         languageOptions.add("English");
         languageOptions.add("Spanish");
         languageOptions.add("Korean");
     }
 
-    private ChoiceDialog<String> generateChoiceDialogBox(String defaultChoice, ArrayList<String> options, String content){
+    private ChoiceDialog<String> generateChoiceDialogBox(String defaultChoice, ArrayList<String> options, String content) {
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(defaultChoice);
         choiceDialog.setContentText(content);
         addItemsToOptionsList(options, choiceDialog);
@@ -57,13 +58,13 @@ public class Main extends Application {
         return choiceDialog;
     }
 
-    private void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog){
+    private void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog) {
         choiceDialog.showAndWait();
         language = choiceDialog.getSelectedItem();
     }
 
-    private void addItemsToOptionsList(ArrayList<String> options, ChoiceDialog<String> choiceDialog){
-        for(String s : options){
+    private void addItemsToOptionsList(ArrayList<String> options, ChoiceDialog<String> choiceDialog) {
+        for (String s : options) {
             choiceDialog.getItems().add(s);
         }
     }

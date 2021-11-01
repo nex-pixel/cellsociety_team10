@@ -6,10 +6,13 @@ import javafx.scene.shape.Polygon;
 import java.awt.*;
 
 public class HexagonCell extends Cell {
+    private static final double HEXAGON_WIDTH = 40.0;
+    private static final double HEXAGON_HEIGHT = 34.6;
 
     public HexagonCell(SimulatorController simulatorController, int xCoordinate, int yCoordinate) {
         super(simulatorController, xCoordinate, yCoordinate);
-        this.getPoints().addAll(10.0, 0.0, 30.0, 0.0, 40.0, 17.321, 30.0, 34.64, 10.0, 34.64, 0.0, 17.321);
+        this.getPoints().addAll(HEXAGON_WIDTH / 4, 0.0, HEXAGON_WIDTH * 3 / 4, 0.0, HEXAGON_WIDTH, HEXAGON_HEIGHT / 2,
+                HEXAGON_WIDTH * 3 / 4, HEXAGON_HEIGHT, HEXAGON_WIDTH / 4, HEXAGON_HEIGHT, 0.0, HEXAGON_HEIGHT / 2);
         this.setOnMouseClicked(event -> simulatorController.updateCellOnClick(xCoordinate, yCoordinate));
     }
 }

@@ -45,12 +45,12 @@ public abstract class Grid {
         }
     }
 
-    public void changeEdgePolicy(int newEdgePolicy){
+    public void changeEdgePolicy(int newEdgePolicy) {
         myEdgePolicy = newEdgePolicy;
         initializeNeighbors();
     }
 
-    public void changeNeighborMode(int newNeighborMode){
+    public void changeNeighborMode(int newNeighborMode) {
         myNeighborMode = newNeighborMode;
         initializeNeighbors();
     }
@@ -71,8 +71,13 @@ public abstract class Grid {
         myNumCols = newNumCols;
     }
 
-    protected void setMaxCol (int maxCol) { myMaxCol = maxCol; }
-    protected void assignMaxCol () { setMaxCol(myNumCols); }
+    protected void setMaxCol(int maxCol) {
+        myMaxCol = maxCol;
+    }
+
+    protected void assignMaxCol() {
+        setMaxCol(myNumCols);
+    }
 
     public int getEdgePolicy() {
         return myEdgePolicy;
@@ -110,11 +115,11 @@ public abstract class Grid {
         return myBoard.get(point);
     }
 
-    public int getCellStatus(int x, int y){
+    public int getCellStatus(int x, int y) {
         return myBoard.get(getPoint(x, y)).getCurrentStatus();
     }
 
-    protected Point getPoint(int x, int y){
+    protected Point getPoint(int x, int y) {
         return new Point(x, y);
     }
 
@@ -141,7 +146,7 @@ public abstract class Grid {
     }
 
     // Will also preserve the order by using LinkedHashSet
-    private void removeDuplicatesInNeighborCells (Cell cell) {
+    private void removeDuplicatesInNeighborCells(Cell cell) {
         cell.setNeighborCells(new ArrayList<>(
                 new LinkedHashSet<>(cell.getNeighborCells())));
     }
@@ -196,7 +201,7 @@ public abstract class Grid {
             Point movedPoint = point;
             movedPoint.setLocation(point.x + (left * multiplicationFactor), point.y + top);
 
-            newGrid.getBoard().put(movedPoint,movedCell);
+            newGrid.getBoard().put(movedPoint, movedCell);
         }
         setBoard(newGrid.getBoard());
         initializeNeighbors();

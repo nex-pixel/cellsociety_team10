@@ -12,22 +12,22 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class SimulatorButtonFactory extends ButtonFactory {
-
+    private static final String SIMULATOR_ACTION_EVENTS = "SimulatorActionEvents";
+    private static final String SIMULATOR_BUTTON_ID = "simulator-button";
+    // things to remember
     private SimulatorController mySimulatorController;
     private SimulatorView mySimulatorView;
-    private String simulatorActionEventsPath = "SimulatorActionEvents";
-    private String simulatorButtonID = "simulator-button";
     private SimulatorChoiceDialogBoxFactory mySimulatorChoiceDialogBoxFactory;
     private ReflectionHandler myReflectionHandler;
 
-    public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController, ResourceBundle langResourceBundle){
+    public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController, ResourceBundle langResourceBundle) {
         super();
-        ACTIONS_NAME_PATH += simulatorActionEventsPath;
+        ACTIONS_NAME_PATH += SIMULATOR_ACTION_EVENTS;
         myActionEventsResources = ResourceBundle.getBundle(ACTIONS_NAME_PATH);
         mySimulatorView = simulatorView;
         mySimulatorController = simulatorController;
         myLanguageResources = langResourceBundle;
-        buttonID = simulatorButtonID;
+        buttonID = SIMULATOR_BUTTON_ID;
         mySimulatorChoiceDialogBoxFactory = new SimulatorChoiceDialogBoxFactory(mySimulatorController, myLanguageResources);
         myReflectionHandler = new ReflectionHandler(myLanguageResources);
         populateOptions(cssFileOptions, labelOptionsBundle, cssFileLabelKey);
@@ -35,48 +35,53 @@ public class SimulatorButtonFactory extends ButtonFactory {
     }
 
     @Override
-    protected void populateButtonEvents(){
-        try{
+    protected void populateButtonEvents() {
+        try {
             ArrayList<String> list = Collections.list(myActionEventsResources.getKeys());
             Collections.sort(list);
-            for(String key : list){
+            for (String key : list) {
                 EventHandler<ActionEvent> buttonEvent = (EventHandler<ActionEvent>) myReflectionHandler.handleMethod(myActionEventsResources.getString(key), "cellsociety.view.factories.buttonFactory.SimulatorButtonFactory").invoke(SimulatorButtonFactory.this);
                 buttonMap.put(myLanguageResources.getString(key), buttonEvent);
             }
-        }catch(IllegalAccessException | InvocationTargetException e){
+        } catch (IllegalAccessException | InvocationTargetException e) {
             new GenerateError(myLanguageResources, INVALID_BUTTON_GENERATION);
         }
     }
 
-    private EventHandler<ActionEvent> generatePlayEvent(){
+    private EventHandler<ActionEvent> generatePlayEvent() {
         return event -> mySimulatorView.play();
     }
 
-    private EventHandler<ActionEvent> generatePauseEvent(){
+    private EventHandler<ActionEvent> generatePauseEvent() {
         return event -> mySimulatorView.pause();
     }
 
-    private EventHandler<ActionEvent> generateStepEvent(){
+    private EventHandler<ActionEvent> generateStepEvent() {
         return event -> mySimulatorView.step();
     }
 
-    private EventHandler<ActionEvent> generateSaveEvent(){
+    private EventHandler<ActionEvent> generateSaveEvent() {
         return event -> mySimulatorController.saveCSVFile();
     }
 
-    private EventHandler<ActionEvent> generateLoadEvent(){
+    private EventHandler<ActionEvent> generateLoadEvent() {
         return event -> mySimulatorController.loadNewCSV();
     }
 
-    private EventHandler<ActionEvent> generateReplaceEvent(){return event -> mySimulatorController.replaceWithNewCSV();}
-
-    private EventHandler<ActionEvent> generateAboutEvent() {return event -> {
-        mySimulatorView.displaySimulationInfo();
-    };
+    private EventHandler<ActionEvent> generateReplaceEvent() {
+        return event -> mySimulatorController.replaceWithNewCSV();
     }
 
-    private EventHandler<ActionEvent> generateNewCSSEvent(){ return event -> mySimulatorChoiceDialogBoxFactory.generateChoiceDialogBox(cssFileOptions.get(0),
-            cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent"));}
+    private EventHandler<ActionEvent> generateAboutEvent() {
+        return event -> {
+            mySimulatorView.displaySimulationInfo();
+        };
+    }
+
+    private EventHandler<ActionEvent> generateNewCSSEvent() {
+        return event -> mySimulatorChoiceDialogBoxFactory.generateChoiceDialogBox(cssFileOptions.get(0),
+                cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent"));
+    }
 
 
 }

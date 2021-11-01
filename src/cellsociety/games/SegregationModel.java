@@ -32,7 +32,7 @@ public class SegregationModel extends Game {
      * @param filename gives the CSV figuration file for the grid
      * @param threshold is the rate of satisfaction based on the percentage of surrounded agents that are like itself
      */
-    public SegregationModel (String filename, double threshold) {
+    public SegregationModel(String filename, double threshold) {
         super(filename);
         setEmptyCells(threshold);
     }
@@ -47,7 +47,7 @@ public class SegregationModel extends Game {
      * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
      * @param threshold is the rate of satisfaction based on the percentage of surrounded agents that are like itself
      */
-    public SegregationModel (String filename, int gridType, int neighborMode, int edgePolicy, double threshold) {
+    public SegregationModel(String filename, int gridType, int neighborMode, int edgePolicy, double threshold) {
         super(filename, gridType, neighborMode, edgePolicy);
         setEmptyCells(threshold);
     }
@@ -63,21 +63,19 @@ public class SegregationModel extends Game {
      * @param agentXRate is the percentage of agent X Cells among all non-empty Cells in the grid
      * @param threshold is the rate of satisfaction based on the percentage of surrounded agents that are like itself
      */
-    public SegregationModel (int numRows, int numCols, double emptyRate, double agentXRate, double threshold) {
+    public SegregationModel(int numRows, int numCols, double emptyRate, double agentXRate, double threshold) {
         populateGameConditions();
         myNumOfAgents = 0;
         int[][] randArray = new int[numRows][numCols];
         for (int r = 0; r < numRows; r++) {
             for (int c = 0; c < numCols; c++) {
                 double randStatus = Math.random();
-                if (randStatus <= emptyRate){
+                if (randStatus <= emptyRate) {
                     randArray[r][c] = EMPTY;
-                }
-                else if (randStatus - emptyRate <= agentXRate * (1 - emptyRate)) {
+                } else if (randStatus - emptyRate <= agentXRate * (1 - emptyRate)) {
                     randArray[r][c] = AGENT_X;
                     myNumOfAgents++;
-                }
-                else {
+                } else {
                     randArray[r][c] = AGENT_O;
                     myNumOfAgents++;
                 }
@@ -95,7 +93,7 @@ public class SegregationModel extends Game {
      * @param numRows is the number of rows of the grid
      * @param threshold is the rate of satisfaction based on the percentage of surrounded agents that are like itself
      */
-    public SegregationModel (int numCols, int numRows, double threshold){
+    public SegregationModel(int numCols, int numRows, double threshold) {
         super(numCols, numRows);
         setEmptyCells(threshold);
     }
@@ -112,7 +110,7 @@ public class SegregationModel extends Game {
      * @param threshold is the rate of satisfaction based on the percentage of surrounded agents that are like itself
      *
      */
-    public SegregationModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy, double threshold) {
+    public SegregationModel(int numCols, int numRows, int gridType, int neighborMode, int edgePolicy, double threshold) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
         setEmptyCells(threshold);
     }
@@ -123,7 +121,7 @@ public class SegregationModel extends Game {
      * @param states specifies the grid
      * @param threshold is the rate of satisfaction based on the percentage of surrounded agents that are like itself
      */
-    public SegregationModel (int[][] states, double threshold) {
+    public SegregationModel(int[][] states, double threshold) {
         setGrid(states, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
         setEmptyCells(threshold);
     }
@@ -133,19 +131,19 @@ public class SegregationModel extends Game {
      *
      * @param copy is the SegregationModel that we want to copy from
      */
-    public SegregationModel (SegregationModel copy) {
+    public SegregationModel(SegregationModel copy) {
         super(copy);
         myThreshold = copy.myThreshold;
     }
 
-    protected void setNumStatesOnBoard () {
+    protected void setNumStatesOnBoard() {
         setNumStates(NUM_STATES);
     }
 
-    private void setEmptyCells (double threshold) {
+    private void setEmptyCells(double threshold) {
         myThreshold = threshold;
         myEmptyCells = new ArrayList<>();
-        for (Point point: getGrid().getPoints()) {
+        for (Point point : getGrid().getPoints()) {
             Cell cell = getGrid().getBoardCell(point);
             if (cell.getCurrentStatus() == EMPTY) {
                 myEmptyCells.add(cell);
@@ -158,14 +156,16 @@ public class SegregationModel extends Game {
      *
      * @return a list of Cells whose currentStatus are empty.
      */
-    public List<Cell> getEmptyCells () { return myEmptyCells; }
+    public List<Cell> getEmptyCells() {
+        return myEmptyCells;
+    }
 
     /***
      * Setter method that changes the threshold
      *
      * @param newThreshold is the newThreshold we want the model to have
      */
-    public void setThreshold (double newThreshold){
+    public void setThreshold(double newThreshold) {
         myThreshold = newThreshold;
     }
 
@@ -174,16 +174,18 @@ public class SegregationModel extends Game {
      *
      * @return the threshold
      */
-    public double getThreshold () { return myThreshold; }
+    public double getThreshold() {
+        return myThreshold;
+    }
 
     @Override
-    public void update () {
+    public void update() {
         super.update();
     }
 
     @Override
-    protected boolean applyRule (Cell cell) {
-        if (cell.getCurrentStatus()!= EMPTY && !isSatisfied(cell)) {
+    protected boolean applyRule(Cell cell) {
+        if (cell.getCurrentStatus() != EMPTY && !isSatisfied(cell)) {
             //reallocate the cell
             Random rand = new Random();
             Cell nextCell = myEmptyCells.get(rand.nextInt(myEmptyCells.size()));
@@ -213,10 +215,10 @@ public class SegregationModel extends Game {
      * @param cell is the Cell we want to know about
      * @return whether this Cell is satisfied or not
      */
-    public boolean isSatisfied (Cell cell) {
+    public boolean isSatisfied(Cell cell) {
         int numOccupiedNeighbors = 0;
         int numSameNeighbors = 0;
-        for (Cell neighbor: cell.getNeighborCells()) {
+        for (Cell neighbor : cell.getNeighborCells()) {
             if (neighbor != null && neighbor.getCurrentStatus() != EMPTY) {
                 numOccupiedNeighbors++;
                 if (neighbor.getCurrentStatus() == cell.getCurrentStatus()) {
@@ -234,7 +236,7 @@ public class SegregationModel extends Game {
     }
 
     @Override
-    protected void populateGameConditions () {
+    protected void populateGameConditions() {
         super.populateGameConditions();
         EMPTY = retrieveIntProperty("SegregationEmpty");
         AGENT_X = retrieveIntProperty("SegregationAgentX");
@@ -243,7 +245,7 @@ public class SegregationModel extends Game {
     }
 
     @Override
-    public boolean equals (Object o) {
+    public boolean equals(Object o) {
         return super.equals(o) && (myThreshold == ((SegregationModel) o).getThreshold());
     }
 }

@@ -7,32 +7,30 @@ import cellsociety.error.GenerateError;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 
-public class SimulatorChoiceDialogBoxFactory extends ChoiceDialogBoxFactory{
-
+public class SimulatorChoiceDialogBoxFactory extends ChoiceDialogBoxFactory {
+    private static final String MAIN_MENU_CHOICE_BOX_CLASS_PATH = "SimulatorChoiceDialogBoxFactory";
+    private static final String MAIN_MENU_CHOICE_BOX_EVENT_PATH = "simulatorChoiceBoxEvents";
     private SimulatorController mySimulatorController;
-    private String mainMenuChoiceBoxClassPath = "SimulatorChoiceDialogBoxFactory";
-    private String mainMenuChoiceBoxEventPath = "simulatorChoiceBoxEvents";
 
-
-    public SimulatorChoiceDialogBoxFactory(SimulatorController simulatorController, ResourceBundle langResources){
+    public SimulatorChoiceDialogBoxFactory(SimulatorController simulatorController, ResourceBundle langResources) {
         mySimulatorController = simulatorController;
         myLanguageResources = langResources;
-        CHOICE_EVENTS_PATH += mainMenuChoiceBoxEventPath;
-        CHOICE_BOX_CLASSPATH += mainMenuChoiceBoxClassPath;
+        CHOICE_EVENTS_PATH += MAIN_MENU_CHOICE_BOX_EVENT_PATH;
+        CHOICE_BOX_CLASSPATH += MAIN_MENU_CHOICE_BOX_CLASS_PATH;
         myChoiceBoxEventsBundle = ResourceBundle.getBundle(CHOICE_EVENTS_PATH);
         myReflectionHandler = new ReflectionHandler(myLanguageResources);
     }
 
     @Override
     protected void invokeMethod(Method method) {
-        try{
+        try {
             method.invoke(SimulatorChoiceDialogBoxFactory.this);
-        }catch(Exception e){
+        } catch (Exception e) {
             new GenerateError(myLanguageResources, INVALID_METHOD);
         }
     }
 
-    private void updateCSSFile(){
+    private void updateCSSFile() {
         mySimulatorController.updateCSSFile(myChoiceDialog.getSelectedItem());
     }
 }

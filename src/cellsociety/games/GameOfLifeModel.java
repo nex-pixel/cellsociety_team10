@@ -1,6 +1,7 @@
 package cellsociety.games;
 
 import cellsociety.components.Cell;
+
 import java.util.List;
 
 /***
@@ -22,7 +23,7 @@ public class GameOfLifeModel extends Game {
      *
      * @param filename gives the CSV figuration file for the grid
      */
-    public GameOfLifeModel (String filename) {
+    public GameOfLifeModel(String filename) {
         super(filename);
     }
 
@@ -35,7 +36,7 @@ public class GameOfLifeModel extends Game {
      * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
      * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
      */
-    public GameOfLifeModel (String filename, int gridType, int neighborMode, int edgePolicy) {
+    public GameOfLifeModel(String filename, int gridType, int neighborMode, int edgePolicy) {
         super(filename, gridType, neighborMode, edgePolicy);
     }
 
@@ -44,7 +45,7 @@ public class GameOfLifeModel extends Game {
      *
      * @param copy is the GameOfLifeModel that we want to copy from
      */
-    public GameOfLifeModel (GameOfLifeModel copy) {
+    public GameOfLifeModel(GameOfLifeModel copy) {
         super(copy);
     }
 
@@ -53,7 +54,7 @@ public class GameOfLifeModel extends Game {
      *
      * @param states specifies the grid
      */
-    public GameOfLifeModel (int[][] states) {
+    public GameOfLifeModel(int[][] states) {
         super(states);
     }
 
@@ -64,7 +65,7 @@ public class GameOfLifeModel extends Game {
      * @param numCols is the number of columns of the grid
      * @param numRows is the number of rows of the grid
      */
-    public GameOfLifeModel (int numCols, int numRows){
+    public GameOfLifeModel(int numCols, int numRows) {
         super(numCols, numRows);
     }
 
@@ -79,11 +80,11 @@ public class GameOfLifeModel extends Game {
      * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
      *
      */
-    public GameOfLifeModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
+    public GameOfLifeModel(int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
     }
 
-    protected void setNumStatesOnBoard () {
+    protected void setNumStatesOnBoard() {
         setNumStates(this.NUM_STATES);
     }
 
@@ -93,18 +94,17 @@ public class GameOfLifeModel extends Game {
     }
 
     @Override
-    protected boolean applyRule(Cell cell){
+    protected boolean applyRule(Cell cell) {
         List<Cell> neighbors = cell.getNeighborCells();
         int numCellsAlive = 0;
-        for (Cell cellNextDoor: neighbors) {
+        for (Cell cellNextDoor : neighbors) {
             if (cellNextDoor != null && cellNextDoor.getCurrentStatus() == ALIVE) {
                 numCellsAlive++;
             }
         }
         if (cell.getCurrentStatus() == ALIVE) {
             cell.setNextStatus(numCellsAlive == 2 || numCellsAlive == 3 ? 1 : 0);
-        }
-        else {
+        } else {
             cell.setNextStatus(numCellsAlive == 3 ? 1 : 0);
         }
         return true;
@@ -117,7 +117,7 @@ public class GameOfLifeModel extends Game {
     }
 
     @Override
-    protected void populateGameConditions () {
+    protected void populateGameConditions() {
         super.populateGameConditions();
         DEAD = retrieveIntProperty("GameOfLifeDead");
         ALIVE = retrieveIntProperty("GameOfLifeAlive");
