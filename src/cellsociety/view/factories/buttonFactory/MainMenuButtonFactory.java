@@ -18,7 +18,6 @@ public class MainMenuButtonFactory extends ButtonFactory {
 
     private static final String ERROR_CHOOSE_ALL_OPTIONS = "SelectAllOptionsMessage";
     private ArrayList<String> modelOptions = new ArrayList<>();
-    private String[] modelLabelOptions = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
     private static final String[] GRID_TYPES = {"0.Square Cell", "1.Triangle Cell", "2. Hexagon Cell"};
     private static final String[] NEIGHBOR_MODE = {"0.Complete", "1.Edge", "2. Bottom Half"};
     private static final String[] EDGE_POLICY = {"0.Finite", "1. Torus"};
@@ -26,6 +25,8 @@ public class MainMenuButtonFactory extends ButtonFactory {
     private MainController myMainMenuController;
     private MainMenuChoiceDialogBoxFactory myMainMenuChoiceDialogBoxFactory;
     private ReflectionHandler myReflectionHandler;
+
+
 
     public MainMenuButtonFactory(MainController mainMenuController, ResourceBundle langResourceBundle, FileManager fileManager){
         super();
@@ -37,8 +38,8 @@ public class MainMenuButtonFactory extends ButtonFactory {
         myMainMenuChoiceDialogBoxFactory = new MainMenuChoiceDialogBoxFactory(myMainMenuController, myFileManager, myLanguageResources);
         buttonID = "main-menu-button";
         myReflectionHandler = new ReflectionHandler(myLanguageResources);
-        populateOptions(modelOptions, modelLabelOptions);
-        populateOptions(cssFileOptions, cssFileLabelOptions);
+        populateOptions(modelOptions, labelOptionsBundle, modelLabelKey);
+        populateOptions(cssFileOptions, labelOptionsBundle,cssFileLabelKey);
         populateButtonEvents();
     }
 
@@ -57,7 +58,7 @@ public class MainMenuButtonFactory extends ButtonFactory {
     }
 
     private EventHandler<ActionEvent> generateModelTypeEvent(){
-        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(myLanguageResources.getString(modelLabelOptions[0]),
+        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(modelOptions.get(0),
                 modelOptions, "modelType", myLanguageResources.getString("ModelContent"));
     }
 
@@ -66,7 +67,7 @@ public class MainMenuButtonFactory extends ButtonFactory {
     }
 
     private EventHandler<ActionEvent> generateCSSFileEvent(){
-        return event-> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(myLanguageResources.getString(cssFileLabelOptions[0]),
+        return event-> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(cssFileOptions.get(0),
                 cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent"));
     }
 

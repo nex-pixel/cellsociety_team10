@@ -23,12 +23,16 @@ public abstract class ButtonFactory {
     protected ResourceBundle myLanguageResources;
     protected String buttonID;
     protected String INVALID_BUTTON_GENERATION = "InvalidButtonGeneration";
-    protected String LANG_KEY = "language";
-    protected String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
+   // protected String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
+    protected ResourceBundle labelOptionsBundle;
     protected ArrayList<String> cssFileOptions = new ArrayList<>();
+    protected String modelLabelKey = "modelLabelOptions";
+    protected String cssFileLabelKey = "cssFileLabelOptions";
 
     public ButtonFactory(){
         buttonMap = new LinkedHashMap<>();
+        labelOptionsBundle = ResourceBundle.getBundle("cellsociety.resources.labelOptions.labelOptions");
+        //populateOptions(cssFileOptions, labelOptionsBundle);
     }
 
     protected void addButtonToPanel(String label, EventHandler<ActionEvent> event, Pane panel){
@@ -53,9 +57,10 @@ public abstract class ButtonFactory {
         return panel;
     }
 
-    protected void populateOptions(ArrayList<String> optionsList, String[] labelList){
-        for(String key: labelList){
-            optionsList.add(myLanguageResources.getString(key));
+    protected void populateOptions(ArrayList<String> optionsList, ResourceBundle resourceBundle, String key){
+        String[] list = resourceBundle.getString(key).split(",");
+        for(String label: list){
+            optionsList.add(myLanguageResources.getString(label));
         }
     }
 

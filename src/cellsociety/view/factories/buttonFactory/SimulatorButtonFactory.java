@@ -30,7 +30,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
         buttonID = simulatorButtonID;
         mySimulatorChoiceDialogBoxFactory = new SimulatorChoiceDialogBoxFactory(mySimulatorController, myLanguageResources);
         myReflectionHandler = new ReflectionHandler(myLanguageResources);
-        populateOptions(cssFileOptions, cssFileLabelOptions);
+        populateOptions(cssFileOptions, labelOptionsBundle, cssFileLabelKey);
         populateButtonEvents();
     }
 
@@ -75,7 +75,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
     };
     }
 
-    private EventHandler<ActionEvent> generateNewCSSEvent(){ return event -> mySimulatorChoiceDialogBoxFactory.generateChoiceDialogBox(myLanguageResources.getString(cssFileLabelOptions[0]),
+    private EventHandler<ActionEvent> generateNewCSSEvent(){ return event -> mySimulatorChoiceDialogBoxFactory.generateChoiceDialogBox(cssFileOptions.get(0),
             cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent"));}
 
 

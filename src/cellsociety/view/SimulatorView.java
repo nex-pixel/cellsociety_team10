@@ -82,6 +82,7 @@ public class SimulatorView {
         mySliderFactory = new SliderFactory(sliderValue);
         myCSSFactory = new CSSFactory(myLanguageResources);
     }
+
     private void initializeSimulationScene(){
         myStage = new Stage();
         updateSimulation(myGame, myGridView);
@@ -98,8 +99,8 @@ public class SimulatorView {
     }
 
     public void step(){
-            myGame.update();
-            updateSimulation(myGame, myGridView);
+        myGame.update();
+        updateSimulation(myGame, myGridView);
     }
 
     // Start new animation to show search algorithm's steps
