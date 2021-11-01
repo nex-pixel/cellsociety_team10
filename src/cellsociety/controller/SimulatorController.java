@@ -76,6 +76,7 @@ public class SimulatorController {
 
     private void makeGameOfLife(){
         myGame = new GameOfLifeModel(myCSVFile.getAbsolutePath(), cellType, neighborMode, edgePolicy );
+        System.out.println("jfwnoewnfowe");
     }
     private void makePercolation(){
         myGame = new PercolationModel(myCSVFile.getAbsolutePath(), cellType, neighborMode, edgePolicy );
