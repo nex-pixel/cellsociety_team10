@@ -151,15 +151,15 @@ public class HexagonGridTest {
 
     @Test
     void checkChangeOfNeighborModeOddRows () {
-        neighborModeCheckSpecifcRowType(gridArrayOddRows);
+        neighborModeCheckSpecificRowType(gridArrayOddRows);
     }
 
     @Test
     void checkChangeOfNeighborModeEvenRows () {
-        neighborModeCheckSpecifcRowType(gridArrayEvenRows);
+        neighborModeCheckSpecificRowType(gridArrayEvenRows);
     }
 
-    private void neighborModeCheckSpecifcRowType(int[][] array) {
+    private void neighborModeCheckSpecificRowType(int[][] array) {
         //Complete to edge
         Grid originalGrid = new HexagonGrid(array, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_FINITE);
         originalGrid.changeNeighborMode(NEIGHBOR_MODE_EDGE);
