@@ -5,7 +5,6 @@ import java.util.Set;
 
 public class SquareGrid extends Grid {
 
-    private PropertiesReader reader;
     private int NEIGHBOR_MODE_COMPLETE;
     private int NEIGHBOR_MODE_EDGE;
     private int NEIGHBOR_MODE_BOTTOM_HALF;

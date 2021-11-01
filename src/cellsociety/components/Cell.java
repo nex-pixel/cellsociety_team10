@@ -1,6 +1,5 @@
 package cellsociety.components;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,8 +7,6 @@ import java.util.List;
 public class Cell {
     private final int[] xyPosition = new int[2];
     private List<Cell> neighborCells;
-//    private boolean isEdge;
-//    private boolean isCorner;
     private int currentStatus;
     private int nextStatus;
     private List<Integer> miscellaneousVal;
@@ -19,8 +16,6 @@ public class Cell {
         neighborCells = new ArrayList<>();
         currentStatus = statusPassedIn;
         nextStatus = currentStatus;
-//        isCorner = false;
-//        isEdge = false;
         miscellaneousVal = new ArrayList<>();
     }
 
@@ -50,14 +45,6 @@ public class Cell {
         miscellaneousVal = valueList;
     }
 
-//    public void setEdge(boolean edgeCase){
-//        isEdge = edgeCase;
-//    }
-//
-//    public void setCorner(boolean cornerCase){
-//        isCorner = cornerCase;
-//    }
-
     public void setNeighborCells(List<Cell> neighborCellsPassedIn){
         neighborCells = neighborCellsPassedIn;
     }
@@ -77,24 +64,6 @@ public class Cell {
     public List<Cell> getNeighborCells(){
         return neighborCells;
     }
-
-    public List<Cell> getAdjacentNeighbors(){
-        List<Cell> adjacentCells = new ArrayList<>();
-        adjacentCells.add(neighborCells.get(1));
-        adjacentCells.add(neighborCells.get(3));
-        adjacentCells.add(neighborCells.get(4));
-        adjacentCells.add(neighborCells.get(6));
-        return adjacentCells;
-    }
-
-//    public boolean getEdge(){
-//        return isEdge;
-//    }
-//
-//    public boolean getCorner(){
-//        return isCorner;
-//    }
-
 
     @Override
     public boolean equals(Object obj) {
