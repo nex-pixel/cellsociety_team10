@@ -11,7 +11,7 @@ import java.util.List;
 public class GameOfLifeModel extends Game {
     private int ALIVE;
     private int DEAD;
-    private int NUM_STATES = 2;
+    private final int NUM_STATES = 2;
     private final int DEFAULT_GRID_CHOICE = 0;
 
     public GameOfLifeModel (String filename) {
@@ -39,7 +39,7 @@ public class GameOfLifeModel extends Game {
     }
 
     protected void setNumStatesOnBoard () {
-        setNumStates(NUM_STATES);
+        setNumStates(this.NUM_STATES);
     }
 
     @Override

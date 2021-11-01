@@ -8,10 +8,12 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SegregationModelTest {
+    private ResourceBundle myLanguageResources = ResourceBundle.getBundle("cellsociety.resources.languages.English");
 
     @BeforeEach
     void setUp() {}
@@ -30,6 +32,15 @@ public class SegregationModelTest {
 
         assertEquals(grid, game);
         assertTrue(game.isSatisfied(game.getGrid().getBoardCell(new Point(0,0))));
+    }
+
+    @Test
+    void testRandomGridIsMade() {
+        SegregationModel randomDefault = new SegregationModel(10,15, 0.5);
+        randomDefault.saveCSVFile("./data/segregation/randomDefaultTest.csv", myLanguageResources);
+
+        SegregationModel randomChosen = new SegregationModel(15, 10, 2,2, 2, 0.5);
+        randomChosen.saveCSVFile("./data/segregation/randomChosenTest.csv", myLanguageResources);
     }
 
     @Test

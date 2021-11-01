@@ -84,13 +84,13 @@ public abstract class Game {
 
     protected abstract void setNumStatesOnBoard ();
 
-    protected void setNumStates (int numStates) { NUM_STATES = numStates; }
+    protected void setNumStates (int numStates) { this.NUM_STATES = numStates; }
 
     protected int[][] createRandomIntTwoDArray(int numCols, int numRows){
         int[][] retArray = new int[numRows][numCols];
         for(int i = 0; i < numRows; i++){
             for (int j = 0; j < numCols; j++){
-                retArray[i][j] = getRandomInt(NUM_STATES);
+                retArray[i][j] = getRandomInt( this.NUM_STATES - 1);
             }
         }
         return retArray;

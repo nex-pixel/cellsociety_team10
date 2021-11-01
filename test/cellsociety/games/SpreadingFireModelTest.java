@@ -17,6 +17,15 @@ class SpreadingFireModelTest {
     }
 
     @Test
+    void testRandomGridIsMade() {
+        SpreadingFireModel randomDefault = new SpreadingFireModel(10,15);
+        randomDefault.saveCSVFile("./data/spreading_fire/randomDefaultTest.csv", myLanguageResources);
+
+        SpreadingFireModel randomChosen = new SpreadingFireModel(15, 10, 2,2, 2);
+        randomChosen.saveCSVFile("./data/spreading_fire/randomChosenTest.csv", myLanguageResources);
+    }
+
+    @Test
     void testFullForestOneTreeNoGrowth(){
         SpreadingFireModel actual = new SpreadingFireModel("data/spreading_fire/one_burning_tree_full_forest.csv");
         actual.setProbOfFire(1.0);
