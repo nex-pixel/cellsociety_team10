@@ -18,7 +18,7 @@ public class SpreadingFireModel extends Game{
     private double probGrow;
     private boolean firePresentInGrid = true;
     private int expandGridByInt;
-    private int NUM_STATES = 3;
+    private final int NUM_STATES = 3;
     private final int DEFAULT_GRID_CHOICE = 0;
 
     /***

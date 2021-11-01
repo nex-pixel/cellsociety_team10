@@ -173,7 +173,7 @@ public abstract class Game {
         int[][] retArray = new int[numRows][numCols];
         for(int i = 0; i < numRows; i++){
             for (int j = 0; j < numCols; j++){
-                retArray[i][j] = getRandomInt(NUM_STATES);
+                retArray[i][j] = getRandomInt( this.NUM_STATES - 1);
             }
         }
         return retArray;

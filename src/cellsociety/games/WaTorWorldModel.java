@@ -21,7 +21,7 @@ public class WaTorWorldModel extends Game{
     private int REPRODUCE_VAL;
     private int ENERGY_FROM_EATING_FISH;
     private int ENERGY_LOST_FROM_MOVING;
-    private int NUM_STATES = 3;
+    private final int NUM_STATES = 3;
     private final int DEFAULT_GRID_CHOICE = 0;
 
     /***
@@ -93,7 +93,7 @@ public class WaTorWorldModel extends Game{
     private void setFishMiscellaneousDefault (Cell cell) {
         cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, STARTING_VAL));
     }
-    
+
     protected void setNumStatesOnBoard () {
         setNumStates(NUM_STATES);
     }

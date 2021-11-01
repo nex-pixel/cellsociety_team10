@@ -8,10 +8,22 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PercolationModelTest {
+    private ResourceBundle myLanguageResources = ResourceBundle.getBundle("cellsociety.resources.languages.English");
+
+
+    @Test
+    void testRandomGridIsMade() {
+        PercolationModel randomDefault = new PercolationModel(10,15);
+        randomDefault.saveCSVFile("./data/percolation/randomDefaultTest.csv", myLanguageResources);
+
+        PercolationModel randomChosen = new PercolationModel(15, 10, 2,2, 2);
+        randomChosen.saveCSVFile("./data/percolation/randomChosenTest.csv", myLanguageResources);
+    }
 
     @Test
     void testOpenCells () {
