@@ -99,6 +99,7 @@ public class SimulatorView {
         if (myAnimation != null) {
             myAnimation.stop();
         }
+        assert myAnimation != null;
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(animationSpeed), e -> step()));
         myAnimation.play();
@@ -192,6 +193,7 @@ public class SimulatorView {
      * @return scene with updated cell status
      */
     public void updateSimulation(Game game, GridPane gamePane){
+
         for (int x = 0; x < game.getNumCols(); x++) {
             for (int y = 0; y < game.getNumRows(); y++) {
                 int gridNumber = x * myGridHeight + y;
