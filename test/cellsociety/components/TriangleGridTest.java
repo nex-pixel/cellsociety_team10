@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +28,8 @@ public class TriangleGridTest {
     private int NEIGHBOR_MODE_BOTTOM_HALF = 2;
 
     int[][] passedInGridArray = {{0,1,0},{1,0,1},{1,1,1}};
+    int[][] expandedGridArray = {{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,1,0,0,0},{0,0,1,0,1,0,0},{0,0,1,1,1,0,0},
+            {0,0,0,0,0,0,0},{0,0,0,0,0,0,0}};
 
     @BeforeEach
     public void setUp() {
@@ -97,5 +100,68 @@ public class TriangleGridTest {
                 new Cell(1, 0,1),
                 new Cell(0, 2, 0));
         assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
+    }
+
+    @Test
+    void checkChangeOfNeighborMode () {
+        //Complete to edge
+        Grid originalGrid = myGrid_Complete_Finite;
+        originalGrid.changeNeighborMode(NEIGHBOR_MODE_EDGE);
+        Grid expectedGridEdge = new TriangleGrid(passedInGridArray, NEIGHBOR_MODE_EDGE, EDGE_POLICY_FINITE);
+        checkPointCellValues(expectedGridEdge, originalGrid);
+
+        //edge to bottom half
+        originalGrid.changeNeighborMode(NEIGHBOR_MODE_BOTTOM_HALF);
+        Grid expectedGridBottomHalf = new TriangleGrid(passedInGridArray, NEIGHBOR_MODE_BOTTOM_HALF, EDGE_POLICY_FINITE);
+        checkPointCellValues(expectedGridBottomHalf, originalGrid);
+
+        //bottom half to complete
+        originalGrid.changeNeighborMode(NEIGHBOR_MODE_COMPLETE);
+        Grid expectedGridComplete = new TriangleGrid(passedInGridArray, NEIGHBOR_MODE_COMPLETE, EDGE_POLICY_FINITE);
+        checkPointCellValues(expectedGridComplete, originalGrid);
+    }
+
+    @Test
+    void checkChangeOfEdgePolicy(){
+        //Finite to cylinder
+        Grid originalGrid = myGrid_Complete_Finite;
+        originalGrid.changeEdgePolicy(EDGE_POLICY_CYLINDER);
+        Grid expectedGridCylinder = myGrid_Complete_Cylinder;
+        checkPointCellValues(expectedGridCylinder, originalGrid);
+
+        //Cylinder to torus
+        originalGrid.changeEdgePolicy(EDGE_POLICY_TORUS);
+        Grid expectedGridTorus = myGrid_Complete_Torus;
+        checkPointCellValues(expectedGridTorus, originalGrid);
+
+        //torus to cylinder
+        originalGrid.changeEdgePolicy(EDGE_POLICY_FINITE);
+        Grid expectedGridFinite = myGrid_Complete_Finite;
+        checkPointCellValues(expectedGridFinite, originalGrid);
+    }
+
+    @Test
+    void checkCompleteChangeNeighborEdge(){
+        Grid expectedGrid = myGrid_Complete_Finite;
+        Grid originalGrid = new TriangleGrid(passedInGridArray, NEIGHBOR_MODE_BOTTOM_HALF, EDGE_POLICY_TORUS);
+        originalGrid.changeNeighborMode(NEIGHBOR_MODE_COMPLETE);
+        originalGrid.changeEdgePolicy(EDGE_POLICY_FINITE);
+        checkPointCellValues(expectedGrid, originalGrid);
+    }
+
+    @Test
+    void checkGridExpansion(){
+        Grid expandedGrid = new TriangleGrid(expandedGridArray, 0,0 );
+        for (TriangleGrid grid: myGrids) {
+            grid.expandGrid(2, 2, 2, 2);
+            checkPointCellValues(expandedGrid, grid);
+        }
+    }
+
+    private void checkPointCellValues(Grid expandedGrid, Grid grid) {
+        for (Point currPoint : grid.getPoints()) {
+            Cell myCell = grid.getBoardCell(currPoint);
+            assertEquals(expandedGrid.getBoardCell(currPoint).getCurrentStatus(), myCell.getCurrentStatus());
+        }
     }
 }
