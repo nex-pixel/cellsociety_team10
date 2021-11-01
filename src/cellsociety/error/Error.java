@@ -27,12 +27,8 @@ public class Error{
         alert.showAndWait();
     }
 
-    private String getMyKey() {
-        return myMessage;
-    }
-
     private String getMyMessage() {
-        return myResourceBundle.getString(this.getMyKey());
+        return myResourceBundle.getString(myMessage);
     }
 
     private void setMessageToDefault() {
