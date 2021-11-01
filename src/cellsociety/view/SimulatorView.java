@@ -28,9 +28,13 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.awt.*;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class SimulatorView {
+    private static final String GRID_NAME_FILE_PATH = "cellsociety/resources/gameData/GridTypeNames";
+    private static final String INVALID_SIM_GENERATION = "InvalidSimulation";
 
     private Timeline myAnimation;
     private double animationSpeed = 0.3;
@@ -67,7 +71,6 @@ public class SimulatorView {
         mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
         mySliderFactory = new SliderFactory(sliderValue);
         myGridView = new GridPane();
-
         setInitialGrid(cellType);
         initializeSimulationScene();
         initializeGridProperties();
@@ -86,6 +89,16 @@ public class SimulatorView {
         myGridView = new GridPane();
     }
 
+    private void setInitialGrid(int cellType){
+        try {
+            ResourceBundle gridTypeName = ResourceBundle.getBundle(GRID_NAME_FILE_PATH);
+            Method m = this.getClass().getDeclaredMethod(gridTypeName.getString(cellType + ".Cell"));
+            m.invoke(this);
+        } catch(Exception e){
+            new GenerateError(myLanguageResources, INVALID_SIM_GENERATION);
+        }
+    }
+
     private void initializeFactories(){
         mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
         mySliderFactory = new SliderFactory(sliderValue);
@@ -102,40 +115,35 @@ public class SimulatorView {
         playAnimation();
     }
 
-
-    private void setInitialGrid(int cellType){
-        switch (cellType) {
-            case 0 -> {
-                myGridBuilder = new SquareGridBuilder();
-                myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
-            }
-            case 1 -> {
-                myGridBuilder = new TriangleGridBuilder();
-                myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
-            }
-            case 2 -> {
-                myGridBuilder = new HexagonGridBuilder();
-                myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
-            }
-        }
+    private void createSquareGrid(){
+        myGridBuilder = new SquareGridBuilder();
+        myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
     }
 
-    public void showSimulationInfo() {
+    private void createTriangleGrid(){
+        myGridBuilder = new TriangleGridBuilder();
+        myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
+    }
+
+    private void createHexagonGrid(){
+        myGridBuilder = new HexagonGridBuilder();
+        myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
+    }
+
+
+
+    public void alertSimulationInfo() {
         try{
             Scanner file = new Scanner(new File(mySimulatorController.getSimFilePath()));
             StringBuilder simInfo = new StringBuilder();
             while(file.hasNextLine()) simInfo.append(file.nextLine()).append("\n");
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            setAlertContent(alert,myLanguageResources.getString(AboutSimulationLabel), String.valueOf(simInfo));
+            alert.setHeaderText(myLanguageResources.getString(AboutSimulationLabel));
+            alert.setContentText(String.valueOf(simInfo));
             alert.showAndWait();
         }catch(FileNotFoundException e){
             new GenerateError(myLanguageResources, INVALID_SIM_FILE);
         }
-    }
-
-    private void setAlertContent(Alert alert, String text, String info){
-        alert.setHeaderText(text);
-        alert.setContentText(String.valueOf(info));
     }
 
     /**
