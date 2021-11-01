@@ -5,9 +5,6 @@ import cellsociety.error.GenerateError;
 import cellsociety.games.Game;
 import cellsociety.view.cell.Cell;
 import cellsociety.view.factories.buttonFactory.SimulatorButtonFactory;
-import cellsociety.view.cell.HexagonCell;
-import cellsociety.view.cell.SquareCell;
-import cellsociety.view.cell.TriangleCell;
 import cellsociety.view.factories.cssFactory.CSSFactory;
 import cellsociety.view.factories.sliderFactory.SliderFactory;
 import cellsociety.view.gridBuilder.GridBuilder;
@@ -21,16 +18,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import java.awt.*;
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
+import java.awt.Point;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class SimulatorView {
     private static final String GRID_NAME_FILE_PATH = "cellsociety/resources/gameData/GridTypeNames";
@@ -99,6 +95,21 @@ public class SimulatorView {
         }
     }
 
+    private void createSquareGrid(){
+        myGridBuilder = new SquareGridBuilder();
+        myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
+    }
+
+    private void createTriangleGrid(){
+        myGridBuilder = new TriangleGridBuilder();
+        myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
+    }
+
+    private void createHexagonGrid(){
+        myGridBuilder = new HexagonGridBuilder();
+        myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
+    }
+
     private void initializeFactories(){
         mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
         mySliderFactory = new SliderFactory(sliderValue);
@@ -115,36 +126,7 @@ public class SimulatorView {
         playAnimation();
     }
 
-    private void createSquareGrid(){
-        myGridBuilder = new SquareGridBuilder();
-        myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
-    }
 
-    private void createTriangleGrid(){
-        myGridBuilder = new TriangleGridBuilder();
-        myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
-    }
-
-    private void createHexagonGrid(){
-        myGridBuilder = new HexagonGridBuilder();
-        myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
-    }
-
-
-
-    public void alertSimulationInfo() {
-        try{
-            Scanner file = new Scanner(new File(mySimulatorController.getSimFilePath()));
-            StringBuilder simInfo = new StringBuilder();
-            while(file.hasNextLine()) simInfo.append(file.nextLine()).append("\n");
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(myLanguageResources.getString(AboutSimulationLabel));
-            alert.setContentText(String.valueOf(simInfo));
-            alert.showAndWait();
-        }catch(FileNotFoundException e){
-            new GenerateError(myLanguageResources, INVALID_SIM_FILE);
-        }
-    }
 
     /**
      * updates the cells based on the values in Map
@@ -167,10 +149,20 @@ public class SimulatorView {
         currNode.setId(cellStatus+"-cell");
     }
 
-    /**
-     * Returns a scene of the simulation with the control buttons
-     * @return VBox containing gridpane of the simulation and control buttons
-     */
+    public void alertSimulationInfo() {
+        try{
+            Scanner file = new Scanner(new File(mySimulatorController.getSimFilePath()));
+            StringBuilder simInfo = new StringBuilder();
+            while(file.hasNextLine()) simInfo.append(file.nextLine()).append("\n");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(myLanguageResources.getString(AboutSimulationLabel));
+            alert.setContentText(String.valueOf(simInfo));
+            alert.showAndWait();
+        }catch(FileNotFoundException e){
+            new GenerateError(myLanguageResources, INVALID_SIM_FILE);
+        }
+    }
+
     private VBox generateSimulationVBox(GridPane gameGrid){
         VBox simulationBox = new VBox();
         simulationBox.setId(simulatorBoxId);
