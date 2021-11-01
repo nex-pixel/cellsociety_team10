@@ -22,15 +22,13 @@ public class MainMenuButtonFactory extends ButtonFactory {
     private static final String[] NEIGHBOR_MODE = {"0.Complete", "1.Edge", "2. Bottom Half"};
     private static final String[] EDGE_POLICY = {"0.Finite", "1. Torus"};
     private FileManager myFileManager;
-    private MainMenuView myMainMenuView;
     private MainController myMainMenuController;
     private MainMenuChoiceDialogBoxFactory myMainMenuChoiceDialogBoxFactory;
 
-    public MainMenuButtonFactory(MainMenuView menuView, MainController mainMenuController, ResourceBundle langResourceBundle, FileManager fileManager){
+    public MainMenuButtonFactory(MainController mainMenuController, ResourceBundle langResourceBundle, FileManager fileManager){
         super();
         ACTIONS_NAME_PATH += "MainMenuActionEvents";
         myActionEventsResources = ResourceBundle.getBundle(ACTIONS_NAME_PATH);
-        myMainMenuView = menuView;
         myLanguageResources = langResourceBundle;
         myFileManager = fileManager;
         myMainMenuController = mainMenuController;

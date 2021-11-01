@@ -33,7 +33,7 @@ public class MainMenuView {
      */
     public Scene setMenuDisplay(MainController mainController, int width, int height) {
         myMainController = mainController;
-        myMainMenuButtonView = new MainMenuButtonFactory(this, myMainController, myLanguageResources, myFileManager);
+        myMainMenuButtonView = new MainMenuButtonFactory(myMainController, myLanguageResources, myFileManager);
         setLabel("Cell Society", "title");
         initializeHomePageRoot();
         Scene scene = new Scene(homePageRoot, width, height);
