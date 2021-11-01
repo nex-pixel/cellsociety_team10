@@ -1,6 +1,9 @@
 package cellsociety.games;
 
 import cellsociety.components.Cell;
+import cellsociety.components.HexagonGrid;
+import cellsociety.components.SquareGrid;
+import cellsociety.components.TriangleGrid;
 
 import java.awt.*;
 import java.util.*;
@@ -11,6 +14,8 @@ public class PercolationModel extends Game {
     private int BLOCKED;
     private int OPEN;
     private int PERCOLATED;
+    private int NUM_STATES = 3;
+    private final int DEFAULT_GRID_CHOICE = 0;
 
     private List<Cell> myOpenCells;
     private List<Cell> cellsToBeRemoved;
@@ -25,11 +30,23 @@ public class PercolationModel extends Game {
         setOpenCells();
     }
 
-    public PercolationModel (int numRows, int numCols) {
-        populateGameConditions();
-        int[][] states = new int[numRows][numCols];
-        setGrid(states, 0,0,0);
-        setOpenCells();
+//    public PercolationModel (int numRows, int numCols) {
+//        populateGameConditions();
+//        int[][] states = new int[numRows][numCols];
+//        setGrid(states, 0,0,0);
+//        setOpenCells();
+//    }
+
+    public PercolationModel (int numCols, int numRows){
+        super(numCols, numRows);
+        setNumStatesOnBoard(NUM_STATES);
+        setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
+    }
+
+    public PercolationModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
+        super(numCols, numRows, gridType, neighborMode, edgePolicy);
+        setNumStatesOnBoard(NUM_STATES);
+        setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
     }
 
     // method for testing purpose

@@ -15,6 +15,8 @@ public class SegregationModel extends Game {
     private int RANGE;
     private double myThreshold;
     private int myNumOfAgents;
+    private int NUM_STATES = 3;
+    private final int DEFAULT_GRID_CHOICE = 0;
 
     private List<Cell> myEmptyCells;
 
@@ -61,6 +63,18 @@ public class SegregationModel extends Game {
     public SegregationModel (SegregationModel copy) {
         super(copy);
         myThreshold = copy.myThreshold;
+    }
+
+    public SegregationModel (int numCols, int numRows){
+        super(numCols, numRows);
+        setNumStatesOnBoard(NUM_STATES);
+        setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
+    }
+
+    public SegregationModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
+        super(numCols, numRows, gridType, neighborMode, edgePolicy);
+        setNumStatesOnBoard(NUM_STATES);
+        setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
     }
 
     private void setEmptyCells (double threshold) {

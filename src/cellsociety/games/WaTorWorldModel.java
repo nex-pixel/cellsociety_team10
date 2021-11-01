@@ -17,6 +17,8 @@ public class WaTorWorldModel extends Game{
     private int REPRODUCE_VAL;
     private int ENERGY_FROM_EATING_FISH;
     private int ENERGY_LOST_FROM_MOVING;
+    private int NUM_STATES = 3;
+    private final int DEFAULT_GRID_CHOICE = 0;
     private Random rand;
 
     public WaTorWorldModel(String filename){
@@ -27,6 +29,18 @@ public class WaTorWorldModel extends Game{
     public WaTorWorldModel (String filename, int gridType, int neighborMode, int edgePolicy) {
         super(filename, gridType, neighborMode, edgePolicy);
         setSharkEnergyValues();
+    }
+
+    public WaTorWorldModel (int numCols, int numRows){
+        super(numCols, numRows);
+        setNumStatesOnBoard(NUM_STATES);
+        setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
+    }
+
+    public WaTorWorldModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
+        super(numCols, numRows, gridType, neighborMode, edgePolicy);
+        setNumStatesOnBoard(NUM_STATES);
+        setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
     }
 
     private void setSharkEnergyValues(){

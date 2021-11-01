@@ -23,6 +23,8 @@ public abstract class Game {
     protected PropertiesReader myGameDataReader;
     private String LANG_KEY = "language";
     private String INVALID_SAVE = "InvalidSaveFile";
+    private final int DEFAULT_GRID_CHOICE = 0;
+    private int NUM_STATES;
 
     public Game () {}
 
@@ -38,13 +40,17 @@ public abstract class Game {
         populateGameConditions();
         createReader(filename);
         int[][] states = myReader.read();
-        setGrid(states, 0, 0, 0);
+        setGrid(states, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
     }
 
     public Game (int[][] states) {
         // default game with SquareGrid, complete neighbor mode, finite edge policy
         populateGameConditions();
-        setGrid(states, 0, 0 , 0);
+        setGrid(states, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE , DEFAULT_GRID_CHOICE);
+    }
+
+    public Game (int numCols, int numRows){
+        populateGameConditions();
     }
 
     public Game (String filename, int gridType, int neighborMode, int edgePolicy) {
@@ -59,6 +65,10 @@ public abstract class Game {
         setGrid(states, gridType, neighborMode, edgePolicy);
     }
 
+    public Game (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
+        populateGameConditions();
+    }
+
     protected Grid getGrid () { return myGrid; }
 
     protected void setGrid (int[][] states, int gridType, int neighborMode, int edgePolicy) {
@@ -69,7 +79,25 @@ public abstract class Game {
         }
     }
 
-    public int getCellStatus (int x, int y) { return myGrid.getCellStatus(x, y); }
+    protected void setNumStatesOnBoard(int numStates){
+        NUM_STATES = numStates;
+    }
+
+    protected int[][] createRandomIntTwoDArray(int numCols, int numRows){
+        int[][] retArray = new int[numRows][numCols];
+        for(int i = 0; i < numRows; i++){
+            for (int j = 0; j < numCols; j++){
+                retArray[i][j] = getRandomInt(NUM_STATES);
+            }
+        }
+        return retArray;
+    }
+
+    private int getRandomInt(int max){
+        return (int)(Math.random() * (max + 1));
+    }
+
+    public int getCellStatus (int x, int y) { return myGrid.getBoardCell(new Point(x, y)).getCurrentStatus(); }
 
     public int getCellStatus (Point point) { return myGrid.getBoardCell(point).getCurrentStatus(); }
 

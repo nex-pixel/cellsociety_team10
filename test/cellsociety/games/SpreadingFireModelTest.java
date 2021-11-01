@@ -51,16 +51,16 @@ class SpreadingFireModelTest {
 
     @Test
     void testSparseForestMultiTreeGrowth(){
-        SpreadingFireModel actual = new SpreadingFireModel("data/spreading_fire/multiple_burning_trees_sparse_forest.csv");
+        SpreadingFireModel actual = new SpreadingFireModel("data/spreading_fire/multiple_burning_trees_sparse_forest.csv", true);
         actual.setProbOfFire(1.0);
         actual.setProbGrowNewTrees(1.0);
         actual.update();
-        SpreadingFireModel expected = new SpreadingFireModel("data/spreading_fire/expected_multiBurn_sparseFor_Growth.csv");
+        SpreadingFireModel expected = new SpreadingFireModel("data/spreading_fire/expected_multiBurn_sparseFor_Growth.csv", true);
 
         assertEquals(expected, actual);
 
         actual.update();
-        SpreadingFireModel expected2 = new SpreadingFireModel("data/spreading_fire/expected_multiBurn_sparseFor_Growth2.csv");
+        SpreadingFireModel expected2 = new SpreadingFireModel("data/spreading_fire/expected_multiBurn_sparseFor_Growth2.csv", true);
 
         assertEquals(expected2, actual);
     }

@@ -1,6 +1,9 @@
 package cellsociety.games;
 
 import cellsociety.components.Cell;
+import cellsociety.components.HexagonGrid;
+import cellsociety.components.SquareGrid;
+import cellsociety.components.TriangleGrid;
 
 import java.awt.*;
 import java.util.List;
@@ -8,6 +11,8 @@ import java.util.List;
 public class GameOfLifeModel extends Game {
     private int ALIVE;
     private int DEAD;
+    private int NUM_STATES = 2;
+    private final int DEFAULT_GRID_CHOICE = 0;
 
     public GameOfLifeModel (String filename) {
         super(filename);
@@ -23,6 +28,18 @@ public class GameOfLifeModel extends Game {
 
     public GameOfLifeModel (int[][] states) {
         super(states);
+    }
+
+    public GameOfLifeModel (int numCols, int numRows){
+        super(numCols, numRows);
+        setNumStatesOnBoard(NUM_STATES);
+        setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
+    }
+
+    public GameOfLifeModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
+        super(numCols, numRows, gridType, neighborMode, edgePolicy);
+        setNumStatesOnBoard(NUM_STATES);
+        setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
     }
 
     @Override
