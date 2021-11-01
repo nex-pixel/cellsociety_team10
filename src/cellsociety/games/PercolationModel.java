@@ -86,8 +86,8 @@ public class PercolationModel extends Game {
     }
 
     @Override
-    public void changeCellOnClick(Point point) {
-        Cell cell = getGrid().getBoardCell(point);
+    public void changeCellOnClick(int x, int y) {
+        Cell cell = getGrid().getBoardCell(x,y);
         if (cell.getXyPosition()[1] == 0) {
             cell.setCurrentStatus(PERCOLATED);
         }

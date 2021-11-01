@@ -20,6 +20,11 @@ public class MainController {
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private static final int MAIN_SCREEN_SIZE = 500;
     private String myLanguage;
+    private int cellType;
+    private int neighborMode;
+    private int edgePolicy;
+    private FileManager fileManager;
+    private String modelType;
 
     public MainController(Stage stage, String language){
         myLanguage = language;
@@ -43,8 +48,20 @@ public class MainController {
      * @param result modelType
      */
     public void updateModelType(String result, FileManager fileManager){
-        simulatorController = new SimulatorController(this, fileManager, cssFile, myLanguageResources);
-        simulatorController.updateModelType(result);
+        modelType = result;
+        this.fileManager = fileManager;
+    }
+
+    public void setCellType(int cellType){
+        this.cellType = cellType;
+    }
+
+    public void setNeighborMode(int modeType){
+        neighborMode = modeType;
+    }
+
+    public void setEdgePolicy(int edgePolicy){
+        this.edgePolicy = edgePolicy;
     }
 
     public void updateCSS(String result) {
@@ -57,6 +74,9 @@ public class MainController {
     }
 
     public void generateNewSimulation(File csvFile){
+        simulatorController = new SimulatorController(this, fileManager, cssFile, myLanguageResources,
+                cellType, neighborMode, edgePolicy);
+        simulatorController.updateModelType(modelType);
         simulatorController.applyCSSFile(cssFile);
         simulatorController.createNewSimulation(csvFile);
     }
@@ -74,8 +94,5 @@ public class MainController {
         return ResourceBundle.getBundle(RESOURCE_PACKAGE + name);
     }
 
-    public void updateCellColors(){
-
-    }
 
 }

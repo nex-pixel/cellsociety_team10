@@ -63,13 +63,13 @@ public abstract class Game {
 
     protected void setGrid (int[][] states, int gridType, int neighborMode, int edgePolicy) {
         switch (gridType) {
+            case 0 -> myGrid = new SquareGrid(states, neighborMode, edgePolicy);
             case 1 -> myGrid = new TriangleGrid(states, neighborMode, edgePolicy);
             case 2 -> myGrid = new HexagonGrid(states, neighborMode, edgePolicy);
-            default -> myGrid = new SquareGrid(states, neighborMode, edgePolicy);
         }
     }
 
-    public int getCellStatus (int x, int y) { return myGrid.getBoardCell(new Point(x, y)).getCurrentStatus(); }
+    public int getCellStatus (int x, int y) { return myGrid.getCellStatus(x, y); }
 
     public int getCellStatus (Point point) { return myGrid.getBoardCell(point).getCurrentStatus(); }
 
@@ -112,7 +112,7 @@ public abstract class Game {
         }
     }
 
-    public abstract void changeCellOnClick (Point point);
+    public abstract void changeCellOnClick (int x, int y);
 
     protected int[][] toGridArray () {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];

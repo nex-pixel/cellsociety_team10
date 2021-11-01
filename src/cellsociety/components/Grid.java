@@ -3,7 +3,6 @@ package cellsociety.components;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 public abstract class Grid {
     private int myNumRows, myNumCols;
@@ -103,8 +102,20 @@ public abstract class Grid {
         return myBoard.keySet();
     }
 
+    public Cell getBoardCell(int x, int y) {
+        return myBoard.get(new Point(x, y));
+    }
+
     public Cell getBoardCell(Point point) {
         return myBoard.get(point);
+    }
+
+    public int getCellStatus(int x, int y){
+        return myBoard.get(getPoint(x, y)).getCurrentStatus();
+    }
+
+    protected Point getPoint(int x, int y){
+        return new Point(x, y);
     }
 
     public Cell getXYBoardCell(int x, int y) {
@@ -124,13 +135,15 @@ public abstract class Grid {
         for (Point point : myBoard.keySet()) {
             myBoard.get(point).clearNeighborCells();
             Cell cell = myBoard.get(point);
-
-//            cell.setEdge(isEdge(cell));
-//            cell.setCorner(isCorner(cell));
-
             applyNeighborMode(point);
             iterativelyAddNeighbors(point, cell);
         }
+    }
+
+    // Will also preserve the order by using LinkedHashSet
+    private void removeDuplicatesInNeighborCells (Cell cell) {
+        cell.setNeighborCells(new ArrayList<>(
+                new LinkedHashSet<>(cell.getNeighborCells())));
     }
 
     private void iterativelyAddNeighbors(Point point, Cell cell) {
@@ -142,10 +155,12 @@ public abstract class Grid {
             if (myBoard.containsKey(neighborPosition) && isInsideBoard(neighborPosition.x, neighborPosition.y)) {
                 Cell c = myBoard.get(neighborPosition);
                 cell.getNeighborCells().add(c);
-            } else {
-                cell.getNeighborCells().add(null);
             }
+//            else {
+//                cell.getNeighborCells().add(null);
+//            }
         }
+        removeDuplicatesInNeighborCells(cell);
     }
 
     protected abstract void applyNeighborMode(Point point);
@@ -159,30 +174,6 @@ public abstract class Grid {
         }
         return new Point(x, y);
     }
-
-    //TODO: What defines an edge?
-//    protected boolean isEdge(Cell c) {
-//        if (isCorner(c)) return false;
-//
-//        int x = c.getXyPosition()[0];
-//        int y = c.getXyPosition()[1];
-//
-//        if (x == 0 || x == myNumCols - 1 || y == 0 || y == myNumCols - 1) return true;
-//
-//        return false;
-//    }
-
-    //TODO: What defines a corner?
-//    protected boolean isCorner(Cell c) {
-//        int x = c.getXyPosition()[0];
-//        int y = c.getXyPosition()[1];
-//        if (x == 0 || x == myNumCols - 1) {
-//            if (y == 0 || y == myNumCols - 1) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
 
     protected boolean isInsideBoard(int x, int y) {
         return (x >= 0 && x < myNumCols && y >= 0 && y < myNumRows);
@@ -210,8 +201,8 @@ public abstract class Grid {
         setBoard(newGrid.getBoard());
         initializeNeighbors();
 
-        setMyNumRows(myNumRows + left + right);
-        setMyNumCols(myNumCols + top + bottom);
+        setMyNumRows(myNumRows + top + bottom);
+        setMyNumCols(myNumCols + right + left);
     }
 
     protected void populateNeighborData() {
@@ -225,4 +216,6 @@ public abstract class Grid {
         setNeighborRows(myReader.getIntListProperty(row));
         setNeighborCols(myReader.getIntListProperty(col));
     }
+
+
 }
