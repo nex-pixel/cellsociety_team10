@@ -96,7 +96,7 @@ public abstract class Game {
         return (int)(Math.random() * (max + 1));
     }
 
-    public int getCellStatus (int x, int y) { return myGrid.getBoardCell(new Point(x, y)).getCurrentStatus(); }
+    public int getCellStatus (int x, int y) { return myGrid.getCellStatus(x,y); }
 
     public int getCellStatus (Point point) { return myGrid.getBoardCell(point).getCurrentStatus(); }
 
