@@ -63,8 +63,7 @@ public class PercolationModel extends Game {
      */
     public PercolationModel (int numCols, int numRows){
         super(numCols, numRows);
-        setNumStatesOnBoard(NUM_STATES);
-        setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
+        setOpenCells();
     }
 
     /***
@@ -80,8 +79,7 @@ public class PercolationModel extends Game {
      */
     public PercolationModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
-        setNumStatesOnBoard(NUM_STATES);
-        setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
+        setOpenCells();
     }
 
     /***
@@ -100,6 +98,10 @@ public class PercolationModel extends Game {
                 myOpenCells.add(cell);
             }
         }
+    }
+
+    protected void setNumStatesOnBoard () {
+        setNumStates(NUM_STATES);
     }
 
     @Override
