@@ -12,7 +12,6 @@ import java.util.List;
  *
  * @author Norah Tan, Haseeb Chaudhry
  */
-
 public class SegregationModel extends Game {
 
     private int EMPTY;
