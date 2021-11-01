@@ -200,7 +200,6 @@ public class SimulatorView {
         for (int x = 0; x < game.getNumCols(); x++) {
             for (int y = 0; y < game.getNumRows(); y++) {
                 int gridNumber = x * myGridHeight + y;
-
                 int cellStatus = game.getCellStatus(x, y);
                 updateCell(game, gamePane, gridNumber, cellStatus);
             }

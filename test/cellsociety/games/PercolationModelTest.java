@@ -31,14 +31,14 @@ public class PercolationModelTest {
     @Test
     void testClickCellBlockToPercolated () {
         PercolationModel gameLongPipe = new PercolationModel("./data/percolation/long_pipe.csv");
-        gameLongPipe.changeCellOnClick(new Point(2, 1));
+        gameLongPipe.changeCellOnClick(2, 1);
         assertTrue(gameLongPipe.getCellStatus(2, 1) == 2);
     }
 
     @Test
     void testClickCellBlockToOpen () {
         PercolationModel gameLongPipe = new PercolationModel("./data/percolation/volcano.csv");
-        gameLongPipe.changeCellOnClick(new Point(0, 2));
+        gameLongPipe.changeCellOnClick(0, 2);
         assertTrue(gameLongPipe.getCellStatus(0, 2) == 1);
     }
 

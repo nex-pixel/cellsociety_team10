@@ -112,7 +112,6 @@ public class SimulatorController {
     }
 
     public void updateCellOnClick(int xCoordinate, int yCoordinate){
-        Point point = new Point(xCoordinate, yCoordinate);
-        myGame.changeCellOnClick(point);
+        myGame.changeCellOnClick(xCoordinate, yCoordinate);
     }
 }
