@@ -63,9 +63,9 @@ public abstract class Game {
 
     protected void setGrid (int[][] states, int gridType, int neighborMode, int edgePolicy) {
         switch (gridType) {
+            case 0 -> myGrid = new SquareGrid(states, neighborMode, edgePolicy);
             case 1 -> myGrid = new TriangleGrid(states, neighborMode, edgePolicy);
             case 2 -> myGrid = new HexagonGrid(states, neighborMode, edgePolicy);
-            default -> myGrid = new SquareGrid(states, neighborMode, edgePolicy);
         }
     }
 

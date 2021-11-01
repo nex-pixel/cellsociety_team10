@@ -25,8 +25,15 @@ public class SimulatorController {
     private MainController myMainController;
     private String INVALID_SIM_GENERATION = "InvalidSimulation";
     private String INVALID_METHOD = "InvalidMethod";
+    private int cellType;
+    private int neighborMode;
+    private int edgePolicy;
 
-    public SimulatorController(MainController mainController, FileManager fileManager, String cssFile, ResourceBundle resourceBundle) {
+    public SimulatorController(MainController mainController, FileManager fileManager, String cssFile, ResourceBundle resourceBundle
+    ,int cellType, int neighborMode, int edgePolicy) {
+        this.cellType = cellType;
+        this.neighborMode = neighborMode;
+        this.edgePolicy = edgePolicy;
         myMainController = mainController;
         myFileManager = fileManager;
         myCSSFile = cssFile;
@@ -42,10 +49,12 @@ public class SimulatorController {
         myCSVFile = csvFile;
         actionNameBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_NAME);
         try{
+            System.out.println(cellType+ ","+ neighborMode+ "," +edgePolicy);
             handleMethod(actionNameBundle.getString(myModelType)).invoke(SimulatorController.this);
             mySimulatorView = new SimulatorView(myGame,
-                    myCSSFile, myLanguageResources, this);
+                    myCSSFile, myLanguageResources, this, cellType);
         } catch(Exception e){
+            e.printStackTrace();
             myFileManager.checkFileValidity(csvFile);
             new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_SIM_GENERATION);
         }
@@ -66,19 +75,20 @@ public class SimulatorController {
     }
 
     private void makeGameOfLife(){
-        myGame = new GameOfLifeModel(myCSVFile.getAbsolutePath());
+        myGame = new GameOfLifeModel(myCSVFile.getAbsolutePath(), cellType, neighborMode, edgePolicy );
+        System.out.println("jfwnoewnfowe");
     }
     private void makePercolation(){
-        myGame = new PercolationModel(myCSVFile.getAbsolutePath());
+        myGame = new PercolationModel(myCSVFile.getAbsolutePath(), cellType, neighborMode, edgePolicy );
     }
     private void makeSegregation(){
         myGame = new SegregationModel(myCSVFile.getAbsolutePath(), 0.5);
     }
     private void makeSpreadingFire(){
-        myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath());
+        myGame = new SpreadingFireModel(myCSVFile.getAbsolutePath(),cellType, neighborMode, edgePolicy );
     }
     private void makeWaTorWorld(){
-        myGame = new WaTorWorldModel(myCSVFile.getAbsolutePath());
+        myGame = new WaTorWorldModel(myCSVFile.getAbsolutePath(),  cellType, neighborMode, edgePolicy );
     }
 
     /**
