@@ -32,6 +32,9 @@ public class PercolationModel extends Game {
         setOpenCells();
     }
 
+    // method for testing purpose
+    public List<Cell> getOpenCells () { return myOpenCells; }
+
     private void setOpenCells () {
         cellsToBeRemoved = new ArrayList<>();
         myOpenCells = new ArrayList<>();
