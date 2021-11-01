@@ -64,14 +64,16 @@ public class SquareGridTest {
     @Test
     void checkCornerNeighbors_Complete_Finite (){
         Cell cornerUpperLeft = myGrid_Complete_Finite.getBoardCell(new Point(0,0));
-        List<Cell> expectedNeighbors = Arrays.asList(null,
-                null,
-                null,
+        List<Cell> expectedNeighbors = Arrays.asList(
+//                null,
+//                null,
+//                null,
                 new Cell(1, 1,0),
                 new Cell(0, 1, 1),
-                new Cell(1, 0,1),
-                null,
-                null);
+                new Cell(1, 0,1)
+//                , null,
+//                null
+        );
         assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
     }
 
@@ -92,9 +94,10 @@ public class SquareGridTest {
     @Test
     void checkCornerNeighbors_Complete_Cylinder () {
         Cell cornerUpperLeft = myGrid_Complete_Cylinder.getBoardCell(new Point(0,0));
-        List<Cell> expectedNeighbors = Arrays.asList(null,
-                null,
-                null,
+        List<Cell> expectedNeighbors = Arrays.asList(
+//                null,
+//                null,
+//                null,
                 new Cell(1, 1,0),
                 new Cell(0, 1, 1),
                 new Cell(1, 0,1),
@@ -106,10 +109,12 @@ public class SquareGridTest {
     @Test
     void checkCornerNeighbors_Edge_Finite () {
         Cell cornerUpperLeft = myGrid_Edge_Finite.getBoardCell(new Point(0,0));
-        List<Cell> expectedNeighbors = Arrays.asList(null,
+        List<Cell> expectedNeighbors = Arrays.asList(
+//                null,
                 new Cell(1, 1,0),
-                new Cell(1, 0,1),
-                null);
+                new Cell(1, 0,1)
+//                , null
+        );
         assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
     }
 
@@ -139,9 +144,9 @@ public class SquareGridTest {
         Cell edgeCell = myGrid_Complete_Finite.getBoardCell(new Point(2,1));
         List<Cell> expectedNeighbors = Arrays.asList(new Cell(1, 1,0),
                 new Cell(0, 2, 0),
-                null,
-                null,
-                null,
+//                null,
+//                null,
+//                null,
                 new Cell(1, 2,2),
                 new Cell(1, 1,2),
                 new Cell(0, 1,1));
