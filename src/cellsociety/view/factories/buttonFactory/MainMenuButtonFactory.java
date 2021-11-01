@@ -21,16 +21,12 @@ public class MainMenuButtonFactory extends ButtonFactory {
     private ArrayList<String> gridOptions = new ArrayList<>();
     private ArrayList<String> neighborOptions = new ArrayList<>();
     private ArrayList<String> edgePolicyOptions = new ArrayList<>();
-    private static final String[] GRID_TYPES = {"0.Square Cell", "1.Triangle Cell", "2. Hexagon Cell"};
-    private static final String[] NEIGHBOR_MODE = {"0.Complete", "1.Edge", "2. Bottom Half"};
-    private static final String[] EDGE_POLICY = {"0.Finite", "1. Torus"};
     private FileManager myFileManager;
     private MainController myMainMenuController;
     private MainMenuChoiceDialogBoxFactory myMainMenuChoiceDialogBoxFactory;
     private ReflectionHandler myReflectionHandler;
     private String neighborLabelKey = "neighborLabelOptions";
     private String edgePolicyLabelKey = "edgePolicyLabelOptions";
-
 
 
     public MainMenuButtonFactory(MainController mainMenuController, ResourceBundle langResourceBundle, FileManager fileManager){

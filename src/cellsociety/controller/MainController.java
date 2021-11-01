@@ -1,6 +1,5 @@
 package cellsociety.controller;
 
-import cellsociety.error.GenerateError;
 import cellsociety.view.MainMenuView;
 import cellsociety.view.factories.cssFactory.CSSFactory;
 import javafx.stage.Stage;
@@ -20,10 +19,10 @@ public class MainController {
     private String DEFAULT_CSS_FILE_LABEL = "Duke";
     private static final int MAIN_SCREEN_SIZE = 500;
     private String myLanguage;
-    private int cellType;
-    private int neighborMode;
-    private int edgePolicy;
-    private FileManager fileManager;
+    private int myCellType;
+    private int myNeighborMode;
+    private int myEdgePolicy;
+    private FileManager myFileManager;
     private String modelType;
     private CSSFactory myCSSFactory;
 
@@ -51,19 +50,19 @@ public class MainController {
      */
     public void updateModelType(String result, FileManager fileManager){
         modelType = result;
-        this.fileManager = fileManager;
+        myFileManager = fileManager;
     }
 
     public void setCellType(int cellType){
-        this.cellType = cellType;
+        myCellType = cellType;
     }
 
-    public void setNeighborMode(int modeType){
-        neighborMode = modeType;
+    public void setMyNeighborMode(int modeType){
+        myNeighborMode = modeType;
     }
 
-    public void setEdgePolicy(int edgePolicy){
-        this.edgePolicy = edgePolicy;
+    public void setMyEdgePolicy(int edgePolicy){
+        myEdgePolicy = edgePolicy;
     }
 
     public void updateCSS(String result) {
@@ -72,8 +71,8 @@ public class MainController {
     }
 
     public void generateNewSimulation(File csvFile){
-        simulatorController = new SimulatorController(this, fileManager, cssFile, myLanguageResources,
-                cellType, neighborMode, edgePolicy);
+        simulatorController = new SimulatorController(this, myFileManager, cssFile, myLanguageResources,
+                myCellType, myNeighborMode, myEdgePolicy);
         simulatorController.updateModelType(modelType);
         simulatorController.updateMyCSSFile(cssFile);
         simulatorController.createNewSimulation(csvFile);
