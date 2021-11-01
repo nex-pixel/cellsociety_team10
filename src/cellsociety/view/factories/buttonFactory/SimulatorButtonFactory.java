@@ -12,22 +12,22 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class SimulatorButtonFactory extends ButtonFactory {
-
+    private static final String SIMULATOR_ACTION_EVENTS = "SimulatorActionEvents";
+    private static final String SIMULATOR_BUTTON_ID = "simulator-button";
+    // things to remember
     private SimulatorController mySimulatorController;
     private SimulatorView mySimulatorView;
-    private String simulatorActionEventsPath = "SimulatorActionEvents";
-    private String simulatorButtonID = "simulator-button";
     private SimulatorChoiceDialogBoxFactory mySimulatorChoiceDialogBoxFactory;
     private ReflectionHandler myReflectionHandler;
 
     public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController, ResourceBundle langResourceBundle){
         super();
-        ACTIONS_NAME_PATH += simulatorActionEventsPath;
+        ACTIONS_NAME_PATH += SIMULATOR_ACTION_EVENTS;
         myActionEventsResources = ResourceBundle.getBundle(ACTIONS_NAME_PATH);
         mySimulatorView = simulatorView;
         mySimulatorController = simulatorController;
         myLanguageResources = langResourceBundle;
-        buttonID = simulatorButtonID;
+        buttonID = SIMULATOR_BUTTON_ID;
         mySimulatorChoiceDialogBoxFactory = new SimulatorChoiceDialogBoxFactory(mySimulatorController, myLanguageResources);
         myReflectionHandler = new ReflectionHandler(myLanguageResources);
         populateOptions(cssFileOptions, cssFileLabelOptions);

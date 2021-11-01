@@ -6,6 +6,9 @@ import cellsociety.view.cell.TriangleCell;
 import javafx.scene.layout.GridPane;
 
 public class TriangleGridBuilder extends GridBuilder {
+    private static final double TRIANGLE_WIDTH = 50.2;
+    private static final double TRIANGLE_HEIGHT = 43.4;
+
     @Override
     public void CreateGrid(SimulatorController mySimulatorController, int gridWidth, int gridHeight, GridPane gamePane) {
         int counter = 0;
@@ -14,10 +17,10 @@ public class TriangleGridBuilder extends GridBuilder {
                 TriangleCell cell = new TriangleCell(mySimulatorController, counter % 2, j, i);
                 cell.setId("default-cell");
                 gamePane.getChildren().add(cell);
-                setCellLocation(cell,j*25.1,  i*43.4);
+                setCellLocation(cell,j*(TRIANGLE_WIDTH/2),  i*TRIANGLE_HEIGHT);
                 counter += 1;
             }
         }
-        setPaneSize(gamePane, (gridWidth+1)*25, gridHeight*43.30125);
+        setPaneSize(gamePane, (gridWidth+1)*(TRIANGLE_WIDTH/2), gridHeight*TRIANGLE_HEIGHT);
     }
 }

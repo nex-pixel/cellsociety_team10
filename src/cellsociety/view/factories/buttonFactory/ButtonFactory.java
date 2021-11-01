@@ -23,7 +23,6 @@ public abstract class ButtonFactory {
     protected ResourceBundle myLanguageResources;
     protected String buttonID;
     protected String INVALID_BUTTON_GENERATION = "InvalidButtonGeneration";
-    protected String LANG_KEY = "language";
     protected String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
     protected ArrayList<String> cssFileOptions = new ArrayList<>();
 

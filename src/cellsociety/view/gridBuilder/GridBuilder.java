@@ -6,6 +6,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polygon;
 
 public abstract class GridBuilder {
+    public abstract void CreateGrid(SimulatorController mySimulatorController, int gridWidth, int gridHeight, GridPane gamePane);
+
     protected void setPaneSize(Pane gamePane, double xSize, double ySize){
         gamePane.setPrefWidth(xSize);
         gamePane.setPrefHeight(ySize);
@@ -16,5 +18,4 @@ public abstract class GridBuilder {
         cell.setTranslateY(yLocation);
     }
 
-    public abstract void CreateGrid(SimulatorController mySimulatorController, int gridWidth, int gridHeight, GridPane gamePane);
 }

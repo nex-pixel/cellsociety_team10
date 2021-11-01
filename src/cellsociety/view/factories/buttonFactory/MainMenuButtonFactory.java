@@ -4,24 +4,22 @@ import cellsociety.ReflectionHandler;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
 import cellsociety.error.GenerateError;
-import cellsociety.view.MainMenuView;
 import cellsociety.view.factories.choiceDialogBoxFactory.MainMenuChoiceDialogBoxFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
-import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 
 public class MainMenuButtonFactory extends ButtonFactory {
-
     private static final String ERROR_CHOOSE_ALL_OPTIONS = "SelectAllOptionsMessage";
-    private ArrayList<String> modelOptions = new ArrayList<>();
-    private String[] modelLabelOptions = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
+    private static final ArrayList<String> MODEL_OPTIONS = new ArrayList<>();
+    private static final String[] MODEL_LABEL_OPTIONS = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
     private static final String[] GRID_TYPES = {"0.Square Cell", "1.Triangle Cell", "2. Hexagon Cell"};
     private static final String[] NEIGHBOR_MODE = {"0.Complete", "1.Edge", "2. Bottom Half"};
     private static final String[] EDGE_POLICY = {"0.Finite", "1. Torus"};
+    // things to remember
     private FileManager myFileManager;
     private MainController myMainMenuController;
     private MainMenuChoiceDialogBoxFactory myMainMenuChoiceDialogBoxFactory;
@@ -37,7 +35,7 @@ public class MainMenuButtonFactory extends ButtonFactory {
         myMainMenuChoiceDialogBoxFactory = new MainMenuChoiceDialogBoxFactory(myMainMenuController, myFileManager, myLanguageResources);
         buttonID = "main-menu-button";
         myReflectionHandler = new ReflectionHandler(myLanguageResources);
-        populateOptions(modelOptions, modelLabelOptions);
+        populateOptions(MODEL_OPTIONS, MODEL_LABEL_OPTIONS);
         populateOptions(cssFileOptions, cssFileLabelOptions);
         populateButtonEvents();
     }
@@ -57,8 +55,8 @@ public class MainMenuButtonFactory extends ButtonFactory {
     }
 
     private EventHandler<ActionEvent> generateModelTypeEvent(){
-        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(myLanguageResources.getString(modelLabelOptions[0]),
-                modelOptions, "modelType", myLanguageResources.getString("ModelContent"));
+        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(myLanguageResources.getString(MODEL_LABEL_OPTIONS[0]),
+                MODEL_OPTIONS, "modelType", myLanguageResources.getString("ModelContent"));
     }
 
     private EventHandler<ActionEvent> generateChooseFileEvent(){
