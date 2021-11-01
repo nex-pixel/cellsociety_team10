@@ -16,7 +16,14 @@ public class SpreadingFireModel extends Game{
 
     public SpreadingFireModel(String filename) {
         super(filename);
-        //getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
+        getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
+    }
+
+    public SpreadingFireModel(String filename, boolean TEST) {
+        super(filename);
+        if(TEST == false) {
+            getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
+        }
     }
 
     public SpreadingFireModel (String filename, int gridType, int neighborMode, int edgePolicy) {
