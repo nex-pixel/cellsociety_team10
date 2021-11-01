@@ -5,6 +5,7 @@ import cellsociety.error.Error;
 import cellsociety.error.GenerateError;
 import cellsociety.games.Game;
 import cellsociety.view.SimulatorView;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -48,16 +49,14 @@ public class SimulatorButtonFactory extends ButtonFactory {
         }
     }
 
-    @Override
-    public Node generateButtonPanel(){
-        HBox panel = new HBox();
-        VBox buttonBox = new VBox();
-        Node animationSpeedSlider = makeSlider("Animation Speed", 0.1, 5.0,
-                (obs, oldVal, newVal) -> mySimulatorView.setAnimationSpeed((double)newVal));
-        buttonMap.forEach((key,value) -> addButtonToPanel(key,value,buttonBox));
-        panel.getChildren().addAll(buttonBox, animationSpeedSlider);
-        return panel;
+
+    private void setSliderProperties(Slider lengthSlider){
+        lengthSlider.setShowTickMarks(true);
+        lengthSlider.setShowTickLabels(true);
+        lengthSlider.setMajorTickUnit(1);
+        lengthSlider.setMaxWidth(100);
     }
+
 
     private EventHandler<ActionEvent> generatePlayEvent(){
         return event -> mySimulatorView.play();
@@ -80,7 +79,6 @@ public class SimulatorButtonFactory extends ButtonFactory {
     }
 
     private EventHandler<ActionEvent> generateReplaceEvent(){return event -> mySimulatorController.replaceWithNewCSV();}
-
 
     private EventHandler<ActionEvent> generateAboutEvent() {return event -> {
         try {

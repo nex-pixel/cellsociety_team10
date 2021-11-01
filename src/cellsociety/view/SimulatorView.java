@@ -7,6 +7,7 @@ import cellsociety.view.buttonFactory.SimulatorButtonFactory;
 import cellsociety.view.cell.HexagonCell;
 import cellsociety.view.cell.SquareCell;
 import cellsociety.view.cell.TriangleCell;
+import cellsociety.view.sliderFactory.SliderFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Node;
@@ -45,6 +46,10 @@ public class SimulatorView {
     private Stage myStage;
     private final String LANG_KEY = "language";
     private String INVALID_SAVE = "InvalidSaveFile";
+    private SliderFactory mySliderFactory;
+    private double sliderValue = 1.0;
+    private double sliderMin = 0.1;
+    private double sliderMax = 5.0;
 
 
 
@@ -58,6 +63,7 @@ public class SimulatorView {
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
         mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
+        mySliderFactory = new SliderFactory(sliderValue);
         setDefaultTriangleGrid(myGridWidth, myGridHeight, myGridView);
         initializeSimulationScene();
     }
@@ -72,7 +78,6 @@ public class SimulatorView {
             new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_SAVE);
         }
     }
-
 
 
     private void initializeSimulationScene(){
@@ -205,7 +210,8 @@ public class SimulatorView {
      */
     private VBox generateSimulationVBox(GridPane gameGrid){
         VBox simulationBox = new VBox();
-        simulationBox.getChildren().addAll(gameGrid, mySimulatorButtonFactory.generateButtonPanel());
+        simulationBox.getChildren().addAll(gameGrid, mySimulatorButtonFactory.generateButtonPanel(), mySliderFactory.makeSlider(sliderMin, sliderMax,
+                (obs, oldVal, newVal) -> setAnimationSpeed((double)newVal)));
         applyCSS(simulationBox, myCSSFile);
         return simulationBox;
     }
