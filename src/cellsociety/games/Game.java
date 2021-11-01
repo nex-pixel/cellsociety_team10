@@ -69,7 +69,7 @@ public abstract class Game {
         }
     }
 
-    public int getCellStatus (int x, int y) { return myGrid.getBoardCell(new Point(x, y)).getCurrentStatus(); }
+    public int getCellStatus (int x, int y) { return myGrid.getCellStatus(x, y); }
 
     public int getCellStatus (Point point) { return myGrid.getBoardCell(point).getCurrentStatus(); }
 
@@ -112,7 +112,7 @@ public abstract class Game {
         }
     }
 
-    public abstract void changeCellOnClick (Point point);
+    public abstract void changeCellOnClick (int x, int y);
 
     protected int[][] toGridArray () {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];
