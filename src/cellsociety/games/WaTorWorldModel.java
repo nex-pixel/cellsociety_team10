@@ -19,7 +19,6 @@ public class WaTorWorldModel extends Game{
     private int ENERGY_LOST_FROM_MOVING;
     private int NUM_STATES = 3;
     private final int DEFAULT_GRID_CHOICE = 0;
-    private Random rand;
 
     public WaTorWorldModel(String filename){
         super(filename);
@@ -44,15 +43,22 @@ public class WaTorWorldModel extends Game{
     }
 
     private void setSharkEnergyValues(){
-        rand = new Random();
         for(Point point: getGrid().getPoints()){
             Cell cell = getGrid().getBoardCell(point);
             if(cell.getCurrentStatus() == SHARK){
-                cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, SHARK_STARTING_ENERGY));
+                setSharkMiscellaneousDefault(cell);
             } else {
-                cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, STARTING_VAL));
+                setFishMiscellaneousDefault(cell);
             }
         }
+    }
+
+    private void setSharkMiscellaneousDefault (Cell cell){
+        cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, SHARK_STARTING_ENERGY));
+    }
+
+    private void setFishMiscellaneousDefault (Cell cell){
+        cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, STARTING_VAL));
     }
 
     @Override
@@ -77,7 +83,6 @@ public class WaTorWorldModel extends Game{
         List<Cell> adjNeigh = checkNumCellsThisCase(EMPTY, neighbors);
         if(adjNeigh.size() > 0){
             Cell chosenNextCell = adjNeigh.get(getRandomInt(adjNeigh.size() - 1));
-            energy = STARTING_VAL;
             reproduceCell(cell, chosenNextCell, stepsAlive, energy, STARTING_VAL);
         }
     }
