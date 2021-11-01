@@ -1,14 +1,16 @@
 package cellsociety.games;
 
 import cellsociety.components.Cell;
-import cellsociety.components.HexagonGrid;
-import cellsociety.components.SquareGrid;
-import cellsociety.components.TriangleGrid;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+/***
+ * The class models the Game of Percolation
+ *
+ * @author Norah Tan, Haseeb Chaudhry
+ */
 public class PercolationModel extends Game {
 
     private int BLOCKED;
@@ -20,11 +22,26 @@ public class PercolationModel extends Game {
     private List<Cell> myOpenCells;
     private List<Cell> cellsToBeRemoved;
 
+    /***
+     * Constructor that takes in a CSV file for grid initialization,
+     * with default square grid, complete neighbors and finite edge policy.
+     *
+     * @param filename gives the CSV figuration file for the grid
+     */
     public PercolationModel (String filename) {
         super(filename);
         setOpenCells();
     }
 
+    /***
+     * Constructor that takes in a CSV file for grid initialization,
+     * with a specified grid shape, neighbor mode and edge policy.
+     *
+     * @param filename gives the CSV figuration file for the grid
+     * @param gridType gives one of square, triangle, and hexagon grid shapes.
+     * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
+     * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
+     */
     public PercolationModel (String filename, int gridType, int neighborMode, int edgePolicy) {
         super(filename, gridType, neighborMode, edgePolicy);
         setOpenCells();
@@ -37,19 +54,41 @@ public class PercolationModel extends Game {
 //        setOpenCells();
 //    }
 
+    /***
+     * Constructor that randomly generates the grid by specifying the numbers of rows, columns, and threshold for satisfaction,
+     * with default square grid, complete neighbors and finite edge policy.
+     *
+     * @param numCols is the number of columns of the grid
+     * @param numRows is the number of rows of the grid
+     */
     public PercolationModel (int numCols, int numRows){
         super(numCols, numRows);
         setNumStatesOnBoard(NUM_STATES);
         setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
     }
 
+    /***
+     * Constructor that randomly generates the grid by specifying the numbers of rows, columns,
+     * with a specified grid shape, neighbor mode and edge policy.
+     *
+     * @param numCols is the number of columns of the grid
+     * @param numRows is the number of rows of the grid
+     * @param gridType gives one of square, triangle, and hexagon grid shapes.
+     * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
+     * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
+     *
+     */
     public PercolationModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
         setNumStatesOnBoard(NUM_STATES);
         setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
     }
 
-    // method for testing purpose
+    /***
+     * For testing purpose
+     *
+     * @return a list of Cells whose currentStatus are open.
+     */
     public List<Cell> getOpenCells () { return myOpenCells; }
 
     private void setOpenCells () {
@@ -92,15 +131,16 @@ public class PercolationModel extends Game {
         return false;
     }
 
-    public boolean isPercolated () {
-        int r = getNumRows() - 1;
-        for (int c = 0; c < getNumCols(); c++) {
-            if (getCellStatus(c, r) == PERCOLATED) {
-                return true;
-            }
-        }
-        return false;
-    }
+    // method is made for the frontend, but it has not been used yet
+//    public boolean isPercolated () {
+//        int r = getNumRows() - 1;
+//        for (int c = 0; c < getNumCols(); c++) {
+//            if (getCellStatus(c, r) == PERCOLATED) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     @Override
     public void changeCellOnClick(int x, int y) {

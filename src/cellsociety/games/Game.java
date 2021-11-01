@@ -34,7 +34,7 @@ public abstract class Game {
         this.myGrid = copy.myGrid;
     }
 
-    // default game with SquareGrid, complete neighbo52wdc r mode, finite edge policy
+    // default game with SquareGrid, complete neighbor mode, finite edge policy
     public Game (String filename) {
         populateGameConditions();
         createReader(filename);
