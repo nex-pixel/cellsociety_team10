@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class SimulatorView {
-    private static final String GRID_NAME_FILE_PATH = "cellsociety/resources/gameData/GridTypeNames";
+    private static final String GRID_NAME_FILE_PATH = "cellsociety.resources.gameData.GridTypeNames";
     private static final String INVALID_SIM_GENERATION = "InvalidSimulation";
 
     private Timeline myAnimation;
@@ -68,7 +68,6 @@ public class SimulatorView {
         mySliderFactory = new SliderFactory(sliderValue);
         myGridView = new GridPane();
         setInitialGrid(cellType);
-        initializeSimulationScene();
         initializeGridProperties();
         initializeFactories();
         initializeSimulationScene();
@@ -91,7 +90,8 @@ public class SimulatorView {
             Method m = this.getClass().getDeclaredMethod(gridTypeName.getString(cellType + ".Cell"));
             m.invoke(this);
         } catch(Exception e){
-            new GenerateError(myLanguageResources, INVALID_SIM_GENERATION);
+            e.printStackTrace();
+            //new GenerateError(myLanguageResources, INVALID_SIM_GENERATION);
         }
     }
 
