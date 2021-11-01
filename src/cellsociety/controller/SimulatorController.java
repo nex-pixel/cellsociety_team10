@@ -85,7 +85,7 @@ public class SimulatorController {
      * replace the current simulation with new simulation of user's choice
      */
     public void replaceWithNewCSV(){
-        mySimulatorView.stopSimulation();
+        mySimulatorView.closeSimulation();
         myMainController.loadNewGame();
     }
 

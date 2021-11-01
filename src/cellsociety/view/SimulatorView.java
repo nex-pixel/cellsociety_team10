@@ -31,28 +31,27 @@ import java.util.Scanner;
 public class SimulatorView {
     private static final String GRID_NAME_FILE_PATH = "cellsociety.resources.gameData.GridTypeNames";
     private static final String INVALID_SIM_GENERATION = "InvalidSimulation";
-
+    private static final String INVALID_SIM_FILE = "InvalidSimFile";
+    private static final String ABOUT_SIMULATION_LABEL = "AboutSimulationLabel";
+    private static final String SIMULATOR_BOX_ID = "simulator-root";
+    private static final double DEFAULT_ANIMATION_SPEED = 0.3;
+    private static final double SLIDER_VALUE = 1.0;
+    private static final double SLIDER_MIN = 0.1;
+    private static final double SLIDER_MAX = 5.0;
+    // Things to remember
     private Timeline myAnimation;
-    private double animationSpeed = 0.3;
     private GridPane myGridView;
     private int myGridWidth;
     private int myGridHeight;
     private SimulatorController mySimulatorController;
     private String myCSSFile;
     private ResourceBundle myLanguageResources;
-    private String INVALID_SIM_FILE = "InvalidSimFile";
-    private String AboutSimulationLabel = "AboutSimulationLabel";
     private Game myGame;
     private Scene myScene;
     private SimulatorButtonFactory mySimulatorButtonFactory;
     private HBox simulationBox = new HBox();
     private Stage myStage;
     private SliderFactory mySliderFactory;
-    private double sliderValue = 1.0;
-    private double sliderMin = 0.1;
-    private double sliderMax = 5.0;
-    private String simulatorBoxId = "simulator-root";
-    private int cellType;
     private GridBuilder myGridBuilder;
     private CSSFactory myCSSFactory;
 
@@ -64,26 +63,26 @@ public class SimulatorView {
         myAnimation = new Timeline();
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
-        mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
-        mySliderFactory = new SliderFactory(sliderValue);
-        myGridView = new GridPane();
         initializeGridProperties();
         initializeFactories();
         setInitialGrid(cellType);
-        initializeSimulationScene();
+        showSimulationScene();
     }
 
-    //TODO: may have to move update to simulator controller
-
-
-
-
+    // initializes all grid properties
     private void initializeGridProperties(){
         myGridWidth = myGame.getNumCols();
         myGridHeight = myGame.getNumRows();
         myGridView = new GridPane();
     }
+    // initializes all factory classes used
+    private void initializeFactories(){
+        mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
+        mySliderFactory = new SliderFactory(SLIDER_VALUE);
+        myCSSFactory = new CSSFactory(myLanguageResources);
+    }
 
+    // uses reflection to populate grid based on the cellType
     private void setInitialGrid(int cellType){
         try {
             ResourceBundle gridTypeName = ResourceBundle.getBundle(GRID_NAME_FILE_PATH);
@@ -93,28 +92,24 @@ public class SimulatorView {
             new GenerateError(myLanguageResources, INVALID_SIM_GENERATION);
         }
     }
-
+    // method used in reflection - creates SquareGrid
     private void createSquareGrid(){
         myGridBuilder = new SquareGridBuilder();
         myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
     }
-
+    // method used in reflection - creates TriangleGrid
     private void createTriangleGrid(){
         myGridBuilder = new TriangleGridBuilder();
         myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
     }
-
+    // method used in reflection - creates HexagonGrid
     private void createHexagonGrid(){
         myGridBuilder = new HexagonGridBuilder();
         myGridBuilder.CreateGrid(mySimulatorController, myGridWidth, myGridHeight, myGridView);
     }
 
-    private void initializeFactories(){
-        mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
-        mySliderFactory = new SliderFactory(sliderValue);
-        myCSSFactory = new CSSFactory(myLanguageResources);
-    }
-    private void initializeSimulationScene(){
+    // creates a stage for the simulation and shows it with the scene of the simulation
+    private void showSimulationScene(){
         myStage = new Stage();
         updateSimulation(myGame, myGridView);
         simulationBox.getChildren().add(generateSimulationVBox(myGridView));
@@ -125,15 +120,24 @@ public class SimulatorView {
         playAnimation();
     }
 
+    private void playAnimation () {
+        assert myAnimation != null;
+        myAnimation.setCycleCount(Timeline.INDEFINITE);
+        myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(DEFAULT_ANIMATION_SPEED), e -> step()));
+        myAnimation.play();
+    }
 
+    // creates and returns a VBox containing the gameGrid and buttons
+    private VBox generateSimulationVBox(GridPane gameGrid){
+        VBox simulationBox = new VBox();
+        simulationBox.setId(SIMULATOR_BOX_ID);
+        simulationBox.getChildren().addAll(gameGrid, mySimulatorButtonFactory.generateButtonPanel(), mySliderFactory.makeSlider(SLIDER_MIN, SLIDER_MAX,
+                (obs, oldVal, newVal) -> setAnimationSpeed((double)newVal)));
+        return simulationBox;
+    }
 
-    /**
-     * updates the cells based on the values in Map
-     * dead cells are colored with deadColor, alive cells are colored with aliveColor
-     * @param game
-     * @return scene with updated cell status
-     */
-    public void updateSimulation(Game game, GridPane gamePane){
+    // updates the gamePane based on the values from backend
+    private void updateSimulation(Game game, GridPane gamePane){
         for(Node node : gamePane.getChildren()){
             Cell cell = (Cell) node;
             Point point = cell.getPoint();
@@ -142,20 +146,24 @@ public class SimulatorView {
         }
     }
 
-    // updates cell status
+    // updates cell's status
     private void updateCell(GridPane gamePane, Point point, int cellStatus){
         int cellNumber = (point.x) * myGridHeight + point.y;
         Node currNode = gamePane.getChildren().get(cellNumber);
         currNode.setId(cellStatus+"-cell");
     }
 
-    public void alertSimulationInfo() {
+    /**
+     * Create an alert with the information of the simulation
+     * This method is executed when About button is clicked by the user
+     */
+    public void displaySimulationInfo() {
         try{
             Scanner file = new Scanner(new File(mySimulatorController.getSimFilePath()));
             StringBuilder simInfo = new StringBuilder();
             while(file.hasNextLine()) simInfo.append(file.nextLine()).append("\n");
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(myLanguageResources.getString(AboutSimulationLabel));
+            alert.setHeaderText(myLanguageResources.getString(ABOUT_SIMULATION_LABEL));
             alert.setContentText(String.valueOf(simInfo));
             alert.showAndWait();
         }catch(FileNotFoundException e){
@@ -163,44 +171,53 @@ public class SimulatorView {
         }
     }
 
-    private VBox generateSimulationVBox(GridPane gameGrid){
-        VBox simulationBox = new VBox();
-        simulationBox.setId(simulatorBoxId);
-        simulationBox.getChildren().addAll(gameGrid, mySimulatorButtonFactory.generateButtonPanel(), mySliderFactory.makeSlider(sliderMin, sliderMax,
-                (obs, oldVal, newVal) -> setAnimationSpeed((double)newVal)));
-        return simulationBox;
-    }
-
+    /**
+     * Changes the CSS file used for the simulation
+     * This method is executed when user clicks on Choose a new color scheme button
+     * @param cssFile new cssFile to be applied
+     */
     public void updateCSS(String cssFile){
         myCSSFactory.applyCSS(myScene, cssFile);
     }
 
-    public void stopSimulation(){
-        myStage.close();
-    }
-
+    /**
+     * Updates the grid to the next step
+     * This method is executed when user clicks on Step button
+     */
     public void step(){
         myGame.update();
         updateSimulation(myGame, myGridView);
     }
 
-    // Start new animation to show search algorithm's steps
-    public void playAnimation () {
-        assert myAnimation != null;
-        myAnimation.setCycleCount(Timeline.INDEFINITE);
-        myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(animationSpeed), e -> step()));
-        myAnimation.play();
-    }
-
+    /**
+     * Pauses the simulation animation
+     * This method is executed when user clicks on Pause button
+     */
     public void pause(){
         myAnimation.pause();
     }
 
+    /**
+     * Resumes the simulation animation
+     * This method is executed when user clicks on Play button
+     */
     public void play(){
         myAnimation.play();
     }
 
+    /**
+     * Changes the animation speed of simulation
+     * This method is executed when moves the Speed slider
+     * @param speed rate to be applied to current animation speed
+     */
     public void setAnimationSpeed(double speed){
         myAnimation.setRate(speed);
+    }
+
+    /**
+     * Closes the stage of the current simulation
+     */
+    public void closeSimulation(){
+        myStage.close();
     }
 }
