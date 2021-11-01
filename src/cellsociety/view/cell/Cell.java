@@ -12,7 +12,7 @@ public class Cell extends Polygon {
         myPoint = new Point(xCoordinate, yCoordinate);
     }
 
-    protected Point getPoint(){
+    public Point getPoint(){
         return myPoint;
     }
 }

@@ -3,6 +3,7 @@ package cellsociety.view;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import cellsociety.games.Game;
+import cellsociety.view.cell.Cell;
 import cellsociety.view.factories.buttonFactory.SimulatorButtonFactory;
 import cellsociety.view.cell.HexagonCell;
 import cellsociety.view.cell.SquareCell;
@@ -21,6 +22,7 @@ import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.io.*;
 import java.lang.invoke.SwitchPoint;
 import java.util.*;
@@ -74,6 +76,8 @@ public class SimulatorView {
         initializeSimulationScene();
     }
 
+    //TODO: may have to move update to simulator controller
+
     private void initializeSimulationScene(){
         myStage = new Stage();
         updateSimulation(myGame, myGridView);
@@ -96,9 +100,6 @@ public class SimulatorView {
 
     // Start new animation to show search algorithm's steps
     public void playAnimation () {
-        if (myAnimation != null) {
-            myAnimation.stop();
-        }
         assert myAnimation != null;
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(animationSpeed), e -> step()));
@@ -117,7 +118,7 @@ public class SimulatorView {
         myAnimation.setRate(speed);
     }
 
-    public void showAbout() {
+    public void showSimulationInfo() {
         try{
             Scanner file = new Scanner(new File(mySimulatorController.getSimFilePath()));
             StringBuilder simInfo = new StringBuilder();
@@ -193,18 +194,16 @@ public class SimulatorView {
      * @return scene with updated cell status
      */
     public void updateSimulation(Game game, GridPane gamePane){
-
-        for (int x = 0; x < game.getNumCols(); x++) {
-            for (int y = 0; y < game.getNumRows(); y++) {
-                int gridNumber = x * myGridHeight + y;
-                int cellStatus = game.getCellStatus(x, y);
-                updateCell(game, gamePane, gridNumber, cellStatus);
-            }
+        for(Node node : gamePane.getChildren()){
+            Cell cell = (Cell) node;
+            int cellStatus = game.getCellStatus(cell.getPoint());
+            updateCell(gamePane, cell.getPoint(), cellStatus);
         }
     }
 
     // updates cell status
-    private void updateCell(Game game, GridPane gamePane, int cellNumber, int cellStatus){
+    private void updateCell(GridPane gamePane, Point point, int cellStatus){
+        int cellNumber = (point.x) * myGridHeight + point.y;
         Node currNode = gamePane.getChildren().get(cellNumber);
         currNode.setId(cellStatus+"-cell");
     }

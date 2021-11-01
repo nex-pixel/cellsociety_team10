@@ -29,7 +29,8 @@ public class SimulatorController {
     private int edgePolicy;
 
     public SimulatorController(MainController mainController, FileManager fileManager, String cssFile, ResourceBundle resourceBundle
-    ,int cellType, int neighborMode, int edgePolicy) {
+    ,int cellType, int neighborMode, int edgePolicy) { //TODO too much dependence?
+        // TODO property change listener simple String Property
         this.cellType = cellType;
         this.neighborMode = neighborMode;
         this.edgePolicy = edgePolicy;
