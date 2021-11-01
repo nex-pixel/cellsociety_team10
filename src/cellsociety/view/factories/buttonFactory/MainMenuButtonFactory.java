@@ -1,5 +1,6 @@
 package cellsociety.view.factories.buttonFactory;
 
+import cellsociety.ReflectionHandler;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
 import cellsociety.error.GenerateError;
@@ -24,6 +25,7 @@ public class MainMenuButtonFactory extends ButtonFactory {
     private FileManager myFileManager;
     private MainController myMainMenuController;
     private MainMenuChoiceDialogBoxFactory myMainMenuChoiceDialogBoxFactory;
+    private ReflectionHandler myReflectionHandler;
 
     public MainMenuButtonFactory(MainController mainMenuController, ResourceBundle langResourceBundle, FileManager fileManager){
         super();
@@ -32,8 +34,9 @@ public class MainMenuButtonFactory extends ButtonFactory {
         myLanguageResources = langResourceBundle;
         myFileManager = fileManager;
         myMainMenuController = mainMenuController;
-        myMainMenuChoiceDialogBoxFactory = new MainMenuChoiceDialogBoxFactory(myMainMenuController, myFileManager);
+        myMainMenuChoiceDialogBoxFactory = new MainMenuChoiceDialogBoxFactory(myMainMenuController, myFileManager, myLanguageResources);
         buttonID = "main-menu-button";
+        myReflectionHandler = new ReflectionHandler(myLanguageResources);
         populateOptions(modelOptions, modelLabelOptions);
         populateOptions(cssFileOptions, cssFileLabelOptions);
         populateButtonEvents();
@@ -45,7 +48,7 @@ public class MainMenuButtonFactory extends ButtonFactory {
             ArrayList<String> list = Collections.list(myActionEventsResources.getKeys());
             Collections.sort(list);
             for(String key : list){
-                EventHandler<ActionEvent> buttonEvent = (EventHandler<ActionEvent>) handleMethod(myActionEventsResources.getString(key)).invoke(MainMenuButtonFactory.this);
+                EventHandler<ActionEvent> buttonEvent = (EventHandler<ActionEvent>) myReflectionHandler.handleMethod(myActionEventsResources.getString(key), "cellsociety.view.factories.buttonFactory.MainMenuButtonFactory").invoke(MainMenuButtonFactory.this);
                 buttonMap.put(myLanguageResources.getString(key), buttonEvent);
             }
         }catch(IllegalAccessException | InvocationTargetException e){

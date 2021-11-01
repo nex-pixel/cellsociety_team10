@@ -4,7 +4,6 @@ import cellsociety.error.GenerateError;
 import cellsociety.games.*;
 import cellsociety.view.SimulatorView;
 
-import java.awt.*;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
@@ -53,7 +52,6 @@ public class SimulatorController {
             mySimulatorView = new SimulatorView(myGame,
                     myCSSFile, myLanguageResources, this, cellType);
         } catch(Exception e){
-            e.printStackTrace();
             myFileManager.checkFileValidity(csvFile);
             new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_SIM_GENERATION);
         }

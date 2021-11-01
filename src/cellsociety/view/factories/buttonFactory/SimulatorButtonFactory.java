@@ -1,5 +1,6 @@
 package cellsociety.view.factories.buttonFactory;
 
+import cellsociety.ReflectionHandler;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import cellsociety.view.SimulatorView;
@@ -17,6 +18,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
     private String simulatorActionEventsPath = "SimulatorActionEvents";
     private String simulatorButtonID = "simulator-button";
     private SimulatorChoiceDialogBoxFactory mySimulatorChoiceDialogBoxFactory;
+    private ReflectionHandler myReflectionHandler;
 
     public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController, ResourceBundle langResourceBundle){
         super();
@@ -26,7 +28,8 @@ public class SimulatorButtonFactory extends ButtonFactory {
         mySimulatorController = simulatorController;
         myLanguageResources = langResourceBundle;
         buttonID = simulatorButtonID;
-        mySimulatorChoiceDialogBoxFactory = new SimulatorChoiceDialogBoxFactory(mySimulatorController);
+        mySimulatorChoiceDialogBoxFactory = new SimulatorChoiceDialogBoxFactory(mySimulatorController, myLanguageResources);
+        myReflectionHandler = new ReflectionHandler(myLanguageResources);
         populateOptions(cssFileOptions, cssFileLabelOptions);
         populateButtonEvents();
     }
@@ -37,7 +40,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
             ArrayList<String> list = Collections.list(myActionEventsResources.getKeys());
             Collections.sort(list);
             for(String key : list){
-                EventHandler<ActionEvent> buttonEvent = (EventHandler<ActionEvent>) handleMethod(myActionEventsResources.getString(key)).invoke(SimulatorButtonFactory.this);
+                EventHandler<ActionEvent> buttonEvent = (EventHandler<ActionEvent>) myReflectionHandler.handleMethod(myActionEventsResources.getString(key), "cellsociety.view.factories.buttonFactory.SimulatorButtonFactory").invoke(SimulatorButtonFactory.this);
                 buttonMap.put(myLanguageResources.getString(key), buttonEvent);
             }
         }catch(IllegalAccessException | InvocationTargetException e){

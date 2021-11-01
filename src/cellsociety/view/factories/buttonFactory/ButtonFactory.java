@@ -24,7 +24,6 @@ public abstract class ButtonFactory {
     protected String buttonID;
     protected String INVALID_BUTTON_GENERATION = "InvalidButtonGeneration";
     protected String LANG_KEY = "language";
-    private String INVALID_METHOD = "InvalidMethod";
     protected String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
     protected ArrayList<String> cssFileOptions = new ArrayList<>();
 
@@ -47,16 +46,6 @@ public abstract class ButtonFactory {
     }
 
     protected abstract void populateButtonEvents();
-
-    protected Method handleMethod(String name) {
-        try{
-            Method m = this.getClass().getDeclaredMethod(name);
-            return m;
-        }catch(NoSuchMethodException e){
-            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_METHOD);
-            return null;
-        }
-    }
 
     public Node generateButtonPanel(){
         VBox panel = new VBox();
