@@ -97,8 +97,6 @@ public class SegregationModel extends Game {
      */
     public SegregationModel (int numCols, int numRows, double threshold){
         super(numCols, numRows);
-        setNumStatesOnBoard(NUM_STATES);
-        setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
         setEmptyCells(threshold);
     }
 
@@ -116,8 +114,6 @@ public class SegregationModel extends Game {
      */
     public SegregationModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy, double threshold) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
-        setNumStatesOnBoard(NUM_STATES);
-        setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
         setEmptyCells(threshold);
     }
 
@@ -140,6 +136,10 @@ public class SegregationModel extends Game {
     public SegregationModel (SegregationModel copy) {
         super(copy);
         myThreshold = copy.myThreshold;
+    }
+
+    protected void setNumStatesOnBoard () {
+        setNumStates(NUM_STATES);
     }
 
     private void setEmptyCells (double threshold) {
