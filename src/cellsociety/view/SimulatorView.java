@@ -67,9 +67,9 @@ public class SimulatorView {
         mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
         mySliderFactory = new SliderFactory(sliderValue);
         myGridView = new GridPane();
-        setInitialGrid(cellType);
         initializeGridProperties();
         initializeFactories();
+        setInitialGrid(cellType);
         initializeSimulationScene();
     }
 
@@ -137,8 +137,9 @@ public class SimulatorView {
     public void updateSimulation(Game game, GridPane gamePane){
         for(Node node : gamePane.getChildren()){
             Cell cell = (Cell) node;
-            int cellStatus = game.getCellStatus(cell.getPoint());
-            updateCell(gamePane, cell.getPoint(), cellStatus);
+            Point point = cell.getPoint();
+            int cellStatus = game.getCellStatus(point.x, point.y);
+            updateCell(gamePane, point, cellStatus);
         }
     }
 
