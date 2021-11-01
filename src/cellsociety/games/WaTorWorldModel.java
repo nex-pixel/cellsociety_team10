@@ -91,7 +91,7 @@ public class WaTorWorldModel extends Game{
         List<Cell> adjFishNeigh = checkNumCellsThisCase(FISH, neighbors);
         List<Cell> adjEmptyNeigh = checkNumCellsThisCase(EMPTY, neighbors);
         if(adjFishNeigh.size() > 0){
-            Cell chosenNextCell = adjFishNeigh.get(adjFishNeigh.size() - 1);
+            Cell chosenNextCell = adjFishNeigh.get(getRandomInt(adjFishNeigh.size() - 1));
             sharkReproduceCell(cell, chosenNextCell, stepsAlive, energy + ENERGY_FROM_EATING_FISH);
         } else if(adjEmptyNeigh.size() > 0){
             Cell chosenNextCell = adjEmptyNeigh.get(adjEmptyNeigh.size() - 1);
@@ -108,10 +108,8 @@ public class WaTorWorldModel extends Game{
         if(energy > 0) {
             reproduceCell(cell, chosenCell, stepsAlive, energy, SHARK_STARTING_ENERGY);
         } else if (energy <= 0){
-            chosenCell.setNextStatus(chosenCell.getCurrentStatus());
             cell.setCurrentStatus(EMPTY);
             cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, STARTING_VAL));
-            chosenCell.setMiscellaneousVal(Arrays.asList(stepsAlive, energy));
         }
     }
 
@@ -134,9 +132,9 @@ public class WaTorWorldModel extends Game{
         Cell cell = getGrid().getBoardCell(x, y);
         cell.setCurrentStatus((cell.getCurrentStatus() + 1) % 3);
         if (cell.getCurrentStatus() == FISH){
-            cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL,STARTING_VAL));
+            setFishMiscellaneousDefault(cell);
         } else if (cell.getCurrentStatus() == SHARK){
-            cell.setMiscellaneousVal((Arrays.asList(STARTING_VAL, SHARK_STARTING_ENERGY)));
+            setSharkMiscellaneousDefault(cell);
         }
         update();
     }
