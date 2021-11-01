@@ -20,6 +20,7 @@ public class MainController {
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private static final int MAIN_SCREEN_SIZE = 500;
     private String myLanguage;
+    private int cellType;
 
     public MainController(Stage stage, String language){
         myLanguage = language;
@@ -45,6 +46,10 @@ public class MainController {
     public void updateModelType(String result, FileManager fileManager){
         simulatorController = new SimulatorController(this, fileManager, cssFile, myLanguageResources);
         simulatorController.updateModelType(result);
+    }
+
+    public void setCellType(int cellType){
+        this.cellType = cellType;
     }
 
     public void updateCSS(String result) {

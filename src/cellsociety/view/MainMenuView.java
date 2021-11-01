@@ -69,6 +69,9 @@ public class MainMenuView {
         if(resultType.equals("modelType")){
             myMainController.updateModelType(choiceDialog.getSelectedItem(), myFileManager);
         }
+        if(resultType.equals("gridType")){
+            myMainController.setCellType((int) choiceDialog.getSelectedItem().charAt(0));
+        }
     }
 
     private void addItemsToOptionsList(ArrayList<String> options, ChoiceDialog<String> choiceDialog){
