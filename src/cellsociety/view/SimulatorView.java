@@ -7,21 +7,18 @@ import cellsociety.view.buttonFactory.SimulatorButtonFactory;
 import cellsociety.view.cell.HexagonCell;
 import cellsociety.view.cell.SquareCell;
 import cellsociety.view.cell.TriangleCell;
+import cellsociety.view.colorPickerFactory.ColorPickerFactory;
 import cellsociety.view.sliderFactory.SliderFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Cell;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -39,18 +36,21 @@ public class SimulatorView {
     private String myCSSFile;
     private ResourceBundle myLanguageResources;
     private String INVALID_CSS_ERROR = "InvalidCSSFile";
+    private String INVALID_SIM_FILE = "InvalidSimFile";
+    private String AboutSimulationLabel = "AboutSimulationLabel";
     private Game myGame;
     private Scene myScene;
     private SimulatorButtonFactory mySimulatorButtonFactory;
     private HBox simulationBox = new HBox();
     private Stage myStage;
     private final String LANG_KEY = "language";
-    private String INVALID_SAVE = "InvalidSaveFile";
     private SliderFactory mySliderFactory;
     private double sliderValue = 1.0;
     private double sliderMin = 0.1;
     private double sliderMax = 5.0;
-
+    private String simulatorBoxId = "simulator-root";
+    private ColorPickerFactory myColorPickerFactory = new ColorPickerFactory();
+    private String[] colorPickerList = {"AliveLabel", "DeadLabel", "DefaultLabel"};
 
 
     public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController){
@@ -67,18 +67,6 @@ public class SimulatorView {
         setDefaultTriangleGrid(myGridWidth, myGridHeight, myGridView);
         initializeSimulationScene();
     }
-
-    public void saveCSVFile(){
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setContentText("Enter File Name");
-        try{
-            String fileName = dialog.showAndWait().get(); //TODO: check for ispresent
-            myGame.saveCSVFile(fileName, myLanguageResources);
-        }catch(Exception e){
-            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_SAVE);
-        }
-    }
-
 
     private void initializeSimulationScene(){
         myStage = new Stage();
@@ -121,14 +109,22 @@ public class SimulatorView {
         myAnimation.setRate(speed);
     }
 
-    public void showAbout() throws FileNotFoundException {
-        Scanner file = new Scanner(new File(mySimulatorController.getSimFilePath()));
-        StringBuilder simInfo = new StringBuilder();
-        while(file.hasNextLine()) simInfo.append(file.nextLine()).append("\n");
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("About This Simulation");
-        alert.setContentText(String.valueOf(simInfo));
-        alert.showAndWait();
+    public void showAbout() {
+        try{
+            Scanner file = new Scanner(new File(mySimulatorController.getSimFilePath()));
+            StringBuilder simInfo = new StringBuilder();
+            while(file.hasNextLine()) simInfo.append(file.nextLine()).append("\n");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            setAlertContent(alert,myLanguageResources.getString(AboutSimulationLabel), String.valueOf(simInfo));
+            alert.showAndWait();
+        }catch(FileNotFoundException e){
+            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_SIM_FILE);
+        }
+    }
+
+    private void setAlertContent(Alert alert, String text, String info){
+        alert.setHeaderText(text);
+        alert.setContentText(String.valueOf(info));
     }
 
     // fills the grid with squareCells of defaultColor
@@ -210,6 +206,7 @@ public class SimulatorView {
      */
     private VBox generateSimulationVBox(GridPane gameGrid){
         VBox simulationBox = new VBox();
+        simulationBox.setId(simulatorBoxId);
         simulationBox.getChildren().addAll(gameGrid, mySimulatorButtonFactory.generateButtonPanel(), mySliderFactory.makeSlider(sliderMin, sliderMax,
                 (obs, oldVal, newVal) -> setAnimationSpeed((double)newVal)));
         applyCSS(simulationBox, myCSSFile);

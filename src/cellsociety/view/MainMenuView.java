@@ -4,6 +4,7 @@ import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
 import cellsociety.error.GenerateError;
 import cellsociety.view.buttonFactory.MainMenuButtonFactory;
+import cellsociety.view.colorPickerFactory.ColorPickerFactory;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
@@ -22,6 +23,7 @@ public class MainMenuView {
     private String homePageRootID = "home-page-root";
     private MainMenuButtonFactory myMainMenuButtonView;
     private String LANG_KEY;
+    private ColorPickerFactory myColorPickerFactory;
 
     public MainMenuView(ResourceBundle languageResourceBundle){
         myLanguageResources = languageResourceBundle;
@@ -43,7 +45,7 @@ public class MainMenuView {
 
     private void initializeHomePageRoot(){
         homePageRoot = new TilePane();
-        homePageRoot.getChildren().add(myMainMenuButtonView.generateButtonPanel());
+        homePageRoot.getChildren().addAll(myMainMenuButtonView.generateButtonPanel());
         homePageRoot.setId(homePageRootID);
     }
 

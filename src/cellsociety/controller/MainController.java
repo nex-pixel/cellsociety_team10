@@ -74,4 +74,8 @@ public class MainController {
         return ResourceBundle.getBundle(RESOURCE_PACKAGE + name);
     }
 
+    public void updateCellColors(){
+
+    }
+
 }

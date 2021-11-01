@@ -51,6 +51,10 @@ public class SimulatorController {
         }
     }
 
+    public void saveCSVFile(){
+        myFileManager.saveCSVFile(myGame);
+    }
+
     protected Method handleMethod(String name) {
         try{
             Method m = this.getClass().getDeclaredMethod(name);

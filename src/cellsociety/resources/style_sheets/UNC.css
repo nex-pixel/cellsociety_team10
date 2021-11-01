@@ -11,6 +11,12 @@
     -fx-alignment: center;
 }
 
+#simulator-root{
+    -fx-background-color: #13294b;
+    -fx-alignment: center;
+    -fx-tile-alignment: center;
+}
+
 #main-menu-vbox{
     -fx-alignment: center;
 }

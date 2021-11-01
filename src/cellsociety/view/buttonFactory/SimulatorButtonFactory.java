@@ -1,5 +1,6 @@
 package cellsociety.view.buttonFactory;
 
+import cellsociety.controller.FileManager;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.Error;
 import cellsociety.error.GenerateError;
@@ -14,6 +15,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -22,16 +24,17 @@ public class SimulatorButtonFactory extends ButtonFactory {
 
     private SimulatorController mySimulatorController;
     private SimulatorView mySimulatorView;
-    private String InvalidSimFile = "simFileNotFound";
+    private String simulatorActionEventsPath = "SimulatorActionEvents";
+    private String simulatorButtonID = "simulator-button";
 
     public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController, ResourceBundle langResourceBundle){
         super();
-        ACTIONS_NAME_PATH += "SimulatorActionEvents";
+        ACTIONS_NAME_PATH += simulatorActionEventsPath;
         myActionEventsResources = ResourceBundle.getBundle(ACTIONS_NAME_PATH);
         mySimulatorView = simulatorView;
         mySimulatorController = simulatorController;
         myLanguageResources = langResourceBundle;
-        buttonID = "simulator-button";
+        buttonID = simulatorButtonID;
         populateButtonEvents();
     }
 
@@ -49,15 +52,6 @@ public class SimulatorButtonFactory extends ButtonFactory {
         }
     }
 
-
-    private void setSliderProperties(Slider lengthSlider){
-        lengthSlider.setShowTickMarks(true);
-        lengthSlider.setShowTickLabels(true);
-        lengthSlider.setMajorTickUnit(1);
-        lengthSlider.setMaxWidth(100);
-    }
-
-
     private EventHandler<ActionEvent> generatePlayEvent(){
         return event -> mySimulatorView.play();
     }
@@ -71,7 +65,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
     }
 
     private EventHandler<ActionEvent> generateSaveEvent(){
-        return event -> mySimulatorView.saveCSVFile();
+        return event -> mySimulatorController.saveCSVFile();
     }
 
     private EventHandler<ActionEvent> generateLoadEvent(){
@@ -81,11 +75,8 @@ public class SimulatorButtonFactory extends ButtonFactory {
     private EventHandler<ActionEvent> generateReplaceEvent(){return event -> mySimulatorController.replaceWithNewCSV();}
 
     private EventHandler<ActionEvent> generateAboutEvent() {return event -> {
-        try {
-            mySimulatorView.showAbout();
-        } catch (FileNotFoundException e) {
-            new GenerateError(myLanguageResources.getString(LANG_KEY), InvalidSimFile);
-        }};
+        mySimulatorView.showAbout();
+    };
     }
 
 
