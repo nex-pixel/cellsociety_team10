@@ -1,6 +1,5 @@
 package cellsociety.controller;
 
-import cellsociety.error.GenerateError;
 import cellsociety.view.MainMenuView;
 import cellsociety.view.factories.cssFactory.CSSFactory;
 import javafx.stage.Stage;
@@ -72,10 +71,10 @@ public class MainController {
     }
 
     public void generateNewSimulation(File csvFile){
-        simulatorController = new SimulatorController(this, fileManager, cssFile, myLanguageResources,
+        simulatorController = new SimulatorController(this, cssFile, myLanguageResources,
                 cellType, neighborMode, edgePolicy);
         simulatorController.updateModelType(modelType);
-        simulatorController.updateMyCSSFile(cssFile);
+        simulatorController.setMyCSSFile(cssFile);
         simulatorController.createNewSimulation(csvFile);
     }
 

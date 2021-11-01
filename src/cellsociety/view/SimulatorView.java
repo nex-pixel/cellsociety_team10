@@ -90,8 +90,7 @@ public class SimulatorView {
             Method m = this.getClass().getDeclaredMethod(gridTypeName.getString(cellType + ".Cell"));
             m.invoke(this);
         } catch(Exception e){
-            e.printStackTrace();
-            //new GenerateError(myLanguageResources, INVALID_SIM_GENERATION);
+            new GenerateError(myLanguageResources, INVALID_SIM_GENERATION);
         }
     }
 
