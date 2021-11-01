@@ -48,7 +48,7 @@ public class SimulatorController {
 
     private void initializeActionBundle() {
         String filePath = RESOURCE_ACTIONS_NAME + myLanguageResources.getString(LANG_KEY);
-        actionNameBundle = ResourceBundle.getBundle(RESOURCE_ACTIONS_NAME);
+        actionNameBundle = ResourceBundle.getBundle(filePath);
     }
 
     /**
