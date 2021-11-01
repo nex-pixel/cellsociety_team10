@@ -7,6 +7,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/***
+ * The class models the Wa-Tor-World
+ *
+ * @author Norah Tan, Haseeb Chaudhry
+ */
+
 public class WaTorWorldModel extends Game{
     //neighbors only north south east and west count
     private int EMPTY;
@@ -21,20 +27,53 @@ public class WaTorWorldModel extends Game{
     private final int DEFAULT_GRID_CHOICE = 0;
     private Random rand;
 
+    /***
+     * Constructor that takes in a CSV file for grid initialization,
+     * with default square grid, complete neighbors and finite edge policy.
+     *
+     * @param filename gives the CSV figuration file for the grid
+     */
     public WaTorWorldModel(String filename){
         super(filename);
         setSharkEnergyValues();
     }
 
+    /***
+     * Constructor that takes in a CSV file for grid initialization,
+     * with a specified grid shape, neighbor mode and edge policy.
+     *
+     * @param filename gives the CSV figuration file for the grid
+     * @param gridType gives one of square, triangle, and hexagon grid shapes.
+     * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
+     * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
+     */
     public WaTorWorldModel (String filename, int gridType, int neighborMode, int edgePolicy) {
         super(filename, gridType, neighborMode, edgePolicy);
         setSharkEnergyValues();
     }
 
+    /***
+     * Constructor that randomly generates the grid by specifying the numbers of rows, columns, and threshold for satisfaction,
+     * with default square grid, complete neighbors and finite edge policy.
+     *
+     * @param numCols is the number of columns of the grid
+     * @param numRows is the number of rows of the grid
+     */
     public WaTorWorldModel (int numCols, int numRows){
         super(numCols, numRows);
     }
 
+    /***
+     * Constructor that randomly generates the grid by specifying the numbers of rows, columns,
+     * with a specified grid shape, neighbor mode and edge policy.
+     *
+     * @param numCols is the number of columns of the grid
+     * @param numRows is the number of rows of the grid
+     * @param gridType gives one of square, triangle, and hexagon grid shapes.
+     * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
+     * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
+     *
+     */
     public WaTorWorldModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
     }
@@ -126,8 +165,8 @@ public class WaTorWorldModel extends Game{
 
     @Override
     public void changeCellOnClick(int x, int y) {
+        super.changeCellOnClick(x, y);
         Cell cell = getGrid().getBoardCell(x, y);
-        cell.setCurrentStatus((cell.getCurrentStatus() + 1) % 3);
         if (cell.getCurrentStatus() == FISH){
             cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL,STARTING_VAL));
         } else if (cell.getCurrentStatus() == SHARK){

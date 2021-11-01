@@ -14,7 +14,11 @@ import java.io.FileWriter;
 import java.util.*;
 import java.util.List;
 
-
+/***
+ * The class abstract models the general feature of Game
+ *
+ * @author Norah Tan, Haseeb Chaudhry
+ */
 public abstract class Game {
 
     private ReadFile myReader;
@@ -25,16 +29,28 @@ public abstract class Game {
     private final int DEFAULT_GRID_CHOICE = 0;
     private int NUM_STATES;
 
+    /***
+     * Default constructor
+     */
     public Game () {}
 
-    // Constructor for testing purposes
+    /***
+     * Constructor for testing purpose.
+     *
+     * @param copy is the Game that we want to copy from
+     */
     public Game (Game copy) {
         populateGameConditions();
         this.myReader = copy.myReader;
         this.myGrid = copy.myGrid;
     }
 
-    // default game with SquareGrid, complete neighbor mode, finite edge policy
+    /***
+     * Constructor that takes in a CSV file for grid initialization,
+     * with default square grid, complete neighbors and finite edge policy.
+     *
+     * @param filename gives the CSV figuration file for the grid
+     */
     public Game (String filename) {
         populateGameConditions();
         createReader(filename);
@@ -42,12 +58,25 @@ public abstract class Game {
         setGrid(states, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
     }
 
+    /***
+     * Constructor for testing purpose.
+     *
+     * @param states specifies the grid
+     */
     public Game (int[][] states) {
-        // default game with SquareGrid, complete neighbor mode, finite edge policy
         populateGameConditions();
         setGrid(states, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE , DEFAULT_GRID_CHOICE);
     }
 
+    /***
+     * Constructor that takes in a CSV file for grid initialization,
+     * with a specified grid shape, neighbor mode and edge policy.
+     *
+     * @param filename gives the CSV figuration file for the grid
+     * @param gridType gives one of square, triangle, and hexagon grid shapes.
+     * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
+     * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
+     */
     public Game (String filename, int gridType, int neighborMode, int edgePolicy) {
         populateGameConditions();
         createReader(filename);
@@ -55,25 +84,64 @@ public abstract class Game {
         setGrid(states, gridType, neighborMode, edgePolicy);
     }
 
+    /***
+     * Constructor for testing purpose, with a specified grid shape, neighbor mode and edge policy.
+     *
+     * @param states specifies the grid
+     * @param gridType gives one of square, triangle, and hexagon grid shapes.
+     * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
+     * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
+     */
     public Game (int[][] states, int gridType, int neighborMode, int edgePolicy) {
         populateGameConditions();
         setGrid(states, gridType, neighborMode, edgePolicy);
     }
 
+    /***
+     * Constructor that randomly generates the grid by specifying the numbers of rows, columns, and threshold for satisfaction,
+     * with default square grid, complete neighbors and finite edge policy.
+     *
+     * @param numCols is the number of columns of the grid
+     * @param numRows is the number of rows of the grid
+     */
     public Game (int numCols, int numRows){
         populateGameConditions();
         setNumStatesOnBoard();
         setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
     }
 
+    /***
+     * Constructor that randomly generates the grid by specifying the numbers of rows, columns,
+     * with a specified grid shape, neighbor mode and edge policy.
+     *
+     * @param numCols is the number of columns of the grid
+     * @param numRows is the number of rows of the grid
+     * @param gridType gives one of square, triangle, and hexagon grid shapes.
+     * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
+     * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
+     *
+     */
     public Game (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         populateGameConditions();
         setNumStatesOnBoard();
         setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
     }
 
+    /***
+     * Getter method that gives the grid
+     *
+     * @return myGrid
+     */
     protected Grid getGrid () { return myGrid; }
 
+    /***
+     * Setter method that initialize the grid according to the following parameters
+     *
+     * @param states specifies the grid
+     * @param gridType gives one of square, triangle, and hexagon grid shapes.
+     * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
+     * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
+     */
     protected void setGrid (int[][] states, int gridType, int neighborMode, int edgePolicy) {
         switch (gridType) {
             case 0 -> myGrid = new SquareGrid(states, neighborMode, edgePolicy);
@@ -82,10 +150,25 @@ public abstract class Game {
         }
     }
 
+    /***
+     * An abstract method that helps set the number of states on board that is unique to each child game
+     */
     protected abstract void setNumStatesOnBoard ();
 
+    /***
+     * Setter method that sets the number of states on the board as specified
+     *
+     * @param numStates
+     */
     protected void setNumStates (int numStates) { NUM_STATES = numStates; }
 
+    /***
+     * Create a random 2d array with states being a non-negative integer up to NUM_STATES
+     *
+     * @param numCols specifies the number of columns in the 2d array
+     * @param numRows specifies the number of columns in the 2d array
+     * @return the random 2d array
+     */
     protected int[][] createRandomIntTwoDArray(int numCols, int numRows){
         int[][] retArray = new int[numRows][numCols];
         for(int i = 0; i < numRows; i++){
@@ -100,20 +183,58 @@ public abstract class Game {
         return (int)(Math.random() * (max + 1));
     }
 
+    /***
+     * Getter method that returns the current status of a Cell at a location
+     *
+     * @param x is the x-location
+     * @param y is the y-location
+     * @return the current status of the Cell located at (x, y)
+     */
     public int getCellStatus (int x, int y) { return myGrid.getCellStatus(x,y); }
 
+    /***
+     * Getter method that returns the current status of a Cell at a location
+     *
+     * @param point is the Point representation of the xy-location
+     * @return the current status of the Cell located at (point.x, point.y)
+     */
     public int getCellStatus (Point point) { return myGrid.getBoardCell(point).getCurrentStatus(); }
 
+    /***
+     * Getter method
+     *
+     * @return the number of rows in the grid
+     */
     public int getNumRows () { return myGrid.getNumRows(); }
 
+    /***
+     * Getter method
+     *
+     * @return the number of columns in the grid
+     */
     public int getNumCols () { return myGrid.getNumCols(); }
 
+    /***
+     * Getter method
+     *
+     * @return a list of the locations of all Cells in the grid
+     */
     public Set<Point> getAllPoints () { return myGrid.getPoints(); }
 
+    /***
+     * Setter method that changes the neighbor mode
+     *
+     * @param newNeighborMode
+     */
     public void changeNeighborMode (int newNeighborMode){
         myGrid.changeNeighborMode(newNeighborMode);
     }
 
+    /***
+     * Setter method that changes the edge policy
+     *
+     * @param newEdgePolicy
+     */
     public void changeEdgePolicy (int newEdgePolicy){
         myGrid.changeEdgePolicy(newEdgePolicy);
     }
@@ -131,9 +252,16 @@ public abstract class Game {
         // There may be some more types
     }
 
-    //boolean
+    /***
+     * An abstract method that applies the specific game rule to the Cell and change Cell's nextStatus
+     * @param cell
+     * @return whether the status of the cell has been changes
+     */
     protected abstract boolean applyRule (Cell cell);
 
+    /***
+     * Complete one round of update on each Cell on the board, change their statuses
+     */
     public void update () {
         for (Point point: myGrid.getPoints()) {
             applyRule(myGrid.getBoardCell(point));
@@ -143,8 +271,22 @@ public abstract class Game {
         }
     }
 
-    public abstract void changeCellOnClick (int x, int y);
+    /***
+     * Change the current status of the Cell by adding 1 (mod NUM_STATES)
+     *
+     * @param x is the x-location of the Cell
+     * @param y is the y-location of the Cell
+     */
+    public void changeCellOnClick (int x, int y) {
+        Cell cell = getGrid().getBoardCell(x,y);
+        cell.setCurrentStatus((cell.getCurrentStatus() + 1) % NUM_STATES);
+    }
 
+    /***
+     * A helper method that transforms myGrid back into a 2d array
+     *
+     * @return the 2d array of myGrid
+     */
     protected int[][] toGridArray () {
         int[][] ret = new int[myGrid.getNumRows()][myGrid.getNumCols()];
         for (int r = 0; r < myGrid.getNumRows(); r++) {
@@ -155,6 +297,12 @@ public abstract class Game {
         return ret;
     }
 
+    /***
+     * Save myGrid into a CSV file
+     *
+     * @param filename specifies the path that the saved CSV file will be located in
+     * @param languageResource specifies the language
+     */
     public void saveCSVFile (String filename, ResourceBundle languageResource) {
         try {
             File file = new File(filename);
@@ -174,21 +322,33 @@ public abstract class Game {
 
     }
 
-
+    /***
+     * Import all the "magic numbers" needed in models
+     */
     protected void populateGameConditions () {
         myGameDataReader = new PropertiesReader(DEFAULT_GAME_DATA);
     }
 
+    /***
+     * Import a constant variable of type Integer
+     * @param label is the name of the Integer variable
+     * @return the Integer variable
+     */
     protected int retrieveIntProperty (String label) {
         return myGameDataReader.getIntProperty(label);
     }
 
+    /***
+     * Retain a list of Cells with a specified state from a general list
+     *
+     * @param state is the state of the Cells we want to retain
+     * @param cellList is the list of Cells we want to filter from
+     * @return the filtered list with Cells only with the desired state
+     */
     protected List<Cell> checkNumCellsThisCase (int state, List<Cell> cellList){
         List<Cell> retList = new ArrayList<>();
         for(Cell cellInList: cellList){
-            if(cellInList == null){
-              //skip
-            } else if(cellInList.getCurrentStatus() == state){
+            if(cellInList!= null && cellInList.getCurrentStatus() == state){
                 retList.add(cellInList);
             }
         }
