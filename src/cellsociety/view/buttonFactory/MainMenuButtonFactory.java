@@ -19,6 +19,9 @@ public class MainMenuButtonFactory extends ButtonFactory {
     private String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
     private String[] modelLabelOptions = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
     private static final String[] GRID_TYPES = {"0.Square Cell", "1.Triangle Cell", "2. Hexagon Cell"};
+    private static final String[] NEIGHBOR_MODE = {"0.Complete", "1.Edge", "2. Bottom Half"};
+    private static final String[] EDGE_POLICY = {"0.Finite", "1. Torus"};
+
     private ArrayList<String> cssFileOptions = new ArrayList<>();
     private FileManager myFileManager;
     private MainMenuView myMainMenuView;
@@ -70,6 +73,13 @@ public class MainMenuButtonFactory extends ButtonFactory {
         return event -> myMainMenuView.generateChoiceDialogBox(GRID_TYPES[0],new ArrayList<>(Arrays.asList(GRID_TYPES))
                 , "gridType", "Cell Type"); // TODO: update language resources
     }
+
+    private EventHandler<ActionEvent> generateNeighborModeEvent(){
+        return event -> myMainMenuView.generateChoiceDialogBox(NEIGHBOR_MODE[0],new ArrayList<>(Arrays.asList(NEIGHBOR_MODE))
+                , "neighborModeType", "Neighbor Mode"); // TODO: update language resources
+    }
+
+
 
 
 

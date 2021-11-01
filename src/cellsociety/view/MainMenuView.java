@@ -72,6 +72,9 @@ public class MainMenuView {
         if(resultType.equals("gridType")){
             myMainController.setCellType((int) choiceDialog.getSelectedItem().charAt(0));
         }
+        if(resultType.equals("neighborModeType")){
+            myMainController.setNeighborMode((int) choiceDialog.getSelectedItem().charAt(0));
+        }
     }
 
     private void addItemsToOptionsList(ArrayList<String> options, ChoiceDialog<String> choiceDialog){

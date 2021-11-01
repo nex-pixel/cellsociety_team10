@@ -21,6 +21,7 @@ public class MainController {
     private static final int MAIN_SCREEN_SIZE = 500;
     private String myLanguage;
     private int cellType;
+    private int neighborMode;
 
     public MainController(Stage stage, String language){
         myLanguage = language;
@@ -50,6 +51,10 @@ public class MainController {
 
     public void setCellType(int cellType){
         this.cellType = cellType;
+    }
+
+    public void setNeighborMode(int modeType){
+        neighborMode = modeType;
     }
 
     public void updateCSS(String result) {
