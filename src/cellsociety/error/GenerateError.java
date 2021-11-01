@@ -4,7 +4,9 @@ import java.util.ResourceBundle;
 
 public class GenerateError {
 
-    public GenerateError(String language, String message){
+    private String LANG_KEY = "language";
+    public GenerateError(ResourceBundle langResources, String message){
+        String language = langResources.getString(LANG_KEY);
         Error myError = new Error(language);
         myError.prepareError(message);
         myError.showError();

@@ -32,7 +32,7 @@ public class MainMenuChoiceDialogBoxFactory extends ChoiceDialogBoxFactory {
         try{
             method.invoke(MainMenuChoiceDialogBoxFactory.this);
         }catch(Exception e){
-            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_METHOD);
+            new GenerateError(myLanguageResources, INVALID_METHOD);
         }
     }
 

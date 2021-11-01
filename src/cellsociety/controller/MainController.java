@@ -2,6 +2,7 @@ package cellsociety.controller;
 
 import cellsociety.error.GenerateError;
 import cellsociety.view.MainMenuView;
+import cellsociety.view.factories.cssFactory.CSSFactory;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -17,7 +18,6 @@ public class MainController {
     private String cssFile;
     private MainMenuView mainMenu;
     private String DEFAULT_CSS_FILE_LABEL = "Duke";
-    private String INVALID_CSS_ERROR = "InvalidCSSFile";
     private static final int MAIN_SCREEN_SIZE = 500;
     private String myLanguage;
     private int cellType;
@@ -25,11 +25,13 @@ public class MainController {
     private int edgePolicy;
     private FileManager fileManager;
     private String modelType;
+    private CSSFactory myCSSFactory;
 
     public MainController(Stage stage, String language){
         myLanguage = language;
         myStage = stage;
         myLanguageResources = initializeResourceBundle(myLanguage);
+        myCSSFactory = new CSSFactory(myLanguageResources);
     }
 
     public void startMainMenu() {
@@ -66,18 +68,14 @@ public class MainController {
 
     public void updateCSS(String result) {
         cssFile = myLanguageResources.getString(result);
-        try{
-            mainMenu.applyCSS(myStage.getScene(), cssFile);
-        }catch(Exception e){
-            new GenerateError(myLanguageResources.getString(myLanguage), INVALID_CSS_ERROR);
-        }
+        myCSSFactory.applyCSS(myStage.getScene(), cssFile);
     }
 
     public void generateNewSimulation(File csvFile){
         simulatorController = new SimulatorController(this, fileManager, cssFile, myLanguageResources,
                 cellType, neighborMode, edgePolicy);
         simulatorController.updateModelType(modelType);
-        simulatorController.applyCSSFile(cssFile);
+        simulatorController.updateMyCSSFile(cssFile);
         simulatorController.createNewSimulation(csvFile);
     }
 

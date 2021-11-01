@@ -7,8 +7,7 @@ import java.util.ResourceBundle;
 
 public class ReflectionHandler {
 
-    private ResourceBundle myLanguageResources;
-    private String LANG_KEY = "language";
+    private ResourceBundle myLanguageResources;;
     private String INVALID_METHOD = "InvalidMethod";
 
     public ReflectionHandler(ResourceBundle langResources){
@@ -21,7 +20,7 @@ public class ReflectionHandler {
             Method m = thisClass.getDeclaredMethod(name);
             return m;
         }catch(NoSuchMethodException | ClassNotFoundException e){
-            new GenerateError(myLanguageResources.getString(LANG_KEY), INVALID_METHOD);
+            new GenerateError(myLanguageResources, INVALID_METHOD);
             return null;
         }
     }

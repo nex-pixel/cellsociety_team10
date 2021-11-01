@@ -10,15 +10,13 @@ import java.util.ResourceBundle;
 
 public abstract class ChoiceDialogBoxFactory {
 
-    protected String cssType = "cssFile";
     protected String CHOICE_EVENTS_PATH = "cellsociety.resources.choiceBoxEvents.";
+    protected String CHOICE_BOX_CLASSPATH = "cellsociety.view.factories.choiceDialogBoxFactory.";
     protected ChoiceDialog<String> myChoiceDialog;
-    protected String LANG_KEY = "language";
     protected String INVALID_METHOD = "InvalidMethod";
     protected ResourceBundle myChoiceBoxEventsBundle;
     protected ReflectionHandler myReflectionHandler;
     protected ResourceBundle myLanguageResources;
-    protected String CHOICE_BOX_CLASSPATH = "cellsociety.view.factories.choiceDialogBoxFactory.";
 
     public ChoiceDialog<String> generateChoiceDialogBox(String defaultChoice, ArrayList<String> options, String resultType, String content){
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(defaultChoice);

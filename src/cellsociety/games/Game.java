@@ -21,7 +21,6 @@ public abstract class Game {
     private Grid myGrid;
     private static final String DEFAULT_GAME_DATA = "cellsociety.resources.gameData.GameData";
     protected PropertiesReader myGameDataReader;
-    private String LANG_KEY = "language";
     private String INVALID_SAVE = "InvalidSaveFile";
     private final int DEFAULT_GRID_CHOICE = 0;
     private int NUM_STATES;
@@ -166,7 +165,7 @@ public abstract class Game {
             writer.close();
         }
         catch (Exception e) {
-            new GenerateError(languageResource.getString(LANG_KEY), INVALID_SAVE);
+            new GenerateError(languageResource, INVALID_SAVE);
         }
 
     }
