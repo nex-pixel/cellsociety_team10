@@ -225,4 +225,6 @@ public abstract class Grid {
         setNeighborRows(myReader.getIntListProperty(row));
         setNeighborCols(myReader.getIntListProperty(col));
     }
+
+
 }

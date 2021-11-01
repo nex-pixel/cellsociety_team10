@@ -193,6 +193,15 @@ public class SquareGridTest {
     }
 
     @Test
+    void checkChangeOfNeighborMode (){
+        Grid originalGridFinite = myGrid_Complete_Finite;
+        originalGridFinite.changeNeighborMode(NEIGHBOR_MODE_EDGE);
+        Grid expectedGridFinite = myGrid_Edge_Finite;
+        assertEquals(expectedGridFinite, originalGridFinite);
+
+    }
+
+    @Test
     void checkGridExpansion(){
         for (SquareGrid grid: myGrids) {
             grid.expandGrid(2, 2, 2, 2);
