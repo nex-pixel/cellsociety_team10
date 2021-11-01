@@ -59,6 +59,11 @@ public class HexagonGrid extends Grid {
     }
 
     @Override
+    public Cell getBoardCell(int x, int y){
+        return getBoard().get(new Point((y+1)%2 + 2*x, y));
+    }
+
+    @Override
     protected void populateNeighborData() {
         super.populateNeighborData();
         NEIGHBOR_MODE_COMPLETE = myReader.getIntProperty("NEIGHBOR_MODE_COMPLETE");

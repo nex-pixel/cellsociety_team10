@@ -278,6 +278,7 @@ public abstract class Game {
      * @param y is the y-location of the Cell
      */
     public void changeCellOnClick (int x, int y) {
+        setNumStatesOnBoard();
         Cell cell = getGrid().getBoardCell(x,y);
         cell.setCurrentStatus((cell.getCurrentStatus() + 1) % NUM_STATES);
     }
