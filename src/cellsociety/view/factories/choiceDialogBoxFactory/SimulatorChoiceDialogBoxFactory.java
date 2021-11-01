@@ -3,7 +3,6 @@ package cellsociety.view.factories.choiceDialogBoxFactory;
 import cellsociety.ReflectionHandler;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
-import javafx.scene.control.ChoiceDialog;
 
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
