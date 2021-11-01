@@ -67,11 +67,9 @@ public class SimulatorView {
         mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
         mySliderFactory = new SliderFactory(sliderValue);
         myGridView = new GridPane();
-
-        setInitialGrid(cellType);
-        initializeSimulationScene();
         initializeGridProperties();
         initializeFactories();
+        setInitialGrid(cellType);
         initializeSimulationScene();
     }
 
