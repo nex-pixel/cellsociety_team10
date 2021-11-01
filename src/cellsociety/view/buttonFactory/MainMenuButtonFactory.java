@@ -79,6 +79,11 @@ public class MainMenuButtonFactory extends ButtonFactory {
                 , "neighborModeType", "Neighbor Mode"); // TODO: update language resources
     }
 
+    private EventHandler<ActionEvent> generateEdgePolicyEvent(){
+        return event -> myMainMenuView.generateChoiceDialogBox(EDGE_POLICY[0],new ArrayList<>(Arrays.asList(EDGE_POLICY))
+                , "EdgePolicyType", "Edge Policy"); // TODO: update language resources
+    }
+
 
 
 

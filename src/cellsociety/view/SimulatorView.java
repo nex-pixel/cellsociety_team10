@@ -26,13 +26,14 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.*;
+import java.lang.invoke.SwitchPoint;
 import java.util.*;
 
 public class SimulatorView {
 
     private Timeline myAnimation;
     private double animationSpeed;
-    private GridPane myGridView = new GridPane();
+    private GridPane myGridView;
     private int myGridWidth;
     private int myGridHeight;
     private SimulatorController mySimulatorController;
@@ -50,10 +51,11 @@ public class SimulatorView {
     private double sliderValue = 1.0;
     private double sliderMin = 0.1;
     private double sliderMax = 5.0;
+    private int cellType;
 
 
 
-    public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController){
+    public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController, int cellType){
         mySimulatorController = simulatorController;
         myGame = game;
         animationSpeed = 0.3;
@@ -64,7 +66,13 @@ public class SimulatorView {
         myLanguageResources = resourceBundle;
         mySimulatorButtonFactory = new SimulatorButtonFactory(this, mySimulatorController, myLanguageResources);
         mySliderFactory = new SliderFactory(sliderValue);
-        setDefaultTriangleGrid(myGridWidth, myGridHeight, myGridView);
+        myGridView = new GridPane();
+        switch (cellType) {
+            case 0 -> setDefaultGrid(myGridWidth, myGridHeight, myGridView);
+            case 1 -> setDefaultTriangleGrid(myGridWidth, myGridHeight, myGridView);
+            case 2 -> setDefaultHexagonGrid(myGridWidth, myGridHeight, myGridView);
+        }
+
         initializeSimulationScene();
     }
 

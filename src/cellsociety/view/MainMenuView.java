@@ -70,10 +70,13 @@ public class MainMenuView {
             myMainController.updateModelType(choiceDialog.getSelectedItem(), myFileManager);
         }
         if(resultType.equals("gridType")){
-            myMainController.setCellType((int) choiceDialog.getSelectedItem().charAt(0));
+            myMainController.setCellType(Integer.parseInt(choiceDialog.getSelectedItem().substring(0,1)));
         }
         if(resultType.equals("neighborModeType")){
-            myMainController.setNeighborMode((int) choiceDialog.getSelectedItem().charAt(0));
+            myMainController.setNeighborMode(Integer.parseInt(choiceDialog.getSelectedItem().substring(0,1)));
+        }
+        if(resultType.equals("EdgePolicyType")){
+            myMainController.setEdgePolicy(Integer.parseInt(choiceDialog.getSelectedItem().substring(0,1)));
         }
     }
 
