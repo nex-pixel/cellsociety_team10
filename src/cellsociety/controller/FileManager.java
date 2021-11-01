@@ -10,12 +10,13 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 public class FileManager {
-
+    private static final String INVALID_FILE = "InvalidFileError";
+    private static final String INVALID_SAVE = "InvalidSaveFile";
+    private static final String SAVE_CSV_LABEL = "SaveCSVLabel";
+    // Things to remember
     private File currentTextFile;
     private ResourceBundle myLanguageResources;
-    private String INVALID_FILE = "InvalidFileError";
-    private String INVALID_SAVE = "InvalidSaveFile";
-    private String SAVE_CSV_LABEL = "SaveCSVLabel";
+
 
     public FileManager(ResourceBundle resourceBundle){
         myLanguageResources = resourceBundle;

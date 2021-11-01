@@ -15,7 +15,7 @@ public class SquareGridBuilder extends GridBuilder{
         for(int i = 0; i < gridWidth; i ++){
             for(int j = 0; j < gridHeight; j++){
                 SquareCell cell = new SquareCell(mySimulatorController, i, j);
-                cell.setId("default-cell");
+                cell.setId(DEFAULT_CELL_ID);
                 gamePane.getChildren().add(cell);
                 setCellLocation(cell, i*SQUARE_WIDTH+PADDING, j*SQUARE_WIDTH+PADDING);
             }

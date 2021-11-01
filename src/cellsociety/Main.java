@@ -9,16 +9,20 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 /**
  * Feel free to completely change this code or delete it entirely.
  */
 public class Main extends Application {
+    private static final String RESOURCE_PACKAGE = "cellsociety.resources.languages.";
+    private String DEFAULT_LANGUAGE = "English";
     public static final String PROGRAM_TITLE = "Cell Society";
     private ArrayList<String> languageOptions = new ArrayList<>();
     private String language;
     private String dialogContent = "Please select a language";
     private String DEFAULT_LANG = "English";
+    private ResourceBundle myLanguageResources;
     /**
      * A method to test (and a joke :).
      */
@@ -33,9 +37,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         populateLanguageOptions();
         generateChoiceDialogBox(DEFAULT_LANG, languageOptions, dialogContent);
-
+        myLanguageResources = initializeResourceBundle(language);
         primaryStage.setTitle(PROGRAM_TITLE);
-        MainController mainController = new MainController(primaryStage, language);
+        MainController mainController = new MainController(primaryStage, myLanguageResources);
         mainController.startMainMenu();
     }
 
@@ -62,6 +66,18 @@ public class Main extends Application {
         for(String s : options){
             choiceDialog.getItems().add(s);
         }
+    }
+
+    private ResourceBundle initializeResourceBundle(String name) {
+        try {
+            return generateResourceBundle(name);
+        } catch (Exception e) {
+            return generateResourceBundle(DEFAULT_LANGUAGE);
+        }
+    }
+
+    private ResourceBundle generateResourceBundle(String name) {
+        return ResourceBundle.getBundle(RESOURCE_PACKAGE + name);
     }
 }
 

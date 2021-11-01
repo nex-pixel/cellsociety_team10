@@ -7,9 +7,9 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 public class CSSFactory {
+    private static final String INVALID_CSS_ERROR = "InvalidCSSFile";
 
     private ResourceBundle myLanguageResources;
-    private String INVALID_CSS_ERROR = "InvalidCSSFile";
     public CSSFactory(ResourceBundle langResourceBundle){
         myLanguageResources = langResourceBundle;
     }

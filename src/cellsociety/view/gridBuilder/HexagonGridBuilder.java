@@ -13,7 +13,7 @@ public class HexagonGridBuilder extends GridBuilder{
         for(int i = 0; i < gridHeight; i ++){
             for(int j = 0; j < gridWidth; j++){
                 HexagonCell cell = new HexagonCell(mySimulatorController, j, i);
-                cell.setId("default-cell");
+                cell.setId(DEFAULT_CELL_ID);
                 gamePane.getChildren().add(cell);
                 setCellLocation(cell, j*(HEXAGON_WIDTH*3/4), i*HEXAGON_HEIGHT + (HEXAGON_HEIGHT/2)*(counter%2));
                 counter += 1;

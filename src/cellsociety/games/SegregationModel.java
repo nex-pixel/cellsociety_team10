@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
 
+/***
+ * The class models the Schelling's Model of Segregation
+ *
+ * @author Norah Tan, Haseeb Chaudhry
+ */
 public class SegregationModel extends Game {
 
     private int EMPTY;
@@ -20,16 +25,44 @@ public class SegregationModel extends Game {
 
     private List<Cell> myEmptyCells;
 
+    /***
+     * Constructor that takes in a CSV file for grid initialization,
+     * with default square grid, complete neighbors and finite edge policy.
+     *
+     * @param filename gives the CSV figuration file for the grid
+     * @param threshold is the rate of satisfaction based on the percentage of surrounded agents that are like itself
+     */
     public SegregationModel (String filename, double threshold) {
         super(filename);
         setEmptyCells(threshold);
     }
 
+    /***
+     * Constructor that takes in a CSV file for grid initialization,
+     * with a specified grid shape, neighbor mode and edge policy.
+     *
+     * @param filename gives the CSV figuration file for the grid
+     * @param gridType gives one of square, triangle, and hexagon grid shapes.
+     * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
+     * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
+     * @param threshold is the rate of satisfaction based on the percentage of surrounded agents that are like itself
+     */
     public SegregationModel (String filename, int gridType, int neighborMode, int edgePolicy, double threshold) {
         super(filename, gridType, neighborMode, edgePolicy);
         setEmptyCells(threshold);
     }
 
+    /***
+     * Constructor that randomly generates the grid by specifying the numbers of rows, columns,
+     * the percentage of empty Cells, the ratio of agent X and agent O, and threshold for satisfaction,
+     * with default square grid, complete neighbors and finite edge policy.
+     *
+     * @param numRows is the number of rows of the grid
+     * @param numCols is the number of columns of the grid
+     * @param emptyRate is the percentage of empty Cells in the grid
+     * @param agentXRate is the percentage of agent X Cells among all non-empty Cells in the grid
+     * @param threshold is the rate of satisfaction based on the percentage of surrounded agents that are like itself
+     */
     public SegregationModel (int numRows, int numCols, double emptyRate, double agentXRate, double threshold) {
         populateGameConditions();
         myNumOfAgents = 0;
@@ -50,31 +83,63 @@ public class SegregationModel extends Game {
                 }
             }
         }
-        setGrid(randArray, 0 , 0, 0);
+        setGrid(randArray, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
         setEmptyCells(threshold);
     }
 
-    // Default constructor for testing purposes
+    /***
+     * Constructor that randomly generates the grid by specifying the numbers of rows, columns, and threshold for satisfaction,
+     * with default square grid, complete neighbors and finite edge policy.
+     *
+     * @param numCols is the number of columns of the grid
+     * @param numRows is the number of rows of the grid
+     * @param threshold is the rate of satisfaction based on the percentage of surrounded agents that are like itself
+     */
+    public SegregationModel (int numCols, int numRows, double threshold){
+        super(numCols, numRows);
+        setEmptyCells(threshold);
+    }
+
+    /***
+     * Constructor that randomly generates the grid by specifying the numbers of rows, columns,
+     * with a specified grid shape, neighbor mode and edge policy.
+     *
+     * @param numCols is the number of columns of the grid
+     * @param numRows is the number of rows of the grid
+     * @param gridType gives one of square, triangle, and hexagon grid shapes.
+     * @param neighborMode gives one of complete, cardinal (adjacent on the edge), and bottom half modes of neighbors
+     * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
+     * @param threshold is the rate of satisfaction based on the percentage of surrounded agents that are like itself
+     *
+     */
+    public SegregationModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy, double threshold) {
+        super(numCols, numRows, gridType, neighborMode, edgePolicy);
+        setEmptyCells(threshold);
+    }
+
+    /***
+     * Constructor for testing purpose.
+     *
+     * @param states specifies the grid
+     * @param threshold is the rate of satisfaction based on the percentage of surrounded agents that are like itself
+     */
     public SegregationModel (int[][] states, double threshold) {
-        setGrid(states, 0, 0, 0);
+        setGrid(states, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
         setEmptyCells(threshold);
     }
 
+    /***
+     * Constructor for testing purpose.
+     *
+     * @param copy is the SegregationModel that we want to copy from
+     */
     public SegregationModel (SegregationModel copy) {
         super(copy);
         myThreshold = copy.myThreshold;
     }
 
-    public SegregationModel (int numCols, int numRows){
-        super(numCols, numRows);
-        setNumStatesOnBoard(NUM_STATES);
-        setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
-    }
-
-    public SegregationModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
-        super(numCols, numRows, gridType, neighborMode, edgePolicy);
-        setNumStatesOnBoard(NUM_STATES);
-        setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
+    protected void setNumStatesOnBoard () {
+        setNumStates(NUM_STATES);
     }
 
     private void setEmptyCells (double threshold) {
@@ -88,10 +153,27 @@ public class SegregationModel extends Game {
         }
     }
 
+    /***
+     * For testing purpose
+     *
+     * @return a list of Cells whose currentStatus are empty.
+     */
     public List<Cell> getEmptyCells () { return myEmptyCells; }
+
+    /***
+     * Setter method that changes the threshold
+     *
+     * @param newThreshold is the newThreshold we want the model to have
+     */
     public void setThreshold (double newThreshold){
         myThreshold = newThreshold;
     }
+
+    /***
+     * Getter method that gives the threshold
+     *
+     * @return the threshold
+     */
     public double getThreshold () { return myThreshold; }
 
     @Override
@@ -114,16 +196,23 @@ public class SegregationModel extends Game {
         return false;
     }
 
-    public double getSatisfiedRate () {
-        int numSatisfiedAgents = 0;
-        for (Point point: getGrid().getPoints()) {
-            if (isSatisfied(getGrid().getBoardCell(point))) {
-                numSatisfiedAgents++;
-            }
-        }
-        return numSatisfiedAgents / myNumOfAgents;
-    }
+    // method made for the frontend, but it has not been used yet
+//    public double getSatisfiedRate () {
+//        int numSatisfiedAgents = 0;
+//        for (Point point: getGrid().getPoints()) {
+//            if (isSatisfied(getGrid().getBoardCell(point))) {
+//                numSatisfiedAgents++;
+//            }
+//        }
+//        return numSatisfiedAgents / myNumOfAgents;
+//    }
 
+    /***
+     * This method tells us whether a Cell is satisfied with its current location.
+     *
+     * @param cell is the Cell we want to know about
+     * @return whether this Cell is satisfied or not
+     */
     public boolean isSatisfied (Cell cell) {
         int numOccupiedNeighbors = 0;
         int numSameNeighbors = 0;

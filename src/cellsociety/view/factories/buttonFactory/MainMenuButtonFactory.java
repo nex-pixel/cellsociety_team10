@@ -14,16 +14,17 @@ import java.util.*;
 
 public class MainMenuButtonFactory extends ButtonFactory {
     private static final String ERROR_CHOOSE_ALL_OPTIONS = "SelectAllOptionsMessage";
-    private static final ArrayList<String> MODEL_OPTIONS = new ArrayList<>();
-    private static final String[] MODEL_LABEL_OPTIONS = {"GameOfLife", "SpreadingOfFire", "Schelling's", "Wa-TorWorld", "Percolation"};
-    private static final String[] GRID_TYPES = {"0.Square Cell", "1.Triangle Cell", "2. Hexagon Cell"};
-    private static final String[] NEIGHBOR_MODE = {"0.Complete", "1.Edge", "2. Bottom Half"};
-    private static final String[] EDGE_POLICY = {"0.Finite", "1. Torus"};
-    // things to remember
+    private ArrayList<String> modelOptions = new ArrayList<>();
+    private ArrayList<String> gridOptions = new ArrayList<>();
+    private ArrayList<String> neighborOptions = new ArrayList<>();
+    private ArrayList<String> edgePolicyOptions = new ArrayList<>();
     private FileManager myFileManager;
     private MainController myMainMenuController;
     private MainMenuChoiceDialogBoxFactory myMainMenuChoiceDialogBoxFactory;
     private ReflectionHandler myReflectionHandler;
+    private String neighborLabelKey = "neighborLabelOptions";
+    private String edgePolicyLabelKey = "edgePolicyLabelOptions";
+
 
     public MainMenuButtonFactory(MainController mainMenuController, ResourceBundle langResourceBundle, FileManager fileManager){
         super();
@@ -35,8 +36,11 @@ public class MainMenuButtonFactory extends ButtonFactory {
         myMainMenuChoiceDialogBoxFactory = new MainMenuChoiceDialogBoxFactory(myMainMenuController, myFileManager, myLanguageResources);
         buttonID = "main-menu-button";
         myReflectionHandler = new ReflectionHandler(myLanguageResources);
-        populateOptions(MODEL_OPTIONS, MODEL_LABEL_OPTIONS);
-        populateOptions(cssFileOptions, cssFileLabelOptions);
+        populateOptions(modelOptions, labelOptionsBundle, modelLabelKey);
+        populateOptions(cssFileOptions, labelOptionsBundle,cssFileLabelKey);
+        populateOptions(gridOptions, labelOptionsBundle, gridLabelKey);
+        populateOptions(neighborOptions, labelOptionsBundle, neighborLabelKey);
+        populateOptions(edgePolicyOptions, labelOptionsBundle, edgePolicyLabelKey);
         populateButtonEvents();
     }
 
@@ -55,8 +59,8 @@ public class MainMenuButtonFactory extends ButtonFactory {
     }
 
     private EventHandler<ActionEvent> generateModelTypeEvent(){
-        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(myLanguageResources.getString(MODEL_LABEL_OPTIONS[0]),
-                MODEL_OPTIONS, "modelType", myLanguageResources.getString("ModelContent"));
+        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(modelOptions.get(0),
+                modelOptions, "modelType", myLanguageResources.getString("ModelContent"));
     }
 
     private EventHandler<ActionEvent> generateChooseFileEvent(){
@@ -64,22 +68,22 @@ public class MainMenuButtonFactory extends ButtonFactory {
     }
 
     private EventHandler<ActionEvent> generateCSSFileEvent(){
-        return event-> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(myLanguageResources.getString(cssFileLabelOptions[0]),
+        return event-> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(cssFileOptions.get(0),
                 cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent"));
     }
 
     private EventHandler<ActionEvent> generateGridTypeEvent(){
-        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(GRID_TYPES[0],new ArrayList<>(Arrays.asList(GRID_TYPES))
+        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(gridOptions.get(0),gridOptions
                 , "gridType", "Cell Type"); // TODO: update language resources
     }
 
     private EventHandler<ActionEvent> generateNeighborModeEvent(){
-        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(NEIGHBOR_MODE[0],new ArrayList<>(Arrays.asList(NEIGHBOR_MODE))
+        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(neighborOptions.get(0),neighborOptions
                 , "neighborModeType", "Neighbor Mode"); // TODO: update language resources
     }
 
     private EventHandler<ActionEvent> generateEdgePolicyEvent(){
-        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(EDGE_POLICY[0],new ArrayList<>(Arrays.asList(EDGE_POLICY))
+        return event -> myMainMenuChoiceDialogBoxFactory.generateChoiceDialogBox(edgePolicyOptions.get(0),edgePolicyOptions
                 , "EdgePolicyType", "Edge Policy"); // TODO: update language resources
     }
 

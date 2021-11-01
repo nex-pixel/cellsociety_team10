@@ -15,7 +15,7 @@ public class TriangleGridBuilder extends GridBuilder {
         for(int i = 0; i < gridHeight; i ++){
             for(int j = 0; j < gridWidth; j++){
                 TriangleCell cell = new TriangleCell(mySimulatorController, counter % 2, j, i);
-                cell.setId("default-cell");
+                cell.setId(DEFAULT_CELL_ID);
                 gamePane.getChildren().add(cell);
                 setCellLocation(cell,j*(TRIANGLE_WIDTH/2),  i*TRIANGLE_HEIGHT);
                 counter += 1;

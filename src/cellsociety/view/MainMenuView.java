@@ -18,14 +18,20 @@ import java.io.File;
 import java.util.*;
 
 public class MainMenuView {
-    private static ResourceBundle myLanguageResources;
+    private static final String PAGE_LABEL = "Cell Society";
+    private static final String PAGE_ID = "title";
+    private static final String homePageRootID = "home-page-root";
+    private static final String threshold = "Threshold";
+    private static final double DEFAULT_SLIDER_VALUE = 0.5;
+    private static final double MIN_SLIDER_VALUE = 0.0;
+    private static final double MAX_SLIDER_VALUE = 1.0;
+    // Things to remember
+    private ResourceBundle myLanguageResources;
     private FileManager myFileManager;
     private Pane homePageRoot;
     private MainController myMainController;
-    private String homePageRootID = "home-page-root";
     private MainMenuButtonFactory myMainMenuButtonView;
     private double segregationThreshold;
-    private String threshold = "Threshold";
 
     public MainMenuView(ResourceBundle languageResourceBundle){
         myLanguageResources = languageResourceBundle;
@@ -39,7 +45,7 @@ public class MainMenuView {
     public Scene setMenuDisplay(MainController mainController, int width, int height) {
         myMainController = mainController;
         myMainMenuButtonView = new MainMenuButtonFactory(myMainController, myLanguageResources, myFileManager);
-        setLabel("Cell Society", "title");
+        setLabel(PAGE_LABEL, PAGE_ID);
         initializeHomePageRoot();
         Scene scene = new Scene(homePageRoot, width, height);
         return scene;
@@ -58,8 +64,8 @@ public class MainMenuView {
 
 
     public double getSegregationThreshold(){
-        SliderFactory sliderFactory = new SliderFactory(0.5);
-        Slider slider = sliderFactory.makeSlider(0.0, 1.0,
+        SliderFactory sliderFactory = new SliderFactory(DEFAULT_SLIDER_VALUE);
+        Slider slider = sliderFactory.makeSlider(MIN_SLIDER_VALUE, MAX_SLIDER_VALUE,
                 (obs, oldVal, newVal) -> setSegregationThreshold((double)newVal));
         Scene popUp = new Scene(new HBox(new Text(myLanguageResources.getString(threshold)), slider));
         Stage stage = new Stage();

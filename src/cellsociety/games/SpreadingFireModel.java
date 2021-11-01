@@ -30,14 +30,10 @@ public class SpreadingFireModel extends Game{
 
     public SpreadingFireModel (int numCols, int numRows){
         super(numCols, numRows);
-        setNumStatesOnBoard(NUM_STATES);
-        setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
     }
 
     public SpreadingFireModel (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
-        setNumStatesOnBoard(NUM_STATES);
-        setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
     }
 
     public SpreadingFireModel (String filename, int gridType, int neighborMode, int edgePolicy) {
@@ -50,6 +46,10 @@ public class SpreadingFireModel extends Game{
 
     public void setProbGrowNewTrees(double probability){
         probGrow = probability;
+    }
+
+    protected void setNumStatesOnBoard () {
+        setNumStates(NUM_STATES);
     }
 
     @Override

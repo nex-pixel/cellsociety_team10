@@ -4,6 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Slider;
 
 public class SliderFactory {
+    private static final int SLIDER_MAX_WIDTH = 100;
 
     private double sliderValue;
 
@@ -22,7 +23,7 @@ public class SliderFactory {
         lengthSlider.setShowTickMarks(true);
         lengthSlider.setShowTickLabels(true);
         lengthSlider.setMajorTickUnit(1);
-        lengthSlider.setMaxWidth(100);
+        lengthSlider.setMaxWidth(SLIDER_MAX_WIDTH);
     }
 
 }

@@ -34,7 +34,7 @@ public abstract class Game {
         this.myGrid = copy.myGrid;
     }
 
-    // default game with SquareGrid, complete neighbo52wdc r mode, finite edge policy
+    // default game with SquareGrid, complete neighbor mode, finite edge policy
     public Game (String filename) {
         populateGameConditions();
         createReader(filename);
@@ -46,10 +46,6 @@ public abstract class Game {
         // default game with SquareGrid, complete neighbor mode, finite edge policy
         populateGameConditions();
         setGrid(states, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE , DEFAULT_GRID_CHOICE);
-    }
-
-    public Game (int numCols, int numRows){
-        populateGameConditions();
     }
 
     public Game (String filename, int gridType, int neighborMode, int edgePolicy) {
@@ -64,8 +60,16 @@ public abstract class Game {
         setGrid(states, gridType, neighborMode, edgePolicy);
     }
 
+    public Game (int numCols, int numRows){
+        populateGameConditions();
+        setNumStatesOnBoard();
+        setGrid(createRandomIntTwoDArray(numCols, numRows), DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
+    }
+
     public Game (int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         populateGameConditions();
+        setNumStatesOnBoard();
+        setGrid(createRandomIntTwoDArray(numCols, numRows), gridType, neighborMode, edgePolicy);
     }
 
     protected Grid getGrid () { return myGrid; }
@@ -78,9 +82,9 @@ public abstract class Game {
         }
     }
 
-    protected void setNumStatesOnBoard(int numStates){
-        NUM_STATES = numStates;
-    }
+    protected abstract void setNumStatesOnBoard ();
+
+    protected void setNumStates (int numStates) { NUM_STATES = numStates; }
 
     protected int[][] createRandomIntTwoDArray(int numCols, int numRows){
         int[][] retArray = new int[numRows][numCols];

@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polygon;
 
 public abstract class GridBuilder {
+    protected static final String DEFAULT_CELL_ID = "default-cell";
     public abstract void CreateGrid(SimulatorController mySimulatorController, int gridWidth, int gridHeight, GridPane gamePane);
 
     protected void setPaneSize(Pane gamePane, double xSize, double ySize){

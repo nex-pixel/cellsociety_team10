@@ -34,6 +34,7 @@ public class SimulatorView {
     private static final String INVALID_SIM_FILE = "InvalidSimFile";
     private static final String ABOUT_SIMULATION_LABEL = "AboutSimulationLabel";
     private static final String SIMULATOR_BOX_ID = "simulator-root";
+    private static final String CELL_DEFAULT_ID = "-cell";
     private static final double DEFAULT_ANIMATION_SPEED = 0.3;
     private static final double SLIDER_VALUE = 1.0;
     private static final double SLIDER_MIN = 0.1;
@@ -56,7 +57,6 @@ public class SimulatorView {
     private CSSFactory myCSSFactory;
 
 
-
     public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController, int cellType){
         mySimulatorController = simulatorController;
         myGame = game;
@@ -69,7 +69,6 @@ public class SimulatorView {
         showSimulationScene();
     }
 
-    // initializes all grid properties
     private void initializeGridProperties(){
         myGridWidth = myGame.getNumCols();
         myGridHeight = myGame.getNumRows();
@@ -86,7 +85,7 @@ public class SimulatorView {
     private void setInitialGrid(int cellType){
         try {
             ResourceBundle gridTypeName = ResourceBundle.getBundle(GRID_NAME_FILE_PATH);
-            Method m = this.getClass().getDeclaredMethod(gridTypeName.getString(cellType + ".Cell"));
+            Method m = this.getClass().getDeclaredMethod(gridTypeName.getString(cellType +""));
             m.invoke(this);
         } catch(Exception e){
             new GenerateError(myLanguageResources, INVALID_SIM_GENERATION);
@@ -120,7 +119,7 @@ public class SimulatorView {
         playAnimation();
     }
 
-    private void playAnimation () {
+    private void playAnimation() {
         assert myAnimation != null;
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(new KeyFrame(Duration.seconds(DEFAULT_ANIMATION_SPEED), e -> step()));
@@ -150,7 +149,7 @@ public class SimulatorView {
     private void updateCell(GridPane gamePane, Point point, int cellStatus){
         int cellNumber = (point.x) * myGridHeight + point.y;
         Node currNode = gamePane.getChildren().get(cellNumber);
-        currNode.setId(cellStatus+"-cell");
+        currNode.setId(cellStatus+CELL_DEFAULT_ID);
     }
 
     /**
@@ -165,6 +164,7 @@ public class SimulatorView {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(myLanguageResources.getString(ABOUT_SIMULATION_LABEL));
             alert.setContentText(String.valueOf(simInfo));
+            alert.showAndWait();
             alert.showAndWait();
         }catch(FileNotFoundException e){
             new GenerateError(myLanguageResources, INVALID_SIM_FILE);
