@@ -25,7 +25,6 @@ public class SquareGrid extends Grid {
 
     @Override
     public void expandGrid(int left, int top, int right, int bottom) {
-        //ToDo: Grid is now abstract so "new Grid" doesn't work now
         int myNumRows = getNumRows();
         int myNumCols = getNumCols();
         Set<Point> points = getPoints();
