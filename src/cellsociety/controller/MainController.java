@@ -7,10 +7,14 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for mainMenu. Handles updates for both the view and game
+ *
+ * @author Ryleigh Byrne, Young Jun
+ */
 public class MainController {
     private static final String DEFAULT_CSS_FILE_LABEL = "Duke";
     private static final int MAIN_SCREEN_SIZE = 500;
-    // Things to remember
     private Stage myStage;
     private static ResourceBundle myLanguageResources;
     private SimulatorController simulatorController;
@@ -23,6 +27,11 @@ public class MainController {
     private String modelType;
     private CSSFactory myCSSFactory;
 
+    /**
+     * Constructor for main controller. Initializes necessary bundles and factories
+     * @param stage stage the view is displayed on
+     * @param langResourceBundle language resource bundle to be used
+     */
     public MainController(Stage stage, ResourceBundle langResourceBundle) {
         myStage = stage;
         myLanguageResources = langResourceBundle;

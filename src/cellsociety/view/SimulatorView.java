@@ -27,6 +27,12 @@ import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+/**
+ * This class generates a view of the desired simulator and displays a grid with active cells and buttons to c
+ * manipulate and control the simulation
+ *
+ * @author Ryleigh Byrne, Young Jun
+ */
 public class SimulatorView {
     private static final String GRID_NAME_FILE_PATH = "cellsociety.resources.gameData.GridTypeNames";
     private static final String INVALID_SIM_GENERATION = "InvalidSimulation";
@@ -54,13 +60,20 @@ public class SimulatorView {
     private GridBuilder myGridBuilder;
     private CSSFactory myCSSFactory;
 
-
-    public SimulatorView(Game game, String cssFile, ResourceBundle resourceBundle, SimulatorController simulatorController, int cellType) {
+    /**
+     * Constructor for SimulatorView. Initializes grid properties, UI factories, and displays a simulation scene
+     * @param game current game model to be display
+     * @param cssFile cssFile that dictates cell and button colors
+     * @param langResourceBundle language resource bundle for UI and errors
+     * @param simulatorController simulator controller to control scene
+     * @param cellType type of cell (square, triangle, hexagon, etc) to be displayed in grid
+     */
+    public SimulatorView(Game game, String cssFile, ResourceBundle langResourceBundle, SimulatorController simulatorController, int cellType) {
         mySimulatorController = simulatorController;
         myGame = game;
         myAnimation = new Timeline();
         myCSSFile = cssFile;
-        myLanguageResources = resourceBundle;
+        myLanguageResources = langResourceBundle;
         initializeGridProperties();
         initializeFactories();
         setInitialGrid(cellType);
@@ -170,6 +183,7 @@ public class SimulatorView {
         }
     }
 
+    // generates and displays alert given alert type and text to display
     private void generateAndDisplay(Alert.AlertType alertType, String headerText, String information){
         Alert alert = new Alert(alertType);
         alert.setHeaderText(headerText);
