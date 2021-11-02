@@ -4,7 +4,11 @@ import cellsociety.controller.SimulatorController;
 import javafx.scene.shape.Polygon;
 
 import java.awt.*;
-
+/**
+ * HexagonCell is a class that creates a hexagon shaped Cell to be added to the Simulation Grid
+ *
+ * @author Young Jun
+ */
 public class HexagonCell extends Cell {
     private static final double HEXAGON_WIDTH = 40.0;
     private static final double HEXAGON_HEIGHT = 34.6;

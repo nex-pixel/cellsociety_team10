@@ -5,6 +5,11 @@ import cellsociety.controller.SimulatorController;
 import cellsociety.view.cell.TriangleCell;
 import javafx.scene.layout.GridPane;
 
+/**
+ * TriangleGridBuilder extends GridBuilder. It creates a grid with triangles.
+ *
+ * @author Young Jun
+ */
 public class TriangleGridBuilder extends GridBuilder {
     private static final double TRIANGLE_WIDTH = 50.2;
     private static final double TRIANGLE_HEIGHT = 43.4;

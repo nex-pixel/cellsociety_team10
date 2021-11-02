@@ -5,7 +5,11 @@ import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 
 import java.util.Map;
-
+/**
+ * SquareCell is a class that creates a square shaped cell to be added to the Simulation Grid
+ *
+ * @author Young Jun
+ */
 public class SquareCell extends Cell {
     private static final double SQUARE_WIDTH = 40.0;
 

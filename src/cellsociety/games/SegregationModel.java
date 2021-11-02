@@ -229,11 +229,10 @@ public class SegregationModel extends Game {
         return (double) numSameNeighbors / numOccupiedNeighbors > myThreshold;
     }
 
-    @Override
-    public void changeCellOnClick(int x, int y) {
-        super.changeCellOnClick(x, y);
-        update();
-    }
+//    @Override
+//    public void changeCellOnClick(int x, int y) {
+//        super.changeCellOnClick(x, y);
+//    }
 
     @Override
     protected void populateGameConditions() {

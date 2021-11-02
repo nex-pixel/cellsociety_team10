@@ -5,6 +5,11 @@ import cellsociety.view.cell.SquareCell;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 
+/**
+ * SquareGridBuilder extends GridBuilder. It creates a grid with squares.
+ *
+ * @author Young Jun
+ */
 public class SquareGridBuilder extends GridBuilder {
     private static final double SQUARE_WIDTH = 40.0;
     private static final double PADDING = 0.1;

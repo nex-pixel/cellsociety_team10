@@ -53,6 +53,7 @@ public class SpreadingFireModel extends Game {
      */
     public SpreadingFireModel(int numCols, int numRows) {
         super(numCols, numRows);
+        getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
     }
 
     /***
@@ -68,6 +69,7 @@ public class SpreadingFireModel extends Game {
      */
     public SpreadingFireModel(int numCols, int numRows, int gridType, int neighborMode, int edgePolicy) {
         super(numCols, numRows, gridType, neighborMode, edgePolicy);
+        getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
     }
 
     /***
@@ -81,6 +83,7 @@ public class SpreadingFireModel extends Game {
      */
     public SpreadingFireModel(String filename, int gridType, int neighborMode, int edgePolicy) {
         super(filename, gridType, neighborMode, edgePolicy);
+        getGrid().expandGrid(expandGridByInt, expandGridByInt, expandGridByInt, expandGridByInt);
     }
 
     /***
@@ -156,11 +159,10 @@ public class SpreadingFireModel extends Game {
         return EMPTY;
     }
 
-    @Override
-    public void changeCellOnClick(int x, int y) {
-        super.changeCellOnClick(x, y);
-        update();
-    }
+//    @Override
+//    public void changeCellOnClick(int x, int y) {
+//        super.changeCellOnClick(x, y);
+//    }
 
     @Override
     protected void populateGameConditions() {

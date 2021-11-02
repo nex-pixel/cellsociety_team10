@@ -172,7 +172,6 @@ public class WaTorWorldModel extends Game {
         } else if (cell.getCurrentStatus() == SHARK) {
             setSharkMiscellaneousDefault(cell);
         }
-        update();
     }
 
     @Override

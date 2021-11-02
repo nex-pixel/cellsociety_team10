@@ -4,7 +4,11 @@ import cellsociety.controller.SimulatorController;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polygon;
-
+/**
+ * GridBuilder is an abstract class that creates a grid of the simulation
+ *
+ * @author Young Jun
+ */
 public abstract class GridBuilder {
     protected static final String DEFAULT_CELL_ID = "default-cell";
 

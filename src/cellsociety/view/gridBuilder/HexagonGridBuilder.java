@@ -3,7 +3,11 @@ package cellsociety.view.gridBuilder;
 import cellsociety.controller.SimulatorController;
 import cellsociety.view.cell.HexagonCell;
 import javafx.scene.layout.GridPane;
-
+/**
+ * HexagonGridBuilder extends GridBuilder. It creates a grid with hexagons.
+ *
+ * @author Young Jun
+ */
 public class HexagonGridBuilder extends GridBuilder {
     private static final double HEXAGON_WIDTH = 40.1;
     private static final double HEXAGON_HEIGHT = 34.7;
