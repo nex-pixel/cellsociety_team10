@@ -84,20 +84,17 @@ public class HexagonGridTest {
     @Test
     void checkCornerNeighbors_Complete_Finite_Odd (){
         Cell cornerUpperLeft = myGrid_Complete_Finite_OddRows.getBoardCell(new Point(1,0));
-        List<Cell> expectedNeighbors = Arrays.asList(null,
-                null,
+        List<Cell> expectedNeighbors = Arrays.asList(
                 new Cell(1, 3,0),
                 new Cell(0, 2, 1),
-                new Cell(1, 0,1),
-                null);
+                new Cell(1, 0,1));
         assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
     }
 
     @Test
     void checkCornerNeighbors_Complete_Torus_Odd (){
         Cell cornerUpperLeft = myGrid_Complete_Torus_OddRows.getBoardCell(new Point(1,0));
-        List<Cell> expectedNeighbors = Arrays.asList(null,
-                null,
+        List<Cell> expectedNeighbors = Arrays.asList(
                 new Cell(1, 3,0),
                 new Cell(0, 2, 1),
                 new Cell(1, 0,1),
@@ -108,7 +105,8 @@ public class HexagonGridTest {
     @Test
     void checkCornerNeighbors_Edge_Torus_Even (){
         Cell cornerUpperLeft = myGrid_Edge_Torus_EvenRows.getBoardCell(new Point(1,0));
-        List<Cell> expectedNeighbors = Arrays.asList(new Cell(0, 0, 3),
+        List<Cell> expectedNeighbors = Arrays.asList(
+                new Cell(0, 0, 3),
                 new Cell(0, 2, 3),
                 new Cell(1, 3,0),
                 new Cell(0, 2, 1),
@@ -120,7 +118,8 @@ public class HexagonGridTest {
     @Test
     void checkCornerNeighbors_BottomHalf_Torus_Even (){
         Cell cornerUpperLeft = myGrid_BottomHalf_Torus_EvenRows.getBoardCell(new Point(1,0));
-        List<Cell> expectedNeighbors = Arrays.asList(new Cell(1, 3,0),
+        List<Cell> expectedNeighbors = Arrays.asList(
+                new Cell(1, 3,0),
                 new Cell(0, 2, 1),
                 new Cell(1, 0,1),
                 new Cell(0, 5, 0));
@@ -130,9 +129,8 @@ public class HexagonGridTest {
     @Test
     void checkCornerNeighbors_BottomHalf_Torus_Odd (){
         Cell cornerUpperLeft = myGrid_BottomHalf_Torus_OddRows.getBoardCell(new Point(1,2));
-        List<Cell> expectedNeighbors = Arrays.asList(new Cell(1, 3,2),
-                null,
-                null,
+        List<Cell> expectedNeighbors = Arrays.asList(
+                new Cell(1, 3,2),
                 new Cell(1, 5,2));
         assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
     }
@@ -140,8 +138,7 @@ public class HexagonGridTest {
     @Test
     void checkCornerNeighbors_Complete_Cylinder_Even (){
         Cell cornerUpperLeft = myGrid_Complete_Cylinder_EvenRows.getBoardCell(new Point(1,0));
-        List<Cell> expectedNeighbors = Arrays.asList(null,
-                null,
+        List<Cell> expectedNeighbors = Arrays.asList(
                 new Cell(1, 3,0),
                 new Cell(0, 2, 1),
                 new Cell(1, 0,1),
