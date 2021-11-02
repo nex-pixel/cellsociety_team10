@@ -4,6 +4,11 @@ import cellsociety.controller.SimulatorController;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.TriangleMesh;
 
+/**
+ * TriangleCell is a class that creates a triangle shaped cell to be added to the Simulation Grid
+ *
+ * @author Young Jun
+ */
 public class TriangleCell extends Cell {
     private static final double TRIANGLE_WIDTH = 50.0;
     private static final double TRIANGLE_HEIGHT = 43.3;
