@@ -33,9 +33,8 @@ public class SimulatorButtonFactory extends ButtonFactory {
      */
     public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController, ResourceBundle langResourceBundle) {
         super();
-        initializePaths(actionsNamePath, SIMULATOR_ACTION_EVENTS);
-        myActionEventsResources = ResourceBundle.getBundle(actionsNamePath);
-        initializePaths(buttonClassPath, simulatorButtonClassName);
+        myActionEventsResources = ResourceBundle.getBundle(initializePaths(actionsNamePath, SIMULATOR_ACTION_EVENTS));
+        buttonClassPath = initializePaths(buttonClassPath, simulatorButtonClassName);
         buttonID = SIMULATOR_BUTTON_ID;
         mySimulatorView = simulatorView;
         mySimulatorController = simulatorController;
