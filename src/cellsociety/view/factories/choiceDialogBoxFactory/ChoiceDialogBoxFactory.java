@@ -2,7 +2,6 @@ package cellsociety.view.factories.choiceDialogBoxFactory;
 
 import cellsociety.ReflectionHandler;
 import javafx.scene.control.ChoiceDialog;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -23,6 +22,11 @@ public abstract class ChoiceDialogBoxFactory {
         choiceDialog.setContentText(content);
         showAndWaitForChoiceDialogResult(choiceDialog, resultType);
         return choiceDialog;
+    }
+
+    protected void initializePaths(String eventPath, String classPath) {
+        CHOICE_EVENTS_PATH += eventPath;
+        CHOICE_BOX_CLASSPATH += classPath;
     }
 
     protected void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog, String resultType) {

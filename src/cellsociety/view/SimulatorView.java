@@ -18,10 +18,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,7 +38,7 @@ public class SimulatorView {
     private static final double SLIDER_VALUE = 1.0;
     private static final double SLIDER_MIN = 0.1;
     private static final double SLIDER_MAX = 5.0;
-    // Things to remember
+
     private Timeline myAnimation;
     private GridPane myGridView;
     private int myGridWidth;
@@ -51,7 +49,6 @@ public class SimulatorView {
     private Game myGame;
     private Scene myScene;
     private SimulatorButtonFactory mySimulatorButtonFactory;
-    private HBox simulationBox = new HBox();
     private Stage myStage;
     private SliderFactory mySliderFactory;
     private GridBuilder myGridBuilder;
@@ -116,7 +113,8 @@ public class SimulatorView {
     private void showSimulationScene() {
         myStage = new Stage();
         updateSimulation(myGame, myGridView);
-        simulationBox.getChildren().add(generateSimulationVBox(myGridView));
+        HBox simulationBox = new HBox();
+        simulationBox.getChildren().add(generateSimulationHBox(myGridView));
         myScene = new Scene(simulationBox);
         myCSSFactory.applyCSS(myScene, myCSSFile);
         myStage.setScene(myScene);
@@ -132,7 +130,7 @@ public class SimulatorView {
     }
 
     // creates and returns a HBox containing the gameGrid and buttons
-    private HBox generateSimulationVBox(GridPane gameGrid) {
+    private HBox generateSimulationHBox(GridPane gameGrid) {
         HBox simulationBox = new HBox();
         simulationBox.setId(SIMULATOR_BOX_ID);
         simulationBox.getChildren().addAll(gameGrid, mySimulatorButtonFactory.generateButtonPanel(), mySliderFactory.makeSlider(SLIDER_MIN, SLIDER_MAX,
@@ -166,14 +164,17 @@ public class SimulatorView {
             Scanner file = new Scanner(new File(mySimulatorController.getSimFilePath()));
             StringBuilder simInfo = new StringBuilder();
             while (file.hasNextLine()) simInfo.append(file.nextLine()).append("\n");
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(myLanguageResources.getString(ABOUT_SIMULATION_LABEL));
-            alert.setContentText(String.valueOf(simInfo));
-            alert.showAndWait();
-            alert.showAndWait();
+            generateAndDisplay(Alert.AlertType.INFORMATION, myLanguageResources.getString(ABOUT_SIMULATION_LABEL), String.valueOf(simInfo));
         } catch (FileNotFoundException e) {
             new GenerateError(myLanguageResources, INVALID_SIM_FILE);
         }
+    }
+
+    private void generateAndDisplay(Alert.AlertType alertType, String headerText, String information){
+        Alert alert = new Alert(alertType);
+        alert.setHeaderText(headerText);
+        alert.setContentText(String.valueOf(information));
+        alert.showAndWait();
     }
 
     /**

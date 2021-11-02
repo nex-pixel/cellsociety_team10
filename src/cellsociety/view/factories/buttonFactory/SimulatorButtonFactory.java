@@ -1,15 +1,15 @@
 package cellsociety.view.factories.buttonFactory;
 
-import cellsociety.ReflectionHandler;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import cellsociety.view.SimulatorView;
 import cellsociety.view.factories.choiceDialogBoxFactory.SimulatorChoiceDialogBoxFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.ResourceBundle;
 
 public class SimulatorButtonFactory extends ButtonFactory {
     private static final String SIMULATOR_ACTION_EVENTS = "SimulatorActionEvents";

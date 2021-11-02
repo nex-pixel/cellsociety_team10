@@ -4,7 +4,6 @@ import cellsociety.ReflectionHandler;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
 import cellsociety.error.GenerateError;
-
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 
@@ -15,7 +14,7 @@ public class MainMenuChoiceDialogBoxFactory extends ChoiceDialogBoxFactory {
     private FileManager myFileManager;
 
     public MainMenuChoiceDialogBoxFactory(MainController mainController, FileManager fileManager, ResourceBundle langResources) {
-        initializePaths();
+        initializePaths(MAIN_MENU_CHOICE_BOX_EVENT_PATH, MAIN_MENU_CHOICE_BOX_CLASS_PATH);
         myChoiceBoxEventsBundle = ResourceBundle.getBundle(CHOICE_EVENTS_PATH);
         myMainController = mainController;
         myFileManager = fileManager;
@@ -23,10 +22,6 @@ public class MainMenuChoiceDialogBoxFactory extends ChoiceDialogBoxFactory {
         myReflectionHandler = new ReflectionHandler();
     }
 
-    private void initializePaths() {
-        CHOICE_EVENTS_PATH += MAIN_MENU_CHOICE_BOX_EVENT_PATH;
-        CHOICE_BOX_CLASSPATH += MAIN_MENU_CHOICE_BOX_CLASS_PATH;
-    }
 
     @Override
     protected void invokeMethod(Method method) {

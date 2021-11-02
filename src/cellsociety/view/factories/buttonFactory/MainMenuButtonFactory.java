@@ -1,6 +1,5 @@
 package cellsociety.view.factories.buttonFactory;
 
-import cellsociety.ReflectionHandler;
 import cellsociety.controller.FileManager;
 import cellsociety.controller.MainController;
 import cellsociety.error.GenerateError;

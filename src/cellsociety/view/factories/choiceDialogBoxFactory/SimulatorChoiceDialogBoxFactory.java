@@ -3,20 +3,18 @@ package cellsociety.view.factories.choiceDialogBoxFactory;
 import cellsociety.ReflectionHandler;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
-
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;
 
 public class SimulatorChoiceDialogBoxFactory extends ChoiceDialogBoxFactory {
-    private static final String MAIN_MENU_CHOICE_BOX_CLASS_PATH = "SimulatorChoiceDialogBoxFactory";
-    private static final String MAIN_MENU_CHOICE_BOX_EVENT_PATH = "simulatorChoiceBoxEvents";
+    private static final String SIMULATOR_CHOICE_BOX_CLASS_PATH = "SimulatorChoiceDialogBoxFactory";
+    private static final String SIMULATOR_CHOICE_BOX_EVENT_PATH = "simulatorChoiceBoxEvents";
     private SimulatorController mySimulatorController;
 
     public SimulatorChoiceDialogBoxFactory(SimulatorController simulatorController, ResourceBundle langResources) {
+        initializePaths(SIMULATOR_CHOICE_BOX_EVENT_PATH , SIMULATOR_CHOICE_BOX_CLASS_PATH);
         mySimulatorController = simulatorController;
         myLanguageResources = langResources;
-        CHOICE_EVENTS_PATH += MAIN_MENU_CHOICE_BOX_EVENT_PATH;
-        CHOICE_BOX_CLASSPATH += MAIN_MENU_CHOICE_BOX_CLASS_PATH;
         myChoiceBoxEventsBundle = ResourceBundle.getBundle(CHOICE_EVENTS_PATH);
         myReflectionHandler = new ReflectionHandler();
     }
