@@ -17,6 +17,12 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.*;
 
+/**
+ * This class generates a view of the Main Menu with buttons to choose settings to run
+ * simulation
+ *
+ * @author Ryleigh Byrne, Young Jun
+ */
 public class MainMenuView {
     private static final String PAGE_LABEL = "Cell Society";
     private static final String PAGE_ID = "title";
@@ -33,13 +39,17 @@ public class MainMenuView {
     private MainMenuButtonFactory myMainMenuButtonView;
     private double segregationThreshold;
 
+    /**
+     * Constructor for main menu view. Initializes language resource bundle and a file manager
+     * @param languageResourceBundle language bundle to be used to display UI
+     */
     public MainMenuView(ResourceBundle languageResourceBundle) {
         myLanguageResources = languageResourceBundle;
         myFileManager = new FileManager(myLanguageResources);
     }
 
     /**
-     * creates mainMenu and returns the scene
+     * creates mainMenu and returns the scene. initializes main controller to handle actions
      *
      * @return scene of main menu
      */
@@ -52,17 +62,20 @@ public class MainMenuView {
         return scene;
     }
 
+    // creates homepage tile pane for buttons to be displayed
     private void initializeHomePageRoot() {
         homePageRoot = new TilePane();
         homePageRoot.getChildren().addAll(myMainMenuButtonView.generateButtonPanel());
         homePageRoot.setId(homePageRootID);
     }
 
+    // sets label
     private void setLabel(String label, String id) {
         Label titleLabel = new Label(label);
         titleLabel.setId(id);
     }
 
+    // generates threshold feature for Schelling's model
     public double getSegregationThreshold() {
         SliderFactory sliderFactory = new SliderFactory(DEFAULT_SLIDER_VALUE);
         Slider slider = sliderFactory.makeSlider(MIN_SLIDER_VALUE, MAX_SLIDER_VALUE,
@@ -74,6 +87,7 @@ public class MainMenuView {
         return segregationThreshold;
     }
 
+    // sets current segregation threshold
     private void setSegregationThreshold(double value) {
         segregationThreshold = value;
     }
