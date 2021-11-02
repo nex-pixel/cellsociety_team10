@@ -1,6 +1,7 @@
 package cellsociety.components.filereader;
 
 import cellsociety.components.filereader.ReadFile;
+import cellsociety.error.GenerateError;
 import com.opencsv.CSVReader;
 
 import java.io.FileNotFoundException;
@@ -39,7 +40,8 @@ public class ReadCSVFile extends ReadFile {
         try{
             reader = new CSVReader(new FileReader(getFilename()));
         } catch (Exception e){
-            e.printStackTrace();
+            String error = String.format("The file type entered may be incorrect, or File cannot be found.");
+            System.out.println(error);
         }
 
         try {
@@ -63,7 +65,8 @@ public class ReadCSVFile extends ReadFile {
             return array;
         }
         catch (Exception e) {
-            e.printStackTrace();
+            String error = String.format("The file inputted does not follow the proper format. Please format correctly and rerun");
+            System.out.println(error);
         }
         return null;
     }

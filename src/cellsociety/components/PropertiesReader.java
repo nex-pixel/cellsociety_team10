@@ -48,7 +48,8 @@ public class PropertiesReader {
         try {
             myFile = ResourceBundle.getBundle(filePath);
         } catch (Exception e) {
-            e.printStackTrace();
+            String error = String.format("The filepath entered does not lead to the a file, filetype, or is not specific");
+            System.out.println(error);
         }
     }
 
@@ -63,7 +64,8 @@ public class PropertiesReader {
         try {
             ret = Integer.parseInt(myFile.getString(label).replaceAll(" ", ""));
         } catch (Exception labelError) {
-            labelError.printStackTrace();
+            String error = String.format("The format of the property is incorrect");
+            System.out.println(error);
         }
         return ret;
     }
@@ -79,7 +81,8 @@ public class PropertiesReader {
         try {
             ret = Double.parseDouble(myFile.getString(label).replaceAll(" ", ""));
         } catch (Exception labelError) {
-            labelError.printStackTrace();
+            String error = String.format("The format of the property is incorrect");
+            System.out.println(error);
         }
         return ret;
     }
@@ -99,7 +102,8 @@ public class PropertiesReader {
                 ret[i] = Integer.parseInt(importedList[i]);
             }
         } catch (Exception labelError) {
-            labelError.printStackTrace();
+            String error = String.format("The format of the property is incorrect");
+            System.out.println(error);
         }
         return ret;
     }

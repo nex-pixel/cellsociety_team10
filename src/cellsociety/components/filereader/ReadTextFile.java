@@ -39,7 +39,8 @@ public class ReadTextFile extends ReadFile {
         try {
             file = new File(getFilename());
         } catch (Exception e) {
-            e.printStackTrace();
+            String error = String.format("The file type entered may be incorrect, or File cannot be found.");
+            System.out.println(error);
         }
 
         try {
@@ -64,7 +65,8 @@ public class ReadTextFile extends ReadFile {
             }
             return array;
         } catch (Exception e) {
-            e.printStackTrace();
+            String error = String.format("The file inputted does not follow the proper format. Please format correctly and rerun");
+            System.out.println(error);
         }
         return null;
     }
