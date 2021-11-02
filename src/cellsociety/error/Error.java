@@ -18,7 +18,7 @@ public class Error {
     }
 
     public void prepareError(String message) {
-        myMessage = (myResourceBundle.containsKey(message)) ? message : KEY_UNAVAILABLE;
+        myMessage =  (myResourceBundle.containsKey(message)) ? message : KEY_UNAVAILABLE;
     }
 
     public void showError() {
@@ -28,7 +28,7 @@ public class Error {
         alert.showAndWait();
     }
 
-    private String getMyMessage() {
+    public String getMyMessage() {
         return myResourceBundle.getString(myMessage);
     }
 

@@ -5,7 +5,7 @@
 }
 
 #simulator-root{
-    -fx-background-color: #ffffff;
+    -fx-background-color: #2c2c2c;
     -fx-alignment: center;
     -fx-tile-alignment: center;
 }
@@ -15,6 +15,7 @@
     -fx-text-fill: #b5b5b5;
     -fx-border-color: #5c5e5e;
     -fx-alignment: center;
+    -fx-tile-alignment: center;
 }
 
 #main-menu-vbox{
@@ -34,11 +35,8 @@
 }
 
 #simulator-button{
+    -fx-alignment: center;
     -fx-background-color: #3b3f41;
     -fx-text-fill: #b5b5b5;
     -fx-border-color: #5c5e5e;
-}
-
-#colorPicker-text{
-    -fx-fill: #b5b5b5;
 }
