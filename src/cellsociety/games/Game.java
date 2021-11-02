@@ -179,7 +179,7 @@ public abstract class Game {
         myGrid = new TriangleGrid(myStates, myNeighborMode, myEdgePolicy);
     }
 
-    private void makeNewHexagonGrind(){
+    private void makeNewHexagonGrid(){
         myGrid = new HexagonGrid(myStates, myNeighborMode, myEdgePolicy);
     }
 

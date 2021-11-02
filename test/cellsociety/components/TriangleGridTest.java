@@ -60,19 +60,15 @@ public class TriangleGridTest {
     @Test
     void checkCornerNeighbors_Complete_Torus () {
         Cell cornerUpperLeft = myGrid_Complete_Torus.getBoardCell(new Point(0,0));
-        List<Cell> expectedNeighbors = Arrays.asList(new Cell(1, 2, 2),
+        List<Cell> expectedNeighbors = Arrays.asList(
+                new Cell(1, 2, 2),
                 new Cell(1, 0, 2),
                 new Cell(1, 1, 2),
                 new Cell(1, 1,0),
                 new Cell(0, 2,0),
                 new Cell(1, 2,1),
                 new Cell(0, 1, 1),
-                new Cell(1, 0,1)
-//                , new Cell(1, 2, 1),
-//                new Cell(0, 1, 1),
-//                new Cell(1, 1, 0),
-//                new Cell(0, 2, 0)
-                );
+                new Cell(1, 0,1));
         assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
     }
 
@@ -80,19 +76,11 @@ public class TriangleGridTest {
     void checkCornerNeighbors_Complete_Cylinder () {
         Cell cornerUpperLeft = myGrid_Complete_Cylinder.getBoardCell(new Point(0,0));
         List<Cell> expectedNeighbors = Arrays.asList(
-//                null,
-//                null,
-//                null,
                 new Cell(1, 1,0),
                 new Cell(0, 2,0),
                 new Cell(1, 2,1),
                 new Cell(0, 1, 1),
-                new Cell(1, 0,1)
-//                , new Cell(1, 2, 1),
-//                new Cell(0, 1, 1),
-//                new Cell(1, 1, 0),
-//                new Cell(0, 2, 0)
-        );
+                new Cell(1, 0,1));
         assertTrue(expectedNeighbors.equals(cornerUpperLeft.getNeighborCells()));
     }
 
