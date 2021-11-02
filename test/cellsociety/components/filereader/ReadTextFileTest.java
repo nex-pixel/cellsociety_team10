@@ -1,6 +1,5 @@
-package cellsociety.components;
+package cellsociety.components.filereader;
 
-import cellsociety.components.filereader.ReadCSVFile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,13 +7,12 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ReadCSVFileTest {
-
-    private ReadCSVFile myReader;
+class ReadTextFileTest {
+    private ReadTextFile myReader;
 
     @BeforeEach
     public void setUp () {
-        myReader = new ReadCSVFile("./data/game_of_life/blinkers.csv");
+        myReader = new ReadTextFile("./data/game_of_life/blinkers.txt");
     }
 
     @Test
@@ -34,5 +32,4 @@ public class ReadCSVFileTest {
         assertEquals(10, array[0].length);
         assertTrue(Arrays.deepEquals(expected, array));
     }
-
 }

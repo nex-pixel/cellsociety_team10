@@ -3,16 +3,24 @@ package cellsociety.components.filereader;
 import cellsociety.components.filereader.ReadFile;
 import com.opencsv.CSVReader;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 
 public class ReadCSVFile extends ReadFile {
+    private CSVReader reader;
 
     public ReadCSVFile (String filename) {
         super(filename);
     }
 
     public int[][] read () {
+        try{
+            reader = new CSVReader(new FileReader(getFilename()));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         try {
             CSVReader reader = new CSVReader(new FileReader(getFilename()));
             String[] nextLine;
