@@ -45,8 +45,10 @@ public abstract class ButtonFactory {
         myReflectionHandler = new ReflectionHandler();
     }
     // initializes paths for specific factories
-    protected void initializePaths(String basePath, String specificPath){
+    protected String initializePaths(String basePath, String specificPath){
         basePath += specificPath;
+        String result = basePath;
+        return result;
     }
 
     // adds button the panel

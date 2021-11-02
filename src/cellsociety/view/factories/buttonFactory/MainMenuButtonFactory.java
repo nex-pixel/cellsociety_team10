@@ -48,9 +48,8 @@ public class MainMenuButtonFactory extends ButtonFactory {
 
     public MainMenuButtonFactory(MainController mainMenuController, ResourceBundle langResourceBundle, FileManager fileManager) {
         super();
-        initializePaths(actionsNamePath, MAIN_MENU_EVENTS_PATH);
-        myActionEventsResources = ResourceBundle.getBundle(actionsNamePath);
-        initializePaths(buttonClassPath, MAIN_MENU_CLASS_NAME);
+        myActionEventsResources = ResourceBundle.getBundle(initializePaths(actionsNamePath, MAIN_MENU_EVENTS_PATH));
+        buttonClassPath = initializePaths(buttonClassPath, MAIN_MENU_CLASS_NAME);
         myLanguageResources = langResourceBundle;
         myFileManager = fileManager;
         myMainMenuController = mainMenuController;
