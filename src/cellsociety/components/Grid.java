@@ -108,7 +108,11 @@ public abstract class Grid {
     }
 
     public Cell getBoardCell(int x, int y) {
-        return myBoard.get(new Point(x, y));
+        Point currPoint = getPoint(x,y);
+        for(Point point: getPoints()){
+            if(point.x == currPoint.x && point.y == currPoint.y) return myBoard.get(point);
+        }
+        return null;
     }
 
     public Cell getBoardCell(Point point) {
