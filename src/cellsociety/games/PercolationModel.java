@@ -154,7 +154,6 @@ public class PercolationModel extends Game {
             cell.setCurrentStatus(OPEN);
             myOpenCells.add(cell);
         }
-        update();
     }
 
     @Override

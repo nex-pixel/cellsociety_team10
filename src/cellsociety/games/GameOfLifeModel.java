@@ -109,11 +109,10 @@ public class GameOfLifeModel extends Game {
         return true;
     }
 
-    @Override
-    public void changeCellOnClick(int x, int y) {
-        super.changeCellOnClick(x, y);
-        update();
-    }
+//    @Override
+//    public void changeCellOnClick(int x, int y) {
+//        super.changeCellOnClick(x, y);
+//    }
 
     @Override
     protected void populateGameConditions() {
