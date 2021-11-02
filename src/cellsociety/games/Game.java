@@ -65,7 +65,7 @@ public abstract class Game {
     public Game(String filename) {
         populateGameConditions();
         createReader(filename);
-        int[][] states;
+        int[][] states = new int[1][1];
         try {
             states = myReader.read();
         } catch (Exception e){
@@ -97,7 +97,7 @@ public abstract class Game {
     public Game(String filename, int gridType, int neighborMode, int edgePolicy) {
         populateGameConditions();
         createReader(filename);
-        int[][] states;
+        int[][] states = new int[1][1];
         try {
             states = myReader.read();
         } catch (Exception e){
