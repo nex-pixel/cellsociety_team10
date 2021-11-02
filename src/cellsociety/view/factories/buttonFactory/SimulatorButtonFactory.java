@@ -75,9 +75,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
     }
 
     private EventHandler<ActionEvent> generateAboutEvent() {
-        return event -> {
-            mySimulatorView.displaySimulationInfo();
-        };
+        return event -> mySimulatorView.displaySimulationInfo();
     }
 
     private EventHandler<ActionEvent> generateNewCSSEvent() {
