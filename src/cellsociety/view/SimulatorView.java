@@ -132,10 +132,10 @@ public class SimulatorView {
     }
 
     // creates and returns a VBox containing the gameGrid and buttons
-    private VBox generateSimulationVBox(GridPane gameGrid) {
-        VBox simulationBox = new VBox();
+    private HBox generateSimulationVBox(GridPane gameGrid) {
+        HBox simulationBox = new HBox();
         simulationBox.setId(SIMULATOR_BOX_ID);
-        simulationBox.getChildren().addAll(gameGrid, mySimulatorButtonFactory.generateButtonPanel(), mySliderFactory.makeSlider(SLIDER_MIN, SLIDER_MAX,
+        simulationBox.getChildren().addAll(gameGrid,mySimulatorButtonFactory.generateButtonPanel(), mySliderFactory.makeSlider(SLIDER_MIN, SLIDER_MAX,
                 (obs, oldVal, newVal) -> setAnimationSpeed((double) newVal)));
         return simulationBox;
     }
