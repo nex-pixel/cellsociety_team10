@@ -21,4 +21,12 @@ class WaTorWorldModelTest {
     @Test
     void applyRule() {
     }
+
+    @Test
+    void testApplyRule() {
+    }
+
+    @Test
+    void changeCellOnClick() {
+    }
 }
