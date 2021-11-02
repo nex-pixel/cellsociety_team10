@@ -8,7 +8,6 @@ import cellsociety.components.filereader.ReadFile;
 import cellsociety.components.filereader.ReadJSONFile;
 import cellsociety.error.GenerateError;
 import com.opencsv.CSVWriter;
-import javafx.scene.effect.Reflection;
 
 import java.awt.*;
 import java.io.File;

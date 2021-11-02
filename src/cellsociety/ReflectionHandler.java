@@ -2,8 +2,19 @@ package cellsociety;
 
 import java.lang.reflect.Method;
 
+/**
+ * Class to handle reflection
+ *
+ * @author Ryleigh Byrne
+ */
 public class ReflectionHandler {
 
+    /**
+     * Handle method given a method name and a class name
+     * @param name of method to call
+     * @param aClass name of class to call the method in
+     * @return desired method
+     */
     public Method handleMethod(String name, String aClass) {
         try {
             Class<?> thisClass = Class.forName(aClass);
