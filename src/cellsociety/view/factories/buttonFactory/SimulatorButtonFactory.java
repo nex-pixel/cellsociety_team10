@@ -18,7 +18,6 @@ public class SimulatorButtonFactory extends ButtonFactory {
     private SimulatorController mySimulatorController;
     private SimulatorView mySimulatorView;
     private SimulatorChoiceDialogBoxFactory mySimulatorChoiceDialogBoxFactory;
-    private ReflectionHandler myReflectionHandler;
     private String simulatorButtonClassName = "SimulatorButtonFactory";
 
     public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController, ResourceBundle langResourceBundle) {
@@ -32,7 +31,6 @@ public class SimulatorButtonFactory extends ButtonFactory {
         myLanguageResources = langResourceBundle;
 
         mySimulatorChoiceDialogBoxFactory = new SimulatorChoiceDialogBoxFactory(mySimulatorController, myLanguageResources);
-        myReflectionHandler = new ReflectionHandler();
 
         populateOptions(cssFileOptions, labelOptionsBundle, CSS_FILE_LABEL_KEY);
         populateButtonEvents();

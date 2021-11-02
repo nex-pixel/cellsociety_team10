@@ -1,15 +1,16 @@
 package cellsociety.view.factories.buttonFactory;
 
+import cellsociety.ReflectionHandler;
+import cellsociety.error.GenerateError;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 public abstract class ButtonFactory {
 
@@ -27,11 +28,13 @@ public abstract class ButtonFactory {
     protected String buttonID;;
     protected ResourceBundle labelOptionsBundle;
     protected ArrayList<String> cssFileOptions = new ArrayList<>();
+    protected ReflectionHandler myReflectionHandler;
 
 
     public ButtonFactory() {
         buttonMap = new LinkedHashMap<>();
         labelOptionsBundle = ResourceBundle.getBundle(LABEL_OPTIONS_PATH);
+        myReflectionHandler = new ReflectionHandler();
     }
 
     protected void addButtonToPanel(String label, EventHandler<ActionEvent> event, Pane panel) {

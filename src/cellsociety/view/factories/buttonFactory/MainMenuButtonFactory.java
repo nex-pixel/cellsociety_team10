@@ -7,9 +7,10 @@ import cellsociety.error.GenerateError;
 import cellsociety.view.factories.choiceDialogBoxFactory.MainMenuChoiceDialogBoxFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.ResourceBundle;
 
 
 public class MainMenuButtonFactory extends ButtonFactory {
@@ -24,6 +25,7 @@ public class MainMenuButtonFactory extends ButtonFactory {
     private static final String GRID_TYPE = "gridType";
     private static final String NEIGHBOR_TYPE = "neighborModeType";
     private static final String EDGE_TYPE = "edgePolicyType";
+    private static final String MAIN_MENU_EVENTS_PATH = "MainMenuActionEvents";
 
     private ArrayList<String> modelOptions = new ArrayList<>();
     private ArrayList<String> gridOptions = new ArrayList<>();
@@ -33,12 +35,11 @@ public class MainMenuButtonFactory extends ButtonFactory {
     private FileManager myFileManager;
     private MainController myMainMenuController;
     private MainMenuChoiceDialogBoxFactory myMainMenuChoiceDialogBoxFactory;
-    private ReflectionHandler myReflectionHandler;
 
 
     public MainMenuButtonFactory(MainController mainMenuController, ResourceBundle langResourceBundle, FileManager fileManager) {
         super();
-        ACTIONS_NAME_PATH += "MainMenuActionEvents";
+        ACTIONS_NAME_PATH += MAIN_MENU_EVENTS_PATH;
         myActionEventsResources = ResourceBundle.getBundle(ACTIONS_NAME_PATH);
         buttonClassPath += MAIN_MENU_CLASS_NAME;
         myLanguageResources = langResourceBundle;
@@ -46,7 +47,6 @@ public class MainMenuButtonFactory extends ButtonFactory {
         myMainMenuController = mainMenuController;
         myMainMenuChoiceDialogBoxFactory = new MainMenuChoiceDialogBoxFactory(myMainMenuController, myFileManager, myLanguageResources);
         buttonID = MAIN_BUTTON_ID;
-        myReflectionHandler = new ReflectionHandler();
         populateAllOptionArrays();
         populateButtonEvents();
     }
@@ -57,7 +57,7 @@ public class MainMenuButtonFactory extends ButtonFactory {
             ArrayList<String> list = Collections.list(myActionEventsResources.getKeys());
             Collections.sort(list);
             for (String key : list) {
-                EventHandler<ActionEvent> buttonEvent = (EventHandler<ActionEvent>) myReflectionHandler.handleMethod(myActionEventsResources.getString(key), buttonClassPath).invoke(MainMenuButtonFactory.this);
+                EventHandler<ActionEvent> buttonEvent = (EventHandler<ActionEvent>) myReflectionHandler.handleMethod(myActionEventsResources.getString(key), buttonClassPath).invoke((Object) this);
                 buttonMap.put(myLanguageResources.getString(key), buttonEvent);
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
