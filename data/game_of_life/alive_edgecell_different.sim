@@ -1,0 +1,5 @@
+Type=GameOfLife
+Title=Alive cell at an edge that yields different status after update
+Author=Norah Tan
+Description=Test of alive cell at an edge that yields different status after update
+InitialStates=game_of_life/alive_edgecell_different.csv
