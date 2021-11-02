@@ -20,7 +20,7 @@ public class MainMenuChoiceDialogBoxFactory extends ChoiceDialogBoxFactory {
         myMainController = mainController;
         myFileManager = fileManager;
         myLanguageResources = langResources;
-        myReflectionHandler = new ReflectionHandler(myLanguageResources);
+        myReflectionHandler = new ReflectionHandler();
     }
 
     private void initializePaths() {

@@ -1,12 +1,14 @@
 package cellsociety.games;
 
 
+import cellsociety.ReflectionHandler;
 import cellsociety.components.*;
 import cellsociety.components.filereader.ReadCSVFile;
 import cellsociety.components.filereader.ReadFile;
 import cellsociety.components.filereader.ReadJSONFile;
 import cellsociety.error.GenerateError;
 import com.opencsv.CSVWriter;
+import javafx.scene.effect.Reflection;
 
 import java.awt.*;
 import java.io.File;
@@ -17,17 +19,24 @@ import java.util.List;
 /***
  * The class abstract models the general feature of Game
  *
- * @author Norah Tan, Haseeb Chaudhry
+ * @author Norah Tan, Haseeb Chaudhry, Ryleigh Byrne
  */
 public abstract class Game {
+    private static final String EVENT_PATH = "cellsociety.resources.gridTypeEvents.gridTypeEvents";
+    private static final String DEFAULT_GAME_DATA = "cellsociety.resources.gameData.GameData";
+    private static final String GAME_CLASSPATH = "cellsociety.games.Game";
+    private static final String INVALID_SAVE = "InvalidSaveFile";
 
     private ReadFile myReader;
     private Grid myGrid;
-    private static final String DEFAULT_GAME_DATA = "cellsociety.resources.gameData.GameData";
     protected PropertiesReader myGameDataReader;
-    private String INVALID_SAVE = "InvalidSaveFile";
     private final int DEFAULT_GRID_CHOICE = 0;
     private int NUM_STATES;
+    private int[][] myStates;
+    private int myGridType;
+    private int myNeighborMode;
+    private int myEdgePolicy;
+    private ResourceBundle myGridEventResources;
 
     /***
      * Default constructor
@@ -96,6 +105,7 @@ public abstract class Game {
     public Game(int[][] states, int gridType, int neighborMode, int edgePolicy) {
         populateGameConditions();
         setGrid(states, gridType, neighborMode, edgePolicy);
+
     }
 
     /***
@@ -146,11 +156,31 @@ public abstract class Game {
      * @param edgePolicy gives one of finite, toroidal, and cylindrical edge policies
      */
     protected void setGrid(int[][] states, int gridType, int neighborMode, int edgePolicy) {
-        switch (gridType) {
-            case 0 -> myGrid = new SquareGrid(states, neighborMode, edgePolicy);
-            case 1 -> myGrid = new TriangleGrid(states, neighborMode, edgePolicy);
-            case 2 -> myGrid = new HexagonGrid(states, neighborMode, edgePolicy);
+        myStates = states;
+        myGridType = gridType;
+        myNeighborMode = neighborMode;
+        myEdgePolicy = edgePolicy;
+        myGridEventResources = ResourceBundle.getBundle(EVENT_PATH);
+        ReflectionHandler reflectionHandler = new ReflectionHandler();
+        String typeOfGrid = gridType + ".type";
+        try{
+            reflectionHandler.handleMethod(myGridEventResources.getString(typeOfGrid), GAME_CLASSPATH).invoke(Game.this);
+        }catch(Exception e){
+            String error = String.format("The method: %s you are trying to call does not exist. Please fix and rerun.", myGridEventResources.getString(typeOfGrid));
+            System.out.println(error);
         }
+    }
+
+    private void makeNewSquareGrid(){
+        myGrid = new SquareGrid(myStates, myNeighborMode, myEdgePolicy);
+    }
+
+    private void makeNewTriangleGrid(){
+        myGrid = new TriangleGrid(myStates, myNeighborMode, myEdgePolicy);
+    }
+
+    private void makeNewHexagonGrind(){
+        myGrid = new HexagonGrid(myStates, myNeighborMode, myEdgePolicy);
     }
 
     /***

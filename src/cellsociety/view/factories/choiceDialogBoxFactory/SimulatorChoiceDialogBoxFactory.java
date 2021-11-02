@@ -18,7 +18,7 @@ public class SimulatorChoiceDialogBoxFactory extends ChoiceDialogBoxFactory {
         CHOICE_EVENTS_PATH += MAIN_MENU_CHOICE_BOX_EVENT_PATH;
         CHOICE_BOX_CLASSPATH += MAIN_MENU_CHOICE_BOX_CLASS_PATH;
         myChoiceBoxEventsBundle = ResourceBundle.getBundle(CHOICE_EVENTS_PATH);
-        myReflectionHandler = new ReflectionHandler(myLanguageResources);
+        myReflectionHandler = new ReflectionHandler();
     }
 
     @Override
