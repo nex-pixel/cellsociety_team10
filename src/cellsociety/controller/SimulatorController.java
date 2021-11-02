@@ -4,10 +4,14 @@ import cellsociety.ReflectionHandler;
 import cellsociety.error.GenerateError;
 import cellsociety.games.*; // used * because this class uses all classes in games
 import cellsociety.view.SimulatorView;
-
 import java.io.File;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for the simulator view and model. Handles updates for both the game and the view
+ *
+ * @author Ryleigh Byrne, Young Jun
+ */
 public class SimulatorController {
 
     private static final String RESOURCE_ACTIONS_NAME = "cellsociety.controller.resources.actionNames.";
@@ -16,7 +20,6 @@ public class SimulatorController {
     private static final String LANG_KEY = "language";
     private static final String CSV_FILE_TYPE = "csv";
     private static final String SIM_FILE_TYPE = "sim";
-    // Things to remember
     private Game myGame;
     private SimulatorView mySimulatorView;
     private FileManager myFileManager;
@@ -31,10 +34,18 @@ public class SimulatorController {
     private int myEdgePolicy;
     private ReflectionHandler myReflectionHandler;
 
-
+    /**
+     * Constructor for the simulator controller class. Initializes necessary resource bundles and types
+     * @param mainController controller for mainMenu
+     * @param fileManager file manager
+     * @param cssFile current CSS file
+     * @param resourceBundle language resource bundle
+     * @param cellType type of cell for this simulation
+     * @param neighborMode neighbor mode type for this simulation
+     * @param edgePolicy edge policy for this simulation
+     */
     public SimulatorController(MainController mainController, FileManager fileManager, String cssFile, ResourceBundle resourceBundle
             , int cellType, int neighborMode, int edgePolicy) {
-        // TODO property change listener simple String Property
         myMainController = mainController;
         myCSSFile = cssFile;
         myLanguageResources = resourceBundle;
@@ -46,6 +57,7 @@ public class SimulatorController {
         myReflectionHandler = new ReflectionHandler();
     }
 
+    // initialize resource bundle for reflection
     private void initializeActionBundle() {
         String filePath = RESOURCE_ACTIONS_NAME + myLanguageResources.getString(LANG_KEY);
         actionNameBundle = ResourceBundle.getBundle(filePath);
