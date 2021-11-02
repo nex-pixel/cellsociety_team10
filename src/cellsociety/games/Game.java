@@ -25,6 +25,8 @@ public abstract class Game {
     private static final String DEFAULT_GAME_DATA = "cellsociety.resources.gameData.GameData";
     private static final String GAME_CLASSPATH = "cellsociety.games.Game";
     private static final String INVALID_SAVE = "InvalidSaveFile";
+    private static final String SAVE_FILE_PATH = "data/saved_files/";
+    private static final String CSV_EXTENSION = ".csv";
 
     private ReadFile myReader;
     private Grid myGrid;
@@ -349,7 +351,7 @@ public abstract class Game {
      */
     public void saveCSVFile(String filename, ResourceBundle languageResource) {
         try {
-            File file = new File(filename);
+            File file = new File(SAVE_FILE_PATH + filename + CSV_EXTENSION);
             CSVWriter writer = new CSVWriter(new FileWriter(file));
             writer.writeNext(new String[]{Integer.toString(myGrid.getNumCols()), Integer.toString(myGrid.getNumRows())}, false);
             int[][] array = toGridArray();
