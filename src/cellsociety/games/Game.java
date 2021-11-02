@@ -29,7 +29,7 @@ public abstract class Game {
     private ReadFile myReader;
     private Grid myGrid;
     protected PropertiesReader myGameDataReader;
-    private final int DEFAULT_GRID_CHOICE = 0;
+    private static final int DEFAULT_GRID_CHOICE = 0;
     private int NUM_STATES;
     private int[][] myStates;
     private int myGridType;
@@ -178,7 +178,7 @@ public abstract class Game {
         myGrid = new TriangleGrid(myStates, myNeighborMode, myEdgePolicy);
     }
 
-    private void makeNewHexagonGrind(){
+    private void makeNewHexagonGrid(){
         myGrid = new HexagonGrid(myStates, myNeighborMode, myEdgePolicy);
     }
 
@@ -320,9 +320,9 @@ public abstract class Game {
      * @param x is the x-location of the Cell
      * @param y is the y-location of the Cell
      */
-    public void changeCellOnClick(int x, int y) {
+    public void changeCellOnClick (int x, int y) {
         setNumStatesOnBoard();
-        Cell cell = getGrid().getBoardCell(x, y);
+        Cell cell = getGrid().getBoardCell(x,y);
         cell.setCurrentStatus((cell.getCurrentStatus() + 1) % NUM_STATES);
     }
 
@@ -351,7 +351,7 @@ public abstract class Game {
         try {
             File file = new File(filename);
             CSVWriter writer = new CSVWriter(new FileWriter(file));
-            writer.writeNext(new String[]{Integer.toString(myGrid.getNumRows()), Integer.toString(myGrid.getNumCols())}, false);
+            writer.writeNext(new String[]{Integer.toString(myGrid.getNumCols()), Integer.toString(myGrid.getNumRows())}, false);
             int[][] array = toGridArray();
             for (int r = 0; r < myGrid.getNumRows(); r++) {
                 writer.writeNext(Arrays.stream(array[r])

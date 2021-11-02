@@ -47,7 +47,6 @@ public class HexagonGrid extends Grid {
 
     @Override
     public void expandGrid(int left, int top, int right, int bottom) {
-        //ToDo: Grid is now abstract so "new Grid" doesn't work now
         int myNumRows = getNumRows();
         int myNumCols = getNumCols();
         Set<Point> points = getPoints();
@@ -58,6 +57,11 @@ public class HexagonGrid extends Grid {
     @Override
     public Point getPoint(int x, int y) {
         return new Point((y + 1) % 2 + 2 * x, y);
+    }
+
+    @Override
+    public Cell getBoardCell(int x, int y){
+        return getBoard().get(new Point((y+1)%2 + 2*x, y));
     }
 
     @Override

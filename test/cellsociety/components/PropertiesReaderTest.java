@@ -13,20 +13,20 @@ class PropertiesReaderTest {
 
     @BeforeEach
     void setup(){
-        myReader = new PropertiesReader("cellsociety.resources.NeighborPositionData");
+        myReader = new PropertiesReader("cellsociety.resources.gameData.NeighborPositionData");
     }
 
     @Test
     void setNewFilePath() {
-        myReader.setNewFilePath("cellsociety.resources.GameData");
-        ResourceBundle expected = ResourceBundle.getBundle("cellsociety.resources.GameData");
+        myReader.setNewFilePath("cellsociety.resources.gameData.GameData");
+        ResourceBundle expected = ResourceBundle.getBundle("cellsociety.resources.gameData.GameData");
 
         assertEquals(myReader.getMyFile(), expected);
     }
 
     @Test
     void getIntProperty() {
-        myReader.setNewFilePath("cellsociety.resources.GameData");
+        myReader.setNewFilePath("cellsociety.resources.gameData.GameData");
         int actual = myReader.getIntProperty("WatorWorldShark");
         int expected = 2;
 
@@ -55,7 +55,7 @@ class PropertiesReaderTest {
     @Test
     void getDoubleProperty() {
         //normal double
-        myReader.setNewFilePath("cellsociety.resources.GameData");
+        myReader.setNewFilePath("cellsociety.resources.gameData.GameData");
         double actual = myReader.getDoubleProperty("SpreadingFireProbGrow");
         double expected = 0.00;
 
