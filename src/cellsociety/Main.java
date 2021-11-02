@@ -47,7 +47,7 @@ public class Main extends Application {
     private void populateLanguageOptions() {
         languageOptions.add("English");
         languageOptions.add("Spanish");
-        languageOptions.add("Korean");
+        languageOptions.add("Gibberish");
     }
 
     private ChoiceDialog<String> generateChoiceDialogBox(String defaultChoice, ArrayList<String> options, String content) {
