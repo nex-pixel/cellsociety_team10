@@ -28,10 +28,10 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 /**
- * This class generates a view of the desired simulator and displays a grid with active cells and buttons to c
+ * This class generates a view of the desired simulator and displays a grid with active cells and buttons to
  * manipulate and control the simulation
  *
- * @author Ryleigh Byrne, Young Jun
+ * @author Young Jun, Ryleigh Byrne
  */
 public class SimulatorView {
     private static final String GRID_NAME_FILE_PATH = "cellsociety.resources.gameData.GridTypeNames";

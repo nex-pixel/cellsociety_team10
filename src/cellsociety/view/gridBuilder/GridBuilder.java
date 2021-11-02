@@ -12,6 +12,13 @@ import javafx.scene.shape.Polygon;
 public abstract class GridBuilder {
     protected static final String DEFAULT_CELL_ID = "default-cell";
 
+    /**
+     * Creates a grid by adding cells in to the gamePane
+     * @param mySimulatorController mySimulatorController
+     * @param gridWidth width of the grid
+     * @param gridHeight height of the grid
+     * @param gamePane GridPane where the cells will be added
+     */
     public abstract void CreateGrid(SimulatorController mySimulatorController, int gridWidth, int gridHeight, GridPane gamePane);
 
     protected void setPaneSize(Pane gamePane, double xSize, double ySize) {
