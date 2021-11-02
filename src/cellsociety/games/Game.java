@@ -322,7 +322,7 @@ public abstract class Game {
         try {
             File file = new File(filename);
             CSVWriter writer = new CSVWriter(new FileWriter(file));
-            writer.writeNext(new String[]{Integer.toString(myGrid.getNumRows()), Integer.toString(myGrid.getNumCols())}, false);
+            writer.writeNext(new String[]{Integer.toString(myGrid.getNumCols()), Integer.toString(myGrid.getNumRows())}, false);
             int[][] array = toGridArray();
             for (int r = 0; r < myGrid.getNumRows(); r++) {
                 writer.writeNext(Arrays.stream(array[r])
