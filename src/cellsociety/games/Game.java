@@ -65,7 +65,13 @@ public abstract class Game {
     public Game(String filename) {
         populateGameConditions();
         createReader(filename);
-        int[][] states = myReader.read();
+        int[][] states;
+        try {
+            states = myReader.read();
+        } catch (Exception e){
+            String error = String.format("The file was not read in properly, or was not found.");
+            System.out.println(error);
+        }
         setGrid(states, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE, DEFAULT_GRID_CHOICE);
     }
 
@@ -91,8 +97,13 @@ public abstract class Game {
     public Game(String filename, int gridType, int neighborMode, int edgePolicy) {
         populateGameConditions();
         createReader(filename);
-        int[][] states = myReader.read();
-        setGrid(states, gridType, neighborMode, edgePolicy);
+        int[][] states;
+        try {
+            states = myReader.read();
+        } catch (Exception e){
+            String error = String.format("The file was not read in properly, or was not found.");
+            System.out.println(error);
+        }setGrid(states, gridType, neighborMode, edgePolicy);
     }
 
     /***
@@ -106,7 +117,6 @@ public abstract class Game {
     public Game(int[][] states, int gridType, int neighborMode, int edgePolicy) {
         populateGameConditions();
         setGrid(states, gridType, neighborMode, edgePolicy);
-
     }
 
     /***
