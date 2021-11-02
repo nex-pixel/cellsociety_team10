@@ -1,0 +1,5 @@
+Type=GameOfLife
+Title=All empty
+Author=Norah Tan
+Description=Test for click cell with an all empty initialization of the grid
+InitialStates=game_of_life/test_update.scv
