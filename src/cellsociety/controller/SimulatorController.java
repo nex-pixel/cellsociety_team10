@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 /**
  * Controller class for the simulator view and model. Handles updates for both the game and the view
  *
- * @author Ryleigh Byrne, Young Jun
+ * @author  Young Jun, Ryleigh Byrne,
  */
 public class SimulatorController {
 
