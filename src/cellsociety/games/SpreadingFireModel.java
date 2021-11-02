@@ -18,8 +18,7 @@ public class SpreadingFireModel extends Game {
     private double probGrow;
     private boolean firePresentInGrid = true;
     private int expandGridByInt;
-    private final int NUM_STATES = 3;
-    private final int DEFAULT_GRID_CHOICE = 0;
+    private static final int NUM_STATES = 3;
 
     /***
      * Constructor that takes in a CSV file for grid initialization,
