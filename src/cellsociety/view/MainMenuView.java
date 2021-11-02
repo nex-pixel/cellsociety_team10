@@ -25,7 +25,7 @@ public class MainMenuView {
     private static final double DEFAULT_SLIDER_VALUE = 0.5;
     private static final double MIN_SLIDER_VALUE = 0.0;
     private static final double MAX_SLIDER_VALUE = 1.0;
-    // Things to remember
+
     private ResourceBundle myLanguageResources;
     private FileManager myFileManager;
     private Pane homePageRoot;
@@ -62,7 +62,6 @@ public class MainMenuView {
         Label titleLabel = new Label(label);
         titleLabel.setId(id);
     }
-
 
     public double getSegregationThreshold() {
         SliderFactory sliderFactory = new SliderFactory(DEFAULT_SLIDER_VALUE);

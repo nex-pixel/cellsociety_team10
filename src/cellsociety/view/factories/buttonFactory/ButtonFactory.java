@@ -1,6 +1,6 @@
 package cellsociety.view.factories.buttonFactory;
 
-
+import cellsociety.ReflectionHandler;
 import cellsociety.error.GenerateError;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,31 +9,32 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 public abstract class ButtonFactory {
 
     protected Map<String, EventHandler<ActionEvent>> buttonMap;
     public String ACTIONS_NAME_PATH = "cellsociety.resources.buttonEvents.";
+    private static final String LABEL_OPTIONS_PATH = "cellsociety.resources.labelOptions.labelOptions";
+    private static final String VALUE_SPLIT_STRING = ",";
+    protected static final String CSS_FILE_LABEL_KEY = "cssFileLabelOptions";
+    protected static final String INVALID_BUTTON_GENERATION = "InvalidButtonGeneration";
+    protected static final String CSS_FILE = "cssFile";
+
+    protected String buttonClassPath = "cellsociety.view.factories.buttonFactory.";
     protected ResourceBundle myActionEventsResources;
     protected ResourceBundle myLanguageResources;
-    protected String buttonID;
-    protected String INVALID_BUTTON_GENERATION = "InvalidButtonGeneration";
-    // protected String[] cssFileLabelOptions = {"DukeLabel", "UNCLabel", "LightLabel", "DarkLabel"};
+    protected String buttonID;;
     protected ResourceBundle labelOptionsBundle;
     protected ArrayList<String> cssFileOptions = new ArrayList<>();
-    protected String modelLabelKey = "modelLabelOptions";
-    protected String cssFileLabelKey = "cssFileLabelOptions";
-    protected String gridLabelKey = "gridLabelOptions";
+    protected ReflectionHandler myReflectionHandler;
+
 
     public ButtonFactory() {
         buttonMap = new LinkedHashMap<>();
-        labelOptionsBundle = ResourceBundle.getBundle("cellsociety.resources.labelOptions.labelOptions");
-        //populateOptions(cssFileOptions, labelOptionsBundle);
+        labelOptionsBundle = ResourceBundle.getBundle(LABEL_OPTIONS_PATH);
+        myReflectionHandler = new ReflectionHandler();
     }
 
     protected void addButtonToPanel(String label, EventHandler<ActionEvent> event, Pane panel) {
@@ -59,7 +60,7 @@ public abstract class ButtonFactory {
     }
 
     protected void populateOptions(ArrayList<String> optionsList, ResourceBundle resourceBundle, String key) {
-        String[] list = resourceBundle.getString(key).split(",");
+        String[] list = resourceBundle.getString(key).split(VALUE_SPLIT_STRING);
         for (String label : list) {
             optionsList.add(myLanguageResources.getString(label));
         }

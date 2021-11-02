@@ -5,7 +5,6 @@ import javafx.scene.control.Slider;
 
 public class SliderFactory {
     private static final int SLIDER_MAX_WIDTH = 100;
-
     private double sliderValue;
 
     public SliderFactory(double value) {

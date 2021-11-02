@@ -2,13 +2,12 @@ package cellsociety.view.factories.cssFactory;
 
 import cellsociety.error.GenerateError;
 import javafx.scene.Scene;
-
 import java.io.File;
 import java.util.ResourceBundle;
 
 public class CSSFactory {
-    private static final String INVALID_CSS_ERROR = "InvalidCSSFile";
 
+    private static final String INVALID_CSS_ERROR = "InvalidCSSFile";
     private ResourceBundle myLanguageResources;
 
     public CSSFactory(ResourceBundle langResourceBundle) {

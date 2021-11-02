@@ -1,9 +1,7 @@
 package cellsociety.view.factories.choiceDialogBoxFactory;
 
 import cellsociety.ReflectionHandler;
-import cellsociety.error.GenerateError;
 import javafx.scene.control.ChoiceDialog;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -11,7 +9,7 @@ import java.util.ResourceBundle;
 public abstract class ChoiceDialogBoxFactory {
 
     protected static final String INVALID_METHOD = "InvalidMethod";
-    protected String CHOICE_EVENTS_PATH = "cellsociety.resources.choiceBoxEvents."; // TODO change file and move to constructor
+    protected String CHOICE_EVENTS_PATH = "cellsociety.resources.choiceBoxEvents.";
     protected String CHOICE_BOX_CLASSPATH = "cellsociety.view.factories.choiceDialogBoxFactory.";
     protected ChoiceDialog<String> myChoiceDialog;
     protected ResourceBundle myChoiceBoxEventsBundle;
@@ -24,6 +22,11 @@ public abstract class ChoiceDialogBoxFactory {
         choiceDialog.setContentText(content);
         showAndWaitForChoiceDialogResult(choiceDialog, resultType);
         return choiceDialog;
+    }
+
+    protected void initializePaths(String eventPath, String classPath) {
+        CHOICE_EVENTS_PATH += eventPath;
+        CHOICE_BOX_CLASSPATH += classPath;
     }
 
     protected void showAndWaitForChoiceDialogResult(ChoiceDialog<String> choiceDialog, String resultType) {

@@ -1,36 +1,38 @@
 package cellsociety.view.factories.buttonFactory;
 
-import cellsociety.ReflectionHandler;
 import cellsociety.controller.SimulatorController;
 import cellsociety.error.GenerateError;
 import cellsociety.view.SimulatorView;
 import cellsociety.view.factories.choiceDialogBoxFactory.SimulatorChoiceDialogBoxFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.ResourceBundle;
 
 public class SimulatorButtonFactory extends ButtonFactory {
     private static final String SIMULATOR_ACTION_EVENTS = "SimulatorActionEvents";
     private static final String SIMULATOR_BUTTON_ID = "simulator-button";
-    // things to remember
+
     private SimulatorController mySimulatorController;
     private SimulatorView mySimulatorView;
     private SimulatorChoiceDialogBoxFactory mySimulatorChoiceDialogBoxFactory;
-    private ReflectionHandler myReflectionHandler;
+    private String simulatorButtonClassName = "SimulatorButtonFactory";
 
     public SimulatorButtonFactory(SimulatorView simulatorView, SimulatorController simulatorController, ResourceBundle langResourceBundle) {
         super();
         ACTIONS_NAME_PATH += SIMULATOR_ACTION_EVENTS;
         myActionEventsResources = ResourceBundle.getBundle(ACTIONS_NAME_PATH);
+        buttonClassPath += simulatorButtonClassName;
+        buttonID = SIMULATOR_BUTTON_ID;
         mySimulatorView = simulatorView;
         mySimulatorController = simulatorController;
         myLanguageResources = langResourceBundle;
-        buttonID = SIMULATOR_BUTTON_ID;
+
         mySimulatorChoiceDialogBoxFactory = new SimulatorChoiceDialogBoxFactory(mySimulatorController, myLanguageResources);
-        myReflectionHandler = new ReflectionHandler(myLanguageResources);
-        populateOptions(cssFileOptions, labelOptionsBundle, cssFileLabelKey);
+
+        populateOptions(cssFileOptions, labelOptionsBundle, CSS_FILE_LABEL_KEY);
         populateButtonEvents();
     }
 
@@ -40,7 +42,7 @@ public class SimulatorButtonFactory extends ButtonFactory {
             ArrayList<String> list = Collections.list(myActionEventsResources.getKeys());
             Collections.sort(list);
             for (String key : list) {
-                EventHandler<ActionEvent> buttonEvent = (EventHandler<ActionEvent>) myReflectionHandler.handleMethod(myActionEventsResources.getString(key), "cellsociety.view.factories.buttonFactory.SimulatorButtonFactory").invoke(SimulatorButtonFactory.this);
+                EventHandler<ActionEvent> buttonEvent = (EventHandler<ActionEvent>) myReflectionHandler.handleMethod(myActionEventsResources.getString(key), buttonClassPath).invoke(SimulatorButtonFactory.this);
                 buttonMap.put(myLanguageResources.getString(key), buttonEvent);
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -73,14 +75,12 @@ public class SimulatorButtonFactory extends ButtonFactory {
     }
 
     private EventHandler<ActionEvent> generateAboutEvent() {
-        return event -> {
-            mySimulatorView.displaySimulationInfo();
-        };
+        return event -> mySimulatorView.displaySimulationInfo();
     }
 
     private EventHandler<ActionEvent> generateNewCSSEvent() {
         return event -> mySimulatorChoiceDialogBoxFactory.generateChoiceDialogBox(cssFileOptions.get(0),
-                cssFileOptions, "cssFile", myLanguageResources.getString("ThemeContent"));
+                cssFileOptions, CSS_FILE, myLanguageResources.getString(CSS_FILE));
     }
 
 

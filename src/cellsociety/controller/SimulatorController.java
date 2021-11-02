@@ -43,7 +43,7 @@ public class SimulatorController {
         myNeighborMode = neighborMode;
         myEdgePolicy = edgePolicy;
         myFileManager = fileManager;
-        myReflectionHandler = new ReflectionHandler(myLanguageResources);
+        myReflectionHandler = new ReflectionHandler();
     }
 
     private void initializeActionBundle() {

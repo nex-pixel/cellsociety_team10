@@ -1,27 +1,21 @@
 package cellsociety;
 
-import cellsociety.error.GenerateError;
-
 import java.lang.reflect.Method;
-import java.util.ResourceBundle;
 
 public class ReflectionHandler {
-
-    private ResourceBundle myLanguageResources;
-    ;
-    private String INVALID_METHOD = "InvalidMethod";
-
-    public ReflectionHandler(ResourceBundle langResources) {
-        myLanguageResources = langResources;
-    }
 
     public Method handleMethod(String name, String aClass) {
         try {
             Class<?> thisClass = Class.forName(aClass);
             Method m = thisClass.getDeclaredMethod(name);
             return m;
-        } catch (NoSuchMethodException | ClassNotFoundException e) {
-            new GenerateError(myLanguageResources, INVALID_METHOD);
+        } catch (NoSuchMethodException e) {
+            String error = String.format("The method: %s could not be generated. Double check method you are trying to call's name", name);
+            System.out.println(error);
+            return null;
+        }catch(ClassNotFoundException e){
+            String error = String.format("The class: %s could not be generated. Double check class you are trying to call's name", name);
+            System.out.println(error);
             return null;
         }
     }
