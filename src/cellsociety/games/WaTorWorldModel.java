@@ -158,7 +158,7 @@ public class WaTorWorldModel extends Game {
             chosenCell.setMiscellaneousVal(Arrays.asList(stepsAlive, energy));
         } else if (stepsAlive > REPRODUCE_VAL) {
             cell.setNextStatus(cell.getCurrentStatus());
-            chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, startingEnergy));
+            chosenCell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, energy));
         }
         cell.setMiscellaneousVal(Arrays.asList(STARTING_VAL, startingEnergy));
     }
